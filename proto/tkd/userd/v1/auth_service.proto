@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package tkd.userd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "tkd/userd/v1/user.proto";
+
+// AuthService provides methods for authentication to the
+// services hosted and managed by Tierklinik Dobersberg (TKD).
+service AuthService {
+  // Login requests authentication. The authentication type (flow) is
+  // determined by the initial request and may require sub-sequent calls
+  // to full-fill the requirements of the choosen authentication flow.
+  //
+  // Upon success, a LoginResponse with a AccessTokenResponse is returned to
+  // the caller containing a short lived access token (typically about ~24h).
+  // In addition, a "Set-Cookie" header is appended to the response that contains
+  // a HttpOnly, Secure (if not in dev-mode) cookie with a long-lived refresh token
+  // (~ about a month).
+  //
+  // In case the access token expires the client is expected to call the RefreshToken
+  // endpoint to retrieve a new access token.
+  //
+  // Refresh tokens cannot be re-newed like this but require a full re-authentication
+  // using the Login method.
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+
+  // Logout invalidates the current access token that was used to call the 
+  // method. If a refresh token is appended in the logout request, it will be invalidated
+  // as well.
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+  
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+  rpc Introspect(IntrospectRequest) returns (IntrospectResponse) {}
+}
+
+enum AuthType {
+  AUTH_TYPE_UNSPECIFIED = 0;
+  AUTH_TYPE_PASSWORD = 1;
+}
+
+message PasswordAuth {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginRequest {
+  AuthType auth_type = 1;
+  bool no_refresh_token = 2;
+
+  oneof auth {
+    PasswordAuth password = 3;
+  }
+}
+
+message AccessTokenResponse {
+  string token = 1;
+  google.protobuf.Timestamp expires_at = 2;
+  User user = 3;
+}
+
+message LoginResponse {
+  oneof response {
+    AccessTokenResponse access_token = 1;
+  }
+}
+
+message LogoutRequest {
+  // empty on purpose
+}
+message LogoutResponse {
+  // empty on purpose
+}
+
+message RefreshTokenRequest {}
+
+message RefreshTokenResponse {
+  AccessTokenResponse access_token = 1;
+}
+
+message IntrospectRequest {
+  // empty on purpose
+}
+
+message IntrospectResponse {
+  User user = 1;
+}
