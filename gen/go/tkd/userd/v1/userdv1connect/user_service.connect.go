@@ -7,8 +7,8 @@ package userdv1connect
 import (
 	context "context"
 	errors "errors"
-	v1 "github.com/bufbuild/buf-tour/gen/tkd/userd/v1"
 	connect_go "github.com/bufbuild/connect-go"
+	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/userd/v1"
 	http "net/http"
 	strings "strings"
 )

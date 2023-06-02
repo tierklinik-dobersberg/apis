@@ -7,8 +7,8 @@ package userdv1connect
 import (
 	context "context"
 	errors "errors"
-	v1 "github.com/bufbuild/buf-tour/gen/tkd/userd/v1"
 	connect_go "github.com/bufbuild/connect-go"
+	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/userd/v1"
 	http "net/http"
 	strings "strings"
 )
@@ -46,7 +46,25 @@ const (
 
 // AuthServiceClient is a client for the tkd.userd.v1.AuthService service.
 type AuthServiceClient interface {
+	// Login requests authentication. The authentication type (flow) is
+	// determined by the initial request and may require sub-sequent calls
+	// to full-fill the requirements of the choosen authentication flow.
+	//
+	// Upon success, a LoginResponse with a AccessTokenResponse is returned to
+	// the caller containing a short lived access token (typically about ~24h).
+	// In addition, a "Set-Cookie" header is appended to the response that contains
+	// a HttpOnly, Secure (if not in dev-mode) cookie with a long-lived refresh token
+	// (~ about a month).
+	//
+	// In case the access token expires the client is expected to call the RefreshToken
+	// endpoint to retrieve a new access token.
+	//
+	// Refresh tokens cannot be re-newed like this but require a full re-authentication
+	// using the Login method.
 	Login(context.Context, *connect_go.Request[v1.LoginRequest]) (*connect_go.Response[v1.LoginResponse], error)
+	// Logout invalidates the current access token that was used to call the
+	// method. If a refresh token is appended in the logout request, it will be invalidated
+	// as well.
 	Logout(context.Context, *connect_go.Request[v1.LogoutRequest]) (*connect_go.Response[v1.LogoutResponse], error)
 	RefreshToken(context.Context, *connect_go.Request[v1.RefreshTokenRequest]) (*connect_go.Response[v1.RefreshTokenResponse], error)
 	Introspect(context.Context, *connect_go.Request[v1.IntrospectRequest]) (*connect_go.Response[v1.IntrospectResponse], error)
@@ -115,7 +133,25 @@ func (c *authServiceClient) Introspect(ctx context.Context, req *connect_go.Requ
 
 // AuthServiceHandler is an implementation of the tkd.userd.v1.AuthService service.
 type AuthServiceHandler interface {
+	// Login requests authentication. The authentication type (flow) is
+	// determined by the initial request and may require sub-sequent calls
+	// to full-fill the requirements of the choosen authentication flow.
+	//
+	// Upon success, a LoginResponse with a AccessTokenResponse is returned to
+	// the caller containing a short lived access token (typically about ~24h).
+	// In addition, a "Set-Cookie" header is appended to the response that contains
+	// a HttpOnly, Secure (if not in dev-mode) cookie with a long-lived refresh token
+	// (~ about a month).
+	//
+	// In case the access token expires the client is expected to call the RefreshToken
+	// endpoint to retrieve a new access token.
+	//
+	// Refresh tokens cannot be re-newed like this but require a full re-authentication
+	// using the Login method.
 	Login(context.Context, *connect_go.Request[v1.LoginRequest]) (*connect_go.Response[v1.LoginResponse], error)
+	// Logout invalidates the current access token that was used to call the
+	// method. If a refresh token is appended in the logout request, it will be invalidated
+	// as well.
 	Logout(context.Context, *connect_go.Request[v1.LogoutRequest]) (*connect_go.Response[v1.LogoutResponse], error)
 	RefreshToken(context.Context, *connect_go.Request[v1.RefreshTokenRequest]) (*connect_go.Response[v1.RefreshTokenResponse], error)
 	Introspect(context.Context, *connect_go.Request[v1.IntrospectRequest]) (*connect_go.Response[v1.IntrospectResponse], error)

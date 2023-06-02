@@ -7,12 +7,31 @@ import { IntrospectRequest, IntrospectResponse, LoginRequest, LoginResponse, Log
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
+ * AuthService provides methods for authentication to the
+ * services hosted and managed by Tierklinik Dobersberg (TKD).
+ *
  * @generated from service tkd.userd.v1.AuthService
  */
 export const AuthService = {
   typeName: "tkd.userd.v1.AuthService",
   methods: {
     /**
+     * Login requests authentication. The authentication type (flow) is
+     * determined by the initial request and may require sub-sequent calls
+     * to full-fill the requirements of the choosen authentication flow.
+     *
+     * Upon success, a LoginResponse with a AccessTokenResponse is returned to
+     * the caller containing a short lived access token (typically about ~24h).
+     * In addition, a "Set-Cookie" header is appended to the response that contains
+     * a HttpOnly, Secure (if not in dev-mode) cookie with a long-lived refresh token
+     * (~ about a month).
+     *
+     * In case the access token expires the client is expected to call the RefreshToken
+     * endpoint to retrieve a new access token.
+     *
+     * Refresh tokens cannot be re-newed like this but require a full re-authentication
+     * using the Login method.
+     *
      * @generated from rpc tkd.userd.v1.AuthService.Login
      */
     login: {
@@ -22,6 +41,10 @@ export const AuthService = {
       kind: MethodKind.Unary,
     },
     /**
+     * Logout invalidates the current access token that was used to call the 
+     * method. If a refresh token is appended in the logout request, it will be invalidated
+     * as well.
+     *
      * @generated from rpc tkd.userd.v1.AuthService.Logout
      */
     logout: {

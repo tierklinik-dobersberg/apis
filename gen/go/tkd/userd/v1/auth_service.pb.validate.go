@@ -162,6 +162,8 @@ func (m *LoginRequest) validate(all bool) error {
 
 	// no validation rules for AuthType
 
+	// no validation rules for NoRefreshToken
+
 	switch v := m.Auth.(type) {
 	case *LoginRequest_Password:
 		if v == nil {
