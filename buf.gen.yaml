@@ -3,16 +3,11 @@ managed:
   enabled: true
   go_package_prefix:
     default: github.com/tierklinik-dobersberg/apis/gen/go
+    except:
+      - buf.build/bufbuild/protovalidate
 plugins:
   - plugin: buf.build/protocolbuffers/go
     out: gen/go
-    opt: paths=source_relative
-
-  - plugin: buf.build/bufbuild/validate-go
-    # Make sure to generate your protoc-gen-validate code to the same
-    # directory as protoc-gen-go
-    out: gen/go
-    # You almost always want to set this option with protoc-gen-go
     opt: paths=source_relative
 
   - plugin: buf.build/bufbuild/connect-go

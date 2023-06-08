@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package tkd.idm.v1;
+
+import "google/protobuf/descriptor.proto";
+
+enum AuthRequirement {
+    AUTH_REQ_UNSPECIFIED = 0;
+    AUTH_REQ_REQUIRED = 1;
+}
+
+message AuthDecorator {
+    AuthRequirement require = 1;
+    repeated string allowed_roles = 2;
+}
+
+extend google.protobuf.FieldOptions {
+    bool allow_self_service = 2021;
+}
+
+extend google.protobuf.MethodOptions {
+    AuthDecorator auth = 2022;
+}

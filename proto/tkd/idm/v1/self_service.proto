@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package tkd.idm.v1;
+
+import "buf/validate/validate.proto";
+import "tkd/idm/v1/user.proto";
+
+service SelfServiceService {
+    rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {}
+    rpc ValidateEmail (ValidateEmailRequest) returns (ValidateEmailResponse) {}
+    rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse) {}
+}
+
+message ChangePasswordRequest {
+    string old_password = 1 [
+        (buf.validate.field).string.min_len = 1
+    ];
+
+    string new_password = 2 [
+        (buf.validate.field).string.min_len = 4
+    ];
+}
+message ChangePasswordResponse {}
+
+message UpdateProfileRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string display_name = 3;
+
+    repeated Address address = 4;
+    repeated EMail email = 5;
+}
+
+message UpdateProfileResponse {
+    User user = 1;
+}
+
+message ValidateEmailRequest {}
+message ValidateEmailResponse {}
