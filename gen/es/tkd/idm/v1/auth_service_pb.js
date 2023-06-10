@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import { proto3, Timestamp } from "@bufbuild/protobuf";
-import { User } from "./user_pb.js";
+import { Profile, User } from "./user_pb.js";
 
 /**
  * @generated from enum tkd.idm.v1.AuthType
@@ -116,7 +116,7 @@ export const IntrospectRequest = proto3.makeMessageType(
 export const IntrospectResponse = proto3.makeMessageType(
   "tkd.idm.v1.IntrospectResponse",
   () => [
-    { no: 1, name: "user", kind: "message", T: User },
+    { no: 1, name: "profile", kind: "message", T: Profile },
   ],
 );
 

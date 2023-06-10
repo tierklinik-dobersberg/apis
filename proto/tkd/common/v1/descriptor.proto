@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package tkd.common.v1;
+
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/field_mask.proto";
+
+enum AuthRequirement {
+    AUTH_REQ_UNSPECIFIED = 0;
+    AUTH_REQ_REQUIRED = 1;
+}
+
+message AuthDecorator {
+    AuthRequirement require = 1;
+    repeated string allowed_roles = 2;
+}
+
+message PrivacyACL {
+    // The field mask defined which field are accessible to
+    // anyone (maybe authenticated) if none of the other
+    // settings allow access to all fields.
+    google.protobuf.FieldMask field_mask = 1;
+
+    // The name of the owner ID field. If set, and the authenticated
+    // user has the same ID, access to all fields is permitted.
+    string owner_field_name = 2;
+
+    // A list of roles that have access to all fields.
+    repeated string allowed_roles = 3;
+} 
+
+extend google.protobuf.MethodOptions {
+    AuthDecorator auth = 2022;
+}
+
+extend google.protobuf.MessageOptions {
+    PrivacyACL readable = 2026;
+    PrivacyACL self_service = 2027;
+}

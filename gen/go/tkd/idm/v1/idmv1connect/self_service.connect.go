@@ -42,6 +42,21 @@ const (
 	// SelfServiceServiceUpdateProfileProcedure is the fully-qualified name of the SelfServiceService's
 	// UpdateProfile RPC.
 	SelfServiceServiceUpdateProfileProcedure = "/tkd.idm.v1.SelfServiceService/UpdateProfile"
+	// SelfServiceServiceAddEmailAddressProcedure is the fully-qualified name of the
+	// SelfServiceService's AddEmailAddress RPC.
+	SelfServiceServiceAddEmailAddressProcedure = "/tkd.idm.v1.SelfServiceService/AddEmailAddress"
+	// SelfServiceServiceDeleteEmailAddressProcedure is the fully-qualified name of the
+	// SelfServiceService's DeleteEmailAddress RPC.
+	SelfServiceServiceDeleteEmailAddressProcedure = "/tkd.idm.v1.SelfServiceService/DeleteEmailAddress"
+	// SelfServiceServiceAddAddressProcedure is the fully-qualified name of the SelfServiceService's
+	// AddAddress RPC.
+	SelfServiceServiceAddAddressProcedure = "/tkd.idm.v1.SelfServiceService/AddAddress"
+	// SelfServiceServiceDeleteAddressProcedure is the fully-qualified name of the SelfServiceService's
+	// DeleteAddress RPC.
+	SelfServiceServiceDeleteAddressProcedure = "/tkd.idm.v1.SelfServiceService/DeleteAddress"
+	// SelfServiceServiceUpdateAddressProcedure is the fully-qualified name of the SelfServiceService's
+	// UpdateAddress RPC.
+	SelfServiceServiceUpdateAddressProcedure = "/tkd.idm.v1.SelfServiceService/UpdateAddress"
 )
 
 // SelfServiceServiceClient is a client for the tkd.idm.v1.SelfServiceService service.
@@ -49,6 +64,11 @@ type SelfServiceServiceClient interface {
 	ChangePassword(context.Context, *connect_go.Request[v1.ChangePasswordRequest]) (*connect_go.Response[v1.ChangePasswordResponse], error)
 	ValidateEmail(context.Context, *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error)
 	UpdateProfile(context.Context, *connect_go.Request[v1.UpdateProfileRequest]) (*connect_go.Response[v1.UpdateProfileResponse], error)
+	AddEmailAddress(context.Context, *connect_go.Request[v1.AddEmailAddressRequest]) (*connect_go.Response[v1.AddEmailAddressResponse], error)
+	DeleteEmailAddress(context.Context, *connect_go.Request[v1.DeleteEmailAddressRequest]) (*connect_go.Response[v1.DeleteEmailAddressResponse], error)
+	AddAddress(context.Context, *connect_go.Request[v1.AddAddressRequest]) (*connect_go.Response[v1.AddAddressResponse], error)
+	DeleteAddress(context.Context, *connect_go.Request[v1.DeleteAddressRequest]) (*connect_go.Response[v1.DeleteAddressResponse], error)
+	UpdateAddress(context.Context, *connect_go.Request[v1.UpdateAddressRequest]) (*connect_go.Response[v1.UpdateAddressResponse], error)
 }
 
 // NewSelfServiceServiceClient constructs a client for the tkd.idm.v1.SelfServiceService service. By
@@ -76,14 +96,44 @@ func NewSelfServiceServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 			baseURL+SelfServiceServiceUpdateProfileProcedure,
 			opts...,
 		),
+		addEmailAddress: connect_go.NewClient[v1.AddEmailAddressRequest, v1.AddEmailAddressResponse](
+			httpClient,
+			baseURL+SelfServiceServiceAddEmailAddressProcedure,
+			opts...,
+		),
+		deleteEmailAddress: connect_go.NewClient[v1.DeleteEmailAddressRequest, v1.DeleteEmailAddressResponse](
+			httpClient,
+			baseURL+SelfServiceServiceDeleteEmailAddressProcedure,
+			opts...,
+		),
+		addAddress: connect_go.NewClient[v1.AddAddressRequest, v1.AddAddressResponse](
+			httpClient,
+			baseURL+SelfServiceServiceAddAddressProcedure,
+			opts...,
+		),
+		deleteAddress: connect_go.NewClient[v1.DeleteAddressRequest, v1.DeleteAddressResponse](
+			httpClient,
+			baseURL+SelfServiceServiceDeleteAddressProcedure,
+			opts...,
+		),
+		updateAddress: connect_go.NewClient[v1.UpdateAddressRequest, v1.UpdateAddressResponse](
+			httpClient,
+			baseURL+SelfServiceServiceUpdateAddressProcedure,
+			opts...,
+		),
 	}
 }
 
 // selfServiceServiceClient implements SelfServiceServiceClient.
 type selfServiceServiceClient struct {
-	changePassword *connect_go.Client[v1.ChangePasswordRequest, v1.ChangePasswordResponse]
-	validateEmail  *connect_go.Client[v1.ValidateEmailRequest, v1.ValidateEmailResponse]
-	updateProfile  *connect_go.Client[v1.UpdateProfileRequest, v1.UpdateProfileResponse]
+	changePassword     *connect_go.Client[v1.ChangePasswordRequest, v1.ChangePasswordResponse]
+	validateEmail      *connect_go.Client[v1.ValidateEmailRequest, v1.ValidateEmailResponse]
+	updateProfile      *connect_go.Client[v1.UpdateProfileRequest, v1.UpdateProfileResponse]
+	addEmailAddress    *connect_go.Client[v1.AddEmailAddressRequest, v1.AddEmailAddressResponse]
+	deleteEmailAddress *connect_go.Client[v1.DeleteEmailAddressRequest, v1.DeleteEmailAddressResponse]
+	addAddress         *connect_go.Client[v1.AddAddressRequest, v1.AddAddressResponse]
+	deleteAddress      *connect_go.Client[v1.DeleteAddressRequest, v1.DeleteAddressResponse]
+	updateAddress      *connect_go.Client[v1.UpdateAddressRequest, v1.UpdateAddressResponse]
 }
 
 // ChangePassword calls tkd.idm.v1.SelfServiceService.ChangePassword.
@@ -101,11 +151,41 @@ func (c *selfServiceServiceClient) UpdateProfile(ctx context.Context, req *conne
 	return c.updateProfile.CallUnary(ctx, req)
 }
 
+// AddEmailAddress calls tkd.idm.v1.SelfServiceService.AddEmailAddress.
+func (c *selfServiceServiceClient) AddEmailAddress(ctx context.Context, req *connect_go.Request[v1.AddEmailAddressRequest]) (*connect_go.Response[v1.AddEmailAddressResponse], error) {
+	return c.addEmailAddress.CallUnary(ctx, req)
+}
+
+// DeleteEmailAddress calls tkd.idm.v1.SelfServiceService.DeleteEmailAddress.
+func (c *selfServiceServiceClient) DeleteEmailAddress(ctx context.Context, req *connect_go.Request[v1.DeleteEmailAddressRequest]) (*connect_go.Response[v1.DeleteEmailAddressResponse], error) {
+	return c.deleteEmailAddress.CallUnary(ctx, req)
+}
+
+// AddAddress calls tkd.idm.v1.SelfServiceService.AddAddress.
+func (c *selfServiceServiceClient) AddAddress(ctx context.Context, req *connect_go.Request[v1.AddAddressRequest]) (*connect_go.Response[v1.AddAddressResponse], error) {
+	return c.addAddress.CallUnary(ctx, req)
+}
+
+// DeleteAddress calls tkd.idm.v1.SelfServiceService.DeleteAddress.
+func (c *selfServiceServiceClient) DeleteAddress(ctx context.Context, req *connect_go.Request[v1.DeleteAddressRequest]) (*connect_go.Response[v1.DeleteAddressResponse], error) {
+	return c.deleteAddress.CallUnary(ctx, req)
+}
+
+// UpdateAddress calls tkd.idm.v1.SelfServiceService.UpdateAddress.
+func (c *selfServiceServiceClient) UpdateAddress(ctx context.Context, req *connect_go.Request[v1.UpdateAddressRequest]) (*connect_go.Response[v1.UpdateAddressResponse], error) {
+	return c.updateAddress.CallUnary(ctx, req)
+}
+
 // SelfServiceServiceHandler is an implementation of the tkd.idm.v1.SelfServiceService service.
 type SelfServiceServiceHandler interface {
 	ChangePassword(context.Context, *connect_go.Request[v1.ChangePasswordRequest]) (*connect_go.Response[v1.ChangePasswordResponse], error)
 	ValidateEmail(context.Context, *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error)
 	UpdateProfile(context.Context, *connect_go.Request[v1.UpdateProfileRequest]) (*connect_go.Response[v1.UpdateProfileResponse], error)
+	AddEmailAddress(context.Context, *connect_go.Request[v1.AddEmailAddressRequest]) (*connect_go.Response[v1.AddEmailAddressResponse], error)
+	DeleteEmailAddress(context.Context, *connect_go.Request[v1.DeleteEmailAddressRequest]) (*connect_go.Response[v1.DeleteEmailAddressResponse], error)
+	AddAddress(context.Context, *connect_go.Request[v1.AddAddressRequest]) (*connect_go.Response[v1.AddAddressResponse], error)
+	DeleteAddress(context.Context, *connect_go.Request[v1.DeleteAddressRequest]) (*connect_go.Response[v1.DeleteAddressResponse], error)
+	UpdateAddress(context.Context, *connect_go.Request[v1.UpdateAddressRequest]) (*connect_go.Response[v1.UpdateAddressResponse], error)
 }
 
 // NewSelfServiceServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -130,6 +210,31 @@ func NewSelfServiceServiceHandler(svc SelfServiceServiceHandler, opts ...connect
 		svc.UpdateProfile,
 		opts...,
 	))
+	mux.Handle(SelfServiceServiceAddEmailAddressProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceAddEmailAddressProcedure,
+		svc.AddEmailAddress,
+		opts...,
+	))
+	mux.Handle(SelfServiceServiceDeleteEmailAddressProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceDeleteEmailAddressProcedure,
+		svc.DeleteEmailAddress,
+		opts...,
+	))
+	mux.Handle(SelfServiceServiceAddAddressProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceAddAddressProcedure,
+		svc.AddAddress,
+		opts...,
+	))
+	mux.Handle(SelfServiceServiceDeleteAddressProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceDeleteAddressProcedure,
+		svc.DeleteAddress,
+		opts...,
+	))
+	mux.Handle(SelfServiceServiceUpdateAddressProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceUpdateAddressProcedure,
+		svc.UpdateAddress,
+		opts...,
+	))
 	return "/tkd.idm.v1.SelfServiceService/", mux
 }
 
@@ -146,4 +251,24 @@ func (UnimplementedSelfServiceServiceHandler) ValidateEmail(context.Context, *co
 
 func (UnimplementedSelfServiceServiceHandler) UpdateProfile(context.Context, *connect_go.Request[v1.UpdateProfileRequest]) (*connect_go.Response[v1.UpdateProfileResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.UpdateProfile is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) AddEmailAddress(context.Context, *connect_go.Request[v1.AddEmailAddressRequest]) (*connect_go.Response[v1.AddEmailAddressResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.AddEmailAddress is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) DeleteEmailAddress(context.Context, *connect_go.Request[v1.DeleteEmailAddressRequest]) (*connect_go.Response[v1.DeleteEmailAddressResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.DeleteEmailAddress is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) AddAddress(context.Context, *connect_go.Request[v1.AddAddressRequest]) (*connect_go.Response[v1.AddAddressResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.AddAddress is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) DeleteAddress(context.Context, *connect_go.Request[v1.DeleteAddressRequest]) (*connect_go.Response[v1.DeleteAddressResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.DeleteAddress is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) UpdateAddress(context.Context, *connect_go.Request[v1.UpdateAddressRequest]) (*connect_go.Response[v1.UpdateAddressResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.UpdateAddress is not implemented"))
 }

@@ -4,25 +4,35 @@ package tkd.idm.v1;
 
 import "google/protobuf/struct.proto";
 import "buf/validate/validate.proto";
-import "tkd/idm/v1/descriptor.proto";
+import "tkd/common/v1/descriptor.proto";
 
 message EMail {
-  string address = 1 [(buf.validate.field).string.email = true];
+  string id = 1;
+  string address = 2 [(buf.validate.field).string.email = true];
 
-  bool verified = 2;
+  bool verified = 3;
+  bool primary = 4;
+
+  option (tkd.common.v1.readable) = {
+    field_mask: {
+      paths: ["address"]
+    }
+  };
 }
 
 message Address {
-  string city_code = 1 [(buf.validate.field).string = {
+  string id = 1;
+
+  string city_code = 2 [(buf.validate.field).string = {
     pattern: "[0-9]+",
     max_bytes: 16
   }];
 
-  string city_name = 2 [(buf.validate.field).string.min_len = 1];
+  string city_name = 3 [(buf.validate.field).string.min_len = 1];
 
-  string street = 3 [(buf.validate.field).string.min_len = 1];
+  string street = 4 [(buf.validate.field).string.min_len = 1];
 
-  string extra = 4;
+  string extra = 5;
 }
 
 message User {
@@ -33,32 +43,47 @@ message User {
   ];
 
   string display_name = 3 [
-    (buf.validate.field).string.min_len = 3,
-    (tkd.idm.v1.allow_self_service) = true
+    (buf.validate.field).string.min_len = 3
   ];
 
-  string first_name = 4 [
-    (tkd.idm.v1.allow_self_service) = true
-  ];
-  string last_name = 5 [
-    (tkd.idm.v1.allow_self_service) = true
-  ];
-
-  repeated Address addresses = 6 [
-    (tkd.idm.v1.allow_self_service) = true
-  ];
-
-  repeated string phone_numbers = 7 [
-    (tkd.idm.v1.allow_self_service) = true
-  ];
-
-  repeated EMail email_addresses = 8 [
-    (tkd.idm.v1.allow_self_service) = true
-  ];
+  string first_name = 4;
+  string last_name = 5;
 
   map<string, google.protobuf.Value> extra = 9;
 
-  string avatar = 10 [
-    (tkd.idm.v1.allow_self_service) = true
-  ];
+  string avatar = 10;
+
+  option (tkd.common.v1.readable) = {
+    field_mask: {
+      paths: ["id", "username", "display_name", "avatar"]
+    },
+    owner_field_name: "id",
+    allowed_roles: [
+      "idm_superuser",
+      "idm_user_manager"
+    ]
+  };
+
+  option (tkd.common.v1.self_service) = {
+    field_mask: {
+      paths: ["username", "display_name", "first_name", "last_name", "avatar"]
+    }
+    owner_field_name: "id",
+    allowed_roles: ["idm_superuser", "idm_user_manager"]
+  };
+}
+
+message Profile {
+  User user = 1;
+  repeated Address addresses = 6;
+  repeated string phone_numbers = 7;
+  repeated EMail email_addresses = 8;
+
+  option (tkd.common.v1.readable) = {
+    field_mask: {
+      paths: ["user"]
+    },
+    owner_field_name: "user.id",
+    allowed_roles: ["idm_superuser", "idm_user_manager"]
+  };
 }

@@ -3,8 +3,8 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3 } from "@bufbuild/protobuf";
-import { Address, EMail, User } from "./user_pb.js";
+import { FieldMask, proto3 } from "@bufbuild/protobuf";
+import { EMail, User } from "./user_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.ChangePasswordRequest
@@ -31,11 +31,8 @@ export const ChangePasswordResponse = proto3.makeMessageType(
 export const UpdateProfileRequest = proto3.makeMessageType(
   "tkd.idm.v1.UpdateProfileRequest",
   () => [
-    { no: 1, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "address", kind: "message", T: Address, repeated: true },
-    { no: 5, name: "email", kind: "message", T: EMail, repeated: true },
+    { no: 1, name: "user", kind: "message", T: User },
+    { no: 2, name: "field_mask", kind: "message", T: FieldMask },
   ],
 );
 
@@ -62,6 +59,94 @@ export const ValidateEmailRequest = proto3.makeMessageType(
  */
 export const ValidateEmailResponse = proto3.makeMessageType(
   "tkd.idm.v1.ValidateEmailResponse",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.AddEmailAddressRequest
+ */
+export const AddEmailAddressRequest = proto3.makeMessageType(
+  "tkd.idm.v1.AddEmailAddressRequest",
+  () => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.AddEmailAddressResponse
+ */
+export const AddEmailAddressResponse = proto3.makeMessageType(
+  "tkd.idm.v1.AddEmailAddressResponse",
+  () => [
+    { no: 1, name: "emails", kind: "message", T: EMail, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.DeleteEmailAddressRequest
+ */
+export const DeleteEmailAddressRequest = proto3.makeMessageType(
+  "tkd.idm.v1.DeleteEmailAddressRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.DeleteEmailAddressResponse
+ */
+export const DeleteEmailAddressResponse = proto3.makeMessageType(
+  "tkd.idm.v1.DeleteEmailAddressResponse",
+  () => [
+    { no: 1, name: "emails", kind: "message", T: EMail, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.AddAddressRequest
+ */
+export const AddAddressRequest = proto3.makeMessageType(
+  "tkd.idm.v1.AddAddressRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.AddAddressResponse
+ */
+export const AddAddressResponse = proto3.makeMessageType(
+  "tkd.idm.v1.AddAddressResponse",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.UpdateAddressRequest
+ */
+export const UpdateAddressRequest = proto3.makeMessageType(
+  "tkd.idm.v1.UpdateAddressRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.UpdateAddressResponse
+ */
+export const UpdateAddressResponse = proto3.makeMessageType(
+  "tkd.idm.v1.UpdateAddressResponse",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.DeleteAddressRequest
+ */
+export const DeleteAddressRequest = proto3.makeMessageType(
+  "tkd.idm.v1.DeleteAddressRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.DeleteAddressResponse
+ */
+export const DeleteAddressResponse = proto3.makeMessageType(
+  "tkd.idm.v1.DeleteAddressResponse",
   [],
 );
 

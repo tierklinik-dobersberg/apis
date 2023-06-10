@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ChangePasswordRequest, ChangePasswordResponse, UpdateProfileRequest, UpdateProfileResponse, ValidateEmailRequest, ValidateEmailResponse } from "./self_service_pb.js";
+import { AddAddressRequest, AddAddressResponse, AddEmailAddressRequest, AddEmailAddressResponse, ChangePasswordRequest, ChangePasswordResponse, DeleteAddressRequest, DeleteAddressResponse, DeleteEmailAddressRequest, DeleteEmailAddressResponse, UpdateAddressRequest, UpdateAddressResponse, UpdateProfileRequest, UpdateProfileResponse, ValidateEmailRequest, ValidateEmailResponse } from "./self_service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -37,6 +37,51 @@ export const SelfServiceService = {
       name: "UpdateProfile",
       I: UpdateProfileRequest,
       O: UpdateProfileResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.SelfServiceService.AddEmailAddress
+     */
+    addEmailAddress: {
+      name: "AddEmailAddress",
+      I: AddEmailAddressRequest,
+      O: AddEmailAddressResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.SelfServiceService.DeleteEmailAddress
+     */
+    deleteEmailAddress: {
+      name: "DeleteEmailAddress",
+      I: DeleteEmailAddressRequest,
+      O: DeleteEmailAddressResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.SelfServiceService.AddAddress
+     */
+    addAddress: {
+      name: "AddAddress",
+      I: AddAddressRequest,
+      O: AddAddressResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.SelfServiceService.DeleteAddress
+     */
+    deleteAddress: {
+      name: "DeleteAddress",
+      I: DeleteAddressRequest,
+      O: DeleteAddressResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.SelfServiceService.UpdateAddress
+     */
+    updateAddress: {
+      name: "UpdateAddress",
+      I: UpdateAddressRequest,
+      O: UpdateAddressResponse,
       kind: MethodKind.Unary,
     },
   }

@@ -5,7 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3, Timestamp } from "@bufbuild/protobuf";
-import { User } from "./user_pb.js";
+import { Profile, User } from "./user_pb.js";
 
 /**
  * @generated from enum tkd.idm.v1.AuthType
@@ -389,9 +389,9 @@ export class IntrospectRequest extends Message<IntrospectRequest> {
  */
 export class IntrospectResponse extends Message<IntrospectResponse> {
   /**
-   * @generated from field: tkd.idm.v1.User user = 1;
+   * @generated from field: tkd.idm.v1.Profile profile = 1;
    */
-  user?: User;
+  profile?: Profile;
 
   constructor(data?: PartialMessage<IntrospectResponse>) {
     super();
@@ -401,7 +401,7 @@ export class IntrospectResponse extends Message<IntrospectResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.IntrospectResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "user", kind: "message", T: User },
+    { no: 1, name: "profile", kind: "message", T: Profile },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): IntrospectResponse {

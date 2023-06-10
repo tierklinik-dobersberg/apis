@@ -4,7 +4,7 @@ package tkd.idm.v1;
 
 import "google/protobuf/timestamp.proto";
 import "tkd/idm/v1/user.proto";
-import "tkd/idm/v1/descriptor.proto";
+import "tkd/common/v1/descriptor.proto";
 
 // AuthService provides methods for authentication to the
 // services hosted and managed by Tierklinik Dobersberg (TKD).
@@ -30,14 +30,14 @@ service AuthService {
   // method. If a refresh token is appended in the logout request, it will be invalidated
   // as well.
   rpc Logout(LogoutRequest) returns (LogoutResponse) {
-    option (tkd.idm.v1.auth) = {
+    option (tkd.common.v1.auth) = {
       require: AUTH_REQ_REQUIRED;
     };
   }
   
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
   rpc Introspect(IntrospectRequest) returns (IntrospectResponse) {
-    option (tkd.idm.v1.auth) = {
+    option (tkd.common.v1.auth) = {
       require: AUTH_REQ_REQUIRED
     };
   }
@@ -92,5 +92,5 @@ message IntrospectRequest {
 }
 
 message IntrospectResponse {
-  User user = 1;
+  Profile profile = 1;
 }

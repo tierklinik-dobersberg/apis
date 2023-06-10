@@ -4,8 +4,8 @@
 // @ts-nocheck
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Message, proto3 } from "@bufbuild/protobuf";
-import { Address, EMail, User } from "./user_pb.js";
+import { FieldMask, Message, proto3 } from "@bufbuild/protobuf";
+import { EMail, User } from "./user_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.ChangePasswordRequest
@@ -86,29 +86,14 @@ export class ChangePasswordResponse extends Message<ChangePasswordResponse> {
  */
 export class UpdateProfileRequest extends Message<UpdateProfileRequest> {
   /**
-   * @generated from field: string first_name = 1;
+   * @generated from field: tkd.idm.v1.User user = 1;
    */
-  firstName = "";
+  user?: User;
 
   /**
-   * @generated from field: string last_name = 2;
+   * @generated from field: google.protobuf.FieldMask field_mask = 2;
    */
-  lastName = "";
-
-  /**
-   * @generated from field: string display_name = 3;
-   */
-  displayName = "";
-
-  /**
-   * @generated from field: repeated tkd.idm.v1.Address address = 4;
-   */
-  address: Address[] = [];
-
-  /**
-   * @generated from field: repeated tkd.idm.v1.EMail email = 5;
-   */
-  email: EMail[] = [];
+  fieldMask?: FieldMask;
 
   constructor(data?: PartialMessage<UpdateProfileRequest>) {
     super();
@@ -118,11 +103,8 @@ export class UpdateProfileRequest extends Message<UpdateProfileRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.UpdateProfileRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "address", kind: "message", T: Address, repeated: true },
-    { no: 5, name: "email", kind: "message", T: EMail, repeated: true },
+    { no: 1, name: "user", kind: "message", T: User },
+    { no: 2, name: "field_mask", kind: "message", T: FieldMask },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateProfileRequest {
@@ -238,6 +220,340 @@ export class ValidateEmailResponse extends Message<ValidateEmailResponse> {
 
   static equals(a: ValidateEmailResponse | PlainMessage<ValidateEmailResponse> | undefined, b: ValidateEmailResponse | PlainMessage<ValidateEmailResponse> | undefined): boolean {
     return proto3.util.equals(ValidateEmailResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.AddEmailAddressRequest
+ */
+export class AddEmailAddressRequest extends Message<AddEmailAddressRequest> {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email = "";
+
+  constructor(data?: PartialMessage<AddEmailAddressRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.AddEmailAddressRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddEmailAddressRequest {
+    return new AddEmailAddressRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddEmailAddressRequest {
+    return new AddEmailAddressRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddEmailAddressRequest {
+    return new AddEmailAddressRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: AddEmailAddressRequest | PlainMessage<AddEmailAddressRequest> | undefined, b: AddEmailAddressRequest | PlainMessage<AddEmailAddressRequest> | undefined): boolean {
+    return proto3.util.equals(AddEmailAddressRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.AddEmailAddressResponse
+ */
+export class AddEmailAddressResponse extends Message<AddEmailAddressResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.EMail emails = 1;
+   */
+  emails: EMail[] = [];
+
+  constructor(data?: PartialMessage<AddEmailAddressResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.AddEmailAddressResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "emails", kind: "message", T: EMail, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddEmailAddressResponse {
+    return new AddEmailAddressResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddEmailAddressResponse {
+    return new AddEmailAddressResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddEmailAddressResponse {
+    return new AddEmailAddressResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: AddEmailAddressResponse | PlainMessage<AddEmailAddressResponse> | undefined, b: AddEmailAddressResponse | PlainMessage<AddEmailAddressResponse> | undefined): boolean {
+    return proto3.util.equals(AddEmailAddressResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.DeleteEmailAddressRequest
+ */
+export class DeleteEmailAddressRequest extends Message<DeleteEmailAddressRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
+  constructor(data?: PartialMessage<DeleteEmailAddressRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.DeleteEmailAddressRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteEmailAddressRequest {
+    return new DeleteEmailAddressRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteEmailAddressRequest {
+    return new DeleteEmailAddressRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteEmailAddressRequest {
+    return new DeleteEmailAddressRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteEmailAddressRequest | PlainMessage<DeleteEmailAddressRequest> | undefined, b: DeleteEmailAddressRequest | PlainMessage<DeleteEmailAddressRequest> | undefined): boolean {
+    return proto3.util.equals(DeleteEmailAddressRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.DeleteEmailAddressResponse
+ */
+export class DeleteEmailAddressResponse extends Message<DeleteEmailAddressResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.EMail emails = 1;
+   */
+  emails: EMail[] = [];
+
+  constructor(data?: PartialMessage<DeleteEmailAddressResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.DeleteEmailAddressResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "emails", kind: "message", T: EMail, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteEmailAddressResponse {
+    return new DeleteEmailAddressResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteEmailAddressResponse {
+    return new DeleteEmailAddressResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteEmailAddressResponse {
+    return new DeleteEmailAddressResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteEmailAddressResponse | PlainMessage<DeleteEmailAddressResponse> | undefined, b: DeleteEmailAddressResponse | PlainMessage<DeleteEmailAddressResponse> | undefined): boolean {
+    return proto3.util.equals(DeleteEmailAddressResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.AddAddressRequest
+ */
+export class AddAddressRequest extends Message<AddAddressRequest> {
+  constructor(data?: PartialMessage<AddAddressRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.AddAddressRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddAddressRequest {
+    return new AddAddressRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddAddressRequest {
+    return new AddAddressRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddAddressRequest {
+    return new AddAddressRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: AddAddressRequest | PlainMessage<AddAddressRequest> | undefined, b: AddAddressRequest | PlainMessage<AddAddressRequest> | undefined): boolean {
+    return proto3.util.equals(AddAddressRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.AddAddressResponse
+ */
+export class AddAddressResponse extends Message<AddAddressResponse> {
+  constructor(data?: PartialMessage<AddAddressResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.AddAddressResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddAddressResponse {
+    return new AddAddressResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddAddressResponse {
+    return new AddAddressResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddAddressResponse {
+    return new AddAddressResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: AddAddressResponse | PlainMessage<AddAddressResponse> | undefined, b: AddAddressResponse | PlainMessage<AddAddressResponse> | undefined): boolean {
+    return proto3.util.equals(AddAddressResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.UpdateAddressRequest
+ */
+export class UpdateAddressRequest extends Message<UpdateAddressRequest> {
+  constructor(data?: PartialMessage<UpdateAddressRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.UpdateAddressRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateAddressRequest {
+    return new UpdateAddressRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateAddressRequest {
+    return new UpdateAddressRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateAddressRequest {
+    return new UpdateAddressRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateAddressRequest | PlainMessage<UpdateAddressRequest> | undefined, b: UpdateAddressRequest | PlainMessage<UpdateAddressRequest> | undefined): boolean {
+    return proto3.util.equals(UpdateAddressRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.UpdateAddressResponse
+ */
+export class UpdateAddressResponse extends Message<UpdateAddressResponse> {
+  constructor(data?: PartialMessage<UpdateAddressResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.UpdateAddressResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateAddressResponse {
+    return new UpdateAddressResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateAddressResponse {
+    return new UpdateAddressResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateAddressResponse {
+    return new UpdateAddressResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateAddressResponse | PlainMessage<UpdateAddressResponse> | undefined, b: UpdateAddressResponse | PlainMessage<UpdateAddressResponse> | undefined): boolean {
+    return proto3.util.equals(UpdateAddressResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.DeleteAddressRequest
+ */
+export class DeleteAddressRequest extends Message<DeleteAddressRequest> {
+  constructor(data?: PartialMessage<DeleteAddressRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.DeleteAddressRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteAddressRequest {
+    return new DeleteAddressRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteAddressRequest {
+    return new DeleteAddressRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteAddressRequest {
+    return new DeleteAddressRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteAddressRequest | PlainMessage<DeleteAddressRequest> | undefined, b: DeleteAddressRequest | PlainMessage<DeleteAddressRequest> | undefined): boolean {
+    return proto3.util.equals(DeleteAddressRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.DeleteAddressResponse
+ */
+export class DeleteAddressResponse extends Message<DeleteAddressResponse> {
+  constructor(data?: PartialMessage<DeleteAddressResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.DeleteAddressResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteAddressResponse {
+    return new DeleteAddressResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteAddressResponse {
+    return new DeleteAddressResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteAddressResponse {
+    return new DeleteAddressResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: DeleteAddressResponse | PlainMessage<DeleteAddressResponse> | undefined, b: DeleteAddressResponse | PlainMessage<DeleteAddressResponse> | undefined): boolean {
+    return proto3.util.equals(DeleteAddressResponse, a, b);
   }
 }
 

@@ -11,14 +11,24 @@ import { Message, proto3, Value } from "@bufbuild/protobuf";
  */
 export class EMail extends Message<EMail> {
   /**
-   * @generated from field: string address = 1;
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
+  /**
+   * @generated from field: string address = 2;
    */
   address = "";
 
   /**
-   * @generated from field: bool verified = 2;
+   * @generated from field: bool verified = 3;
    */
   verified = false;
+
+  /**
+   * @generated from field: bool primary = 4;
+   */
+  primary = false;
 
   constructor(data?: PartialMessage<EMail>) {
     super();
@@ -28,8 +38,10 @@ export class EMail extends Message<EMail> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.EMail";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "verified", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "verified", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 4, name: "primary", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EMail {
@@ -54,22 +66,27 @@ export class EMail extends Message<EMail> {
  */
 export class Address extends Message<Address> {
   /**
-   * @generated from field: string city_code = 1;
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
+  /**
+   * @generated from field: string city_code = 2;
    */
   cityCode = "";
 
   /**
-   * @generated from field: string city_name = 2;
+   * @generated from field: string city_name = 3;
    */
   cityName = "";
 
   /**
-   * @generated from field: string street = 3;
+   * @generated from field: string street = 4;
    */
   street = "";
 
   /**
-   * @generated from field: string extra = 4;
+   * @generated from field: string extra = 5;
    */
   extra = "";
 
@@ -81,10 +98,11 @@ export class Address extends Message<Address> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.Address";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "city_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "city_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "street", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "extra", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "city_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "city_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "street", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "extra", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Address {
@@ -134,21 +152,6 @@ export class User extends Message<User> {
   lastName = "";
 
   /**
-   * @generated from field: repeated tkd.idm.v1.Address addresses = 6;
-   */
-  addresses: Address[] = [];
-
-  /**
-   * @generated from field: repeated string phone_numbers = 7;
-   */
-  phoneNumbers: string[] = [];
-
-  /**
-   * @generated from field: repeated tkd.idm.v1.EMail email_addresses = 8;
-   */
-  emailAddresses: EMail[] = [];
-
-  /**
    * @generated from field: map<string, google.protobuf.Value> extra = 9;
    */
   extra: { [key: string]: Value } = {};
@@ -171,9 +174,6 @@ export class User extends Message<User> {
     { no: 3, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 6, name: "addresses", kind: "message", T: Address, repeated: true },
-    { no: 7, name: "phone_numbers", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 8, name: "email_addresses", kind: "message", T: EMail, repeated: true },
     { no: 9, name: "extra", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Value} },
     { no: 10, name: "avatar", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
@@ -192,6 +192,61 @@ export class User extends Message<User> {
 
   static equals(a: User | PlainMessage<User> | undefined, b: User | PlainMessage<User> | undefined): boolean {
     return proto3.util.equals(User, a, b);
+  }
+}
+
+/**
+ * @generated from message tkd.idm.v1.Profile
+ */
+export class Profile extends Message<Profile> {
+  /**
+   * @generated from field: tkd.idm.v1.User user = 1;
+   */
+  user?: User;
+
+  /**
+   * @generated from field: repeated tkd.idm.v1.Address addresses = 6;
+   */
+  addresses: Address[] = [];
+
+  /**
+   * @generated from field: repeated string phone_numbers = 7;
+   */
+  phoneNumbers: string[] = [];
+
+  /**
+   * @generated from field: repeated tkd.idm.v1.EMail email_addresses = 8;
+   */
+  emailAddresses: EMail[] = [];
+
+  constructor(data?: PartialMessage<Profile>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "tkd.idm.v1.Profile";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "user", kind: "message", T: User },
+    { no: 6, name: "addresses", kind: "message", T: Address, repeated: true },
+    { no: 7, name: "phone_numbers", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 8, name: "email_addresses", kind: "message", T: EMail, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Profile {
+    return new Profile().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Profile {
+    return new Profile().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Profile {
+    return new Profile().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Profile | PlainMessage<Profile> | undefined, b: Profile | PlainMessage<Profile> | undefined): boolean {
+    return proto3.util.equals(Profile, a, b);
   }
 }
 

@@ -4,11 +4,17 @@ package tkd.idm.v1;
 
 import "buf/validate/validate.proto";
 import "tkd/idm/v1/user.proto";
+import "google/protobuf/field_mask.proto";
 
 service SelfServiceService {
     rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {}
     rpc ValidateEmail (ValidateEmailRequest) returns (ValidateEmailResponse) {}
     rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse) {}
+    rpc AddEmailAddress (AddEmailAddressRequest) returns (AddEmailAddressResponse) {}
+    rpc DeleteEmailAddress (DeleteEmailAddressRequest) returns (DeleteEmailAddressResponse) {}
+    rpc AddAddress (AddAddressRequest) returns (AddAddressResponse) {}
+    rpc DeleteAddress (DeleteAddressRequest) returns (DeleteAddressResponse) {}
+    rpc UpdateAddress (UpdateAddressRequest) returns (UpdateAddressResponse) {}
 }
 
 message ChangePasswordRequest {
@@ -23,12 +29,8 @@ message ChangePasswordRequest {
 message ChangePasswordResponse {}
 
 message UpdateProfileRequest {
-    string first_name = 1;
-    string last_name = 2;
-    string display_name = 3;
-
-    repeated Address address = 4;
-    repeated EMail email = 5;
+    User user = 1;
+    google.protobuf.FieldMask field_mask = 2;
 }
 
 message UpdateProfileResponse {
@@ -37,3 +39,28 @@ message UpdateProfileResponse {
 
 message ValidateEmailRequest {}
 message ValidateEmailResponse {}
+
+message AddEmailAddressRequest {
+    string email = 1 [
+        (buf.validate.field).string.email = true
+    ];
+}
+
+message AddEmailAddressResponse {
+    repeated EMail emails = 1;
+}
+
+message DeleteEmailAddressRequest {
+    string id = 1;
+}
+
+message DeleteEmailAddressResponse {
+    repeated EMail emails = 1;
+}
+
+message AddAddressRequest {}
+message AddAddressResponse {}
+message UpdateAddressRequest {}
+message UpdateAddressResponse {}
+message DeleteAddressRequest {}
+message DeleteAddressResponse {}
