@@ -68,7 +68,7 @@ func hasPermission(currentUser string, currentRoles []string, msg proto.Message)
 	ext := proto.GetExtension(opts, commonv1.E_Readable)
 
 	msgOpts, ok := ext.(*commonv1.PrivacyACL)
-	if !ok {
+	if !ok || msgOpts == nil {
 		return true, nil
 	}
 

@@ -4,8 +4,8 @@
 // @ts-nocheck
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { FieldMask, Message, proto3 } from "@bufbuild/protobuf";
-import { EMail, User } from "./user_pb.js";
+import { FieldMask, Message, proto3, Value } from "@bufbuild/protobuf";
+import { Address, EMail, User } from "./user_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.ChangePasswordRequest
@@ -86,12 +86,42 @@ export class ChangePasswordResponse extends Message<ChangePasswordResponse> {
  */
 export class UpdateProfileRequest extends Message<UpdateProfileRequest> {
   /**
-   * @generated from field: tkd.idm.v1.User user = 1;
+   * @generated from field: string username = 1;
    */
-  user?: User;
+  username = "";
 
   /**
-   * @generated from field: google.protobuf.FieldMask field_mask = 2;
+   * @generated from field: string display_name = 2;
+   */
+  displayName = "";
+
+  /**
+   * @generated from field: string first_name = 3;
+   */
+  firstName = "";
+
+  /**
+   * @generated from field: string last_name = 4;
+   */
+  lastName = "";
+
+  /**
+   * @generated from field: map<string, google.protobuf.Value> extra = 5;
+   */
+  extra: { [key: string]: Value } = {};
+
+  /**
+   * @generated from field: string avatar = 6;
+   */
+  avatar = "";
+
+  /**
+   * @generated from field: string birthday = 7;
+   */
+  birthday = "";
+
+  /**
+   * @generated from field: google.protobuf.FieldMask field_mask = 8;
    */
   fieldMask?: FieldMask;
 
@@ -103,8 +133,14 @@ export class UpdateProfileRequest extends Message<UpdateProfileRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.UpdateProfileRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "user", kind: "message", T: User },
-    { no: 2, name: "field_mask", kind: "message", T: FieldMask },
+    { no: 1, name: "username", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "extra", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Value} },
+    { no: 6, name: "avatar", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "birthday", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 8, name: "field_mask", kind: "message", T: FieldMask },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateProfileRequest {
@@ -375,6 +411,26 @@ export class DeleteEmailAddressResponse extends Message<DeleteEmailAddressRespon
  * @generated from message tkd.idm.v1.AddAddressRequest
  */
 export class AddAddressRequest extends Message<AddAddressRequest> {
+  /**
+   * @generated from field: string city_code = 2;
+   */
+  cityCode = "";
+
+  /**
+   * @generated from field: string city_name = 3;
+   */
+  cityName = "";
+
+  /**
+   * @generated from field: string street = 4;
+   */
+  street = "";
+
+  /**
+   * @generated from field: string extra = 5;
+   */
+  extra = "";
+
   constructor(data?: PartialMessage<AddAddressRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -383,6 +439,10 @@ export class AddAddressRequest extends Message<AddAddressRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.AddAddressRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 2, name: "city_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "city_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "street", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "extra", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddAddressRequest {
@@ -406,6 +466,11 @@ export class AddAddressRequest extends Message<AddAddressRequest> {
  * @generated from message tkd.idm.v1.AddAddressResponse
  */
 export class AddAddressResponse extends Message<AddAddressResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.Address addresses = 1;
+   */
+  addresses: Address[] = [];
+
   constructor(data?: PartialMessage<AddAddressResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -414,6 +479,7 @@ export class AddAddressResponse extends Message<AddAddressResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.AddAddressResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "addresses", kind: "message", T: Address, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddAddressResponse {
@@ -437,6 +503,36 @@ export class AddAddressResponse extends Message<AddAddressResponse> {
  * @generated from message tkd.idm.v1.UpdateAddressRequest
  */
 export class UpdateAddressRequest extends Message<UpdateAddressRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
+  /**
+   * @generated from field: string city_code = 2;
+   */
+  cityCode = "";
+
+  /**
+   * @generated from field: string city_name = 3;
+   */
+  cityName = "";
+
+  /**
+   * @generated from field: string street = 4;
+   */
+  street = "";
+
+  /**
+   * @generated from field: string extra = 5;
+   */
+  extra = "";
+
+  /**
+   * @generated from field: google.protobuf.FieldMask field_mask = 6;
+   */
+  fieldMask?: FieldMask;
+
   constructor(data?: PartialMessage<UpdateAddressRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -445,6 +541,12 @@ export class UpdateAddressRequest extends Message<UpdateAddressRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.UpdateAddressRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "city_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "city_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "street", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "extra", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "field_mask", kind: "message", T: FieldMask },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateAddressRequest {
@@ -468,6 +570,11 @@ export class UpdateAddressRequest extends Message<UpdateAddressRequest> {
  * @generated from message tkd.idm.v1.UpdateAddressResponse
  */
 export class UpdateAddressResponse extends Message<UpdateAddressResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.Address addresses = 1;
+   */
+  addresses: Address[] = [];
+
   constructor(data?: PartialMessage<UpdateAddressResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -476,6 +583,7 @@ export class UpdateAddressResponse extends Message<UpdateAddressResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.UpdateAddressResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "addresses", kind: "message", T: Address, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateAddressResponse {
@@ -499,6 +607,11 @@ export class UpdateAddressResponse extends Message<UpdateAddressResponse> {
  * @generated from message tkd.idm.v1.DeleteAddressRequest
  */
 export class DeleteAddressRequest extends Message<DeleteAddressRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
   constructor(data?: PartialMessage<DeleteAddressRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -507,6 +620,7 @@ export class DeleteAddressRequest extends Message<DeleteAddressRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.DeleteAddressRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteAddressRequest {
@@ -530,6 +644,11 @@ export class DeleteAddressRequest extends Message<DeleteAddressRequest> {
  * @generated from message tkd.idm.v1.DeleteAddressResponse
  */
 export class DeleteAddressResponse extends Message<DeleteAddressResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.Address addresses = 1;
+   */
+  addresses: Address[] = [];
+
   constructor(data?: PartialMessage<DeleteAddressResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -538,6 +657,7 @@ export class DeleteAddressResponse extends Message<DeleteAddressResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.DeleteAddressResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "addresses", kind: "message", T: Address, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteAddressResponse {

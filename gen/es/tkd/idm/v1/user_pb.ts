@@ -161,6 +161,11 @@ export class User extends Message<User> {
    */
   avatar = "";
 
+  /**
+   * @generated from field: string birthday = 11;
+   */
+  birthday = "";
+
   constructor(data?: PartialMessage<User>) {
     super();
     proto3.util.initPartial(data, this);
@@ -176,6 +181,7 @@ export class User extends Message<User> {
     { no: 5, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 9, name: "extra", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Value} },
     { no: 10, name: "avatar", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 11, name: "birthday", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): User {

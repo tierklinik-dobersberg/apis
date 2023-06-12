@@ -3,8 +3,8 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { FieldMask, proto3 } from "@bufbuild/protobuf";
-import { EMail, User } from "./user_pb.js";
+import { FieldMask, proto3, Value } from "@bufbuild/protobuf";
+import { Address, EMail, User } from "./user_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.ChangePasswordRequest
@@ -31,8 +31,14 @@ export const ChangePasswordResponse = proto3.makeMessageType(
 export const UpdateProfileRequest = proto3.makeMessageType(
   "tkd.idm.v1.UpdateProfileRequest",
   () => [
-    { no: 1, name: "user", kind: "message", T: User },
-    { no: 2, name: "field_mask", kind: "message", T: FieldMask },
+    { no: 1, name: "username", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "extra", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Value} },
+    { no: 6, name: "avatar", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "birthday", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 8, name: "field_mask", kind: "message", T: FieldMask },
   ],
 );
 
@@ -107,7 +113,12 @@ export const DeleteEmailAddressResponse = proto3.makeMessageType(
  */
 export const AddAddressRequest = proto3.makeMessageType(
   "tkd.idm.v1.AddAddressRequest",
-  [],
+  () => [
+    { no: 2, name: "city_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "city_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "street", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "extra", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
 );
 
 /**
@@ -115,7 +126,9 @@ export const AddAddressRequest = proto3.makeMessageType(
  */
 export const AddAddressResponse = proto3.makeMessageType(
   "tkd.idm.v1.AddAddressResponse",
-  [],
+  () => [
+    { no: 1, name: "addresses", kind: "message", T: Address, repeated: true },
+  ],
 );
 
 /**
@@ -123,7 +136,14 @@ export const AddAddressResponse = proto3.makeMessageType(
  */
 export const UpdateAddressRequest = proto3.makeMessageType(
   "tkd.idm.v1.UpdateAddressRequest",
-  [],
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "city_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "city_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "street", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "extra", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "field_mask", kind: "message", T: FieldMask },
+  ],
 );
 
 /**
@@ -131,7 +151,9 @@ export const UpdateAddressRequest = proto3.makeMessageType(
  */
 export const UpdateAddressResponse = proto3.makeMessageType(
   "tkd.idm.v1.UpdateAddressResponse",
-  [],
+  () => [
+    { no: 1, name: "addresses", kind: "message", T: Address, repeated: true },
+  ],
 );
 
 /**
@@ -139,7 +161,9 @@ export const UpdateAddressResponse = proto3.makeMessageType(
  */
 export const DeleteAddressRequest = proto3.makeMessageType(
   "tkd.idm.v1.DeleteAddressRequest",
-  [],
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
 );
 
 /**
@@ -147,6 +171,8 @@ export const DeleteAddressRequest = proto3.makeMessageType(
  */
 export const DeleteAddressResponse = proto3.makeMessageType(
   "tkd.idm.v1.DeleteAddressResponse",
-  [],
+  () => [
+    { no: 1, name: "addresses", kind: "message", T: Address, repeated: true },
+  ],
 );
 

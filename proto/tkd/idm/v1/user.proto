@@ -53,6 +53,8 @@ message User {
 
   string avatar = 10;
 
+  string birthday = 11;
+
   option (tkd.common.v1.readable) = {
     field_mask: {
       paths: ["id", "username", "display_name", "avatar"]
@@ -62,14 +64,6 @@ message User {
       "idm_superuser",
       "idm_user_manager"
     ]
-  };
-
-  option (tkd.common.v1.self_service) = {
-    field_mask: {
-      paths: ["username", "display_name", "first_name", "last_name", "avatar"]
-    }
-    owner_field_name: "id",
-    allowed_roles: ["idm_superuser", "idm_user_manager"]
   };
 }
 

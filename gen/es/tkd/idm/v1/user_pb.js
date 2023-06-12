@@ -45,6 +45,7 @@ export const User = proto3.makeMessageType(
     { no: 5, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 9, name: "extra", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Value} },
     { no: 10, name: "avatar", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 11, name: "birthday", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

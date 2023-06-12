@@ -5,10 +5,12 @@ package tkd.idm.v1;
 import "buf/validate/validate.proto";
 import "tkd/idm/v1/user.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/struct.proto";
 
 service SelfServiceService {
     rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {}
     rpc ValidateEmail (ValidateEmailRequest) returns (ValidateEmailResponse) {}
+
     rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse) {}
     rpc AddEmailAddress (AddEmailAddressRequest) returns (AddEmailAddressResponse) {}
     rpc DeleteEmailAddress (DeleteEmailAddressRequest) returns (DeleteEmailAddressResponse) {}
@@ -29,8 +31,26 @@ message ChangePasswordRequest {
 message ChangePasswordResponse {}
 
 message UpdateProfileRequest {
-    User user = 1;
-    google.protobuf.FieldMask field_mask = 2;
+    string username = 1 [
+        (buf.validate.field).string.min_len = 3,
+        (buf.validate.field).ignore_empty = true
+    ];
+
+    string display_name = 2 [
+        (buf.validate.field).string.min_len = 3,
+        (buf.validate.field).ignore_empty = true
+    ];
+
+    string first_name = 3;
+    string last_name = 4;
+
+    map<string, google.protobuf.Value> extra = 5;
+
+    string avatar = 6;
+    string birthday = 7;
+
+
+    google.protobuf.FieldMask field_mask = 8;
 }
 
 message UpdateProfileResponse {
@@ -58,9 +78,52 @@ message DeleteEmailAddressResponse {
     repeated EMail emails = 1;
 }
 
-message AddAddressRequest {}
-message AddAddressResponse {}
-message UpdateAddressRequest {}
-message UpdateAddressResponse {}
-message DeleteAddressRequest {}
-message DeleteAddressResponse {}
+message AddAddressRequest {
+  string city_code = 2 [(buf.validate.field).string = {
+    pattern: "[0-9]+",
+    max_bytes: 16
+  }];
+  string city_name = 3 [(buf.validate.field).string.min_len = 1];
+  string street = 4 [(buf.validate.field).string.min_len = 1];
+  string extra = 5;
+}
+
+message AddAddressResponse {
+    repeated Address addresses = 1;
+}
+
+message UpdateAddressRequest {
+  string id = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  string city_code = 2 [
+    (buf.validate.field).string = {
+        pattern: "[0-9]+",
+        max_bytes: 16
+    },
+    (buf.validate.field).ignore_empty = true
+  ];
+  string city_name = 3 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).ignore_empty = true
+  ];
+  string street = 4 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).ignore_empty = true
+  ];
+  string extra = 5;
+
+  google.protobuf.FieldMask field_mask = 6;
+}
+
+message UpdateAddressResponse {
+    repeated Address addresses = 1;
+}
+
+message DeleteAddressRequest {
+    string id = 1;
+}
+message DeleteAddressResponse {
+    repeated Address addresses = 1;
+}
