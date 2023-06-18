@@ -4,8 +4,8 @@
 // @ts-nocheck
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Message, proto3 } from "@bufbuild/protobuf";
-import { User } from "./user_pb.js";
+import { FieldMask, Message, proto3 } from "@bufbuild/protobuf";
+import { Profile, User } from "./user_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.GetUserRequest
@@ -86,9 +86,9 @@ export class GetUserResponse extends Message<GetUserResponse> {
  */
 export class ListUsersRequest extends Message<ListUsersRequest> {
   /**
-   * @generated from field: repeated string requested_fields = 1;
+   * @generated from field: google.protobuf.FieldMask field_mask = 1;
    */
-  requestedFields: string[] = [];
+  fieldMask?: FieldMask;
 
   constructor(data?: PartialMessage<ListUsersRequest>) {
     super();
@@ -98,7 +98,7 @@ export class ListUsersRequest extends Message<ListUsersRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.ListUsersRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "requested_fields", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "field_mask", kind: "message", T: FieldMask },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListUsersRequest {
@@ -123,9 +123,9 @@ export class ListUsersRequest extends Message<ListUsersRequest> {
  */
 export class ListUsersResponse extends Message<ListUsersResponse> {
   /**
-   * @generated from field: repeated tkd.idm.v1.User users = 1;
+   * @generated from field: repeated tkd.idm.v1.Profile users = 1;
    */
-  users: User[] = [];
+  users: Profile[] = [];
 
   constructor(data?: PartialMessage<ListUsersResponse>) {
     super();
@@ -135,7 +135,7 @@ export class ListUsersResponse extends Message<ListUsersResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.ListUsersResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "users", kind: "message", T: User, repeated: true },
+    { no: 1, name: "users", kind: "message", T: Profile, repeated: true },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListUsersResponse {
@@ -159,6 +159,21 @@ export class ListUsersResponse extends Message<ListUsersResponse> {
  * @generated from message tkd.idm.v1.CreateUserRequest
  */
 export class CreateUserRequest extends Message<CreateUserRequest> {
+  /**
+   * @generated from field: tkd.idm.v1.Profile profile = 1;
+   */
+  profile?: Profile;
+
+  /**
+   * @generated from field: string password = 2;
+   */
+  password = "";
+
+  /**
+   * @generated from field: bool password_is_bcrypt = 3;
+   */
+  passwordIsBcrypt = false;
+
   constructor(data?: PartialMessage<CreateUserRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -167,6 +182,9 @@ export class CreateUserRequest extends Message<CreateUserRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.CreateUserRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "profile", kind: "message", T: Profile },
+    { no: 2, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "password_is_bcrypt", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateUserRequest {
@@ -190,6 +208,16 @@ export class CreateUserRequest extends Message<CreateUserRequest> {
  * @generated from message tkd.idm.v1.CreateUserResponse
  */
 export class CreateUserResponse extends Message<CreateUserResponse> {
+  /**
+   * @generated from field: tkd.idm.v1.Profile profile = 1;
+   */
+  profile?: Profile;
+
+  /**
+   * @generated from field: string generated_password = 2;
+   */
+  generatedPassword = "";
+
   constructor(data?: PartialMessage<CreateUserResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -198,6 +226,8 @@ export class CreateUserResponse extends Message<CreateUserResponse> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.CreateUserResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "profile", kind: "message", T: Profile },
+    { no: 2, name: "generated_password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateUserResponse {
@@ -283,6 +313,11 @@ export class UpdateUserResponse extends Message<UpdateUserResponse> {
  * @generated from message tkd.idm.v1.DeleteUserRequest
  */
 export class DeleteUserRequest extends Message<DeleteUserRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
   constructor(data?: PartialMessage<DeleteUserRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -291,6 +326,7 @@ export class DeleteUserRequest extends Message<DeleteUserRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "tkd.idm.v1.DeleteUserRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteUserRequest {

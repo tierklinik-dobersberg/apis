@@ -60,6 +60,10 @@ message LoginRequest {
   oneof auth {
     PasswordAuth password = 3;
   }
+
+  // The URL that should be redirected to
+  // once the authentication is successfull.
+  string requested_redirect = 4;
 }
 
 message AccessTokenResponse {
@@ -72,6 +76,11 @@ message LoginResponse {
   oneof response {
     AccessTokenResponse access_token = 1;
   }
+
+  // If set, the client is expected to redirect the
+  // user to the returned URL. The url is sanitized and
+  // validated to not allow open-redirects.
+  string redirect_to = 5;
 }
 
 message LogoutRequest {
