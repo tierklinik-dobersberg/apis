@@ -95,6 +95,14 @@ export class LoginRequest extends Message<LoginRequest> {
     case: "password";
   } | { case: undefined; value?: undefined } = { case: undefined };
 
+  /**
+   * The URL that should be redirected to
+   * once the authentication is successfull.
+   *
+   * @generated from field: string requested_redirect = 4;
+   */
+  requestedRedirect = "";
+
   constructor(data?: PartialMessage<LoginRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -106,6 +114,7 @@ export class LoginRequest extends Message<LoginRequest> {
     { no: 1, name: "auth_type", kind: "enum", T: proto3.getEnumType(AuthType) },
     { no: 2, name: "no_refresh_token", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 3, name: "password", kind: "message", T: PasswordAuth, oneof: "auth" },
+    { no: 4, name: "requested_redirect", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LoginRequest {
@@ -189,6 +198,15 @@ export class LoginResponse extends Message<LoginResponse> {
     case: "accessToken";
   } | { case: undefined; value?: undefined } = { case: undefined };
 
+  /**
+   * If set, the client is expected to redirect the
+   * user to the returned URL. The url is sanitized and
+   * validated to not allow open-redirects.
+   *
+   * @generated from field: string redirect_to = 5;
+   */
+  redirectTo = "";
+
   constructor(data?: PartialMessage<LoginResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -198,6 +216,7 @@ export class LoginResponse extends Message<LoginResponse> {
   static readonly typeName = "tkd.idm.v1.LoginResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "access_token", kind: "message", T: AccessTokenResponse, oneof: "response" },
+    { no: 5, name: "redirect_to", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): LoginResponse {
@@ -323,6 +342,11 @@ export class RefreshTokenResponse extends Message<RefreshTokenResponse> {
    */
   accessToken?: AccessTokenResponse;
 
+  /**
+   * @generated from field: string redirect_to = 2;
+   */
+  redirectTo = "";
+
   constructor(data?: PartialMessage<RefreshTokenResponse>) {
     super();
     proto3.util.initPartial(data, this);
@@ -332,6 +356,7 @@ export class RefreshTokenResponse extends Message<RefreshTokenResponse> {
   static readonly typeName = "tkd.idm.v1.RefreshTokenResponse";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "access_token", kind: "message", T: AccessTokenResponse },
+    { no: 2, name: "redirect_to", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RefreshTokenResponse {

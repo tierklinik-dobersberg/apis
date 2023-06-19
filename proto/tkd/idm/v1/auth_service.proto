@@ -94,6 +94,7 @@ message RefreshTokenRequest {}
 
 message RefreshTokenResponse {
   AccessTokenResponse access_token = 1;
+  string redirect_to = 2;
 }
 
 message IntrospectRequest {
