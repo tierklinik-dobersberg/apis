@@ -19,10 +19,10 @@ plugins:
     # With target=ts, we generate TypeScript files.
     # Use target=js+dts to generate JavaScript and TypeScript declaration files
     # like remote generation does.
-    opt: target=js+ts
+    opt: target=js+dts
 
   - plugin: buf.build/bufbuild/connect-es
     out: gen/es
     # With target=ts, we generate TypeScript files.
-    opt: target=js+ts
+    opt: target=js+dts
   

@@ -36,9 +36,6 @@ const (
 	// SelfServiceServiceChangePasswordProcedure is the fully-qualified name of the SelfServiceService's
 	// ChangePassword RPC.
 	SelfServiceServiceChangePasswordProcedure = "/tkd.idm.v1.SelfServiceService/ChangePassword"
-	// SelfServiceServiceValidateEmailProcedure is the fully-qualified name of the SelfServiceService's
-	// ValidateEmail RPC.
-	SelfServiceServiceValidateEmailProcedure = "/tkd.idm.v1.SelfServiceService/ValidateEmail"
 	// SelfServiceServiceUpdateProfileProcedure is the fully-qualified name of the SelfServiceService's
 	// UpdateProfile RPC.
 	SelfServiceServiceUpdateProfileProcedure = "/tkd.idm.v1.SelfServiceService/UpdateProfile"
@@ -48,6 +45,12 @@ const (
 	// SelfServiceServiceDeleteEmailAddressProcedure is the fully-qualified name of the
 	// SelfServiceService's DeleteEmailAddress RPC.
 	SelfServiceServiceDeleteEmailAddressProcedure = "/tkd.idm.v1.SelfServiceService/DeleteEmailAddress"
+	// SelfServiceServiceMarkEmailAsPrimaryProcedure is the fully-qualified name of the
+	// SelfServiceService's MarkEmailAsPrimary RPC.
+	SelfServiceServiceMarkEmailAsPrimaryProcedure = "/tkd.idm.v1.SelfServiceService/MarkEmailAsPrimary"
+	// SelfServiceServiceValidateEmailProcedure is the fully-qualified name of the SelfServiceService's
+	// ValidateEmail RPC.
+	SelfServiceServiceValidateEmailProcedure = "/tkd.idm.v1.SelfServiceService/ValidateEmail"
 	// SelfServiceServiceAddAddressProcedure is the fully-qualified name of the SelfServiceService's
 	// AddAddress RPC.
 	SelfServiceServiceAddAddressProcedure = "/tkd.idm.v1.SelfServiceService/AddAddress"
@@ -57,18 +60,38 @@ const (
 	// SelfServiceServiceUpdateAddressProcedure is the fully-qualified name of the SelfServiceService's
 	// UpdateAddress RPC.
 	SelfServiceServiceUpdateAddressProcedure = "/tkd.idm.v1.SelfServiceService/UpdateAddress"
+	// SelfServiceServiceAddPhoneNumberProcedure is the fully-qualified name of the SelfServiceService's
+	// AddPhoneNumber RPC.
+	SelfServiceServiceAddPhoneNumberProcedure = "/tkd.idm.v1.SelfServiceService/AddPhoneNumber"
+	// SelfServiceServiceDeletePhoneNumberProcedure is the fully-qualified name of the
+	// SelfServiceService's DeletePhoneNumber RPC.
+	SelfServiceServiceDeletePhoneNumberProcedure = "/tkd.idm.v1.SelfServiceService/DeletePhoneNumber"
+	// SelfServiceServiceMarkPhoneNumberAsPrimaryProcedure is the fully-qualified name of the
+	// SelfServiceService's MarkPhoneNumberAsPrimary RPC.
+	SelfServiceServiceMarkPhoneNumberAsPrimaryProcedure = "/tkd.idm.v1.SelfServiceService/MarkPhoneNumberAsPrimary"
+	// SelfServiceServiceValidatePhoneNumberProcedure is the fully-qualified name of the
+	// SelfServiceService's ValidatePhoneNumber RPC.
+	SelfServiceServiceValidatePhoneNumberProcedure = "/tkd.idm.v1.SelfServiceService/ValidatePhoneNumber"
 )
 
 // SelfServiceServiceClient is a client for the tkd.idm.v1.SelfServiceService service.
 type SelfServiceServiceClient interface {
 	ChangePassword(context.Context, *connect_go.Request[v1.ChangePasswordRequest]) (*connect_go.Response[v1.ChangePasswordResponse], error)
-	ValidateEmail(context.Context, *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error)
 	UpdateProfile(context.Context, *connect_go.Request[v1.UpdateProfileRequest]) (*connect_go.Response[v1.UpdateProfileResponse], error)
+	// E-Mails
 	AddEmailAddress(context.Context, *connect_go.Request[v1.AddEmailAddressRequest]) (*connect_go.Response[v1.AddEmailAddressResponse], error)
 	DeleteEmailAddress(context.Context, *connect_go.Request[v1.DeleteEmailAddressRequest]) (*connect_go.Response[v1.DeleteEmailAddressResponse], error)
+	MarkEmailAsPrimary(context.Context, *connect_go.Request[v1.MarkEmailAsPrimaryRequest]) (*connect_go.Response[v1.MarkEmailAsPrimaryResponse], error)
+	ValidateEmail(context.Context, *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error)
+	// Addresses
 	AddAddress(context.Context, *connect_go.Request[v1.AddAddressRequest]) (*connect_go.Response[v1.AddAddressResponse], error)
 	DeleteAddress(context.Context, *connect_go.Request[v1.DeleteAddressRequest]) (*connect_go.Response[v1.DeleteAddressResponse], error)
 	UpdateAddress(context.Context, *connect_go.Request[v1.UpdateAddressRequest]) (*connect_go.Response[v1.UpdateAddressResponse], error)
+	// Phone Numbers
+	AddPhoneNumber(context.Context, *connect_go.Request[v1.AddPhoneNumberRequest]) (*connect_go.Response[v1.AddPhoneNumberResponse], error)
+	DeletePhoneNumber(context.Context, *connect_go.Request[v1.DeletePhoneNumberRequest]) (*connect_go.Response[v1.DeletePhoneNumberResponse], error)
+	MarkPhoneNumberAsPrimary(context.Context, *connect_go.Request[v1.MarkPhoneNumberAsPrimaryRequest]) (*connect_go.Response[v1.MarkPhoneNumberAsPrimaryResponse], error)
+	ValidatePhoneNumber(context.Context, *connect_go.Request[v1.ValidatePhoneNumberRequest]) (*connect_go.Response[v1.ValidatePhoneNumberResponse], error)
 }
 
 // NewSelfServiceServiceClient constructs a client for the tkd.idm.v1.SelfServiceService service. By
@@ -86,11 +109,6 @@ func NewSelfServiceServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 			baseURL+SelfServiceServiceChangePasswordProcedure,
 			opts...,
 		),
-		validateEmail: connect_go.NewClient[v1.ValidateEmailRequest, v1.ValidateEmailResponse](
-			httpClient,
-			baseURL+SelfServiceServiceValidateEmailProcedure,
-			opts...,
-		),
 		updateProfile: connect_go.NewClient[v1.UpdateProfileRequest, v1.UpdateProfileResponse](
 			httpClient,
 			baseURL+SelfServiceServiceUpdateProfileProcedure,
@@ -104,6 +122,16 @@ func NewSelfServiceServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 		deleteEmailAddress: connect_go.NewClient[v1.DeleteEmailAddressRequest, v1.DeleteEmailAddressResponse](
 			httpClient,
 			baseURL+SelfServiceServiceDeleteEmailAddressProcedure,
+			opts...,
+		),
+		markEmailAsPrimary: connect_go.NewClient[v1.MarkEmailAsPrimaryRequest, v1.MarkEmailAsPrimaryResponse](
+			httpClient,
+			baseURL+SelfServiceServiceMarkEmailAsPrimaryProcedure,
+			opts...,
+		),
+		validateEmail: connect_go.NewClient[v1.ValidateEmailRequest, v1.ValidateEmailResponse](
+			httpClient,
+			baseURL+SelfServiceServiceValidateEmailProcedure,
 			opts...,
 		),
 		addAddress: connect_go.NewClient[v1.AddAddressRequest, v1.AddAddressResponse](
@@ -121,29 +149,49 @@ func NewSelfServiceServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 			baseURL+SelfServiceServiceUpdateAddressProcedure,
 			opts...,
 		),
+		addPhoneNumber: connect_go.NewClient[v1.AddPhoneNumberRequest, v1.AddPhoneNumberResponse](
+			httpClient,
+			baseURL+SelfServiceServiceAddPhoneNumberProcedure,
+			opts...,
+		),
+		deletePhoneNumber: connect_go.NewClient[v1.DeletePhoneNumberRequest, v1.DeletePhoneNumberResponse](
+			httpClient,
+			baseURL+SelfServiceServiceDeletePhoneNumberProcedure,
+			opts...,
+		),
+		markPhoneNumberAsPrimary: connect_go.NewClient[v1.MarkPhoneNumberAsPrimaryRequest, v1.MarkPhoneNumberAsPrimaryResponse](
+			httpClient,
+			baseURL+SelfServiceServiceMarkPhoneNumberAsPrimaryProcedure,
+			opts...,
+		),
+		validatePhoneNumber: connect_go.NewClient[v1.ValidatePhoneNumberRequest, v1.ValidatePhoneNumberResponse](
+			httpClient,
+			baseURL+SelfServiceServiceValidatePhoneNumberProcedure,
+			opts...,
+		),
 	}
 }
 
 // selfServiceServiceClient implements SelfServiceServiceClient.
 type selfServiceServiceClient struct {
-	changePassword     *connect_go.Client[v1.ChangePasswordRequest, v1.ChangePasswordResponse]
-	validateEmail      *connect_go.Client[v1.ValidateEmailRequest, v1.ValidateEmailResponse]
-	updateProfile      *connect_go.Client[v1.UpdateProfileRequest, v1.UpdateProfileResponse]
-	addEmailAddress    *connect_go.Client[v1.AddEmailAddressRequest, v1.AddEmailAddressResponse]
-	deleteEmailAddress *connect_go.Client[v1.DeleteEmailAddressRequest, v1.DeleteEmailAddressResponse]
-	addAddress         *connect_go.Client[v1.AddAddressRequest, v1.AddAddressResponse]
-	deleteAddress      *connect_go.Client[v1.DeleteAddressRequest, v1.DeleteAddressResponse]
-	updateAddress      *connect_go.Client[v1.UpdateAddressRequest, v1.UpdateAddressResponse]
+	changePassword           *connect_go.Client[v1.ChangePasswordRequest, v1.ChangePasswordResponse]
+	updateProfile            *connect_go.Client[v1.UpdateProfileRequest, v1.UpdateProfileResponse]
+	addEmailAddress          *connect_go.Client[v1.AddEmailAddressRequest, v1.AddEmailAddressResponse]
+	deleteEmailAddress       *connect_go.Client[v1.DeleteEmailAddressRequest, v1.DeleteEmailAddressResponse]
+	markEmailAsPrimary       *connect_go.Client[v1.MarkEmailAsPrimaryRequest, v1.MarkEmailAsPrimaryResponse]
+	validateEmail            *connect_go.Client[v1.ValidateEmailRequest, v1.ValidateEmailResponse]
+	addAddress               *connect_go.Client[v1.AddAddressRequest, v1.AddAddressResponse]
+	deleteAddress            *connect_go.Client[v1.DeleteAddressRequest, v1.DeleteAddressResponse]
+	updateAddress            *connect_go.Client[v1.UpdateAddressRequest, v1.UpdateAddressResponse]
+	addPhoneNumber           *connect_go.Client[v1.AddPhoneNumberRequest, v1.AddPhoneNumberResponse]
+	deletePhoneNumber        *connect_go.Client[v1.DeletePhoneNumberRequest, v1.DeletePhoneNumberResponse]
+	markPhoneNumberAsPrimary *connect_go.Client[v1.MarkPhoneNumberAsPrimaryRequest, v1.MarkPhoneNumberAsPrimaryResponse]
+	validatePhoneNumber      *connect_go.Client[v1.ValidatePhoneNumberRequest, v1.ValidatePhoneNumberResponse]
 }
 
 // ChangePassword calls tkd.idm.v1.SelfServiceService.ChangePassword.
 func (c *selfServiceServiceClient) ChangePassword(ctx context.Context, req *connect_go.Request[v1.ChangePasswordRequest]) (*connect_go.Response[v1.ChangePasswordResponse], error) {
 	return c.changePassword.CallUnary(ctx, req)
-}
-
-// ValidateEmail calls tkd.idm.v1.SelfServiceService.ValidateEmail.
-func (c *selfServiceServiceClient) ValidateEmail(ctx context.Context, req *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error) {
-	return c.validateEmail.CallUnary(ctx, req)
 }
 
 // UpdateProfile calls tkd.idm.v1.SelfServiceService.UpdateProfile.
@@ -161,6 +209,16 @@ func (c *selfServiceServiceClient) DeleteEmailAddress(ctx context.Context, req *
 	return c.deleteEmailAddress.CallUnary(ctx, req)
 }
 
+// MarkEmailAsPrimary calls tkd.idm.v1.SelfServiceService.MarkEmailAsPrimary.
+func (c *selfServiceServiceClient) MarkEmailAsPrimary(ctx context.Context, req *connect_go.Request[v1.MarkEmailAsPrimaryRequest]) (*connect_go.Response[v1.MarkEmailAsPrimaryResponse], error) {
+	return c.markEmailAsPrimary.CallUnary(ctx, req)
+}
+
+// ValidateEmail calls tkd.idm.v1.SelfServiceService.ValidateEmail.
+func (c *selfServiceServiceClient) ValidateEmail(ctx context.Context, req *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error) {
+	return c.validateEmail.CallUnary(ctx, req)
+}
+
 // AddAddress calls tkd.idm.v1.SelfServiceService.AddAddress.
 func (c *selfServiceServiceClient) AddAddress(ctx context.Context, req *connect_go.Request[v1.AddAddressRequest]) (*connect_go.Response[v1.AddAddressResponse], error) {
 	return c.addAddress.CallUnary(ctx, req)
@@ -176,16 +234,44 @@ func (c *selfServiceServiceClient) UpdateAddress(ctx context.Context, req *conne
 	return c.updateAddress.CallUnary(ctx, req)
 }
 
+// AddPhoneNumber calls tkd.idm.v1.SelfServiceService.AddPhoneNumber.
+func (c *selfServiceServiceClient) AddPhoneNumber(ctx context.Context, req *connect_go.Request[v1.AddPhoneNumberRequest]) (*connect_go.Response[v1.AddPhoneNumberResponse], error) {
+	return c.addPhoneNumber.CallUnary(ctx, req)
+}
+
+// DeletePhoneNumber calls tkd.idm.v1.SelfServiceService.DeletePhoneNumber.
+func (c *selfServiceServiceClient) DeletePhoneNumber(ctx context.Context, req *connect_go.Request[v1.DeletePhoneNumberRequest]) (*connect_go.Response[v1.DeletePhoneNumberResponse], error) {
+	return c.deletePhoneNumber.CallUnary(ctx, req)
+}
+
+// MarkPhoneNumberAsPrimary calls tkd.idm.v1.SelfServiceService.MarkPhoneNumberAsPrimary.
+func (c *selfServiceServiceClient) MarkPhoneNumberAsPrimary(ctx context.Context, req *connect_go.Request[v1.MarkPhoneNumberAsPrimaryRequest]) (*connect_go.Response[v1.MarkPhoneNumberAsPrimaryResponse], error) {
+	return c.markPhoneNumberAsPrimary.CallUnary(ctx, req)
+}
+
+// ValidatePhoneNumber calls tkd.idm.v1.SelfServiceService.ValidatePhoneNumber.
+func (c *selfServiceServiceClient) ValidatePhoneNumber(ctx context.Context, req *connect_go.Request[v1.ValidatePhoneNumberRequest]) (*connect_go.Response[v1.ValidatePhoneNumberResponse], error) {
+	return c.validatePhoneNumber.CallUnary(ctx, req)
+}
+
 // SelfServiceServiceHandler is an implementation of the tkd.idm.v1.SelfServiceService service.
 type SelfServiceServiceHandler interface {
 	ChangePassword(context.Context, *connect_go.Request[v1.ChangePasswordRequest]) (*connect_go.Response[v1.ChangePasswordResponse], error)
-	ValidateEmail(context.Context, *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error)
 	UpdateProfile(context.Context, *connect_go.Request[v1.UpdateProfileRequest]) (*connect_go.Response[v1.UpdateProfileResponse], error)
+	// E-Mails
 	AddEmailAddress(context.Context, *connect_go.Request[v1.AddEmailAddressRequest]) (*connect_go.Response[v1.AddEmailAddressResponse], error)
 	DeleteEmailAddress(context.Context, *connect_go.Request[v1.DeleteEmailAddressRequest]) (*connect_go.Response[v1.DeleteEmailAddressResponse], error)
+	MarkEmailAsPrimary(context.Context, *connect_go.Request[v1.MarkEmailAsPrimaryRequest]) (*connect_go.Response[v1.MarkEmailAsPrimaryResponse], error)
+	ValidateEmail(context.Context, *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error)
+	// Addresses
 	AddAddress(context.Context, *connect_go.Request[v1.AddAddressRequest]) (*connect_go.Response[v1.AddAddressResponse], error)
 	DeleteAddress(context.Context, *connect_go.Request[v1.DeleteAddressRequest]) (*connect_go.Response[v1.DeleteAddressResponse], error)
 	UpdateAddress(context.Context, *connect_go.Request[v1.UpdateAddressRequest]) (*connect_go.Response[v1.UpdateAddressResponse], error)
+	// Phone Numbers
+	AddPhoneNumber(context.Context, *connect_go.Request[v1.AddPhoneNumberRequest]) (*connect_go.Response[v1.AddPhoneNumberResponse], error)
+	DeletePhoneNumber(context.Context, *connect_go.Request[v1.DeletePhoneNumberRequest]) (*connect_go.Response[v1.DeletePhoneNumberResponse], error)
+	MarkPhoneNumberAsPrimary(context.Context, *connect_go.Request[v1.MarkPhoneNumberAsPrimaryRequest]) (*connect_go.Response[v1.MarkPhoneNumberAsPrimaryResponse], error)
+	ValidatePhoneNumber(context.Context, *connect_go.Request[v1.ValidatePhoneNumberRequest]) (*connect_go.Response[v1.ValidatePhoneNumberResponse], error)
 }
 
 // NewSelfServiceServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -198,11 +284,6 @@ func NewSelfServiceServiceHandler(svc SelfServiceServiceHandler, opts ...connect
 	mux.Handle(SelfServiceServiceChangePasswordProcedure, connect_go.NewUnaryHandler(
 		SelfServiceServiceChangePasswordProcedure,
 		svc.ChangePassword,
-		opts...,
-	))
-	mux.Handle(SelfServiceServiceValidateEmailProcedure, connect_go.NewUnaryHandler(
-		SelfServiceServiceValidateEmailProcedure,
-		svc.ValidateEmail,
 		opts...,
 	))
 	mux.Handle(SelfServiceServiceUpdateProfileProcedure, connect_go.NewUnaryHandler(
@@ -220,6 +301,16 @@ func NewSelfServiceServiceHandler(svc SelfServiceServiceHandler, opts ...connect
 		svc.DeleteEmailAddress,
 		opts...,
 	))
+	mux.Handle(SelfServiceServiceMarkEmailAsPrimaryProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceMarkEmailAsPrimaryProcedure,
+		svc.MarkEmailAsPrimary,
+		opts...,
+	))
+	mux.Handle(SelfServiceServiceValidateEmailProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceValidateEmailProcedure,
+		svc.ValidateEmail,
+		opts...,
+	))
 	mux.Handle(SelfServiceServiceAddAddressProcedure, connect_go.NewUnaryHandler(
 		SelfServiceServiceAddAddressProcedure,
 		svc.AddAddress,
@@ -235,6 +326,26 @@ func NewSelfServiceServiceHandler(svc SelfServiceServiceHandler, opts ...connect
 		svc.UpdateAddress,
 		opts...,
 	))
+	mux.Handle(SelfServiceServiceAddPhoneNumberProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceAddPhoneNumberProcedure,
+		svc.AddPhoneNumber,
+		opts...,
+	))
+	mux.Handle(SelfServiceServiceDeletePhoneNumberProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceDeletePhoneNumberProcedure,
+		svc.DeletePhoneNumber,
+		opts...,
+	))
+	mux.Handle(SelfServiceServiceMarkPhoneNumberAsPrimaryProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceMarkPhoneNumberAsPrimaryProcedure,
+		svc.MarkPhoneNumberAsPrimary,
+		opts...,
+	))
+	mux.Handle(SelfServiceServiceValidatePhoneNumberProcedure, connect_go.NewUnaryHandler(
+		SelfServiceServiceValidatePhoneNumberProcedure,
+		svc.ValidatePhoneNumber,
+		opts...,
+	))
 	return "/tkd.idm.v1.SelfServiceService/", mux
 }
 
@@ -243,10 +354,6 @@ type UnimplementedSelfServiceServiceHandler struct{}
 
 func (UnimplementedSelfServiceServiceHandler) ChangePassword(context.Context, *connect_go.Request[v1.ChangePasswordRequest]) (*connect_go.Response[v1.ChangePasswordResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.ChangePassword is not implemented"))
-}
-
-func (UnimplementedSelfServiceServiceHandler) ValidateEmail(context.Context, *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.ValidateEmail is not implemented"))
 }
 
 func (UnimplementedSelfServiceServiceHandler) UpdateProfile(context.Context, *connect_go.Request[v1.UpdateProfileRequest]) (*connect_go.Response[v1.UpdateProfileResponse], error) {
@@ -261,6 +368,14 @@ func (UnimplementedSelfServiceServiceHandler) DeleteEmailAddress(context.Context
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.DeleteEmailAddress is not implemented"))
 }
 
+func (UnimplementedSelfServiceServiceHandler) MarkEmailAsPrimary(context.Context, *connect_go.Request[v1.MarkEmailAsPrimaryRequest]) (*connect_go.Response[v1.MarkEmailAsPrimaryResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.MarkEmailAsPrimary is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) ValidateEmail(context.Context, *connect_go.Request[v1.ValidateEmailRequest]) (*connect_go.Response[v1.ValidateEmailResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.ValidateEmail is not implemented"))
+}
+
 func (UnimplementedSelfServiceServiceHandler) AddAddress(context.Context, *connect_go.Request[v1.AddAddressRequest]) (*connect_go.Response[v1.AddAddressResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.AddAddress is not implemented"))
 }
@@ -271,4 +386,20 @@ func (UnimplementedSelfServiceServiceHandler) DeleteAddress(context.Context, *co
 
 func (UnimplementedSelfServiceServiceHandler) UpdateAddress(context.Context, *connect_go.Request[v1.UpdateAddressRequest]) (*connect_go.Response[v1.UpdateAddressResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.UpdateAddress is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) AddPhoneNumber(context.Context, *connect_go.Request[v1.AddPhoneNumberRequest]) (*connect_go.Response[v1.AddPhoneNumberResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.AddPhoneNumber is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) DeletePhoneNumber(context.Context, *connect_go.Request[v1.DeletePhoneNumberRequest]) (*connect_go.Response[v1.DeletePhoneNumberResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.DeletePhoneNumber is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) MarkPhoneNumberAsPrimary(context.Context, *connect_go.Request[v1.MarkPhoneNumberAsPrimaryRequest]) (*connect_go.Response[v1.MarkPhoneNumberAsPrimaryResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.MarkPhoneNumberAsPrimary is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) ValidatePhoneNumber(context.Context, *connect_go.Request[v1.ValidatePhoneNumberRequest]) (*connect_go.Response[v1.ValidatePhoneNumberResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.ValidatePhoneNumber is not implemented"))
 }

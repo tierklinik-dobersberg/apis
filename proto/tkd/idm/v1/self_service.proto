@@ -4,19 +4,82 @@ package tkd.idm.v1;
 
 import "buf/validate/validate.proto";
 import "tkd/idm/v1/user.proto";
+import "tkd/common/v1/descriptor.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 
 service SelfServiceService {
-    rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {}
-    rpc ValidateEmail (ValidateEmailRequest) returns (ValidateEmailResponse) {}
+    rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 
-    rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse) {}
-    rpc AddEmailAddress (AddEmailAddressRequest) returns (AddEmailAddressResponse) {}
-    rpc DeleteEmailAddress (DeleteEmailAddressRequest) returns (DeleteEmailAddressResponse) {}
-    rpc AddAddress (AddAddressRequest) returns (AddAddressResponse) {}
-    rpc DeleteAddress (DeleteAddressRequest) returns (DeleteAddressResponse) {}
-    rpc UpdateAddress (UpdateAddressRequest) returns (UpdateAddressResponse) {}
+    // E-Mails
+    rpc AddEmailAddress (AddEmailAddressRequest) returns (AddEmailAddressResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc DeleteEmailAddress (DeleteEmailAddressRequest) returns (DeleteEmailAddressResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc MarkEmailAsPrimary (MarkEmailAsPrimaryRequest) returns (MarkEmailAsPrimaryResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc ValidateEmail (ValidateEmailRequest) returns (ValidateEmailResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    // Addresses
+    rpc AddAddress (AddAddressRequest) returns (AddAddressResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc DeleteAddress (DeleteAddressRequest) returns (DeleteAddressResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc UpdateAddress (UpdateAddressRequest) returns (UpdateAddressResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    // Phone Numbers
+    rpc AddPhoneNumber(AddPhoneNumberRequest) returns (AddPhoneNumberResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc DeletePhoneNumber(DeletePhoneNumberRequest) returns (DeletePhoneNumberResponse){
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc MarkPhoneNumberAsPrimary (MarkPhoneNumberAsPrimaryRequest) returns (MarkPhoneNumberAsPrimaryResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc ValidatePhoneNumber (ValidatePhoneNumberRequest) returns (ValidatePhoneNumberResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 }
 
 message ChangePasswordRequest {
@@ -79,12 +142,18 @@ message DeleteEmailAddressResponse {
 }
 
 message AddAddressRequest {
-  string city_code = 2 [(buf.validate.field).string = {
-    pattern: "[0-9]+",
-    max_bytes: 16
-  }];
-  string city_name = 3 [(buf.validate.field).string.min_len = 1];
-  string street = 4 [(buf.validate.field).string.min_len = 1];
+  string city_code = 2 [
+        (buf.validate.field).string = {
+        pattern: "[0-9]+",
+        max_bytes: 16
+    }
+  ];
+  string city_name = 3 [
+    (buf.validate.field).string.min_len = 1
+  ];
+  string street = 4 [
+    (buf.validate.field).string.min_len = 1
+  ];
   string extra = 5;
 }
 
@@ -122,8 +191,35 @@ message UpdateAddressResponse {
 }
 
 message DeleteAddressRequest {
-    string id = 1;
+    string id = 1 [(buf.validate.field).required = true];
 }
 message DeleteAddressResponse {
     repeated Address addresses = 1;
 }
+
+message MarkEmailAsPrimaryRequest {
+    string id = 1 [(buf.validate.field).required = true];
+}
+message MarkEmailAsPrimaryResponse {
+    // TODO(ppacher): return all emails here?
+}
+
+message AddPhoneNumberRequest {
+    string number = 1 [(buf.validate.field).required = true];
+}
+
+message AddPhoneNumberResponse {
+    PhoneNumber phone_number = 1;
+}
+message DeletePhoneNumberRequest {
+    string id = 1 [(buf.validate.field).required = true];
+}
+message DeletePhoneNumberResponse {}
+message MarkPhoneNumberAsPrimaryRequest {
+    string id = 1 [(buf.validate.field).required = true];
+}
+message MarkPhoneNumberAsPrimaryResponse{}
+message ValidatePhoneNumberRequest{
+    string id = 1 [(buf.validate.field).required = true];
+}
+message ValidatePhoneNumberResponse{}

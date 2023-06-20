@@ -20,6 +20,19 @@ message EMail {
   };
 }
 
+message PhoneNumber {
+  string id = 1;
+  string number = 2;
+  bool verified = 3;
+  bool primary = 4;
+
+  option (tkd.common.v1.readable) = {
+    field_mask: {
+      paths: ["number"]
+    }
+  };
+}
+
 message Address {
   string id = 1;
 
@@ -55,9 +68,20 @@ message User {
 
   string birthday = 11;
 
+  EMail primary_mail = 12;
+  PhoneNumber primary_phone_number = 13;
+
   option (tkd.common.v1.readable) = {
     field_mask: {
-      paths: ["id", "username", "display_name", "avatar"]
+      paths: [
+        "id",
+        "username",
+        "display_name",
+        "avatar",
+        "primary_mail",
+        "primary_phone_number",
+        "birthday"
+      ]
     },
     owner_field_name: "id",
     allowed_roles: [
@@ -70,7 +94,7 @@ message User {
 message Profile {
   User user = 1;
   repeated Address addresses = 6;
-  repeated string phone_numbers = 7;
+  repeated PhoneNumber phone_numbers = 7;
   repeated EMail email_addresses = 8;
 
   option (tkd.common.v1.readable) = {
