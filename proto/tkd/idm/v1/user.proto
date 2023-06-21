@@ -2,17 +2,34 @@ syntax = "proto3";
 
 package tkd.idm.v1;
 
+import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/descriptor.proto";
 
 message EMail {
+  // The unique ID of the email address record required for validation
+  // editing and deletion of the records.
   string id = 1;
+
+  // The actual email address.
   string address = 2 [(buf.validate.field).string.email = true];
 
+  // Whether or not the email has been verified by the user.
+  // This field may only be set by using the SelfServiceService
+  // or by an administrator using the UserService.
   bool verified = 3;
+
+  // Whether or not this email address is the user's primary e-mail.
+  // The primary e-mail address is also part of the User message so
+  // users may choose to allow public access to their primary e-mail address
+  // while keeping other e-mail records private.
   bool primary = 4;
 
+  // may be overwritting by the privacy_mask field of the user profile.
+  // See {@ Profile.privacy_mask}
+  // By default, only the user address may be exposed to users but access
+  // to the primary, verified and id fields is prohibited. 
   option (tkd.common.v1.readable) = {
     field_mask: {
       paths: ["address"]
@@ -26,6 +43,8 @@ message PhoneNumber {
   bool verified = 3;
   bool primary = 4;
 
+  // may be overwritting by the privacy_mask field of the user profile.
+  // See {@ Profile.privacy_mask}
   option (tkd.common.v1.readable) = {
     field_mask: {
       paths: ["number"]
@@ -49,26 +68,45 @@ message Address {
 }
 
 message User {
+  // The primary and unique identifier of the user. This is normally a generated UUIDv4
+  // but may be set to any arbitrary string. Applications should treat the user ID is an
+  // opaque string and avoid any assumptions on the format.
   string id = 1;
 
+  // The name of the user for login purposes. Depending on the CISIDM feature set this
+  // field may be changed by the user.
   string username = 2 [
     (buf.validate.field).string.min_len = 3
   ];
 
+  // The name of the user as it should be displayed in all applications. If unset, applications should
+  // fallback to the username. 
   string display_name = 3 [
     (buf.validate.field).string.min_len = 3
   ];
 
+  // The first name of the user.
   string first_name = 4;
+
+  // The last name of the user.
   string last_name = 5;
 
+  // Additional data for the user. The available keys in the extra map and their meaning is application
+  // specific. CISIDM may provide validation and schema definitions for the user-extra data any some point
+  // in the future. For now, only administrators may set extra data on user profiles.
   map<string, google.protobuf.Value> extra = 9;
 
+  // The URL (or data-URL) of the user avatar.
   string avatar = 10;
 
+  // The birthday of the user. Should follow the format YYYY-MM-DD. Applications may choose to
+  // display the birthday of a user in a different format depending on the viewer's locale.
   string birthday = 11;
 
+  // The primary email address of the user.
   EMail primary_mail = 12;
+
+  // The primary phone number of the user.
   PhoneNumber primary_phone_number = 13;
 
   option (tkd.common.v1.readable) = {
@@ -92,10 +130,32 @@ message User {
 }
 
 message Profile {
+  // The actual user object.
   User user = 1;
+
+  // A list of all addresses the user has configured.
+  // This may be set using the SelfServiceService. Administrators
+  // may change these values using the UserService.
   repeated Address addresses = 6;
+
+  // A list of all phone numbers configured by the user.
+  // This may be set using the SelfServiceService. Administrators
+  // may change these values using the UserService.
   repeated PhoneNumber phone_numbers = 7;
+
+  // A list of all email addresses configured by the user.
+  // This may be set using the SelfServiceService. Administrators
+  // may change these values using the UserService.
   repeated EMail email_addresses = 8;
+
+  // A field-mask to defined publically viewable fields from the
+  // user profile. If set, the configured field-mask overwrites
+  // the field mask of the (tkd.common.v1.readable) option.
+  // Note that the privacy_mask is not applied to users that either
+  // match the owner_field_name or allowed_roles field of the (tkd.common.v1.readable)
+  // option.
+  google.protobuf.FieldMask privacy_mask = 9;
+
 
   option (tkd.common.v1.readable) = {
     field_mask: {
