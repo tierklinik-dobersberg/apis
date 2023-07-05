@@ -143,35 +143,49 @@ type UserServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewUserServiceHandler(svc UserServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(UserServiceGetUserProcedure, connect_go.NewUnaryHandler(
+	userServiceGetUserHandler := connect_go.NewUnaryHandler(
 		UserServiceGetUserProcedure,
 		svc.GetUser,
 		connect_go.WithIdempotency(connect_go.IdempotencyNoSideEffects),
 		connect_go.WithHandlerOptions(opts...),
-	))
-	mux.Handle(UserServiceListUsersProcedure, connect_go.NewUnaryHandler(
+	)
+	userServiceListUsersHandler := connect_go.NewUnaryHandler(
 		UserServiceListUsersProcedure,
 		svc.ListUsers,
 		connect_go.WithIdempotency(connect_go.IdempotencyNoSideEffects),
 		connect_go.WithHandlerOptions(opts...),
-	))
-	mux.Handle(UserServiceCreateUserProcedure, connect_go.NewUnaryHandler(
+	)
+	userServiceCreateUserHandler := connect_go.NewUnaryHandler(
 		UserServiceCreateUserProcedure,
 		svc.CreateUser,
 		opts...,
-	))
-	mux.Handle(UserServiceUpdateUserProcedure, connect_go.NewUnaryHandler(
+	)
+	userServiceUpdateUserHandler := connect_go.NewUnaryHandler(
 		UserServiceUpdateUserProcedure,
 		svc.UpdateUser,
 		opts...,
-	))
-	mux.Handle(UserServiceDeleteUserProcedure, connect_go.NewUnaryHandler(
+	)
+	userServiceDeleteUserHandler := connect_go.NewUnaryHandler(
 		UserServiceDeleteUserProcedure,
 		svc.DeleteUser,
 		opts...,
-	))
-	return "/tkd.idm.v1.UserService/", mux
+	)
+	return "/tkd.idm.v1.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case UserServiceGetUserProcedure:
+			userServiceGetUserHandler.ServeHTTP(w, r)
+		case UserServiceListUsersProcedure:
+			userServiceListUsersHandler.ServeHTTP(w, r)
+		case UserServiceCreateUserProcedure:
+			userServiceCreateUserHandler.ServeHTTP(w, r)
+		case UserServiceUpdateUserProcedure:
+			userServiceUpdateUserHandler.ServeHTTP(w, r)
+		case UserServiceDeleteUserProcedure:
+			userServiceDeleteUserHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedUserServiceHandler returns CodeUnimplemented from all methods.

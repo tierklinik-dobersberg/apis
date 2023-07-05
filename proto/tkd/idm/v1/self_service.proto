@@ -80,6 +80,37 @@ service SelfServiceService {
             require: AUTH_REQ_REQUIRED
         };
     }
+
+    // WebAuthN
+    rpc GetRegisteredPasskeys(GetRegisteredPasskeysRequest) returns (GetRegisteredPasskeysResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc RemovePasskey(RemovePasskeyRequest) returns (RemovePasskeyResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    // TODO(ppacher): add WebAuthN support here
+
+    // Two-Factor authentication
+    rpc Enroll2FA (Enroll2FARequest) returns (Enroll2FAResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc Remove2FA (Remove2FARequest) returns (Remove2FAResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc GenerateRecoveryCodes(GenerateRecoveryCodesRequest) returns (GenerateRecoveryCodesResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 }
 
 message ChangePasswordRequest {
@@ -219,7 +250,76 @@ message MarkPhoneNumberAsPrimaryRequest {
     string id = 1 [(buf.validate.field).required = true];
 }
 message MarkPhoneNumberAsPrimaryResponse{}
+
 message ValidatePhoneNumberRequest{
-    string id = 1 [(buf.validate.field).required = true];
+    oneof step {
+        string id = 1 [(buf.validate.field).required = true];
+        string code = 2 [(buf.validate.field).required = true ];
+    }
 }
-message ValidatePhoneNumberResponse{}
+
+message ValidatePhoneNumberResponse{
+    string state = 2;
+}
+
+message EnrollTOTPRequestStep1 {}
+
+message EnrollTOTPRequestStep2 {
+    string verify_code = 1;
+    string secret = 2;
+    string secret_hmac = 3;
+}
+
+message Enroll2FARequest {
+    oneof kind {
+        EnrollTOTPRequestStep1 totp_step1 = 1;
+        EnrollTOTPRequestStep2 totp_step2 = 2;
+    }
+}
+
+message EnrollTOTPResponseStep1 {
+    string secret = 2;
+    string qr_code = 3;
+    string secret_hmac = 4;
+    string url = 5;
+}
+
+message EnrollTOTPResponseStep2 {}
+
+message Enroll2FAResponse {
+    oneof kind {
+        EnrollTOTPResponseStep1 totp_step1 = 1;
+        EnrollTOTPResponseStep2 totp_step2 = 2;
+    }
+}
+
+message Remove2FARequest {
+    oneof kind {
+        // If set and valid, the TOTP 2FA will be disabled.
+        string totp_code = 1;
+    }
+}
+
+message Remove2FAResponse {}
+message GenerateRecoveryCodesRequest {}
+message GenerateRecoveryCodesResponse {
+    repeated string recovery_codes = 1;
+}
+
+message RegisteredPasskey {
+    string id = 1;
+    string client_name = 2;
+    string client_os = 3;
+    string client_device = 4;
+    string cred_type = 5;
+}
+
+message GetRegisteredPasskeysRequest {}
+message GetRegisteredPasskeysResponse {
+    repeated RegisteredPasskey passkeys = 1;
+}
+
+message RemovePasskeyRequest {
+   string id = 1 [(buf.validate.field).required = true];
+}
+message RemovePasskeyResponse {}

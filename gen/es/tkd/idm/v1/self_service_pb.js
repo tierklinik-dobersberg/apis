@@ -258,7 +258,8 @@ export const MarkPhoneNumberAsPrimaryResponse = proto3.makeMessageType(
 export const ValidatePhoneNumberRequest = proto3.makeMessageType(
   "tkd.idm.v1.ValidatePhoneNumberRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "step" },
+    { no: 2, name: "code", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "step" },
   ],
 );
 
@@ -267,6 +268,157 @@ export const ValidatePhoneNumberRequest = proto3.makeMessageType(
  */
 export const ValidatePhoneNumberResponse = proto3.makeMessageType(
   "tkd.idm.v1.ValidatePhoneNumberResponse",
+  () => [
+    { no: 2, name: "state", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.EnrollTOTPRequestStep1
+ */
+export const EnrollTOTPRequestStep1 = proto3.makeMessageType(
+  "tkd.idm.v1.EnrollTOTPRequestStep1",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.EnrollTOTPRequestStep2
+ */
+export const EnrollTOTPRequestStep2 = proto3.makeMessageType(
+  "tkd.idm.v1.EnrollTOTPRequestStep2",
+  () => [
+    { no: 1, name: "verify_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "secret", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "secret_hmac", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.Enroll2FARequest
+ */
+export const Enroll2FARequest = proto3.makeMessageType(
+  "tkd.idm.v1.Enroll2FARequest",
+  () => [
+    { no: 1, name: "totp_step1", kind: "message", T: EnrollTOTPRequestStep1, oneof: "kind" },
+    { no: 2, name: "totp_step2", kind: "message", T: EnrollTOTPRequestStep2, oneof: "kind" },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.EnrollTOTPResponseStep1
+ */
+export const EnrollTOTPResponseStep1 = proto3.makeMessageType(
+  "tkd.idm.v1.EnrollTOTPResponseStep1",
+  () => [
+    { no: 2, name: "secret", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "qr_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "secret_hmac", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.EnrollTOTPResponseStep2
+ */
+export const EnrollTOTPResponseStep2 = proto3.makeMessageType(
+  "tkd.idm.v1.EnrollTOTPResponseStep2",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.Enroll2FAResponse
+ */
+export const Enroll2FAResponse = proto3.makeMessageType(
+  "tkd.idm.v1.Enroll2FAResponse",
+  () => [
+    { no: 1, name: "totp_step1", kind: "message", T: EnrollTOTPResponseStep1, oneof: "kind" },
+    { no: 2, name: "totp_step2", kind: "message", T: EnrollTOTPResponseStep2, oneof: "kind" },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.Remove2FARequest
+ */
+export const Remove2FARequest = proto3.makeMessageType(
+  "tkd.idm.v1.Remove2FARequest",
+  () => [
+    { no: 1, name: "totp_code", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "kind" },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.Remove2FAResponse
+ */
+export const Remove2FAResponse = proto3.makeMessageType(
+  "tkd.idm.v1.Remove2FAResponse",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.GenerateRecoveryCodesRequest
+ */
+export const GenerateRecoveryCodesRequest = proto3.makeMessageType(
+  "tkd.idm.v1.GenerateRecoveryCodesRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.GenerateRecoveryCodesResponse
+ */
+export const GenerateRecoveryCodesResponse = proto3.makeMessageType(
+  "tkd.idm.v1.GenerateRecoveryCodesResponse",
+  () => [
+    { no: 1, name: "recovery_codes", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.RegisteredPasskey
+ */
+export const RegisteredPasskey = proto3.makeMessageType(
+  "tkd.idm.v1.RegisteredPasskey",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "client_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "client_os", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "client_device", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "cred_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.GetRegisteredPasskeysRequest
+ */
+export const GetRegisteredPasskeysRequest = proto3.makeMessageType(
+  "tkd.idm.v1.GetRegisteredPasskeysRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.GetRegisteredPasskeysResponse
+ */
+export const GetRegisteredPasskeysResponse = proto3.makeMessageType(
+  "tkd.idm.v1.GetRegisteredPasskeysResponse",
+  () => [
+    { no: 1, name: "passkeys", kind: "message", T: RegisteredPasskey, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.RemovePasskeyRequest
+ */
+export const RemovePasskeyRequest = proto3.makeMessageType(
+  "tkd.idm.v1.RemovePasskeyRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.RemovePasskeyResponse
+ */
+export const RemovePasskeyResponse = proto3.makeMessageType(
+  "tkd.idm.v1.RemovePasskeyResponse",
   [],
 );
 

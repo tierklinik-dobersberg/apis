@@ -42,6 +42,15 @@ const (
 	AuthServiceRefreshTokenProcedure = "/tkd.idm.v1.AuthService/RefreshToken"
 	// AuthServiceIntrospectProcedure is the fully-qualified name of the AuthService's Introspect RPC.
 	AuthServiceIntrospectProcedure = "/tkd.idm.v1.AuthService/Introspect"
+	// AuthServiceGenerateRegistrationTokenProcedure is the fully-qualified name of the AuthService's
+	// GenerateRegistrationToken RPC.
+	AuthServiceGenerateRegistrationTokenProcedure = "/tkd.idm.v1.AuthService/GenerateRegistrationToken"
+	// AuthServiceValidateRegistrationTokenProcedure is the fully-qualified name of the AuthService's
+	// ValidateRegistrationToken RPC.
+	AuthServiceValidateRegistrationTokenProcedure = "/tkd.idm.v1.AuthService/ValidateRegistrationToken"
+	// AuthServiceRegisterUserProcedure is the fully-qualified name of the AuthService's RegisterUser
+	// RPC.
+	AuthServiceRegisterUserProcedure = "/tkd.idm.v1.AuthService/RegisterUser"
 )
 
 // AuthServiceClient is a client for the tkd.idm.v1.AuthService service.
@@ -68,6 +77,11 @@ type AuthServiceClient interface {
 	Logout(context.Context, *connect_go.Request[v1.LogoutRequest]) (*connect_go.Response[v1.LogoutResponse], error)
 	RefreshToken(context.Context, *connect_go.Request[v1.RefreshTokenRequest]) (*connect_go.Response[v1.RefreshTokenResponse], error)
 	Introspect(context.Context, *connect_go.Request[v1.IntrospectRequest]) (*connect_go.Response[v1.IntrospectResponse], error)
+	GenerateRegistrationToken(context.Context, *connect_go.Request[v1.GenerateRegistrationTokenRequest]) (*connect_go.Response[v1.GenerateRegistrationTokenResponse], error)
+	// Unauthenticated on purpose
+	ValidateRegistrationToken(context.Context, *connect_go.Request[v1.ValidateRegistrationTokenRequest]) (*connect_go.Response[v1.ValidateRegistrationTokenResponse], error)
+	// Unauthenticated on purpose
+	RegisterUser(context.Context, *connect_go.Request[v1.RegisterUserRequest]) (*connect_go.Response[v1.RegisterUserResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the tkd.idm.v1.AuthService service. By default, it
@@ -100,15 +114,33 @@ func NewAuthServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+AuthServiceIntrospectProcedure,
 			opts...,
 		),
+		generateRegistrationToken: connect_go.NewClient[v1.GenerateRegistrationTokenRequest, v1.GenerateRegistrationTokenResponse](
+			httpClient,
+			baseURL+AuthServiceGenerateRegistrationTokenProcedure,
+			opts...,
+		),
+		validateRegistrationToken: connect_go.NewClient[v1.ValidateRegistrationTokenRequest, v1.ValidateRegistrationTokenResponse](
+			httpClient,
+			baseURL+AuthServiceValidateRegistrationTokenProcedure,
+			opts...,
+		),
+		registerUser: connect_go.NewClient[v1.RegisterUserRequest, v1.RegisterUserResponse](
+			httpClient,
+			baseURL+AuthServiceRegisterUserProcedure,
+			opts...,
+		),
 	}
 }
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	login        *connect_go.Client[v1.LoginRequest, v1.LoginResponse]
-	logout       *connect_go.Client[v1.LogoutRequest, v1.LogoutResponse]
-	refreshToken *connect_go.Client[v1.RefreshTokenRequest, v1.RefreshTokenResponse]
-	introspect   *connect_go.Client[v1.IntrospectRequest, v1.IntrospectResponse]
+	login                     *connect_go.Client[v1.LoginRequest, v1.LoginResponse]
+	logout                    *connect_go.Client[v1.LogoutRequest, v1.LogoutResponse]
+	refreshToken              *connect_go.Client[v1.RefreshTokenRequest, v1.RefreshTokenResponse]
+	introspect                *connect_go.Client[v1.IntrospectRequest, v1.IntrospectResponse]
+	generateRegistrationToken *connect_go.Client[v1.GenerateRegistrationTokenRequest, v1.GenerateRegistrationTokenResponse]
+	validateRegistrationToken *connect_go.Client[v1.ValidateRegistrationTokenRequest, v1.ValidateRegistrationTokenResponse]
+	registerUser              *connect_go.Client[v1.RegisterUserRequest, v1.RegisterUserResponse]
 }
 
 // Login calls tkd.idm.v1.AuthService.Login.
@@ -129,6 +161,21 @@ func (c *authServiceClient) RefreshToken(ctx context.Context, req *connect_go.Re
 // Introspect calls tkd.idm.v1.AuthService.Introspect.
 func (c *authServiceClient) Introspect(ctx context.Context, req *connect_go.Request[v1.IntrospectRequest]) (*connect_go.Response[v1.IntrospectResponse], error) {
 	return c.introspect.CallUnary(ctx, req)
+}
+
+// GenerateRegistrationToken calls tkd.idm.v1.AuthService.GenerateRegistrationToken.
+func (c *authServiceClient) GenerateRegistrationToken(ctx context.Context, req *connect_go.Request[v1.GenerateRegistrationTokenRequest]) (*connect_go.Response[v1.GenerateRegistrationTokenResponse], error) {
+	return c.generateRegistrationToken.CallUnary(ctx, req)
+}
+
+// ValidateRegistrationToken calls tkd.idm.v1.AuthService.ValidateRegistrationToken.
+func (c *authServiceClient) ValidateRegistrationToken(ctx context.Context, req *connect_go.Request[v1.ValidateRegistrationTokenRequest]) (*connect_go.Response[v1.ValidateRegistrationTokenResponse], error) {
+	return c.validateRegistrationToken.CallUnary(ctx, req)
+}
+
+// RegisterUser calls tkd.idm.v1.AuthService.RegisterUser.
+func (c *authServiceClient) RegisterUser(ctx context.Context, req *connect_go.Request[v1.RegisterUserRequest]) (*connect_go.Response[v1.RegisterUserResponse], error) {
+	return c.registerUser.CallUnary(ctx, req)
 }
 
 // AuthServiceHandler is an implementation of the tkd.idm.v1.AuthService service.
@@ -155,6 +202,11 @@ type AuthServiceHandler interface {
 	Logout(context.Context, *connect_go.Request[v1.LogoutRequest]) (*connect_go.Response[v1.LogoutResponse], error)
 	RefreshToken(context.Context, *connect_go.Request[v1.RefreshTokenRequest]) (*connect_go.Response[v1.RefreshTokenResponse], error)
 	Introspect(context.Context, *connect_go.Request[v1.IntrospectRequest]) (*connect_go.Response[v1.IntrospectResponse], error)
+	GenerateRegistrationToken(context.Context, *connect_go.Request[v1.GenerateRegistrationTokenRequest]) (*connect_go.Response[v1.GenerateRegistrationTokenResponse], error)
+	// Unauthenticated on purpose
+	ValidateRegistrationToken(context.Context, *connect_go.Request[v1.ValidateRegistrationTokenRequest]) (*connect_go.Response[v1.ValidateRegistrationTokenResponse], error)
+	// Unauthenticated on purpose
+	RegisterUser(context.Context, *connect_go.Request[v1.RegisterUserRequest]) (*connect_go.Response[v1.RegisterUserResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -163,28 +215,61 @@ type AuthServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(AuthServiceLoginProcedure, connect_go.NewUnaryHandler(
+	authServiceLoginHandler := connect_go.NewUnaryHandler(
 		AuthServiceLoginProcedure,
 		svc.Login,
 		opts...,
-	))
-	mux.Handle(AuthServiceLogoutProcedure, connect_go.NewUnaryHandler(
+	)
+	authServiceLogoutHandler := connect_go.NewUnaryHandler(
 		AuthServiceLogoutProcedure,
 		svc.Logout,
 		opts...,
-	))
-	mux.Handle(AuthServiceRefreshTokenProcedure, connect_go.NewUnaryHandler(
+	)
+	authServiceRefreshTokenHandler := connect_go.NewUnaryHandler(
 		AuthServiceRefreshTokenProcedure,
 		svc.RefreshToken,
 		opts...,
-	))
-	mux.Handle(AuthServiceIntrospectProcedure, connect_go.NewUnaryHandler(
+	)
+	authServiceIntrospectHandler := connect_go.NewUnaryHandler(
 		AuthServiceIntrospectProcedure,
 		svc.Introspect,
 		opts...,
-	))
-	return "/tkd.idm.v1.AuthService/", mux
+	)
+	authServiceGenerateRegistrationTokenHandler := connect_go.NewUnaryHandler(
+		AuthServiceGenerateRegistrationTokenProcedure,
+		svc.GenerateRegistrationToken,
+		opts...,
+	)
+	authServiceValidateRegistrationTokenHandler := connect_go.NewUnaryHandler(
+		AuthServiceValidateRegistrationTokenProcedure,
+		svc.ValidateRegistrationToken,
+		opts...,
+	)
+	authServiceRegisterUserHandler := connect_go.NewUnaryHandler(
+		AuthServiceRegisterUserProcedure,
+		svc.RegisterUser,
+		opts...,
+	)
+	return "/tkd.idm.v1.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case AuthServiceLoginProcedure:
+			authServiceLoginHandler.ServeHTTP(w, r)
+		case AuthServiceLogoutProcedure:
+			authServiceLogoutHandler.ServeHTTP(w, r)
+		case AuthServiceRefreshTokenProcedure:
+			authServiceRefreshTokenHandler.ServeHTTP(w, r)
+		case AuthServiceIntrospectProcedure:
+			authServiceIntrospectHandler.ServeHTTP(w, r)
+		case AuthServiceGenerateRegistrationTokenProcedure:
+			authServiceGenerateRegistrationTokenHandler.ServeHTTP(w, r)
+		case AuthServiceValidateRegistrationTokenProcedure:
+			authServiceValidateRegistrationTokenHandler.ServeHTTP(w, r)
+		case AuthServiceRegisterUserProcedure:
+			authServiceRegisterUserHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedAuthServiceHandler returns CodeUnimplemented from all methods.
@@ -204,4 +289,16 @@ func (UnimplementedAuthServiceHandler) RefreshToken(context.Context, *connect_go
 
 func (UnimplementedAuthServiceHandler) Introspect(context.Context, *connect_go.Request[v1.IntrospectRequest]) (*connect_go.Response[v1.IntrospectResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.AuthService.Introspect is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) GenerateRegistrationToken(context.Context, *connect_go.Request[v1.GenerateRegistrationTokenRequest]) (*connect_go.Response[v1.GenerateRegistrationTokenResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.AuthService.GenerateRegistrationToken is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) ValidateRegistrationToken(context.Context, *connect_go.Request[v1.ValidateRegistrationTokenRequest]) (*connect_go.Response[v1.ValidateRegistrationTokenResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.AuthService.ValidateRegistrationToken is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) RegisterUser(context.Context, *connect_go.Request[v1.RegisterUserRequest]) (*connect_go.Response[v1.RegisterUserResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.AuthService.RegisterUser is not implemented"))
 }

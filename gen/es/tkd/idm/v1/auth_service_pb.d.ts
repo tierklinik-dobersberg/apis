@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, Duration, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Profile, User } from "./user_pb.js";
 
@@ -20,6 +20,26 @@ export declare enum AuthType {
    * @generated from enum value: AUTH_TYPE_PASSWORD = 1;
    */
   PASSWORD = 1,
+
+  /**
+   * @generated from enum value: AUTH_TYPE_TOTP = 2;
+   */
+  TOTP = 2,
+}
+
+/**
+ * @generated from enum tkd.idm.v1.RequiredMFAKind
+ */
+export declare enum RequiredMFAKind {
+  /**
+   * @generated from enum value: REQUIRED_MFA_KIND_UNSPECIFIED = 0;
+   */
+  REQUIRED_MFA_KIND_UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: REQUIRED_MFA_KIND_TOTP = 1;
+   */
+  REQUIRED_MFA_KIND_TOTP = 1,
 }
 
 /**
@@ -52,6 +72,35 @@ export declare class PasswordAuth extends Message<PasswordAuth> {
 }
 
 /**
+ * @generated from message tkd.idm.v1.TotpAuth
+ */
+export declare class TotpAuth extends Message<TotpAuth> {
+  /**
+   * @generated from field: string code = 1;
+   */
+  code: string;
+
+  /**
+   * @generated from field: string state = 2;
+   */
+  state: string;
+
+  constructor(data?: PartialMessage<TotpAuth>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.TotpAuth";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TotpAuth;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TotpAuth;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TotpAuth;
+
+  static equals(a: TotpAuth | PlainMessage<TotpAuth> | undefined, b: TotpAuth | PlainMessage<TotpAuth> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.idm.v1.LoginRequest
  */
 export declare class LoginRequest extends Message<LoginRequest> {
@@ -74,15 +123,26 @@ export declare class LoginRequest extends Message<LoginRequest> {
      */
     value: PasswordAuth;
     case: "password";
+  } | {
+    /**
+     * @generated from field: tkd.idm.v1.TotpAuth totp = 4;
+     */
+    value: TotpAuth;
+    case: "totp";
   } | { case: undefined; value?: undefined };
 
   /**
    * The URL that should be redirected to
    * once the authentication is successfull.
    *
-   * @generated from field: string requested_redirect = 4;
+   * @generated from field: string requested_redirect = 5;
    */
   requestedRedirect: string;
+
+  /**
+   * @generated from field: google.protobuf.Duration ttl = 6;
+   */
+  ttl?: Duration;
 
   constructor(data?: PartialMessage<LoginRequest>);
 
@@ -134,6 +194,35 @@ export declare class AccessTokenResponse extends Message<AccessTokenResponse> {
 }
 
 /**
+ * @generated from message tkd.idm.v1.MFARequiredResponse
+ */
+export declare class MFARequiredResponse extends Message<MFARequiredResponse> {
+  /**
+   * @generated from field: tkd.idm.v1.RequiredMFAKind kind = 1;
+   */
+  kind: RequiredMFAKind;
+
+  /**
+   * @generated from field: string state = 2;
+   */
+  state: string;
+
+  constructor(data?: PartialMessage<MFARequiredResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.MFARequiredResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): MFARequiredResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): MFARequiredResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): MFARequiredResponse;
+
+  static equals(a: MFARequiredResponse | PlainMessage<MFARequiredResponse> | undefined, b: MFARequiredResponse | PlainMessage<MFARequiredResponse> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.idm.v1.LoginResponse
  */
 export declare class LoginResponse extends Message<LoginResponse> {
@@ -146,6 +235,12 @@ export declare class LoginResponse extends Message<LoginResponse> {
      */
     value: AccessTokenResponse;
     case: "accessToken";
+  } | {
+    /**
+     * @generated from field: tkd.idm.v1.MFARequiredResponse mfa_required = 2;
+     */
+    value: MFARequiredResponse;
+    case: "mfaRequired";
   } | { case: undefined; value?: undefined };
 
   /**
@@ -218,6 +313,16 @@ export declare class LogoutResponse extends Message<LogoutResponse> {
  * @generated from message tkd.idm.v1.RefreshTokenRequest
  */
 export declare class RefreshTokenRequest extends Message<RefreshTokenRequest> {
+  /**
+   * @generated from field: google.protobuf.Duration ttl = 1;
+   */
+  ttl?: Duration;
+
+  /**
+   * @generated from field: string requested_redirect = 2;
+   */
+  requestedRedirect: string;
+
   constructor(data?: PartialMessage<RefreshTokenRequest>);
 
   static readonly runtime: typeof proto3;
@@ -305,5 +410,164 @@ export declare class IntrospectResponse extends Message<IntrospectResponse> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): IntrospectResponse;
 
   static equals(a: IntrospectResponse | PlainMessage<IntrospectResponse> | undefined, b: IntrospectResponse | PlainMessage<IntrospectResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.GenerateRegistrationTokenRequest
+ */
+export declare class GenerateRegistrationTokenRequest extends Message<GenerateRegistrationTokenRequest> {
+  /**
+   * @generated from field: google.protobuf.Duration ttl = 1;
+   */
+  ttl?: Duration;
+
+  /**
+   * @generated from field: uint64 max_count = 2;
+   */
+  maxCount: bigint;
+
+  /**
+   * @generated from field: repeated string initial_roles = 3;
+   */
+  initialRoles: string[];
+
+  constructor(data?: PartialMessage<GenerateRegistrationTokenRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.GenerateRegistrationTokenRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GenerateRegistrationTokenRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GenerateRegistrationTokenRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GenerateRegistrationTokenRequest;
+
+  static equals(a: GenerateRegistrationTokenRequest | PlainMessage<GenerateRegistrationTokenRequest> | undefined, b: GenerateRegistrationTokenRequest | PlainMessage<GenerateRegistrationTokenRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.GenerateRegistrationTokenResponse
+ */
+export declare class GenerateRegistrationTokenResponse extends Message<GenerateRegistrationTokenResponse> {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+
+  constructor(data?: PartialMessage<GenerateRegistrationTokenResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.GenerateRegistrationTokenResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GenerateRegistrationTokenResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GenerateRegistrationTokenResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GenerateRegistrationTokenResponse;
+
+  static equals(a: GenerateRegistrationTokenResponse | PlainMessage<GenerateRegistrationTokenResponse> | undefined, b: GenerateRegistrationTokenResponse | PlainMessage<GenerateRegistrationTokenResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.ValidateRegistrationTokenRequest
+ */
+export declare class ValidateRegistrationTokenRequest extends Message<ValidateRegistrationTokenRequest> {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+
+  constructor(data?: PartialMessage<ValidateRegistrationTokenRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ValidateRegistrationTokenRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ValidateRegistrationTokenRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ValidateRegistrationTokenRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ValidateRegistrationTokenRequest;
+
+  static equals(a: ValidateRegistrationTokenRequest | PlainMessage<ValidateRegistrationTokenRequest> | undefined, b: ValidateRegistrationTokenRequest | PlainMessage<ValidateRegistrationTokenRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.ValidateRegistrationTokenResponse
+ */
+export declare class ValidateRegistrationTokenResponse extends Message<ValidateRegistrationTokenResponse> {
+  constructor(data?: PartialMessage<ValidateRegistrationTokenResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ValidateRegistrationTokenResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ValidateRegistrationTokenResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ValidateRegistrationTokenResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ValidateRegistrationTokenResponse;
+
+  static equals(a: ValidateRegistrationTokenResponse | PlainMessage<ValidateRegistrationTokenResponse> | undefined, b: ValidateRegistrationTokenResponse | PlainMessage<ValidateRegistrationTokenResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.RegisterUserRequest
+ */
+export declare class RegisterUserRequest extends Message<RegisterUserRequest> {
+  /**
+   * @generated from field: string registration_token = 1;
+   */
+  registrationToken: string;
+
+  /**
+   * @generated from field: string username = 2;
+   */
+  username: string;
+
+  /**
+   * @generated from field: string password = 3;
+   */
+  password: string;
+
+  constructor(data?: PartialMessage<RegisterUserRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.RegisterUserRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RegisterUserRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RegisterUserRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RegisterUserRequest;
+
+  static equals(a: RegisterUserRequest | PlainMessage<RegisterUserRequest> | undefined, b: RegisterUserRequest | PlainMessage<RegisterUserRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.RegisterUserResponse
+ */
+export declare class RegisterUserResponse extends Message<RegisterUserResponse> {
+  /**
+   * @generated from field: tkd.idm.v1.AccessTokenResponse access_token = 1;
+   */
+  accessToken?: AccessTokenResponse;
+
+  constructor(data?: PartialMessage<RegisterUserResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.RegisterUserResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RegisterUserResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RegisterUserResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RegisterUserResponse;
+
+  static equals(a: RegisterUserResponse | PlainMessage<RegisterUserResponse> | undefined, b: RegisterUserResponse | PlainMessage<RegisterUserResponse> | undefined): boolean;
 }
 

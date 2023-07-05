@@ -148,13 +148,19 @@ message Profile {
   // may change these values using the UserService.
   repeated EMail email_addresses = 8;
 
+  // Whether or not this user has TOTP enabled.
+  bool totp_enabled = 9;
+
+  // Whether or not there are MFA recovery codes for this user.
+  bool recovery_codes_generated = 10;
+
   // A field-mask to defined publically viewable fields from the
   // user profile. If set, the configured field-mask overwrites
   // the field mask of the (tkd.common.v1.readable) option.
   // Note that the privacy_mask is not applied to users that either
   // match the owner_field_name or allowed_roles field of the (tkd.common.v1.readable)
   // option.
-  google.protobuf.FieldMask privacy_mask = 9;
+  google.protobuf.FieldMask privacy_mask = 20;
 
 
   option (tkd.common.v1.readable) = {

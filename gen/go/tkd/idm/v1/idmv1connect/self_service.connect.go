@@ -72,6 +72,21 @@ const (
 	// SelfServiceServiceValidatePhoneNumberProcedure is the fully-qualified name of the
 	// SelfServiceService's ValidatePhoneNumber RPC.
 	SelfServiceServiceValidatePhoneNumberProcedure = "/tkd.idm.v1.SelfServiceService/ValidatePhoneNumber"
+	// SelfServiceServiceGetRegisteredPasskeysProcedure is the fully-qualified name of the
+	// SelfServiceService's GetRegisteredPasskeys RPC.
+	SelfServiceServiceGetRegisteredPasskeysProcedure = "/tkd.idm.v1.SelfServiceService/GetRegisteredPasskeys"
+	// SelfServiceServiceRemovePasskeyProcedure is the fully-qualified name of the SelfServiceService's
+	// RemovePasskey RPC.
+	SelfServiceServiceRemovePasskeyProcedure = "/tkd.idm.v1.SelfServiceService/RemovePasskey"
+	// SelfServiceServiceEnroll2FAProcedure is the fully-qualified name of the SelfServiceService's
+	// Enroll2FA RPC.
+	SelfServiceServiceEnroll2FAProcedure = "/tkd.idm.v1.SelfServiceService/Enroll2FA"
+	// SelfServiceServiceRemove2FAProcedure is the fully-qualified name of the SelfServiceService's
+	// Remove2FA RPC.
+	SelfServiceServiceRemove2FAProcedure = "/tkd.idm.v1.SelfServiceService/Remove2FA"
+	// SelfServiceServiceGenerateRecoveryCodesProcedure is the fully-qualified name of the
+	// SelfServiceService's GenerateRecoveryCodes RPC.
+	SelfServiceServiceGenerateRecoveryCodesProcedure = "/tkd.idm.v1.SelfServiceService/GenerateRecoveryCodes"
 )
 
 // SelfServiceServiceClient is a client for the tkd.idm.v1.SelfServiceService service.
@@ -92,6 +107,13 @@ type SelfServiceServiceClient interface {
 	DeletePhoneNumber(context.Context, *connect_go.Request[v1.DeletePhoneNumberRequest]) (*connect_go.Response[v1.DeletePhoneNumberResponse], error)
 	MarkPhoneNumberAsPrimary(context.Context, *connect_go.Request[v1.MarkPhoneNumberAsPrimaryRequest]) (*connect_go.Response[v1.MarkPhoneNumberAsPrimaryResponse], error)
 	ValidatePhoneNumber(context.Context, *connect_go.Request[v1.ValidatePhoneNumberRequest]) (*connect_go.Response[v1.ValidatePhoneNumberResponse], error)
+	// WebAuthN
+	GetRegisteredPasskeys(context.Context, *connect_go.Request[v1.GetRegisteredPasskeysRequest]) (*connect_go.Response[v1.GetRegisteredPasskeysResponse], error)
+	RemovePasskey(context.Context, *connect_go.Request[v1.RemovePasskeyRequest]) (*connect_go.Response[v1.RemovePasskeyResponse], error)
+	// Two-Factor authentication
+	Enroll2FA(context.Context, *connect_go.Request[v1.Enroll2FARequest]) (*connect_go.Response[v1.Enroll2FAResponse], error)
+	Remove2FA(context.Context, *connect_go.Request[v1.Remove2FARequest]) (*connect_go.Response[v1.Remove2FAResponse], error)
+	GenerateRecoveryCodes(context.Context, *connect_go.Request[v1.GenerateRecoveryCodesRequest]) (*connect_go.Response[v1.GenerateRecoveryCodesResponse], error)
 }
 
 // NewSelfServiceServiceClient constructs a client for the tkd.idm.v1.SelfServiceService service. By
@@ -169,6 +191,31 @@ func NewSelfServiceServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 			baseURL+SelfServiceServiceValidatePhoneNumberProcedure,
 			opts...,
 		),
+		getRegisteredPasskeys: connect_go.NewClient[v1.GetRegisteredPasskeysRequest, v1.GetRegisteredPasskeysResponse](
+			httpClient,
+			baseURL+SelfServiceServiceGetRegisteredPasskeysProcedure,
+			opts...,
+		),
+		removePasskey: connect_go.NewClient[v1.RemovePasskeyRequest, v1.RemovePasskeyResponse](
+			httpClient,
+			baseURL+SelfServiceServiceRemovePasskeyProcedure,
+			opts...,
+		),
+		enroll2FA: connect_go.NewClient[v1.Enroll2FARequest, v1.Enroll2FAResponse](
+			httpClient,
+			baseURL+SelfServiceServiceEnroll2FAProcedure,
+			opts...,
+		),
+		remove2FA: connect_go.NewClient[v1.Remove2FARequest, v1.Remove2FAResponse](
+			httpClient,
+			baseURL+SelfServiceServiceRemove2FAProcedure,
+			opts...,
+		),
+		generateRecoveryCodes: connect_go.NewClient[v1.GenerateRecoveryCodesRequest, v1.GenerateRecoveryCodesResponse](
+			httpClient,
+			baseURL+SelfServiceServiceGenerateRecoveryCodesProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -187,6 +234,11 @@ type selfServiceServiceClient struct {
 	deletePhoneNumber        *connect_go.Client[v1.DeletePhoneNumberRequest, v1.DeletePhoneNumberResponse]
 	markPhoneNumberAsPrimary *connect_go.Client[v1.MarkPhoneNumberAsPrimaryRequest, v1.MarkPhoneNumberAsPrimaryResponse]
 	validatePhoneNumber      *connect_go.Client[v1.ValidatePhoneNumberRequest, v1.ValidatePhoneNumberResponse]
+	getRegisteredPasskeys    *connect_go.Client[v1.GetRegisteredPasskeysRequest, v1.GetRegisteredPasskeysResponse]
+	removePasskey            *connect_go.Client[v1.RemovePasskeyRequest, v1.RemovePasskeyResponse]
+	enroll2FA                *connect_go.Client[v1.Enroll2FARequest, v1.Enroll2FAResponse]
+	remove2FA                *connect_go.Client[v1.Remove2FARequest, v1.Remove2FAResponse]
+	generateRecoveryCodes    *connect_go.Client[v1.GenerateRecoveryCodesRequest, v1.GenerateRecoveryCodesResponse]
 }
 
 // ChangePassword calls tkd.idm.v1.SelfServiceService.ChangePassword.
@@ -254,6 +306,31 @@ func (c *selfServiceServiceClient) ValidatePhoneNumber(ctx context.Context, req 
 	return c.validatePhoneNumber.CallUnary(ctx, req)
 }
 
+// GetRegisteredPasskeys calls tkd.idm.v1.SelfServiceService.GetRegisteredPasskeys.
+func (c *selfServiceServiceClient) GetRegisteredPasskeys(ctx context.Context, req *connect_go.Request[v1.GetRegisteredPasskeysRequest]) (*connect_go.Response[v1.GetRegisteredPasskeysResponse], error) {
+	return c.getRegisteredPasskeys.CallUnary(ctx, req)
+}
+
+// RemovePasskey calls tkd.idm.v1.SelfServiceService.RemovePasskey.
+func (c *selfServiceServiceClient) RemovePasskey(ctx context.Context, req *connect_go.Request[v1.RemovePasskeyRequest]) (*connect_go.Response[v1.RemovePasskeyResponse], error) {
+	return c.removePasskey.CallUnary(ctx, req)
+}
+
+// Enroll2FA calls tkd.idm.v1.SelfServiceService.Enroll2FA.
+func (c *selfServiceServiceClient) Enroll2FA(ctx context.Context, req *connect_go.Request[v1.Enroll2FARequest]) (*connect_go.Response[v1.Enroll2FAResponse], error) {
+	return c.enroll2FA.CallUnary(ctx, req)
+}
+
+// Remove2FA calls tkd.idm.v1.SelfServiceService.Remove2FA.
+func (c *selfServiceServiceClient) Remove2FA(ctx context.Context, req *connect_go.Request[v1.Remove2FARequest]) (*connect_go.Response[v1.Remove2FAResponse], error) {
+	return c.remove2FA.CallUnary(ctx, req)
+}
+
+// GenerateRecoveryCodes calls tkd.idm.v1.SelfServiceService.GenerateRecoveryCodes.
+func (c *selfServiceServiceClient) GenerateRecoveryCodes(ctx context.Context, req *connect_go.Request[v1.GenerateRecoveryCodesRequest]) (*connect_go.Response[v1.GenerateRecoveryCodesResponse], error) {
+	return c.generateRecoveryCodes.CallUnary(ctx, req)
+}
+
 // SelfServiceServiceHandler is an implementation of the tkd.idm.v1.SelfServiceService service.
 type SelfServiceServiceHandler interface {
 	ChangePassword(context.Context, *connect_go.Request[v1.ChangePasswordRequest]) (*connect_go.Response[v1.ChangePasswordResponse], error)
@@ -272,6 +349,13 @@ type SelfServiceServiceHandler interface {
 	DeletePhoneNumber(context.Context, *connect_go.Request[v1.DeletePhoneNumberRequest]) (*connect_go.Response[v1.DeletePhoneNumberResponse], error)
 	MarkPhoneNumberAsPrimary(context.Context, *connect_go.Request[v1.MarkPhoneNumberAsPrimaryRequest]) (*connect_go.Response[v1.MarkPhoneNumberAsPrimaryResponse], error)
 	ValidatePhoneNumber(context.Context, *connect_go.Request[v1.ValidatePhoneNumberRequest]) (*connect_go.Response[v1.ValidatePhoneNumberResponse], error)
+	// WebAuthN
+	GetRegisteredPasskeys(context.Context, *connect_go.Request[v1.GetRegisteredPasskeysRequest]) (*connect_go.Response[v1.GetRegisteredPasskeysResponse], error)
+	RemovePasskey(context.Context, *connect_go.Request[v1.RemovePasskeyRequest]) (*connect_go.Response[v1.RemovePasskeyResponse], error)
+	// Two-Factor authentication
+	Enroll2FA(context.Context, *connect_go.Request[v1.Enroll2FARequest]) (*connect_go.Response[v1.Enroll2FAResponse], error)
+	Remove2FA(context.Context, *connect_go.Request[v1.Remove2FARequest]) (*connect_go.Response[v1.Remove2FAResponse], error)
+	GenerateRecoveryCodes(context.Context, *connect_go.Request[v1.GenerateRecoveryCodesRequest]) (*connect_go.Response[v1.GenerateRecoveryCodesResponse], error)
 }
 
 // NewSelfServiceServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -280,73 +364,138 @@ type SelfServiceServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewSelfServiceServiceHandler(svc SelfServiceServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(SelfServiceServiceChangePasswordProcedure, connect_go.NewUnaryHandler(
+	selfServiceServiceChangePasswordHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceChangePasswordProcedure,
 		svc.ChangePassword,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceUpdateProfileProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceUpdateProfileHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceUpdateProfileProcedure,
 		svc.UpdateProfile,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceAddEmailAddressProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceAddEmailAddressHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceAddEmailAddressProcedure,
 		svc.AddEmailAddress,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceDeleteEmailAddressProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceDeleteEmailAddressHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceDeleteEmailAddressProcedure,
 		svc.DeleteEmailAddress,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceMarkEmailAsPrimaryProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceMarkEmailAsPrimaryHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceMarkEmailAsPrimaryProcedure,
 		svc.MarkEmailAsPrimary,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceValidateEmailProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceValidateEmailHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceValidateEmailProcedure,
 		svc.ValidateEmail,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceAddAddressProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceAddAddressHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceAddAddressProcedure,
 		svc.AddAddress,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceDeleteAddressProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceDeleteAddressHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceDeleteAddressProcedure,
 		svc.DeleteAddress,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceUpdateAddressProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceUpdateAddressHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceUpdateAddressProcedure,
 		svc.UpdateAddress,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceAddPhoneNumberProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceAddPhoneNumberHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceAddPhoneNumberProcedure,
 		svc.AddPhoneNumber,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceDeletePhoneNumberProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceDeletePhoneNumberHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceDeletePhoneNumberProcedure,
 		svc.DeletePhoneNumber,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceMarkPhoneNumberAsPrimaryProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceMarkPhoneNumberAsPrimaryHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceMarkPhoneNumberAsPrimaryProcedure,
 		svc.MarkPhoneNumberAsPrimary,
 		opts...,
-	))
-	mux.Handle(SelfServiceServiceValidatePhoneNumberProcedure, connect_go.NewUnaryHandler(
+	)
+	selfServiceServiceValidatePhoneNumberHandler := connect_go.NewUnaryHandler(
 		SelfServiceServiceValidatePhoneNumberProcedure,
 		svc.ValidatePhoneNumber,
 		opts...,
-	))
-	return "/tkd.idm.v1.SelfServiceService/", mux
+	)
+	selfServiceServiceGetRegisteredPasskeysHandler := connect_go.NewUnaryHandler(
+		SelfServiceServiceGetRegisteredPasskeysProcedure,
+		svc.GetRegisteredPasskeys,
+		opts...,
+	)
+	selfServiceServiceRemovePasskeyHandler := connect_go.NewUnaryHandler(
+		SelfServiceServiceRemovePasskeyProcedure,
+		svc.RemovePasskey,
+		opts...,
+	)
+	selfServiceServiceEnroll2FAHandler := connect_go.NewUnaryHandler(
+		SelfServiceServiceEnroll2FAProcedure,
+		svc.Enroll2FA,
+		opts...,
+	)
+	selfServiceServiceRemove2FAHandler := connect_go.NewUnaryHandler(
+		SelfServiceServiceRemove2FAProcedure,
+		svc.Remove2FA,
+		opts...,
+	)
+	selfServiceServiceGenerateRecoveryCodesHandler := connect_go.NewUnaryHandler(
+		SelfServiceServiceGenerateRecoveryCodesProcedure,
+		svc.GenerateRecoveryCodes,
+		opts...,
+	)
+	return "/tkd.idm.v1.SelfServiceService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case SelfServiceServiceChangePasswordProcedure:
+			selfServiceServiceChangePasswordHandler.ServeHTTP(w, r)
+		case SelfServiceServiceUpdateProfileProcedure:
+			selfServiceServiceUpdateProfileHandler.ServeHTTP(w, r)
+		case SelfServiceServiceAddEmailAddressProcedure:
+			selfServiceServiceAddEmailAddressHandler.ServeHTTP(w, r)
+		case SelfServiceServiceDeleteEmailAddressProcedure:
+			selfServiceServiceDeleteEmailAddressHandler.ServeHTTP(w, r)
+		case SelfServiceServiceMarkEmailAsPrimaryProcedure:
+			selfServiceServiceMarkEmailAsPrimaryHandler.ServeHTTP(w, r)
+		case SelfServiceServiceValidateEmailProcedure:
+			selfServiceServiceValidateEmailHandler.ServeHTTP(w, r)
+		case SelfServiceServiceAddAddressProcedure:
+			selfServiceServiceAddAddressHandler.ServeHTTP(w, r)
+		case SelfServiceServiceDeleteAddressProcedure:
+			selfServiceServiceDeleteAddressHandler.ServeHTTP(w, r)
+		case SelfServiceServiceUpdateAddressProcedure:
+			selfServiceServiceUpdateAddressHandler.ServeHTTP(w, r)
+		case SelfServiceServiceAddPhoneNumberProcedure:
+			selfServiceServiceAddPhoneNumberHandler.ServeHTTP(w, r)
+		case SelfServiceServiceDeletePhoneNumberProcedure:
+			selfServiceServiceDeletePhoneNumberHandler.ServeHTTP(w, r)
+		case SelfServiceServiceMarkPhoneNumberAsPrimaryProcedure:
+			selfServiceServiceMarkPhoneNumberAsPrimaryHandler.ServeHTTP(w, r)
+		case SelfServiceServiceValidatePhoneNumberProcedure:
+			selfServiceServiceValidatePhoneNumberHandler.ServeHTTP(w, r)
+		case SelfServiceServiceGetRegisteredPasskeysProcedure:
+			selfServiceServiceGetRegisteredPasskeysHandler.ServeHTTP(w, r)
+		case SelfServiceServiceRemovePasskeyProcedure:
+			selfServiceServiceRemovePasskeyHandler.ServeHTTP(w, r)
+		case SelfServiceServiceEnroll2FAProcedure:
+			selfServiceServiceEnroll2FAHandler.ServeHTTP(w, r)
+		case SelfServiceServiceRemove2FAProcedure:
+			selfServiceServiceRemove2FAHandler.ServeHTTP(w, r)
+		case SelfServiceServiceGenerateRecoveryCodesProcedure:
+			selfServiceServiceGenerateRecoveryCodesHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedSelfServiceServiceHandler returns CodeUnimplemented from all methods.
@@ -402,4 +551,24 @@ func (UnimplementedSelfServiceServiceHandler) MarkPhoneNumberAsPrimary(context.C
 
 func (UnimplementedSelfServiceServiceHandler) ValidatePhoneNumber(context.Context, *connect_go.Request[v1.ValidatePhoneNumberRequest]) (*connect_go.Response[v1.ValidatePhoneNumberResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.ValidatePhoneNumber is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) GetRegisteredPasskeys(context.Context, *connect_go.Request[v1.GetRegisteredPasskeysRequest]) (*connect_go.Response[v1.GetRegisteredPasskeysResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.GetRegisteredPasskeys is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) RemovePasskey(context.Context, *connect_go.Request[v1.RemovePasskeyRequest]) (*connect_go.Response[v1.RemovePasskeyResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.RemovePasskey is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) Enroll2FA(context.Context, *connect_go.Request[v1.Enroll2FARequest]) (*connect_go.Response[v1.Enroll2FAResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.Enroll2FA is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) Remove2FA(context.Context, *connect_go.Request[v1.Remove2FARequest]) (*connect_go.Response[v1.Remove2FAResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.Remove2FA is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) GenerateRecoveryCodes(context.Context, *connect_go.Request[v1.GenerateRecoveryCodesRequest]) (*connect_go.Response[v1.GenerateRecoveryCodesResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.GenerateRecoveryCodes is not implemented"))
 }

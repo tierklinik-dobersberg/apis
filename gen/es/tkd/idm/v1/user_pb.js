@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3, Value } from "@bufbuild/protobuf";
+import { FieldMask, proto3, Value } from "@bufbuild/protobuf";
 
 /**
  * @generated from message tkd.idm.v1.EMail
@@ -74,6 +74,9 @@ export const Profile = proto3.makeMessageType(
     { no: 6, name: "addresses", kind: "message", T: Address, repeated: true },
     { no: 7, name: "phone_numbers", kind: "message", T: PhoneNumber, repeated: true },
     { no: 8, name: "email_addresses", kind: "message", T: EMail, repeated: true },
+    { no: 9, name: "totp_enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 10, name: "recovery_codes_generated", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 20, name: "privacy_mask", kind: "message", T: FieldMask },
   ],
 );
 

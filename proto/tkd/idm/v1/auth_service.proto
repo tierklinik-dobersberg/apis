@@ -2,9 +2,11 @@ syntax = "proto3";
 
 package tkd.idm.v1;
 
+import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "tkd/idm/v1/user.proto";
 import "tkd/common/v1/descriptor.proto";
+import "buf/validate/validate.proto";
 
 // AuthService provides methods for authentication to the
 // services hosted and managed by Tierklinik Dobersberg (TKD).
@@ -36,21 +38,41 @@ service AuthService {
   }
   
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+
   rpc Introspect(IntrospectRequest) returns (IntrospectResponse) {
     option (tkd.common.v1.auth) = {
       require: AUTH_REQ_REQUIRED
     };
   }
+
+  rpc GenerateRegistrationToken (GenerateRegistrationTokenRequest) returns (GenerateRegistrationTokenResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser", "idm_user_inviter"]
+    };
+  }
+
+  // Unauthenticated on purpose
+  rpc ValidateRegistrationToken (ValidateRegistrationTokenRequest) returns (ValidateRegistrationTokenResponse) {}
+
+  // Unauthenticated on purpose
+  rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {}
 }
 
 enum AuthType {
   AUTH_TYPE_UNSPECIFIED = 0;
   AUTH_TYPE_PASSWORD = 1;
+  AUTH_TYPE_TOTP = 2;
 }
 
 message PasswordAuth {
   string username = 1;
   string password = 2;
+}
+
+message TotpAuth {
+  string code = 1;
+  string state = 2;
 }
 
 message LoginRequest {
@@ -59,11 +81,13 @@ message LoginRequest {
 
   oneof auth {
     PasswordAuth password = 3;
+    TotpAuth totp = 4;
   }
 
   // The URL that should be redirected to
   // once the authentication is successfull.
-  string requested_redirect = 4;
+  string requested_redirect = 5;
+  google.protobuf.Duration ttl = 6;
 }
 
 message AccessTokenResponse {
@@ -72,9 +96,20 @@ message AccessTokenResponse {
   User user = 3;
 }
 
+enum RequiredMFAKind {
+  REQUIRED_MFA_KIND_UNSPECIFIED = 0;
+  REQUIRED_MFA_KIND_TOTP = 1;
+}
+
+message MFARequiredResponse {
+  RequiredMFAKind kind = 1; 
+  string state = 2;
+}
+
 message LoginResponse {
   oneof response {
     AccessTokenResponse access_token = 1;
+    MFARequiredResponse mfa_required = 2;
   }
 
   // If set, the client is expected to redirect the
@@ -90,7 +125,10 @@ message LogoutResponse {
   // empty on purpose
 }
 
-message RefreshTokenRequest {}
+message RefreshTokenRequest {
+  google.protobuf.Duration ttl = 1;
+  string requested_redirect = 2;
+}
 
 message RefreshTokenResponse {
   AccessTokenResponse access_token = 1;
@@ -103,4 +141,36 @@ message IntrospectRequest {
 
 message IntrospectResponse {
   Profile profile = 1;
+}
+
+message GenerateRegistrationTokenRequest {
+  google.protobuf.Duration ttl = 1;
+  uint64 max_count = 2;
+  repeated string initial_roles = 3;
+}
+
+message GenerateRegistrationTokenResponse {
+  string token = 1;
+}
+
+message ValidateRegistrationTokenRequest {
+  string token = 1;
+}
+
+message ValidateRegistrationTokenResponse {}
+
+message RegisterUserRequest {
+  string registration_token = 1;
+
+  string username = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  string password = 3 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message RegisterUserResponse {
+  AccessTokenResponse access_token = 1;
 }
