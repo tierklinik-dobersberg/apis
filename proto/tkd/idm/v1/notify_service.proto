@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package tkd.idm.v1;
+
+import "buf/validate/validate.proto";
+
+// Admin API only
+//
+service NotifyService {
+    rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse) {}
+}
+
+enum Channel {
+    CHANNEL_UNSPECIFIED = 0;
+    CHANNEL_SMS = 1;
+    CHANNEL_MAIL = 2;
+}
+
+message SendNotificationRequest {
+    oneof message {
+        string text = 1 [(buf.validate.field).required = true];
+        string template_name = 2 [(buf.validate.field).required = true];
+    };
+
+    repeated string target_users = 3;
+    repeated string target_roles = 4;
+    Channel preferred_channel = 5;
+}
+
+message DeliveryNotification {
+    string target_user = 1;
+    Channel used_channel = 2;
+}
+
+message SendNotificationResponse {
+    repeated DeliveryNotification deliveries = 1;
+}
+
