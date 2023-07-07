@@ -253,13 +253,12 @@ message MarkPhoneNumberAsPrimaryResponse{}
 
 message ValidatePhoneNumberRequest{
     oneof step {
-        string id = 1 [(buf.validate.field).required = true];
-        string code = 2 [(buf.validate.field).required = true ];
+        string id = 1;
+        string code = 2; 
     }
 }
 
 message ValidatePhoneNumberResponse{
-    string state = 2;
 }
 
 message EnrollTOTPRequestStep1 {}

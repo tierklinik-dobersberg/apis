@@ -675,11 +675,6 @@ export declare class ValidatePhoneNumberRequest extends Message<ValidatePhoneNum
  * @generated from message tkd.idm.v1.ValidatePhoneNumberResponse
  */
 export declare class ValidatePhoneNumberResponse extends Message<ValidatePhoneNumberResponse> {
-  /**
-   * @generated from field: string state = 2;
-   */
-  state: string;
-
   constructor(data?: PartialMessage<ValidatePhoneNumberResponse>);
 
   static readonly runtime: typeof proto3;

@@ -268,9 +268,7 @@ export const ValidatePhoneNumberRequest = proto3.makeMessageType(
  */
 export const ValidatePhoneNumberResponse = proto3.makeMessageType(
   "tkd.idm.v1.ValidatePhoneNumberResponse",
-  () => [
-    { no: 2, name: "state", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-  ],
+  [],
 );
 
 /**
