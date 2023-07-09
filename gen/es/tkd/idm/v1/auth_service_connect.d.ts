@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GenerateRegistrationTokenRequest, GenerateRegistrationTokenResponse, IntrospectRequest, IntrospectResponse, LoginRequest, LoginResponse, LogoutRequest, LogoutResponse, RefreshTokenRequest, RefreshTokenResponse, RegisterUserRequest, RegisterUserResponse, ValidateRegistrationTokenRequest, ValidateRegistrationTokenResponse } from "./auth_service_pb.js";
+import { GenerateRegistrationTokenRequest, GenerateRegistrationTokenResponse, IntrospectRequest, IntrospectResponse, LoginRequest, LoginResponse, LogoutRequest, LogoutResponse, RefreshTokenRequest, RefreshTokenResponse, RegisterUserRequest, RegisterUserResponse, RequestPasswordResetRequest, RequestPasswordResetResponse, ValidateRegistrationTokenRequest, ValidateRegistrationTokenResponse } from "./auth_service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -51,6 +51,15 @@ export declare const AuthService: {
       readonly name: "Logout",
       readonly I: typeof LogoutRequest,
       readonly O: typeof LogoutResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.AuthService.RequestPasswordReset
+     */
+    readonly requestPasswordReset: {
+      readonly name: "RequestPasswordReset",
+      readonly I: typeof RequestPasswordResetRequest,
+      readonly O: typeof RequestPasswordResetResponse,
       readonly kind: MethodKind.Unary,
     },
     /**

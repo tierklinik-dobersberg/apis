@@ -37,6 +37,9 @@ const (
 	AuthServiceLoginProcedure = "/tkd.idm.v1.AuthService/Login"
 	// AuthServiceLogoutProcedure is the fully-qualified name of the AuthService's Logout RPC.
 	AuthServiceLogoutProcedure = "/tkd.idm.v1.AuthService/Logout"
+	// AuthServiceRequestPasswordResetProcedure is the fully-qualified name of the AuthService's
+	// RequestPasswordReset RPC.
+	AuthServiceRequestPasswordResetProcedure = "/tkd.idm.v1.AuthService/RequestPasswordReset"
 	// AuthServiceRefreshTokenProcedure is the fully-qualified name of the AuthService's RefreshToken
 	// RPC.
 	AuthServiceRefreshTokenProcedure = "/tkd.idm.v1.AuthService/RefreshToken"
@@ -75,6 +78,7 @@ type AuthServiceClient interface {
 	// method. If a refresh token is appended in the logout request, it will be invalidated
 	// as well.
 	Logout(context.Context, *connect_go.Request[v1.LogoutRequest]) (*connect_go.Response[v1.LogoutResponse], error)
+	RequestPasswordReset(context.Context, *connect_go.Request[v1.RequestPasswordResetRequest]) (*connect_go.Response[v1.RequestPasswordResetResponse], error)
 	RefreshToken(context.Context, *connect_go.Request[v1.RefreshTokenRequest]) (*connect_go.Response[v1.RefreshTokenResponse], error)
 	Introspect(context.Context, *connect_go.Request[v1.IntrospectRequest]) (*connect_go.Response[v1.IntrospectResponse], error)
 	GenerateRegistrationToken(context.Context, *connect_go.Request[v1.GenerateRegistrationTokenRequest]) (*connect_go.Response[v1.GenerateRegistrationTokenResponse], error)
@@ -102,6 +106,11 @@ func NewAuthServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		logout: connect_go.NewClient[v1.LogoutRequest, v1.LogoutResponse](
 			httpClient,
 			baseURL+AuthServiceLogoutProcedure,
+			opts...,
+		),
+		requestPasswordReset: connect_go.NewClient[v1.RequestPasswordResetRequest, v1.RequestPasswordResetResponse](
+			httpClient,
+			baseURL+AuthServiceRequestPasswordResetProcedure,
 			opts...,
 		),
 		refreshToken: connect_go.NewClient[v1.RefreshTokenRequest, v1.RefreshTokenResponse](
@@ -136,6 +145,7 @@ func NewAuthServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 type authServiceClient struct {
 	login                     *connect_go.Client[v1.LoginRequest, v1.LoginResponse]
 	logout                    *connect_go.Client[v1.LogoutRequest, v1.LogoutResponse]
+	requestPasswordReset      *connect_go.Client[v1.RequestPasswordResetRequest, v1.RequestPasswordResetResponse]
 	refreshToken              *connect_go.Client[v1.RefreshTokenRequest, v1.RefreshTokenResponse]
 	introspect                *connect_go.Client[v1.IntrospectRequest, v1.IntrospectResponse]
 	generateRegistrationToken *connect_go.Client[v1.GenerateRegistrationTokenRequest, v1.GenerateRegistrationTokenResponse]
@@ -151,6 +161,11 @@ func (c *authServiceClient) Login(ctx context.Context, req *connect_go.Request[v
 // Logout calls tkd.idm.v1.AuthService.Logout.
 func (c *authServiceClient) Logout(ctx context.Context, req *connect_go.Request[v1.LogoutRequest]) (*connect_go.Response[v1.LogoutResponse], error) {
 	return c.logout.CallUnary(ctx, req)
+}
+
+// RequestPasswordReset calls tkd.idm.v1.AuthService.RequestPasswordReset.
+func (c *authServiceClient) RequestPasswordReset(ctx context.Context, req *connect_go.Request[v1.RequestPasswordResetRequest]) (*connect_go.Response[v1.RequestPasswordResetResponse], error) {
+	return c.requestPasswordReset.CallUnary(ctx, req)
 }
 
 // RefreshToken calls tkd.idm.v1.AuthService.RefreshToken.
@@ -200,6 +215,7 @@ type AuthServiceHandler interface {
 	// method. If a refresh token is appended in the logout request, it will be invalidated
 	// as well.
 	Logout(context.Context, *connect_go.Request[v1.LogoutRequest]) (*connect_go.Response[v1.LogoutResponse], error)
+	RequestPasswordReset(context.Context, *connect_go.Request[v1.RequestPasswordResetRequest]) (*connect_go.Response[v1.RequestPasswordResetResponse], error)
 	RefreshToken(context.Context, *connect_go.Request[v1.RefreshTokenRequest]) (*connect_go.Response[v1.RefreshTokenResponse], error)
 	Introspect(context.Context, *connect_go.Request[v1.IntrospectRequest]) (*connect_go.Response[v1.IntrospectResponse], error)
 	GenerateRegistrationToken(context.Context, *connect_go.Request[v1.GenerateRegistrationTokenRequest]) (*connect_go.Response[v1.GenerateRegistrationTokenResponse], error)
@@ -223,6 +239,11 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect_go.HandlerOpt
 	authServiceLogoutHandler := connect_go.NewUnaryHandler(
 		AuthServiceLogoutProcedure,
 		svc.Logout,
+		opts...,
+	)
+	authServiceRequestPasswordResetHandler := connect_go.NewUnaryHandler(
+		AuthServiceRequestPasswordResetProcedure,
+		svc.RequestPasswordReset,
 		opts...,
 	)
 	authServiceRefreshTokenHandler := connect_go.NewUnaryHandler(
@@ -256,6 +277,8 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect_go.HandlerOpt
 			authServiceLoginHandler.ServeHTTP(w, r)
 		case AuthServiceLogoutProcedure:
 			authServiceLogoutHandler.ServeHTTP(w, r)
+		case AuthServiceRequestPasswordResetProcedure:
+			authServiceRequestPasswordResetHandler.ServeHTTP(w, r)
 		case AuthServiceRefreshTokenProcedure:
 			authServiceRefreshTokenHandler.ServeHTTP(w, r)
 		case AuthServiceIntrospectProcedure:
@@ -281,6 +304,10 @@ func (UnimplementedAuthServiceHandler) Login(context.Context, *connect_go.Reques
 
 func (UnimplementedAuthServiceHandler) Logout(context.Context, *connect_go.Request[v1.LogoutRequest]) (*connect_go.Response[v1.LogoutResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.AuthService.Logout is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) RequestPasswordReset(context.Context, *connect_go.Request[v1.RequestPasswordResetRequest]) (*connect_go.Response[v1.RequestPasswordResetResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.AuthService.RequestPasswordReset is not implemented"))
 }
 
 func (UnimplementedAuthServiceHandler) RefreshToken(context.Context, *connect_go.Request[v1.RefreshTokenRequest]) (*connect_go.Response[v1.RefreshTokenResponse], error) {

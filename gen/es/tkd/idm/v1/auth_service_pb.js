@@ -225,3 +225,21 @@ export const RegisterUserResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message tkd.idm.v1.RequestPasswordResetRequest
+ */
+export const RequestPasswordResetRequest = proto3.makeMessageType(
+  "tkd.idm.v1.RequestPasswordResetRequest",
+  () => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.RequestPasswordResetResponse
+ */
+export const RequestPasswordResetResponse = proto3.makeMessageType(
+  "tkd.idm.v1.RequestPasswordResetResponse",
+  [],
+);
+

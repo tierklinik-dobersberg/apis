@@ -571,3 +571,46 @@ export declare class RegisterUserResponse extends Message<RegisterUserResponse> 
   static equals(a: RegisterUserResponse | PlainMessage<RegisterUserResponse> | undefined, b: RegisterUserResponse | PlainMessage<RegisterUserResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.idm.v1.RequestPasswordResetRequest
+ */
+export declare class RequestPasswordResetRequest extends Message<RequestPasswordResetRequest> {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  constructor(data?: PartialMessage<RequestPasswordResetRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.RequestPasswordResetRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RequestPasswordResetRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RequestPasswordResetRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RequestPasswordResetRequest;
+
+  static equals(a: RequestPasswordResetRequest | PlainMessage<RequestPasswordResetRequest> | undefined, b: RequestPasswordResetRequest | PlainMessage<RequestPasswordResetRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.RequestPasswordResetResponse
+ */
+export declare class RequestPasswordResetResponse extends Message<RequestPasswordResetResponse> {
+  constructor(data?: PartialMessage<RequestPasswordResetResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.RequestPasswordResetResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RequestPasswordResetResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RequestPasswordResetResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RequestPasswordResetResponse;
+
+  static equals(a: RequestPasswordResetResponse | PlainMessage<RequestPasswordResetResponse> | undefined, b: RequestPasswordResetResponse | PlainMessage<RequestPasswordResetResponse> | undefined): boolean;
+}
+

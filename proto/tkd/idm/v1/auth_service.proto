@@ -36,6 +36,8 @@ service AuthService {
       require: AUTH_REQ_REQUIRED;
     };
   }
+
+  rpc RequestPasswordReset(RequestPasswordResetRequest) returns (RequestPasswordResetResponse) {}
   
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
 
@@ -174,3 +176,8 @@ message RegisterUserRequest {
 message RegisterUserResponse {
   AccessTokenResponse access_token = 1;
 }
+
+message RequestPasswordResetRequest {
+  string email = 1;
+}
+message RequestPasswordResetResponse {}
