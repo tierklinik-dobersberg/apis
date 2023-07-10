@@ -15,6 +15,12 @@ service UserService {
     option idempotency_level = NO_SIDE_EFFECTS;
   }
 
+  rpc InviteUser(InviteUserRequest) returns (InviteUserResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED
+    };
+  }
+
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
     option (tkd.common.v1.auth) = {
       require: AUTH_REQ_REQUIRED
@@ -77,3 +83,8 @@ message DeleteUserRequest {
   string id = 1;
 }
 message DeleteUserResponse {}
+
+message InviteUserRequest {
+  repeated string emails = 1;
+}
+message InviteUserResponse {}

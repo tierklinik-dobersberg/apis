@@ -247,3 +247,46 @@ export declare class DeleteUserResponse extends Message<DeleteUserResponse> {
   static equals(a: DeleteUserResponse | PlainMessage<DeleteUserResponse> | undefined, b: DeleteUserResponse | PlainMessage<DeleteUserResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.idm.v1.InviteUserRequest
+ */
+export declare class InviteUserRequest extends Message<InviteUserRequest> {
+  /**
+   * @generated from field: repeated string emails = 1;
+   */
+  emails: string[];
+
+  constructor(data?: PartialMessage<InviteUserRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.InviteUserRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): InviteUserRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): InviteUserRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): InviteUserRequest;
+
+  static equals(a: InviteUserRequest | PlainMessage<InviteUserRequest> | undefined, b: InviteUserRequest | PlainMessage<InviteUserRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.InviteUserResponse
+ */
+export declare class InviteUserResponse extends Message<InviteUserResponse> {
+  constructor(data?: PartialMessage<InviteUserResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.InviteUserResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): InviteUserResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): InviteUserResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): InviteUserResponse;
+
+  static equals(a: InviteUserResponse | PlainMessage<InviteUserResponse> | undefined, b: InviteUserResponse | PlainMessage<InviteUserResponse> | undefined): boolean;
+}
+

@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateUserRequest, CreateUserResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, ListUsersRequest, ListUsersResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
+import { CreateUserRequest, CreateUserResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
 import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -21,6 +21,15 @@ export declare const UserService: {
       readonly O: typeof GetUserResponse,
       readonly kind: MethodKind.Unary,
       readonly idempotency: MethodIdempotency.NoSideEffects,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.UserService.InviteUser
+     */
+    readonly inviteUser: {
+      readonly name: "InviteUser",
+      readonly I: typeof InviteUserRequest,
+      readonly O: typeof InviteUserResponse,
+      readonly kind: MethodKind.Unary,
     },
     /**
      * @generated from rpc tkd.idm.v1.UserService.ListUsers
