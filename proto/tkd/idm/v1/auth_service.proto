@@ -171,6 +171,10 @@ message RegisterUserRequest {
   string password = 3 [
     (buf.validate.field).required = true
   ];
+
+  string email = 4 [
+    (buf.validate.field).required = true
+  ];
 }
 
 message RegisterUserResponse {

@@ -532,6 +532,11 @@ export declare class RegisterUserRequest extends Message<RegisterUserRequest> {
    */
   password: string;
 
+  /**
+   * @generated from field: string email = 4;
+   */
+  email: string;
+
   constructor(data?: PartialMessage<RegisterUserRequest>);
 
   static readonly runtime: typeof proto3;

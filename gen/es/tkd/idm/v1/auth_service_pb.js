@@ -212,6 +212,7 @@ export const RegisterUserRequest = proto3.makeMessageType(
     { no: 1, name: "registration_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "username", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
