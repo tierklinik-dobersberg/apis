@@ -226,12 +226,24 @@ export const RegisterUserResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.idm.v1.PasswordReset
+ */
+export const PasswordReset = proto3.makeMessageType(
+  "tkd.idm.v1.PasswordReset",
+  () => [
+    { no: 1, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "new_password", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * @generated from message tkd.idm.v1.RequestPasswordResetRequest
  */
 export const RequestPasswordResetRequest = proto3.makeMessageType(
   "tkd.idm.v1.RequestPasswordResetRequest",
   () => [
-    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "kind" },
+    { no: 2, name: "password_reset", kind: "message", T: PasswordReset, oneof: "kind" },
   ],
 );
 

@@ -177,7 +177,15 @@ message RegisterUserResponse {
   AccessTokenResponse access_token = 1;
 }
 
+message PasswordReset {
+  string token = 1 [(buf.validate.field).required = true];
+  string new_password = 2 [(buf.validate.field).required = true];
+}
+
 message RequestPasswordResetRequest {
-  string email = 1;
+  oneof kind {
+    string email = 1;
+    PasswordReset password_reset = 2;
+  }
 }
 message RequestPasswordResetResponse {}

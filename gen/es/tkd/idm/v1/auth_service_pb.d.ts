@@ -572,13 +572,54 @@ export declare class RegisterUserResponse extends Message<RegisterUserResponse> 
 }
 
 /**
+ * @generated from message tkd.idm.v1.PasswordReset
+ */
+export declare class PasswordReset extends Message<PasswordReset> {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+
+  /**
+   * @generated from field: string new_password = 2;
+   */
+  newPassword: string;
+
+  constructor(data?: PartialMessage<PasswordReset>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.PasswordReset";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PasswordReset;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PasswordReset;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PasswordReset;
+
+  static equals(a: PasswordReset | PlainMessage<PasswordReset> | undefined, b: PasswordReset | PlainMessage<PasswordReset> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.idm.v1.RequestPasswordResetRequest
  */
 export declare class RequestPasswordResetRequest extends Message<RequestPasswordResetRequest> {
   /**
-   * @generated from field: string email = 1;
+   * @generated from oneof tkd.idm.v1.RequestPasswordResetRequest.kind
    */
-  email: string;
+  kind: {
+    /**
+     * @generated from field: string email = 1;
+     */
+    value: string;
+    case: "email";
+  } | {
+    /**
+     * @generated from field: tkd.idm.v1.PasswordReset password_reset = 2;
+     */
+    value: PasswordReset;
+    case: "passwordReset";
+  } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<RequestPasswordResetRequest>);
 
