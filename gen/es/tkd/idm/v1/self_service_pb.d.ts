@@ -142,6 +142,23 @@ export declare class UpdateProfileResponse extends Message<UpdateProfileResponse
  * @generated from message tkd.idm.v1.ValidateEmailRequest
  */
 export declare class ValidateEmailRequest extends Message<ValidateEmailRequest> {
+  /**
+   * @generated from oneof tkd.idm.v1.ValidateEmailRequest.kind
+   */
+  kind: {
+    /**
+     * @generated from field: string email_id = 1;
+     */
+    value: string;
+    case: "emailId";
+  } | {
+    /**
+     * @generated from field: string token = 2;
+     */
+    value: string;
+    case: "token";
+  } | { case: undefined; value?: undefined };
+
   constructor(data?: PartialMessage<ValidateEmailRequest>);
 
   static readonly runtime: typeof proto3;

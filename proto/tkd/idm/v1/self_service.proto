@@ -151,7 +151,13 @@ message UpdateProfileResponse {
     User user = 1;
 }
 
-message ValidateEmailRequest {}
+message ValidateEmailRequest {
+    oneof kind {
+        string email_id = 1;
+        string token = 2;
+    }
+}
+
 message ValidateEmailResponse {}
 
 message AddEmailAddressRequest {

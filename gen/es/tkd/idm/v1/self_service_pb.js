@@ -57,7 +57,10 @@ export const UpdateProfileResponse = proto3.makeMessageType(
  */
 export const ValidateEmailRequest = proto3.makeMessageType(
   "tkd.idm.v1.ValidateEmailRequest",
-  [],
+  () => [
+    { no: 1, name: "email_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "kind" },
+    { no: 2, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "kind" },
+  ],
 );
 
 /**
