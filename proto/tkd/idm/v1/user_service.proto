@@ -84,7 +84,13 @@ message DeleteUserRequest {
 }
 message DeleteUserResponse {}
 
+message UserInvite {
+  string email = 1;
+  string name = 2;
+}
+
 message InviteUserRequest {
-  repeated string emails = 1;
+  repeated UserInvite invite = 1;
+  repeated string initial_roles = 2;
 }
 message InviteUserResponse {}

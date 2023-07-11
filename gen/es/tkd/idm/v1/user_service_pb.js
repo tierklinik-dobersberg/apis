@@ -104,12 +104,24 @@ export const DeleteUserResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.idm.v1.UserInvite
+ */
+export const UserInvite = proto3.makeMessageType(
+  "tkd.idm.v1.UserInvite",
+  () => [
+    { no: 1, name: "email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * @generated from message tkd.idm.v1.InviteUserRequest
  */
 export const InviteUserRequest = proto3.makeMessageType(
   "tkd.idm.v1.InviteUserRequest",
   () => [
-    { no: 1, name: "emails", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "invite", kind: "message", T: UserInvite, repeated: true },
+    { no: 2, name: "initial_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

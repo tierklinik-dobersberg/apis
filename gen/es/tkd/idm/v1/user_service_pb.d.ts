@@ -248,13 +248,47 @@ export declare class DeleteUserResponse extends Message<DeleteUserResponse> {
 }
 
 /**
+ * @generated from message tkd.idm.v1.UserInvite
+ */
+export declare class UserInvite extends Message<UserInvite> {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name: string;
+
+  constructor(data?: PartialMessage<UserInvite>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.UserInvite";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UserInvite;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UserInvite;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UserInvite;
+
+  static equals(a: UserInvite | PlainMessage<UserInvite> | undefined, b: UserInvite | PlainMessage<UserInvite> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.idm.v1.InviteUserRequest
  */
 export declare class InviteUserRequest extends Message<InviteUserRequest> {
   /**
-   * @generated from field: repeated string emails = 1;
+   * @generated from field: repeated tkd.idm.v1.UserInvite invite = 1;
    */
-  emails: string[];
+  invite: UserInvite[];
+
+  /**
+   * @generated from field: repeated string initial_roles = 2;
+   */
+  initialRoles: string[];
 
   constructor(data?: PartialMessage<InviteUserRequest>);
 
