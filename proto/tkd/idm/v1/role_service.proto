@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package tkd.idm.v1;
+
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/field_mask.proto";
+import "tkd/common/v1/descriptor.proto";
+import "buf/validate/validate.proto";
+
+message Role {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    bool delete_protected = 4;
+}
+
+service RoleService {
+  rpc CreateRole(CreateRoleRequest) returns (CreateRoleResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
+
+  rpc UpdateRole(UpdateRoleRequest) returns (UpdateRoleResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
+
+  rpc DeleteRole(DeleteRoleRequest) returns (DeleteRoleResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
+
+  rpc ListRoles(ListRolesRequest) returns (ListRolesResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
+
+  rpc GetRole(GetRoleRequest) returns (GetRoleResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
+
+  rpc AssignRoleToUser(AssignRoleToUserRequest) returns (AssignRoleToUserResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
+
+  rpc UnassignRoleToUser(UnassignRoleToUserRequest) returns (UnassignRoleToUserResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
+}
+
+
+message ListRolesRequest {}
+message ListRolesResponse {
+    repeated Role roles = 1;
+}
+
+message GetRoleRequest {
+    oneof search {
+        string name = 1;
+        string id = 2;
+    }
+}
+
+message GetRoleResponse {
+    Role role = 1;
+}
+
+message AssignRoleToUserRequest {
+    string role_id = 1 [(buf.validate.field).required = true];
+    repeated string user_id = 2 [(buf.validate.field).required = true];
+}
+
+message AssignRoleToUserResponse {}
+
+message UnassignRoleToUserRequest {
+    string role_id = 1 [(buf.validate.field).required = true];
+    repeated string user_id = 2 [(buf.validate.field).required = true];
+}
+message UnassignRoleToUserResponse {}
+
+message CreateRoleRequest {
+    string name = 1 [(buf.validate.field).required = true];
+    string description = 2;
+    bool delete_protection = 3;
+}
+
+message CreateRoleResponse {
+    Role role = 1;
+}
+
+message UpdateRoleRequest {
+    string role_id = 1 [(buf.validate.field).required = true];
+    string description = 2;
+    bool delete_protection = 3;
+
+    google.protobuf.FieldMask field_mask = 4;
+}
+
+message UpdateRoleResponse {
+    Role role = 1;
+}
+
+message DeleteRoleRequest {
+    string role_id = 1 [(buf.validate.field).required = true];
+}
+
+message DeleteRoleResponse {}
