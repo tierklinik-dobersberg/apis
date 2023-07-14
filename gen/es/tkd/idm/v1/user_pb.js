@@ -4,6 +4,7 @@
 // @ts-nocheck
 
 import { FieldMask, proto3, Value } from "@bufbuild/protobuf";
+import { Role } from "./role_service_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.EMail
@@ -76,6 +77,7 @@ export const Profile = proto3.makeMessageType(
     { no: 8, name: "email_addresses", kind: "message", T: EMail, repeated: true },
     { no: 9, name: "totp_enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 10, name: "recovery_codes_generated", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 11, name: "roles", kind: "message", T: Role, repeated: true },
     { no: 20, name: "privacy_mask", kind: "message", T: FieldMask },
   ],
 );

@@ -77,10 +77,10 @@ export const AssignRoleToUserResponse = proto3.makeMessageType(
 );
 
 /**
- * @generated from message tkd.idm.v1.UnassignRoleToUserRequest
+ * @generated from message tkd.idm.v1.UnassignRoleFromUserRequest
  */
-export const UnassignRoleToUserRequest = proto3.makeMessageType(
-  "tkd.idm.v1.UnassignRoleToUserRequest",
+export const UnassignRoleFromUserRequest = proto3.makeMessageType(
+  "tkd.idm.v1.UnassignRoleFromUserRequest",
   () => [
     { no: 1, name: "role_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
@@ -88,10 +88,10 @@ export const UnassignRoleToUserRequest = proto3.makeMessageType(
 );
 
 /**
- * @generated from message tkd.idm.v1.UnassignRoleToUserResponse
+ * @generated from message tkd.idm.v1.UnassignRoleFromUserResponse
  */
-export const UnassignRoleToUserResponse = proto3.makeMessageType(
-  "tkd.idm.v1.UnassignRoleToUserResponse",
+export const UnassignRoleFromUserResponse = proto3.makeMessageType(
+  "tkd.idm.v1.UnassignRoleFromUserResponse",
   [],
 );
 

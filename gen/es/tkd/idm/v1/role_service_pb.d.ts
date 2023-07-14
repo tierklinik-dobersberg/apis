@@ -197,9 +197,9 @@ export declare class AssignRoleToUserResponse extends Message<AssignRoleToUserRe
 }
 
 /**
- * @generated from message tkd.idm.v1.UnassignRoleToUserRequest
+ * @generated from message tkd.idm.v1.UnassignRoleFromUserRequest
  */
-export declare class UnassignRoleToUserRequest extends Message<UnassignRoleToUserRequest> {
+export declare class UnassignRoleFromUserRequest extends Message<UnassignRoleFromUserRequest> {
   /**
    * @generated from field: string role_id = 1;
    */
@@ -210,38 +210,38 @@ export declare class UnassignRoleToUserRequest extends Message<UnassignRoleToUse
    */
   userId: string[];
 
-  constructor(data?: PartialMessage<UnassignRoleToUserRequest>);
+  constructor(data?: PartialMessage<UnassignRoleFromUserRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.idm.v1.UnassignRoleToUserRequest";
+  static readonly typeName = "tkd.idm.v1.UnassignRoleFromUserRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UnassignRoleToUserRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UnassignRoleFromUserRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UnassignRoleToUserRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UnassignRoleFromUserRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UnassignRoleToUserRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UnassignRoleFromUserRequest;
 
-  static equals(a: UnassignRoleToUserRequest | PlainMessage<UnassignRoleToUserRequest> | undefined, b: UnassignRoleToUserRequest | PlainMessage<UnassignRoleToUserRequest> | undefined): boolean;
+  static equals(a: UnassignRoleFromUserRequest | PlainMessage<UnassignRoleFromUserRequest> | undefined, b: UnassignRoleFromUserRequest | PlainMessage<UnassignRoleFromUserRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.idm.v1.UnassignRoleToUserResponse
+ * @generated from message tkd.idm.v1.UnassignRoleFromUserResponse
  */
-export declare class UnassignRoleToUserResponse extends Message<UnassignRoleToUserResponse> {
-  constructor(data?: PartialMessage<UnassignRoleToUserResponse>);
+export declare class UnassignRoleFromUserResponse extends Message<UnassignRoleFromUserResponse> {
+  constructor(data?: PartialMessage<UnassignRoleFromUserResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.idm.v1.UnassignRoleToUserResponse";
+  static readonly typeName = "tkd.idm.v1.UnassignRoleFromUserResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UnassignRoleToUserResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UnassignRoleFromUserResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UnassignRoleToUserResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UnassignRoleFromUserResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UnassignRoleToUserResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UnassignRoleFromUserResponse;
 
-  static equals(a: UnassignRoleToUserResponse | PlainMessage<UnassignRoleToUserResponse> | undefined, b: UnassignRoleToUserResponse | PlainMessage<UnassignRoleToUserResponse> | undefined): boolean;
+  static equals(a: UnassignRoleFromUserResponse | PlainMessage<UnassignRoleFromUserResponse> | undefined, b: UnassignRoleFromUserResponse | PlainMessage<UnassignRoleFromUserResponse> | undefined): boolean;
 }
 
 /**

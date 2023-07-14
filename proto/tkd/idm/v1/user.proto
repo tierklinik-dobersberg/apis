@@ -6,6 +6,7 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/descriptor.proto";
+import "tkd/idm/v1/role_service.proto";
 
 message EMail {
   // The unique ID of the email address record required for validation
@@ -154,6 +155,9 @@ message Profile {
   // Whether or not there are MFA recovery codes for this user.
   bool recovery_codes_generated = 10;
 
+  // A list of roles assigned to this user.
+  repeated Role roles = 11;
+
   // A field-mask to defined publically viewable fields from the
   // user profile. If set, the configured field-mask overwrites
   // the field mask of the (tkd.common.v1.readable) option.
@@ -161,7 +165,6 @@ message Profile {
   // match the owner_field_name or allowed_roles field of the (tkd.common.v1.readable)
   // option.
   google.protobuf.FieldMask privacy_mask = 20;
-
 
   option (tkd.common.v1.readable) = {
     field_mask: {

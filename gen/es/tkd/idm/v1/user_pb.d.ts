@@ -5,6 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Value } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
+import type { Role } from "./role_service_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.EMail
@@ -289,6 +290,13 @@ export declare class Profile extends Message<Profile> {
    * @generated from field: bool recovery_codes_generated = 10;
    */
   recoveryCodesGenerated: boolean;
+
+  /**
+   * A list of roles assigned to this user.
+   *
+   * @generated from field: repeated tkd.idm.v1.Role roles = 11;
+   */
+  roles: Role[];
 
   /**
    * A field-mask to defined publically viewable fields from the
