@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import { FieldMask, proto3 } from "@bufbuild/protobuf";
-import { Profile, User } from "./user_pb.js";
+import { Profile } from "./user_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.GetUserRequest
@@ -22,7 +22,7 @@ export const GetUserRequest = proto3.makeMessageType(
 export const GetUserResponse = proto3.makeMessageType(
   "tkd.idm.v1.GetUserResponse",
   () => [
-    { no: 1, name: "user", kind: "message", T: User },
+    { no: 1, name: "profile", kind: "message", T: Profile },
   ],
 );
 

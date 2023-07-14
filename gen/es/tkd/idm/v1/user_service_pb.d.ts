@@ -5,7 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
-import type { Profile, User } from "./user_pb.js";
+import type { Profile } from "./user_pb.js";
 
 /**
  * @generated from message tkd.idm.v1.GetUserRequest
@@ -36,9 +36,9 @@ export declare class GetUserRequest extends Message<GetUserRequest> {
  */
 export declare class GetUserResponse extends Message<GetUserResponse> {
   /**
-   * @generated from field: tkd.idm.v1.User user = 1;
+   * @generated from field: tkd.idm.v1.Profile profile = 1;
    */
-  user?: User;
+  profile?: Profile;
 
   constructor(data?: PartialMessage<GetUserResponse>);
 
