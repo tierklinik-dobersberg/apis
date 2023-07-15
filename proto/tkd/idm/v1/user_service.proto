@@ -4,6 +4,8 @@ package tkd.idm.v1;
 
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/struct.proto";
+import "buf/validate/validate.proto";
 import "tkd/idm/v1/user.proto";
 import "tkd/common/v1/descriptor.proto";
 
@@ -52,6 +54,8 @@ service UserService {
 
 message GetUserRequest {
   string id = 1;
+  google.protobuf.FieldMask field_mask = 2;
+  bool exclude_fields = 3;
 }
 
 message GetUserResponse {
@@ -60,6 +64,7 @@ message GetUserResponse {
 
 message ListUsersRequest {
   google.protobuf.FieldMask field_mask = 1;
+  bool exclude_fields = 2;
 }
 
 message ListUsersResponse {
@@ -77,8 +82,36 @@ message CreateUserResponse {
   string generated_password = 2;
 }
 
-message UpdateUserRequest {}
-message UpdateUserResponse {}
+message UpdateUserRequest {
+  string id = 1 [
+    (buf.validate.field).required = true
+  ];
+  
+  string username = 2 [
+      (buf.validate.field).string.min_len = 3,
+      (buf.validate.field).ignore_empty = true
+  ];
+
+  string display_name = 3 [
+      (buf.validate.field).string.min_len = 3,
+      (buf.validate.field).ignore_empty = true
+  ];
+
+  string first_name = 4;
+  string last_name = 5;
+
+  google.protobuf.Struct extra = 6;
+
+  string avatar = 7;
+  string birthday = 8;
+
+  google.protobuf.FieldMask field_mask = 9;
+}
+
+message UpdateUserResponse {
+  Profile profile = 1;
+}
+
 message DeleteUserRequest {
   string id = 1;
 }

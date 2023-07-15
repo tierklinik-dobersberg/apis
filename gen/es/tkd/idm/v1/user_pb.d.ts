@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Value } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Role } from "./role_service_pb.js";
 
@@ -191,9 +191,9 @@ export declare class User extends Message<User> {
    * specific. CISIDM may provide validation and schema definitions for the user-extra data any some point
    * in the future. For now, only administrators may set extra data on user profiles.
    *
-   * @generated from field: map<string, google.protobuf.Value> extra = 9;
+   * @generated from field: google.protobuf.Struct extra = 9;
    */
-  extra: { [key: string]: Value };
+  extra?: Struct;
 
   /**
    * The URL (or data-URL) of the user avatar.

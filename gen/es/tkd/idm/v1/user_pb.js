@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { FieldMask, proto3, Value } from "@bufbuild/protobuf";
+import { FieldMask, proto3, Struct } from "@bufbuild/protobuf";
 import { Role } from "./role_service_pb.js";
 
 /**
@@ -57,7 +57,7 @@ export const User = proto3.makeMessageType(
     { no: 3, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 9, name: "extra", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Value} },
+    { no: 9, name: "extra", kind: "message", T: Struct },
     { no: 10, name: "avatar", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 11, name: "birthday", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 12, name: "primary_mail", kind: "message", T: EMail },

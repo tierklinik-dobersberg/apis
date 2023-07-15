@@ -95,7 +95,7 @@ message User {
   // Additional data for the user. The available keys in the extra map and their meaning is application
   // specific. CISIDM may provide validation and schema definitions for the user-extra data any some point
   // in the future. For now, only administrators may set extra data on user profiles.
-  map<string, google.protobuf.Value> extra = 9;
+  google.protobuf.Struct extra = 9;
 
   // The URL (or data-URL) of the user avatar.
   string avatar = 10;

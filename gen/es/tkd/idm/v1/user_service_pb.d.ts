@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Profile } from "./user_pb.js";
 
@@ -15,6 +15,16 @@ export declare class GetUserRequest extends Message<GetUserRequest> {
    * @generated from field: string id = 1;
    */
   id: string;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask field_mask = 2;
+   */
+  fieldMask?: FieldMask;
+
+  /**
+   * @generated from field: bool exclude_fields = 3;
+   */
+  excludeFields: boolean;
 
   constructor(data?: PartialMessage<GetUserRequest>);
 
@@ -63,6 +73,11 @@ export declare class ListUsersRequest extends Message<ListUsersRequest> {
    * @generated from field: google.protobuf.FieldMask field_mask = 1;
    */
   fieldMask?: FieldMask;
+
+  /**
+   * @generated from field: bool exclude_fields = 2;
+   */
+  excludeFields: boolean;
 
   constructor(data?: PartialMessage<ListUsersRequest>);
 
@@ -170,6 +185,51 @@ export declare class CreateUserResponse extends Message<CreateUserResponse> {
  * @generated from message tkd.idm.v1.UpdateUserRequest
  */
 export declare class UpdateUserRequest extends Message<UpdateUserRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string username = 2;
+   */
+  username: string;
+
+  /**
+   * @generated from field: string display_name = 3;
+   */
+  displayName: string;
+
+  /**
+   * @generated from field: string first_name = 4;
+   */
+  firstName: string;
+
+  /**
+   * @generated from field: string last_name = 5;
+   */
+  lastName: string;
+
+  /**
+   * @generated from field: google.protobuf.Struct extra = 6;
+   */
+  extra?: Struct;
+
+  /**
+   * @generated from field: string avatar = 7;
+   */
+  avatar: string;
+
+  /**
+   * @generated from field: string birthday = 8;
+   */
+  birthday: string;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask field_mask = 9;
+   */
+  fieldMask?: FieldMask;
+
   constructor(data?: PartialMessage<UpdateUserRequest>);
 
   static readonly runtime: typeof proto3;
@@ -189,6 +249,11 @@ export declare class UpdateUserRequest extends Message<UpdateUserRequest> {
  * @generated from message tkd.idm.v1.UpdateUserResponse
  */
 export declare class UpdateUserResponse extends Message<UpdateUserResponse> {
+  /**
+   * @generated from field: tkd.idm.v1.Profile profile = 1;
+   */
+  profile?: Profile;
+
   constructor(data?: PartialMessage<UpdateUserResponse>);
 
   static readonly runtime: typeof proto3;

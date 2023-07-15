@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { FieldMask, proto3 } from "@bufbuild/protobuf";
+import { FieldMask, proto3, Struct } from "@bufbuild/protobuf";
 import { Profile } from "./user_pb.js";
 
 /**
@@ -13,6 +13,8 @@ export const GetUserRequest = proto3.makeMessageType(
   "tkd.idm.v1.GetUserRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "field_mask", kind: "message", T: FieldMask },
+    { no: 3, name: "exclude_fields", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
@@ -33,6 +35,7 @@ export const ListUsersRequest = proto3.makeMessageType(
   "tkd.idm.v1.ListUsersRequest",
   () => [
     { no: 1, name: "field_mask", kind: "message", T: FieldMask },
+    { no: 2, name: "exclude_fields", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
@@ -74,7 +77,17 @@ export const CreateUserResponse = proto3.makeMessageType(
  */
 export const UpdateUserRequest = proto3.makeMessageType(
   "tkd.idm.v1.UpdateUserRequest",
-  [],
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "username", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "extra", kind: "message", T: Struct },
+    { no: 7, name: "avatar", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 8, name: "birthday", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 9, name: "field_mask", kind: "message", T: FieldMask },
+  ],
 );
 
 /**
@@ -82,7 +95,9 @@ export const UpdateUserRequest = proto3.makeMessageType(
  */
 export const UpdateUserResponse = proto3.makeMessageType(
   "tkd.idm.v1.UpdateUserResponse",
-  [],
+  () => [
+    { no: 1, name: "profile", kind: "message", T: Profile },
+  ],
 );
 
 /**

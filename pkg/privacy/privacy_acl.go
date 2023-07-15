@@ -41,6 +41,11 @@ func filterAllowedFields(msg proto.Message, currentUser string, currentRoles []s
 		}
 
 		if fd.Kind() == protoreflect.MessageKind {
+			// skip map message here as the cannot have the PrivacyACL specified.
+			if fd.IsMap() {
+				return true
+			}
+
 			if fd.IsList() {
 				list := v.List()
 				for i := 0; i < list.Len(); i++ {
