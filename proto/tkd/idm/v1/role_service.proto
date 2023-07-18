@@ -107,10 +107,11 @@ message CreateRoleResponse {
 
 message UpdateRoleRequest {
     string role_id = 1 [(buf.validate.field).required = true];
-    string description = 2;
-    bool delete_protection = 3;
+    string name = 2;
+    string description = 3;
+    bool delete_protection = 4;
 
-    google.protobuf.FieldMask field_mask = 4;
+    google.protobuf.FieldMask field_mask = 5;
 }
 
 message UpdateRoleResponse {
