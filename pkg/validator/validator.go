@@ -1,4 +1,4 @@
-package middleware
+package validator
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func NewValidationInterceptor(validator *protovalidate.Validator) connect.UnaryInterceptorFunc {
+func NewInterceptor(validator *protovalidate.Validator) connect.UnaryInterceptorFunc {
 	return func(uf connect.UnaryFunc) connect.UnaryFunc {
 		return func(ctx context.Context, ar connect.AnyRequest) (connect.AnyResponse, error) {
 			if err := validator.Validate(ar.Any().(proto.Message)); err != nil {
