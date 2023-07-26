@@ -37,9 +37,15 @@ message CalendarEvent {
     // In this case, the time part (HH:MM:SS) of StartTime is not important!
     bool full_day = 5;
 
+    // Summary of the calendar event.
+    string summary = 6;
+
+    // Description of the calendar event.
+    string description = 7;
+
     // ExtraData may holds additional information about the calendar entry.
     // In most cases, this should be CustomerAnnotation
-    google.protobuf.Any extra_data = 6;
+    google.protobuf.Any extra_data = 8;
 }
 
 message CustomerAnnotation {

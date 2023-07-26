@@ -30,7 +30,9 @@ export const CalendarEvent = proto3.makeMessageType(
     { no: 3, name: "start_time", kind: "message", T: Timestamp },
     { no: 4, name: "end_time", kind: "message", T: Timestamp },
     { no: 5, name: "full_day", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 6, name: "extra_data", kind: "message", T: Any },
+    { no: 6, name: "summary", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 8, name: "extra_data", kind: "message", T: Any },
   ],
 );
 

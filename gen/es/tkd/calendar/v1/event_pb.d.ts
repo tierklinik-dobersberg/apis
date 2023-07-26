@@ -92,10 +92,24 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
   fullDay: boolean;
 
   /**
+   * Summary of the calendar event.
+   *
+   * @generated from field: string summary = 6;
+   */
+  summary: string;
+
+  /**
+   * Description of the calendar event.
+   *
+   * @generated from field: string description = 7;
+   */
+  description: string;
+
+  /**
    * ExtraData may holds additional information about the calendar entry.
    * In most cases, this should be CustomerAnnotation
    *
-   * @generated from field: google.protobuf.Any extra_data = 6;
+   * @generated from field: google.protobuf.Any extra_data = 8;
    */
   extraData?: Any;
 
