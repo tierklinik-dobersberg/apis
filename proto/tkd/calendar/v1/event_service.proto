@@ -51,11 +51,15 @@ message EventSource {
 }
 
 message ListEventsRequest {
-    EventSource sources = 1;
+    oneof source {
+        EventSource sources = 1;
+        bool all_calendars = 2;
+        bool all_users = 3;
+    }
 
     oneof search_time {
-        TimeRange time_range = 2;
-        string date = 4; // Format is YYYY/MM/DD
+        TimeRange time_range = 4;
+        string date = 5; // Format is YYYY/MM/DD
     }
 }
 

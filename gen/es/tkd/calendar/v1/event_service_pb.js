@@ -52,9 +52,11 @@ export const EventSource = proto3.makeMessageType(
 export const ListEventsRequest = proto3.makeMessageType(
   "tkd.calendar.v1.ListEventsRequest",
   () => [
-    { no: 1, name: "sources", kind: "message", T: EventSource },
-    { no: 2, name: "time_range", kind: "message", T: TimeRange, oneof: "search_time" },
-    { no: 4, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search_time" },
+    { no: 1, name: "sources", kind: "message", T: EventSource, oneof: "source" },
+    { no: 2, name: "all_calendars", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "source" },
+    { no: 3, name: "all_users", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "source" },
+    { no: 4, name: "time_range", kind: "message", T: TimeRange, oneof: "search_time" },
+    { no: 5, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search_time" },
   ],
 );
 

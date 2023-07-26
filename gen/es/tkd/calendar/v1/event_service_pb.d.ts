@@ -113,16 +113,34 @@ export declare class EventSource extends Message<EventSource> {
  */
 export declare class ListEventsRequest extends Message<ListEventsRequest> {
   /**
-   * @generated from field: tkd.calendar.v1.EventSource sources = 1;
+   * @generated from oneof tkd.calendar.v1.ListEventsRequest.source
    */
-  sources?: EventSource;
+  source: {
+    /**
+     * @generated from field: tkd.calendar.v1.EventSource sources = 1;
+     */
+    value: EventSource;
+    case: "sources";
+  } | {
+    /**
+     * @generated from field: bool all_calendars = 2;
+     */
+    value: boolean;
+    case: "allCalendars";
+  } | {
+    /**
+     * @generated from field: bool all_users = 3;
+     */
+    value: boolean;
+    case: "allUsers";
+  } | { case: undefined; value?: undefined };
 
   /**
    * @generated from oneof tkd.calendar.v1.ListEventsRequest.search_time
    */
   searchTime: {
     /**
-     * @generated from field: tkd.calendar.v1.TimeRange time_range = 2;
+     * @generated from field: tkd.calendar.v1.TimeRange time_range = 4;
      */
     value: TimeRange;
     case: "timeRange";
@@ -130,7 +148,7 @@ export declare class ListEventsRequest extends Message<ListEventsRequest> {
     /**
      * Format is YYYY/MM/DD
      *
-     * @generated from field: string date = 4;
+     * @generated from field: string date = 5;
      */
     value: string;
     case: "date";
