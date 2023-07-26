@@ -80,13 +80,42 @@ export declare class TimeRange extends Message<TimeRange> {
 }
 
 /**
- * @generated from message tkd.calendar.v1.ListEventsRequest
+ * @generated from message tkd.calendar.v1.EventSource
  */
-export declare class ListEventsRequest extends Message<ListEventsRequest> {
+export declare class EventSource extends Message<EventSource> {
   /**
    * @generated from field: repeated string calendar_ids = 1;
    */
   calendarIds: string[];
+
+  /**
+   * @generated from field: repeated string user_ids = 2;
+   */
+  userIds: string[];
+
+  constructor(data?: PartialMessage<EventSource>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.EventSource";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EventSource;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): EventSource;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): EventSource;
+
+  static equals(a: EventSource | PlainMessage<EventSource> | undefined, b: EventSource | PlainMessage<EventSource> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.calendar.v1.ListEventsRequest
+ */
+export declare class ListEventsRequest extends Message<ListEventsRequest> {
+  /**
+   * @generated from field: tkd.calendar.v1.EventSource sources = 1;
+   */
+  sources?: EventSource;
 
   /**
    * @generated from oneof tkd.calendar.v1.ListEventsRequest.search_time
@@ -101,7 +130,7 @@ export declare class ListEventsRequest extends Message<ListEventsRequest> {
     /**
      * Format is YYYY/MM/DD
      *
-     * @generated from field: string date = 3;
+     * @generated from field: string date = 4;
      */
     value: string;
     case: "date";

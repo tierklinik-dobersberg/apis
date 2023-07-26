@@ -36,14 +36,25 @@ export const TimeRange = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.calendar.v1.EventSource
+ */
+export const EventSource = proto3.makeMessageType(
+  "tkd.calendar.v1.EventSource",
+  () => [
+    { no: 1, name: "calendar_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: "user_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
  * @generated from message tkd.calendar.v1.ListEventsRequest
  */
 export const ListEventsRequest = proto3.makeMessageType(
   "tkd.calendar.v1.ListEventsRequest",
   () => [
-    { no: 1, name: "calendar_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "sources", kind: "message", T: EventSource },
     { no: 2, name: "time_range", kind: "message", T: TimeRange, oneof: "search_time" },
-    { no: 3, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search_time" },
+    { no: 4, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search_time" },
   ],
 );
 

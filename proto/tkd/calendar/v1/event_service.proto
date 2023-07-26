@@ -45,12 +45,17 @@ message TimeRange {
     google.protobuf.Timestamp to = 2;
 }
 
-message ListEventsRequest {
+message EventSource {
     repeated string calendar_ids = 1;
+    repeated string user_ids = 2;
+}
+
+message ListEventsRequest {
+    EventSource sources = 1;
 
     oneof search_time {
         TimeRange time_range = 2;
-        string date = 3; // Format is YYYY/MM/DD
+        string date = 4; // Format is YYYY/MM/DD
     }
 }
 
