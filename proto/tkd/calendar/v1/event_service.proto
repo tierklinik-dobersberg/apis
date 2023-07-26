@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package tkd.calendar.v1;
+
+import "tkd/calendar/v1/event.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+import "tkd/common/v1/descriptor.proto";
+import "buf/validate/validate.proto";
+
+
+service CalendarService {
+    rpc ListCalendars(ListCalendarsRequest) returns (ListCalendarsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc ListEvents(ListEventsRequest) returns (ListEventsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+}
+
+message ListCalendarsRequest {}
+message ListCalendarsResponse {
+    repeated Calendar calendars = 1;
+}
+
+message TimeRange {
+    google.protobuf.Timestamp from = 1;
+    google.protobuf.Timestamp to = 2;
+}
+
+message ListEventsRequest {
+    repeated string calendar_ids = 1;
+
+    oneof search_time {
+        TimeRange time_range = 2;
+        string date = 3; // Format is YYYY/MM/DD
+    }
+}
+
+message CalendarEventList {
+    string calendar_id = 1;
+    repeated tkd.calendar.v1.CalendarEvent events = 2;
+}
+
+message ListEventsResponse {
+    repeated CalendarEventList calendar_events = 1;
+}
+
+message CreateEventRequest {
+    string calendar_id = 1 [(buf.validate.field).required = true];
+    string name = 2 [(buf.validate.field).required = true];
+    string description = 3;
+    google.protobuf.Timestamp start = 4 [(buf.validate.field).required = true];
+    google.protobuf.Timestamp end = 5 [(buf.validate.field).required = true];
+    google.protobuf.Any extra_data = 6;
+}
+
+message CreateEventResponse {
+    tkd.calendar.v1.CalendarEvent event = 1;
+}
+
+message DeleteEventRequest {
+    string calendar_id = 1 [(buf.validate.field).required = true];
+    string event_id = 2 [(buf.validate.field).required = true];
+}
+message DeleteEventResponse {}
