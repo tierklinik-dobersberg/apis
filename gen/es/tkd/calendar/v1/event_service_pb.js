@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Any, proto3, Timestamp } from "@bufbuild/protobuf";
+import { Any, FieldMask, proto3, Timestamp } from "@bufbuild/protobuf";
 import { Calendar, CalendarEvent } from "./event_pb.js";
 
 /**
@@ -57,6 +57,7 @@ export const ListEventsRequest = proto3.makeMessageType(
     { no: 3, name: "all_users", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "source" },
     { no: 4, name: "time_range", kind: "message", T: TimeRange, oneof: "search_time" },
     { no: 5, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search_time" },
+    { no: 6, name: "read_mask", kind: "message", T: FieldMask },
   ],
 );
 
@@ -66,7 +67,7 @@ export const ListEventsRequest = proto3.makeMessageType(
 export const CalendarEventList = proto3.makeMessageType(
   "tkd.calendar.v1.CalendarEventList",
   () => [
-    { no: 1, name: "calendar_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "calendar", kind: "message", T: Calendar },
     { no: 2, name: "events", kind: "message", T: CalendarEvent, repeated: true },
   ],
 );

@@ -5,6 +5,7 @@ package tkd.calendar.v1;
 import "tkd/calendar/v1/event.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
 import "tkd/common/v1/descriptor.proto";
 import "buf/validate/validate.proto";
 
@@ -61,10 +62,12 @@ message ListEventsRequest {
         TimeRange time_range = 4;
         string date = 5; // Format is YYYY/MM/DD
     }
+
+    google.protobuf.FieldMask read_mask = 6;
 }
 
 message CalendarEventList {
-    string calendar_id = 1;
+    tkd.calendar.v1.Calendar calendar = 1;
     repeated tkd.calendar.v1.CalendarEvent events = 2;
 }
 

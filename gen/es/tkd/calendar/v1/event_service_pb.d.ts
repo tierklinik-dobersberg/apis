@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { Any, BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
+import type { Any, BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Calendar, CalendarEvent } from "./event_pb.js";
 
@@ -154,6 +154,11 @@ export declare class ListEventsRequest extends Message<ListEventsRequest> {
     case: "date";
   } | { case: undefined; value?: undefined };
 
+  /**
+   * @generated from field: google.protobuf.FieldMask read_mask = 6;
+   */
+  readMask?: FieldMask;
+
   constructor(data?: PartialMessage<ListEventsRequest>);
 
   static readonly runtime: typeof proto3;
@@ -174,9 +179,9 @@ export declare class ListEventsRequest extends Message<ListEventsRequest> {
  */
 export declare class CalendarEventList extends Message<CalendarEventList> {
   /**
-   * @generated from field: string calendar_id = 1;
+   * @generated from field: tkd.calendar.v1.Calendar calendar = 1;
    */
-  calendarId: string;
+  calendar?: Calendar;
 
   /**
    * @generated from field: repeated tkd.calendar.v1.CalendarEvent events = 2;
