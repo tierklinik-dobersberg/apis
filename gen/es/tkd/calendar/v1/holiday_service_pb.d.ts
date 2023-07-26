@@ -103,9 +103,9 @@ export declare class PublicHoliday extends Message<PublicHoliday> {
 }
 
 /**
- * @generated from message tkd.calendar.v1.GetRequest
+ * @generated from message tkd.calendar.v1.GetHolidayRequest
  */
-export declare class GetRequest extends Message<GetRequest> {
+export declare class GetHolidayRequest extends Message<GetHolidayRequest> {
   /**
    * @generated from field: uint64 year = 1;
    */
@@ -118,42 +118,42 @@ export declare class GetRequest extends Message<GetRequest> {
    */
   month: bigint;
 
-  constructor(data?: PartialMessage<GetRequest>);
+  constructor(data?: PartialMessage<GetHolidayRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.calendar.v1.GetRequest";
+  static readonly typeName = "tkd.calendar.v1.GetHolidayRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetHolidayRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetHolidayRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetHolidayRequest;
 
-  static equals(a: GetRequest | PlainMessage<GetRequest> | undefined, b: GetRequest | PlainMessage<GetRequest> | undefined): boolean;
+  static equals(a: GetHolidayRequest | PlainMessage<GetHolidayRequest> | undefined, b: GetHolidayRequest | PlainMessage<GetHolidayRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.calendar.v1.GetResponse
+ * @generated from message tkd.calendar.v1.GetHolidayResponse
  */
-export declare class GetResponse extends Message<GetResponse> {
+export declare class GetHolidayResponse extends Message<GetHolidayResponse> {
   /**
    * @generated from field: repeated tkd.calendar.v1.PublicHoliday holidays = 1;
    */
   holidays: PublicHoliday[];
 
-  constructor(data?: PartialMessage<GetResponse>);
+  constructor(data?: PartialMessage<GetHolidayResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.calendar.v1.GetResponse";
+  static readonly typeName = "tkd.calendar.v1.GetHolidayResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetHolidayResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetHolidayResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetHolidayResponse;
 
-  static equals(a: GetResponse | PlainMessage<GetResponse> | undefined, b: GetResponse | PlainMessage<GetResponse> | undefined): boolean;
+  static equals(a: GetHolidayResponse | PlainMessage<GetHolidayResponse> | undefined, b: GetHolidayResponse | PlainMessage<GetHolidayResponse> | undefined): boolean;
 }
 

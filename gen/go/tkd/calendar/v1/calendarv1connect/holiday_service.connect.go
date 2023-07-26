@@ -33,13 +33,14 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// HolidayServiceGetProcedure is the fully-qualified name of the HolidayService's Get RPC.
-	HolidayServiceGetProcedure = "/tkd.calendar.v1.HolidayService/Get"
+	// HolidayServiceGetHolidayProcedure is the fully-qualified name of the HolidayService's GetHoliday
+	// RPC.
+	HolidayServiceGetHolidayProcedure = "/tkd.calendar.v1.HolidayService/GetHoliday"
 )
 
 // HolidayServiceClient is a client for the tkd.calendar.v1.HolidayService service.
 type HolidayServiceClient interface {
-	Get(context.Context, *connect_go.Request[v1.GetRequest]) (*connect_go.Response[v1.GetResponse], error)
+	GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error)
 }
 
 // NewHolidayServiceClient constructs a client for the tkd.calendar.v1.HolidayService service. By
@@ -52,9 +53,9 @@ type HolidayServiceClient interface {
 func NewHolidayServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) HolidayServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &holidayServiceClient{
-		get: connect_go.NewClient[v1.GetRequest, v1.GetResponse](
+		getHoliday: connect_go.NewClient[v1.GetHolidayRequest, v1.GetHolidayResponse](
 			httpClient,
-			baseURL+HolidayServiceGetProcedure,
+			baseURL+HolidayServiceGetHolidayProcedure,
 			opts...,
 		),
 	}
@@ -62,17 +63,17 @@ func NewHolidayServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 
 // holidayServiceClient implements HolidayServiceClient.
 type holidayServiceClient struct {
-	get *connect_go.Client[v1.GetRequest, v1.GetResponse]
+	getHoliday *connect_go.Client[v1.GetHolidayRequest, v1.GetHolidayResponse]
 }
 
-// Get calls tkd.calendar.v1.HolidayService.Get.
-func (c *holidayServiceClient) Get(ctx context.Context, req *connect_go.Request[v1.GetRequest]) (*connect_go.Response[v1.GetResponse], error) {
-	return c.get.CallUnary(ctx, req)
+// GetHoliday calls tkd.calendar.v1.HolidayService.GetHoliday.
+func (c *holidayServiceClient) GetHoliday(ctx context.Context, req *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error) {
+	return c.getHoliday.CallUnary(ctx, req)
 }
 
 // HolidayServiceHandler is an implementation of the tkd.calendar.v1.HolidayService service.
 type HolidayServiceHandler interface {
-	Get(context.Context, *connect_go.Request[v1.GetRequest]) (*connect_go.Response[v1.GetResponse], error)
+	GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error)
 }
 
 // NewHolidayServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -81,15 +82,15 @@ type HolidayServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewHolidayServiceHandler(svc HolidayServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	holidayServiceGetHandler := connect_go.NewUnaryHandler(
-		HolidayServiceGetProcedure,
-		svc.Get,
+	holidayServiceGetHolidayHandler := connect_go.NewUnaryHandler(
+		HolidayServiceGetHolidayProcedure,
+		svc.GetHoliday,
 		opts...,
 	)
 	return "/tkd.calendar.v1.HolidayService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case HolidayServiceGetProcedure:
-			holidayServiceGetHandler.ServeHTTP(w, r)
+		case HolidayServiceGetHolidayProcedure:
+			holidayServiceGetHolidayHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -99,6 +100,6 @@ func NewHolidayServiceHandler(svc HolidayServiceHandler, opts ...connect_go.Hand
 // UnimplementedHolidayServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedHolidayServiceHandler struct{}
 
-func (UnimplementedHolidayServiceHandler) Get(context.Context, *connect_go.Request[v1.GetRequest]) (*connect_go.Response[v1.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.HolidayService.Get is not implemented"))
+func (UnimplementedHolidayServiceHandler) GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.HolidayService.GetHoliday is not implemented"))
 }

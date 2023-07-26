@@ -38,10 +38,10 @@ export const PublicHoliday = proto3.makeMessageType(
 );
 
 /**
- * @generated from message tkd.calendar.v1.GetRequest
+ * @generated from message tkd.calendar.v1.GetHolidayRequest
  */
-export const GetRequest = proto3.makeMessageType(
-  "tkd.calendar.v1.GetRequest",
+export const GetHolidayRequest = proto3.makeMessageType(
+  "tkd.calendar.v1.GetHolidayRequest",
   () => [
     { no: 1, name: "year", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 2, name: "month", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
@@ -49,10 +49,10 @@ export const GetRequest = proto3.makeMessageType(
 );
 
 /**
- * @generated from message tkd.calendar.v1.GetResponse
+ * @generated from message tkd.calendar.v1.GetHolidayResponse
  */
-export const GetResponse = proto3.makeMessageType(
-  "tkd.calendar.v1.GetResponse",
+export const GetHolidayResponse = proto3.makeMessageType(
+  "tkd.calendar.v1.GetHolidayResponse",
   () => [
     { no: 1, name: "holidays", kind: "message", T: PublicHoliday, repeated: true },
   ],

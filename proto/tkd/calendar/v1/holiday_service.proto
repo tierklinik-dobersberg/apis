@@ -23,14 +23,14 @@ message PublicHoliday {
 }
 
 service HolidayService {
-    rpc Get(GetRequest) returns (GetResponse) {}
+    rpc GetHoliday(GetHolidayRequest) returns (GetHolidayResponse) {}
 }
 
-message GetRequest {
+message GetHolidayRequest {
     uint64 year = 1;
     uint64 month = 2; // starts with 1
 }
 
-message GetResponse {
+message GetHolidayResponse {
     repeated PublicHoliday holidays = 1;
 }
