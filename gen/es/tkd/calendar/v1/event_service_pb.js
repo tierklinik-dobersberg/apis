@@ -78,7 +78,7 @@ export const CalendarEventList = proto3.makeMessageType(
 export const ListEventsResponse = proto3.makeMessageType(
   "tkd.calendar.v1.ListEventsResponse",
   () => [
-    { no: 1, name: "calendar_events", kind: "message", T: CalendarEventList, repeated: true },
+    { no: 1, name: "results", kind: "message", T: CalendarEventList, repeated: true },
   ],
 );
 

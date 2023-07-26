@@ -208,9 +208,9 @@ export declare class CalendarEventList extends Message<CalendarEventList> {
  */
 export declare class ListEventsResponse extends Message<ListEventsResponse> {
   /**
-   * @generated from field: repeated tkd.calendar.v1.CalendarEventList calendar_events = 1;
+   * @generated from field: repeated tkd.calendar.v1.CalendarEventList results = 1;
    */
-  calendarEvents: CalendarEventList[];
+  results: CalendarEventList[];
 
   constructor(data?: PartialMessage<ListEventsResponse>);
 
