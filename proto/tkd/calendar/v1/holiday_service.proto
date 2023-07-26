@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package tkd.calendar.v1;
+
+enum HolidayType {
+    HOLIDAY_TYPE_UNSPECIFIED = 0;
+    PUBLIC = 1;
+    BANK = 2;
+    SCHOOL = 3;
+    AUTHORITIES = 4;
+    OPTIONAL = 5;
+    OBSERVANCE = 6;
+}
+
+message PublicHoliday {
+    string date = 1; // YYYY-MM-DD
+    string local_name = 2;
+    string name = 3;
+    string country_code = 4;
+    bool fixed = 5;
+    bool global = 6;
+    HolidayType type = 7;
+}
+
+service HolidayService {
+    rpc Get(GetRequest) returns (GetResponse) {}
+}
+
+message GetRequest {
+    uint64 year = 1;
+    uint64 month = 2; // starts with 1
+}
+
+message GetResponse {
+    repeated PublicHoliday holidays = 1;
+}
