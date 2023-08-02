@@ -35,20 +35,23 @@ message OffTimeCosts {
     // RosterId is the ID of the roster this OffTimeCosts belong to.
     string roster_id = 3;
 
+    // UserId is the ID of the user this off-time costs belong to.
+    string user_id = 4;
+
     // CreatedAt is set to the time this off-time-costs entry has been
     // created. This field must not be set during OffTimeService.AddOffTimeCosts.
-    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp created_at = 5;
 
     // CreatorId holds the ID of the user that created this entry.
     // This field must not be set during OffTimeService.AddOffTimeCosts.
-    string creator_id = 5;
+    string creator_id = 6;
 
     // The actual duration costs of this entry.
-    google.protobuf.Duration costs = 6;
+    google.protobuf.Duration costs = 7;
 
     // IsVacation is set to true if the off-time-costs apply to the vacation
     // credits. If set to false, the off-time costs are for time compensation.
-    bool is_vacation = 7;
+    bool is_vacation = 8;
 }
 
 enum OffTimeType {
@@ -127,6 +130,12 @@ service OffTimeService {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
             allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
+
+    rpc GetOffTimeCosts(GetOffTimeCostsRequest) returns (GetOffTimeCostsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
         };
     }
 }
@@ -212,3 +221,27 @@ message AddOffTimeCostsRequest {
 }
 
 message AddOffTimeCostsResponse {}
+
+message CostsForUsers {
+    repeated string user_ids = 1;
+}
+
+message GetOffTimeCostsRequest {
+    CostsForUsers for_users = 1;
+    google.protobuf.FieldMask read_mask = 2;
+}
+
+message OffTimeCostSummary {
+    google.protobuf.Duration vacation = 1;
+    google.protobuf.Duration time_off = 2;
+}
+
+message UserOffTimeCosts {
+    string user_id = 1;
+    repeated OffTimeCosts costs = 2;
+    OffTimeCostSummary summary = 3;
+}
+
+message GetOffTimeCostsResponse {
+    repeated UserOffTimeCosts results = 1;
+}

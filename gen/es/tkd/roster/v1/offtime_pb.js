@@ -51,10 +51,11 @@ export const OffTimeCosts = proto3.makeMessageType(
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "offtime_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "roster_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "created_at", kind: "message", T: Timestamp },
-    { no: 5, name: "creator_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 6, name: "costs", kind: "message", T: Duration },
-    { no: 7, name: "is_vacation", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 4, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "created_at", kind: "message", T: Timestamp },
+    { no: 6, name: "creator_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "costs", kind: "message", T: Duration },
+    { no: 8, name: "is_vacation", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
@@ -202,5 +203,59 @@ export const AddOffTimeCostsRequest = proto3.makeMessageType(
 export const AddOffTimeCostsResponse = proto3.makeMessageType(
   "tkd.roster.v1.AddOffTimeCostsResponse",
   [],
+);
+
+/**
+ * @generated from message tkd.roster.v1.CostsForUsers
+ */
+export const CostsForUsers = proto3.makeMessageType(
+  "tkd.roster.v1.CostsForUsers",
+  () => [
+    { no: 1, name: "user_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.GetOffTimeCostsRequest
+ */
+export const GetOffTimeCostsRequest = proto3.makeMessageType(
+  "tkd.roster.v1.GetOffTimeCostsRequest",
+  () => [
+    { no: 1, name: "for_users", kind: "message", T: CostsForUsers },
+    { no: 2, name: "read_mask", kind: "message", T: FieldMask },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.OffTimeCostSummary
+ */
+export const OffTimeCostSummary = proto3.makeMessageType(
+  "tkd.roster.v1.OffTimeCostSummary",
+  () => [
+    { no: 1, name: "vacation", kind: "message", T: Duration },
+    { no: 2, name: "time_off", kind: "message", T: Duration },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.UserOffTimeCosts
+ */
+export const UserOffTimeCosts = proto3.makeMessageType(
+  "tkd.roster.v1.UserOffTimeCosts",
+  () => [
+    { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "costs", kind: "message", T: OffTimeCosts, repeated: true },
+    { no: 3, name: "summary", kind: "message", T: OffTimeCostSummary },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.GetOffTimeCostsResponse
+ */
+export const GetOffTimeCostsResponse = proto3.makeMessageType(
+  "tkd.roster.v1.GetOffTimeCostsResponse",
+  () => [
+    { no: 1, name: "results", kind: "message", T: UserOffTimeCosts, repeated: true },
+  ],
 );
 

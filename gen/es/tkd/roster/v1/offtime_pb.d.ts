@@ -128,10 +128,17 @@ export declare class OffTimeCosts extends Message<OffTimeCosts> {
   rosterId: string;
 
   /**
+   * UserId is the ID of the user this off-time costs belong to.
+   *
+   * @generated from field: string user_id = 4;
+   */
+  userId: string;
+
+  /**
    * CreatedAt is set to the time this off-time-costs entry has been
    * created. This field must not be set during OffTimeService.AddOffTimeCosts.
    *
-   * @generated from field: google.protobuf.Timestamp created_at = 4;
+   * @generated from field: google.protobuf.Timestamp created_at = 5;
    */
   createdAt?: Timestamp;
 
@@ -139,14 +146,14 @@ export declare class OffTimeCosts extends Message<OffTimeCosts> {
    * CreatorId holds the ID of the user that created this entry.
    * This field must not be set during OffTimeService.AddOffTimeCosts.
    *
-   * @generated from field: string creator_id = 5;
+   * @generated from field: string creator_id = 6;
    */
   creatorId: string;
 
   /**
    * The actual duration costs of this entry.
    *
-   * @generated from field: google.protobuf.Duration costs = 6;
+   * @generated from field: google.protobuf.Duration costs = 7;
    */
   costs?: Duration;
 
@@ -154,7 +161,7 @@ export declare class OffTimeCosts extends Message<OffTimeCosts> {
    * IsVacation is set to true if the off-time-costs apply to the vacation
    * credits. If set to false, the off-time costs are for time compensation.
    *
-   * @generated from field: bool is_vacation = 7;
+   * @generated from field: bool is_vacation = 8;
    */
   isVacation: boolean;
 
@@ -592,5 +599,145 @@ export declare class AddOffTimeCostsResponse extends Message<AddOffTimeCostsResp
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddOffTimeCostsResponse;
 
   static equals(a: AddOffTimeCostsResponse | PlainMessage<AddOffTimeCostsResponse> | undefined, b: AddOffTimeCostsResponse | PlainMessage<AddOffTimeCostsResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.CostsForUsers
+ */
+export declare class CostsForUsers extends Message<CostsForUsers> {
+  /**
+   * @generated from field: repeated string user_ids = 1;
+   */
+  userIds: string[];
+
+  constructor(data?: PartialMessage<CostsForUsers>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.CostsForUsers";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CostsForUsers;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CostsForUsers;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CostsForUsers;
+
+  static equals(a: CostsForUsers | PlainMessage<CostsForUsers> | undefined, b: CostsForUsers | PlainMessage<CostsForUsers> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.GetOffTimeCostsRequest
+ */
+export declare class GetOffTimeCostsRequest extends Message<GetOffTimeCostsRequest> {
+  /**
+   * @generated from field: tkd.roster.v1.CostsForUsers for_users = 1;
+   */
+  forUsers?: CostsForUsers;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask read_mask = 2;
+   */
+  readMask?: FieldMask;
+
+  constructor(data?: PartialMessage<GetOffTimeCostsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.GetOffTimeCostsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetOffTimeCostsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetOffTimeCostsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetOffTimeCostsRequest;
+
+  static equals(a: GetOffTimeCostsRequest | PlainMessage<GetOffTimeCostsRequest> | undefined, b: GetOffTimeCostsRequest | PlainMessage<GetOffTimeCostsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.OffTimeCostSummary
+ */
+export declare class OffTimeCostSummary extends Message<OffTimeCostSummary> {
+  /**
+   * @generated from field: google.protobuf.Duration vacation = 1;
+   */
+  vacation?: Duration;
+
+  /**
+   * @generated from field: google.protobuf.Duration time_off = 2;
+   */
+  timeOff?: Duration;
+
+  constructor(data?: PartialMessage<OffTimeCostSummary>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.OffTimeCostSummary";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OffTimeCostSummary;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OffTimeCostSummary;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OffTimeCostSummary;
+
+  static equals(a: OffTimeCostSummary | PlainMessage<OffTimeCostSummary> | undefined, b: OffTimeCostSummary | PlainMessage<OffTimeCostSummary> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.UserOffTimeCosts
+ */
+export declare class UserOffTimeCosts extends Message<UserOffTimeCosts> {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: repeated tkd.roster.v1.OffTimeCosts costs = 2;
+   */
+  costs: OffTimeCosts[];
+
+  /**
+   * @generated from field: tkd.roster.v1.OffTimeCostSummary summary = 3;
+   */
+  summary?: OffTimeCostSummary;
+
+  constructor(data?: PartialMessage<UserOffTimeCosts>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.UserOffTimeCosts";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UserOffTimeCosts;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UserOffTimeCosts;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UserOffTimeCosts;
+
+  static equals(a: UserOffTimeCosts | PlainMessage<UserOffTimeCosts> | undefined, b: UserOffTimeCosts | PlainMessage<UserOffTimeCosts> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.GetOffTimeCostsResponse
+ */
+export declare class GetOffTimeCostsResponse extends Message<GetOffTimeCostsResponse> {
+  /**
+   * @generated from field: repeated tkd.roster.v1.UserOffTimeCosts results = 1;
+   */
+  results: UserOffTimeCosts[];
+
+  constructor(data?: PartialMessage<GetOffTimeCostsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.GetOffTimeCostsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetOffTimeCostsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetOffTimeCostsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetOffTimeCostsResponse;
+
+  static equals(a: GetOffTimeCostsResponse | PlainMessage<GetOffTimeCostsResponse> | undefined, b: GetOffTimeCostsResponse | PlainMessage<GetOffTimeCostsResponse> | undefined): boolean;
 }
 

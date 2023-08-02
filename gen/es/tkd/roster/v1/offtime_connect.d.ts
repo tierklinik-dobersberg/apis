@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddOffTimeCostsRequest, AddOffTimeCostsResponse, ApproveOrRejectRequest, ApproveOrRejectResponse, CreateOffTimeRequestRequest, CreateOffTimeRequestResponse, DeleteOffTimeRequestRequest, DeleteOffTimeRequestResponse, FindOffTimeRequestsRequest, FindOffTimeRequestsResponse, GetOffTimeEntryRequest, GetOffTimeEntryResponse } from "./offtime_pb.js";
+import { AddOffTimeCostsRequest, AddOffTimeCostsResponse, ApproveOrRejectRequest, ApproveOrRejectResponse, CreateOffTimeRequestRequest, CreateOffTimeRequestResponse, DeleteOffTimeRequestRequest, DeleteOffTimeRequestResponse, FindOffTimeRequestsRequest, FindOffTimeRequestsResponse, GetOffTimeCostsRequest, GetOffTimeCostsResponse, GetOffTimeEntryRequest, GetOffTimeEntryResponse } from "./offtime_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -64,6 +64,15 @@ export declare const OffTimeService: {
       readonly name: "AddOffTimeCosts",
       readonly I: typeof AddOffTimeCostsRequest,
       readonly O: typeof AddOffTimeCostsResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.OffTimeService.GetOffTimeCosts
+     */
+    readonly getOffTimeCosts: {
+      readonly name: "GetOffTimeCosts",
+      readonly I: typeof GetOffTimeCostsRequest,
+      readonly O: typeof GetOffTimeCostsResponse,
       readonly kind: MethodKind.Unary,
     },
   }
