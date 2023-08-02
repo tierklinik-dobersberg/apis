@@ -5,6 +5,7 @@
 
 import type { BinaryReadOptions, Duration, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
+import type { OffTimeCosts } from "./offtime_pb.js";
 
 /**
  * WorkTime describes the regular work time for a given user.
@@ -250,6 +251,11 @@ export declare class GetVacationCreditsLeftRequest extends Message<GetVacationCr
    */
   forUsers?: SumForUsers;
 
+  /**
+   * @generated from field: bool analyze = 3;
+   */
+  analyze: boolean;
+
   constructor(data?: PartialMessage<GetVacationCreditsLeftRequest>);
 
   static readonly runtime: typeof proto3;
@@ -266,6 +272,79 @@ export declare class GetVacationCreditsLeftRequest extends Message<GetVacationCr
 }
 
 /**
+ * @generated from message tkd.roster.v1.AnalyzeVacationSum
+ */
+export declare class AnalyzeVacationSum extends Message<AnalyzeVacationSum> {
+  /**
+   * @generated from field: tkd.roster.v1.WorkTime work_time = 1;
+   */
+  workTime?: WorkTime;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp ends_at = 2;
+   */
+  endsAt?: Timestamp;
+
+  /**
+   * @generated from field: float number_of_days = 3;
+   */
+  numberOfDays: number;
+
+  /**
+   * @generated from field: float vacation_weeks_per_day = 4;
+   */
+  vacationWeeksPerDay: number;
+
+  /**
+   * @generated from field: google.protobuf.Duration vacation_per_work_time = 5;
+   */
+  vacationPerWorkTime?: Duration;
+
+  constructor(data?: PartialMessage<AnalyzeVacationSum>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.AnalyzeVacationSum";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AnalyzeVacationSum;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AnalyzeVacationSum;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AnalyzeVacationSum;
+
+  static equals(a: AnalyzeVacationSum | PlainMessage<AnalyzeVacationSum> | undefined, b: AnalyzeVacationSum | PlainMessage<AnalyzeVacationSum> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.AnalyzeVacation
+ */
+export declare class AnalyzeVacation extends Message<AnalyzeVacation> {
+  /**
+   * @generated from field: repeated tkd.roster.v1.AnalyzeVacationSum slices = 1;
+   */
+  slices: AnalyzeVacationSum[];
+
+  /**
+   * @generated from field: repeated tkd.roster.v1.OffTimeCosts costs = 2;
+   */
+  costs: OffTimeCosts[];
+
+  constructor(data?: PartialMessage<AnalyzeVacation>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.AnalyzeVacation";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AnalyzeVacation;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AnalyzeVacation;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AnalyzeVacation;
+
+  static equals(a: AnalyzeVacation | PlainMessage<AnalyzeVacation> | undefined, b: AnalyzeVacation | PlainMessage<AnalyzeVacation> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.roster.v1.UserVacationSum
  */
 export declare class UserVacationSum extends Message<UserVacationSum> {
@@ -278,6 +357,11 @@ export declare class UserVacationSum extends Message<UserVacationSum> {
    * @generated from field: google.protobuf.Duration vacation_credits_left = 2;
    */
   vacationCreditsLeft?: Duration;
+
+  /**
+   * @generated from field: tkd.roster.v1.AnalyzeVacation analysis = 3;
+   */
+  analysis?: AnalyzeVacation;
 
   constructor(data?: PartialMessage<UserVacationSum>);
 

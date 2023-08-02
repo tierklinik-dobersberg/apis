@@ -6,6 +6,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/field_mask.proto";
 import "tkd/common/v1/descriptor.proto";
+import "tkd/roster/v1/offtime.proto";
 import "buf/validate/validate.proto";
 
 // WorkTime describes the regular work time for a given user.
@@ -113,11 +114,26 @@ message SumForUsers {
 
 message GetVacationCreditsLeftRequest {
     SumForUsers for_users = 1;
+    bool analyze = 3;
+}
+
+message AnalyzeVacationSum {
+    WorkTime work_time = 1;
+    google.protobuf.Timestamp ends_at = 2;
+    float number_of_days = 3;
+    float vacation_weeks_per_day = 4;
+    google.protobuf.Duration vacation_per_work_time = 5;
+}
+
+message AnalyzeVacation {
+    repeated AnalyzeVacationSum slices = 1;
+    repeated OffTimeCosts costs = 2;
 }
 
 message UserVacationSum {
     string user_id = 1;
     google.protobuf.Duration vacation_credits_left = 2;
+    AnalyzeVacation analysis = 3;
 }
 
 message GetVacationCreditsLeftResponse {

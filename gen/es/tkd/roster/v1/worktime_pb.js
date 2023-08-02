@@ -4,6 +4,7 @@
 // @ts-nocheck
 
 import { Duration, FieldMask, proto3, Timestamp } from "@bufbuild/protobuf";
+import { OffTimeCosts } from "./offtime_pb.js";
 
 /**
  * WorkTime describes the regular work time for a given user.
@@ -91,6 +92,32 @@ export const GetVacationCreditsLeftRequest = proto3.makeMessageType(
   "tkd.roster.v1.GetVacationCreditsLeftRequest",
   () => [
     { no: 1, name: "for_users", kind: "message", T: SumForUsers },
+    { no: 3, name: "analyze", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.AnalyzeVacationSum
+ */
+export const AnalyzeVacationSum = proto3.makeMessageType(
+  "tkd.roster.v1.AnalyzeVacationSum",
+  () => [
+    { no: 1, name: "work_time", kind: "message", T: WorkTime },
+    { no: 2, name: "ends_at", kind: "message", T: Timestamp },
+    { no: 3, name: "number_of_days", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 4, name: "vacation_weeks_per_day", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
+    { no: 5, name: "vacation_per_work_time", kind: "message", T: Duration },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.AnalyzeVacation
+ */
+export const AnalyzeVacation = proto3.makeMessageType(
+  "tkd.roster.v1.AnalyzeVacation",
+  () => [
+    { no: 1, name: "slices", kind: "message", T: AnalyzeVacationSum, repeated: true },
+    { no: 2, name: "costs", kind: "message", T: OffTimeCosts, repeated: true },
   ],
 );
 
@@ -102,6 +129,7 @@ export const UserVacationSum = proto3.makeMessageType(
   () => [
     { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "vacation_credits_left", kind: "message", T: Duration },
+    { no: 3, name: "analysis", kind: "message", T: AnalyzeVacation },
   ],
 );
 
