@@ -1,0 +1,172 @@
+
+syntax = "proto3";
+
+package tkd.roster.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/wrappers.proto";
+import "tkd/common/v1/descriptor.proto";
+import "buf/validate/validate.proto";
+
+message OffTimeCosts {
+    float vacation_days = 1;
+    google.protobuf.Duration duration = 2;
+}
+
+message OffTimeApproval {
+    bool approved = 1;
+    google.protobuf.Timestamp approved_at = 2;
+    string comment = 3;
+    OffTimeCosts actual_costs = 4;
+}
+
+enum OffTimeType {
+    OFF_TIME_TYPE_UNSPECIFIED = 0;
+    OFF_TIME_TYPE_VACATION = 1;
+    OFF_TIME_TYPE_TIME_OFF = 2;
+    OFF_TIME_TYPE_CREDITS = 3;
+}
+
+message OffTimeEntry {
+    string id = 1;
+    google.protobuf.Timestamp from = 2;
+    string description = 3;
+    string user_id = 4;
+    OffTimeType type = 5;
+    google.protobuf.Timestamp created_at = 6;
+    string created_by_user_id = 7;
+    OffTimeCosts costs = 8;
+    OffTimeApproval approval = 9;
+
+    option (tkd.common.v1.readable) = {
+        field_mask: {
+            paths: [
+                "from",
+                "description",
+                "type",
+                "user_id"
+            ]
+        },
+        owner_field_name: "user_id",
+        allowed_roles: [
+            "roster_manager",
+            "idm_superuser"
+        ]
+    };
+}
+
+message OffTimeCredits {
+    float days = 1;
+    google.protobuf.Duration duration = 2;
+}
+
+service OffTimeService {
+    rpc GetOffTimeEntry(GetOffTimeEntryRequest) returns (GetOffTimeEntryResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+
+    rpc CreateOffTimeRequest(CreateOffTimeRequestRequest) returns (CreateOffTimeRequestResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+
+    rpc DeleteOffTimeRequest(DeleteOffTimeRequestRequest) returns (DeleteOffTimeRequestResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+
+    rpc FindOffTimeRequests(FindOffTimeRequestsRequest) returns (FindOffTimeRequestsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+
+    rpc ApproveOrReject(ApproveOrRejectRequest) returns (ApproveOrRejectResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    };
+
+    rpc GetOffTimeCredits(GetOffTimeCreditsRequest) returns (GetOffTimeCreditsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+}
+
+message GetOffTimeEntryRequest {
+    string id = 1 [(buf.validate.field).required = true];
+}
+message GetOffTimeEntryResponse {
+    OffTimeEntry entry =  1;
+}
+
+message CreateOffTimeRequestRequest {
+    google.protobuf.Timestamp from = 1 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).timestamp.gt_now = true
+    ];
+
+    google.protobuf.Timestamp to = 2 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).timestamp.gt_now = true
+    ];
+
+    string staff_id = 3;
+    string description = 4;
+    OffTimeType request_type = 5; // Must not be OFF_TIME_TYPE_CREDITS
+}
+
+message CreateOffTimeRequestResponse {
+    OffTimeEntry entry =  1;
+}
+
+message DeleteOffTimeRequestRequest {
+    string id = 1 [(buf.validate.field).required = true];
+}
+message DeleteOffTimeRequestResponse {}
+
+message FindOffTimeRequestsRequest {
+    google.protobuf.Timestamp from = 1;
+    google.protobuf.Timestamp to = 2;
+    repeated string user_ids = 3;
+    
+    google.protobuf.BoolValue approved = 4;
+    google.protobuf.FieldMask read_mask = 5;
+}
+
+message FindOffTimeRequestsResponse {
+    repeated OffTimeEntry results = 1;
+}
+
+enum ApprovalRequestType {
+    APPROVAL_REQUEST_TYPE_UNSPECIFIED = 0;
+    APPROVAL_REQUEST_TYPE_APPROVED = 1;
+    APPROVAL_REQUEST_TYPE_REJECTED = 2;
+}
+
+message ApproveOrRejectRequest {
+    string id = 1 [(buf.validate.field).required = true];
+    string comment = 2;
+    ApprovalRequestType type = 3 [(buf.validate.field).required = true];
+    google.protobuf.Duration actual_costs = 4;
+}
+
+message ApproveOrRejectResponse {
+    OffTimeEntry entry = 1;
+}
+
+message GetOffTimeCreditsRequest {
+    repeated string user_ids = 1;
+}
+
+message GetOffTimeCreditsResponse {
+    map<string, OffTimeCredits> results = 1;
+}

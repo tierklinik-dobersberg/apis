@@ -6,6 +6,7 @@
 import type { Any, BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Calendar, CalendarEvent } from "./event_pb.js";
+import type { TimeRange } from "../../common/v1/time_range_pb.js";
 
 /**
  * @generated from message tkd.calendar.v1.ListCalendarsRequest
@@ -48,35 +49,6 @@ export declare class ListCalendarsResponse extends Message<ListCalendarsResponse
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListCalendarsResponse;
 
   static equals(a: ListCalendarsResponse | PlainMessage<ListCalendarsResponse> | undefined, b: ListCalendarsResponse | PlainMessage<ListCalendarsResponse> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.calendar.v1.TimeRange
- */
-export declare class TimeRange extends Message<TimeRange> {
-  /**
-   * @generated from field: google.protobuf.Timestamp from = 1;
-   */
-  from?: Timestamp;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp to = 2;
-   */
-  to?: Timestamp;
-
-  constructor(data?: PartialMessage<TimeRange>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.calendar.v1.TimeRange";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TimeRange;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): TimeRange;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): TimeRange;
-
-  static equals(a: TimeRange | PlainMessage<TimeRange> | undefined, b: TimeRange | PlainMessage<TimeRange> | undefined): boolean;
 }
 
 /**
@@ -140,7 +112,7 @@ export declare class ListEventsRequest extends Message<ListEventsRequest> {
    */
   searchTime: {
     /**
-     * @generated from field: tkd.calendar.v1.TimeRange time_range = 4;
+     * @generated from field: tkd.common.v1.TimeRange time_range = 4;
      */
     value: TimeRange;
     case: "timeRange";

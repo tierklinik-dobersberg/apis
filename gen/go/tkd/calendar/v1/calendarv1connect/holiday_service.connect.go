@@ -36,11 +36,15 @@ const (
 	// HolidayServiceGetHolidayProcedure is the fully-qualified name of the HolidayService's GetHoliday
 	// RPC.
 	HolidayServiceGetHolidayProcedure = "/tkd.calendar.v1.HolidayService/GetHoliday"
+	// HolidayServiceNumberOfWorkDaysProcedure is the fully-qualified name of the HolidayService's
+	// NumberOfWorkDays RPC.
+	HolidayServiceNumberOfWorkDaysProcedure = "/tkd.calendar.v1.HolidayService/NumberOfWorkDays"
 )
 
 // HolidayServiceClient is a client for the tkd.calendar.v1.HolidayService service.
 type HolidayServiceClient interface {
 	GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error)
+	NumberOfWorkDays(context.Context, *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error)
 }
 
 // NewHolidayServiceClient constructs a client for the tkd.calendar.v1.HolidayService service. By
@@ -58,12 +62,18 @@ func NewHolidayServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 			baseURL+HolidayServiceGetHolidayProcedure,
 			opts...,
 		),
+		numberOfWorkDays: connect_go.NewClient[v1.NumberOfWorkDaysRequest, v1.NumberOfWorkDaysResponse](
+			httpClient,
+			baseURL+HolidayServiceNumberOfWorkDaysProcedure,
+			opts...,
+		),
 	}
 }
 
 // holidayServiceClient implements HolidayServiceClient.
 type holidayServiceClient struct {
-	getHoliday *connect_go.Client[v1.GetHolidayRequest, v1.GetHolidayResponse]
+	getHoliday       *connect_go.Client[v1.GetHolidayRequest, v1.GetHolidayResponse]
+	numberOfWorkDays *connect_go.Client[v1.NumberOfWorkDaysRequest, v1.NumberOfWorkDaysResponse]
 }
 
 // GetHoliday calls tkd.calendar.v1.HolidayService.GetHoliday.
@@ -71,9 +81,15 @@ func (c *holidayServiceClient) GetHoliday(ctx context.Context, req *connect_go.R
 	return c.getHoliday.CallUnary(ctx, req)
 }
 
+// NumberOfWorkDays calls tkd.calendar.v1.HolidayService.NumberOfWorkDays.
+func (c *holidayServiceClient) NumberOfWorkDays(ctx context.Context, req *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error) {
+	return c.numberOfWorkDays.CallUnary(ctx, req)
+}
+
 // HolidayServiceHandler is an implementation of the tkd.calendar.v1.HolidayService service.
 type HolidayServiceHandler interface {
 	GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error)
+	NumberOfWorkDays(context.Context, *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error)
 }
 
 // NewHolidayServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -87,10 +103,17 @@ func NewHolidayServiceHandler(svc HolidayServiceHandler, opts ...connect_go.Hand
 		svc.GetHoliday,
 		opts...,
 	)
+	holidayServiceNumberOfWorkDaysHandler := connect_go.NewUnaryHandler(
+		HolidayServiceNumberOfWorkDaysProcedure,
+		svc.NumberOfWorkDays,
+		opts...,
+	)
 	return "/tkd.calendar.v1.HolidayService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case HolidayServiceGetHolidayProcedure:
 			holidayServiceGetHolidayHandler.ServeHTTP(w, r)
+		case HolidayServiceNumberOfWorkDaysProcedure:
+			holidayServiceNumberOfWorkDaysHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -102,4 +125,8 @@ type UnimplementedHolidayServiceHandler struct{}
 
 func (UnimplementedHolidayServiceHandler) GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.HolidayService.GetHoliday is not implemented"))
+}
+
+func (UnimplementedHolidayServiceHandler) NumberOfWorkDays(context.Context, *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.HolidayService.NumberOfWorkDays is not implemented"))
 }

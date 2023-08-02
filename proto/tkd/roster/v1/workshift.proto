@@ -1,0 +1,154 @@
+
+syntax = "proto3";
+
+package tkd.roster.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+import "tkd/common/v1/descriptor.proto";
+import "buf/validate/validate.proto";
+
+message Daytime {
+    int64 hour = 1 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).int64.gte = 0,
+        (buf.validate.field).int64.lte = 24
+    ];
+
+    int64 minute = 2 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).int64.gte = 0,
+        (buf.validate.field).int64.lte = 59
+    ];
+}
+
+message WorkShift {
+    string id = 1;
+
+    Daytime from = 2;
+    google.protobuf.Duration duration = 3;
+    repeated int32 days = 4; // 0 = Sunday, 6 = Saturday
+    string name = 5;
+    string display_name = 6;
+    bool on_holiday = 7;
+    repeated string eligible_role_ids = 8;
+    google.protobuf.Duration time_worth = 9;
+    int64 required_staff_count = 10;
+    string color = 11;
+    string description = 12;
+    int64 order = 13;
+    repeated string tags = 14;
+}
+
+service WorkShiftService {
+    rpc ListWorkShifts(ListWorkShiftsRequest) returns (ListWorkShiftsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+    rpc CreateWorkShift(CreateWorkShiftRequest) returns (CreateWorkShiftResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+    rpc UpdateWorkShift(UpdateWorkShiftRequest) returns (UpdateWorkShiftResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+    rpc DeleteWorkShift(DeleteWorkShiftRequest) returns (DeleteWorkShiftResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    };
+}
+
+message ListWorkShiftsRequest {
+    google.protobuf.FieldMask read_mask = 1;
+}
+message ListWorkShiftsResponse {
+    repeated WorkShift work_shifts = 1;
+}
+
+message CreateWorkShiftRequest {
+    Daytime from = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Duration duration = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    repeated int32 days = 3 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).int32.gte = 0,
+        (buf.validate.field).int32.lte = 6
+    ];
+
+    string name = 4 [
+        (buf.validate.field).required = true
+    ];
+
+    string display_name = 5 [
+        (buf.validate.field).required = true
+    ];
+
+    bool on_holiday = 6;
+
+    repeated string eligible_role_ids = 7;
+
+    google.protobuf.Duration time_worth = 8;
+
+    int64 required_staff_count = 9 [
+        (buf.validate.field).required = true
+    ];
+
+    string color = 10;
+    string description = 11;
+    int64 order = 12;
+    repeated string tags = 13;
+}
+
+message CreateWorkShiftResponse {
+    WorkShift work_shift = 1;
+}
+
+
+message WorkShiftUpdate {
+    Daytime from = 1;
+
+    google.protobuf.Duration duration = 2;
+
+    repeated int32 days = 3 [
+        (buf.validate.field).ignore_empty = true,
+        (buf.validate.field).int32.gte = 0,
+        (buf.validate.field).int32.lte = 6
+    ];
+    string name = 4 ;
+    string display_name = 5;
+    bool on_holiday = 6;
+    repeated string eligible_role_ids = 7;
+    google.protobuf.Duration time_worth = 8;
+    int64 required_staff_count = 9;
+    string color = 10;
+    string description = 11;
+    int64 order = 12;
+    repeated string tags = 13;
+}
+
+message UpdateWorkShiftRequest {
+    string id = 1;
+    WorkShiftUpdate update = 2;
+    google.protobuf.FieldMask write_mask = 3;
+}
+
+message UpdateWorkShiftResponse {
+    WorkShift work_shift = 1;
+}
+
+message DeleteWorkShiftRequest {
+    string id = 1;
+}
+
+message DeleteWorkShiftResponse {}

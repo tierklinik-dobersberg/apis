@@ -29,6 +29,10 @@ message PrivacyACL {
     repeated string allowed_roles = 3;
 } 
 
+extend google.protobuf.ServiceOptions {
+    string default_host = 2022;
+}
+
 extend google.protobuf.MethodOptions {
     AuthDecorator auth = 2022;
 }

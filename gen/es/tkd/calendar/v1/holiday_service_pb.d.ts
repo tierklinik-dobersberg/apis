@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
@@ -112,8 +112,6 @@ export declare class GetHolidayRequest extends Message<GetHolidayRequest> {
   year: bigint;
 
   /**
-   * starts with 1
-   *
    * @generated from field: uint64 month = 2;
    */
   month: bigint;
@@ -155,5 +153,73 @@ export declare class GetHolidayResponse extends Message<GetHolidayResponse> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetHolidayResponse;
 
   static equals(a: GetHolidayResponse | PlainMessage<GetHolidayResponse> | undefined, b: GetHolidayResponse | PlainMessage<GetHolidayResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.calendar.v1.NumberOfWorkDaysRequest
+ */
+export declare class NumberOfWorkDaysRequest extends Message<NumberOfWorkDaysRequest> {
+  /**
+   * @generated from field: string country = 1;
+   */
+  country: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp from = 2;
+   */
+  from?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp to = 3;
+   */
+  to?: Timestamp;
+
+  constructor(data?: PartialMessage<NumberOfWorkDaysRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.NumberOfWorkDaysRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): NumberOfWorkDaysRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): NumberOfWorkDaysRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): NumberOfWorkDaysRequest;
+
+  static equals(a: NumberOfWorkDaysRequest | PlainMessage<NumberOfWorkDaysRequest> | undefined, b: NumberOfWorkDaysRequest | PlainMessage<NumberOfWorkDaysRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.calendar.v1.NumberOfWorkDaysResponse
+ */
+export declare class NumberOfWorkDaysResponse extends Message<NumberOfWorkDaysResponse> {
+  /**
+   * @generated from field: uint32 number_of_work_days = 1;
+   */
+  numberOfWorkDays: number;
+
+  /**
+   * @generated from field: uint32 number_of_weekend_days = 2;
+   */
+  numberOfWeekendDays: number;
+
+  /**
+   * @generated from field: uint32 number_of_holidays = 3;
+   */
+  numberOfHolidays: number;
+
+  constructor(data?: PartialMessage<NumberOfWorkDaysResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.NumberOfWorkDaysResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): NumberOfWorkDaysResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): NumberOfWorkDaysResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): NumberOfWorkDaysResponse;
+
+  static equals(a: NumberOfWorkDaysResponse | PlainMessage<NumberOfWorkDaysResponse> | undefined, b: NumberOfWorkDaysResponse | PlainMessage<NumberOfWorkDaysResponse> | undefined): boolean;
 }
 

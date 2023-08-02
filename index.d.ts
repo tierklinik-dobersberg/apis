@@ -13,3 +13,12 @@ export * from './gen/es/tkd/idm/v1/self_service_pb';
 export * from './gen/es/tkd/idm/v1/user_pb';
 export * from './gen/es/tkd/idm/v1/user_service_connect';
 export * from './gen/es/tkd/idm/v1/user_service_pb';
+export * from './gen/es/tkd/roster/v1/offtime_connect';
+export * from './gen/es/tkd/roster/v1/offtime_pb';
+export * from './gen/es/tkd/roster/v1/roster_connect';
+export * from './gen/es/tkd/roster/v1/roster_pb';
+export * from './gen/es/tkd/roster/v1/workshift_connect';
+export * from './gen/es/tkd/roster/v1/workshift_pb';
+export * from './gen/es/tkd/roster/v1/worktime_connect';
+export * from './gen/es/tkd/roster/v1/worktime_pb';
+

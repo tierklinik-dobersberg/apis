@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3 } from "@bufbuild/protobuf";
+import { proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
  * @generated from enum tkd.calendar.v1.HolidayType
@@ -55,6 +55,30 @@ export const GetHolidayResponse = proto3.makeMessageType(
   "tkd.calendar.v1.GetHolidayResponse",
   () => [
     { no: 1, name: "holidays", kind: "message", T: PublicHoliday, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.calendar.v1.NumberOfWorkDaysRequest
+ */
+export const NumberOfWorkDaysRequest = proto3.makeMessageType(
+  "tkd.calendar.v1.NumberOfWorkDaysRequest",
+  () => [
+    { no: 1, name: "country", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "from", kind: "message", T: Timestamp },
+    { no: 3, name: "to", kind: "message", T: Timestamp },
+  ],
+);
+
+/**
+ * @generated from message tkd.calendar.v1.NumberOfWorkDaysResponse
+ */
+export const NumberOfWorkDaysResponse = proto3.makeMessageType(
+  "tkd.calendar.v1.NumberOfWorkDaysResponse",
+  () => [
+    { no: 1, name: "number_of_work_days", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
+    { no: 2, name: "number_of_weekend_days", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
+    { no: 3, name: "number_of_holidays", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
   ],
 );
 

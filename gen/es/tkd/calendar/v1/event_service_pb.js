@@ -5,6 +5,7 @@
 
 import { Any, FieldMask, proto3, Timestamp } from "@bufbuild/protobuf";
 import { Calendar, CalendarEvent } from "./event_pb.js";
+import { TimeRange } from "../../common/v1/time_range_pb.js";
 
 /**
  * @generated from message tkd.calendar.v1.ListCalendarsRequest
@@ -21,17 +22,6 @@ export const ListCalendarsResponse = proto3.makeMessageType(
   "tkd.calendar.v1.ListCalendarsResponse",
   () => [
     { no: 1, name: "calendars", kind: "message", T: Calendar, repeated: true },
-  ],
-);
-
-/**
- * @generated from message tkd.calendar.v1.TimeRange
- */
-export const TimeRange = proto3.makeMessageType(
-  "tkd.calendar.v1.TimeRange",
-  () => [
-    { no: 1, name: "from", kind: "message", T: Timestamp },
-    { no: 2, name: "to", kind: "message", T: Timestamp },
   ],
 );
 

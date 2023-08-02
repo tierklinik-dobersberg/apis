@@ -7,8 +7,8 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/field_mask.proto";
 import "tkd/common/v1/descriptor.proto";
+import "tkd/common/v1/time_range.proto";
 import "buf/validate/validate.proto";
-
 
 service CalendarService {
     rpc ListCalendars(ListCalendarsRequest) returns (ListCalendarsResponse) {
@@ -41,11 +41,6 @@ message ListCalendarsResponse {
     repeated Calendar calendars = 1;
 }
 
-message TimeRange {
-    google.protobuf.Timestamp from = 1;
-    google.protobuf.Timestamp to = 2;
-}
-
 message EventSource {
     repeated string calendar_ids = 1;
     repeated string user_ids = 2;
@@ -59,7 +54,7 @@ message ListEventsRequest {
     }
 
     oneof search_time {
-        TimeRange time_range = 4;
+        tkd.common.v1.TimeRange time_range = 4;
         string date = 5; // Format is YYYY/MM/DD
     }
 

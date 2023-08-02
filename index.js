@@ -13,4 +13,12 @@ export * from './gen/es/tkd/idm/v1/self_service_pb.js';
 export * from './gen/es/tkd/idm/v1/user_pb.js';
 export * from './gen/es/tkd/idm/v1/user_service_connect.js';
 export * from './gen/es/tkd/idm/v1/user_service_pb.js';
+export * from './gen/es/tkd/roster/v1/offtime_connect.js';
+export * from './gen/es/tkd/roster/v1/offtime_pb.js';
+export * from './gen/es/tkd/roster/v1/roster_connect.js';
+export * from './gen/es/tkd/roster/v1/roster_pb.js';
+export * from './gen/es/tkd/roster/v1/workshift_connect.js';
+export * from './gen/es/tkd/roster/v1/workshift_pb.js';
+export * from './gen/es/tkd/roster/v1/worktime_connect.js';
+export * from './gen/es/tkd/roster/v1/worktime_pb.js';
 

@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package tkd.calendar.v1;
 
+import "google/protobuf/timestamp.proto";
+import "buf/validate/validate.proto";
+
 enum HolidayType {
     HOLIDAY_TYPE_UNSPECIFIED = 0;
     PUBLIC = 1;
@@ -24,13 +27,36 @@ message PublicHoliday {
 
 service HolidayService {
     rpc GetHoliday(GetHolidayRequest) returns (GetHolidayResponse) {}
+    rpc NumberOfWorkDays(NumberOfWorkDaysRequest) returns (NumberOfWorkDaysResponse) {} 
 }
 
 message GetHolidayRequest {
-    uint64 year = 1;
-    uint64 month = 2; // starts with 1
+    uint64 year = 1 [
+        (buf.validate.field).required = true
+    ];
+    uint64 month = 2 [
+        (buf.validate.field).ignore_empty = true,
+        (buf.validate.field).int64.lte = 12,
+        (buf.validate.field).int64.gte = 1
+    ];
 }
 
 message GetHolidayResponse {
     repeated PublicHoliday holidays = 1;
+}
+
+message NumberOfWorkDaysRequest {
+    string country = 1;
+
+    google.protobuf.Timestamp from = 2 [
+        (buf.validate.field).required = true
+    ];
+    google.protobuf.Timestamp to = 3 [
+        (buf.validate.field).required = true
+    ];
+}
+message NumberOfWorkDaysResponse {
+    uint32 number_of_work_days = 1;
+    uint32 number_of_weekend_days = 2;
+    uint32 number_of_holidays = 3;
 }

@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package tkd.roster.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+import "tkd/common/v1/descriptor.proto";
+import "buf/validate/validate.proto";
+
+// WorkTime describes the regular work time for a given user.
+message WorkTime {
+    // Id is a unique identifier for this work-time entry.
+    string id = 1;
+
+    // UserId holds the ID of the user this work-time entry belongs to.
+    string user_id = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // TimePerWeek defines the regular working time per week.
+    google.protobuf.Duration time_per_week = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    // ApplicableAfter defines the date at which this work-time entry
+    // is considered active.
+    google.protobuf.Timestamp applicable_after = 4 [
+        (buf.validate.field).ignore_empty = true,
+        (buf.validate.field).timestamp.gt_now = true
+    ];
+
+    // VacationWeeksPerYear defines how many weeks of vacation should
+    // be granted to UserId in a full-year of work time.
+    float vacation_weeks_per_year = 5 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).int32.gt = 0,
+        (buf.validate.field).int32.lt = 52
+    ];
+}
+
+service WorkTimeService {
+    rpc SetWorkTime(SetWorkTimeRequest) returns (SetWorkTimeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc GetWorkTime(GetWorkTimeRequest) returns (GetWorkTimeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    };
+}
+
+message SetWorkTimeRequest {
+    repeated WorkTime work_times = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message SetWorkTimeResponse {
+    repeated WorkTime  work_times = 1;
+}
+
+message GetWorkTimeRequest {
+    // UserIds is a list of user IDs for which the work-time should
+    // be returned.
+    repeated string user_ids = 1;
+
+    // ReadMask defines which fields of the response should be populated.
+    // The field-mask is applied to the `result` field of the GetWorkTimeResponse.
+    // For example, to only retrieve the user_id and the current work time specify
+    // a read_mask like this:
+    //
+    // {
+    //    read_mask: {
+    //      paths: [
+    //          "user_id",
+    //          "current",
+    //      ]
+    //    }    
+    // }
+    //
+    google.protobuf.FieldMask read_mask = 2;
+}
+
+message UserWorkTime {
+    string user_id = 1;
+    WorkTime current = 2;
+    repeated WorkTime history = 3;
+}
+
+message GetWorkTimeResponse {
+    repeated UserWorkTime results = 1;
+}

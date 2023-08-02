@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package tkd.customer.v1;
+
+message CustomerRef {
+    string source = 1;
+    string id = 2;
+}

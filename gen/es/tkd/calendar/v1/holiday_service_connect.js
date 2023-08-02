@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetHolidayRequest, GetHolidayResponse } from "./holiday_service_pb.js";
+import { GetHolidayRequest, GetHolidayResponse, NumberOfWorkDaysRequest, NumberOfWorkDaysResponse } from "./holiday_service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -19,6 +19,15 @@ export const HolidayService = {
       name: "GetHoliday",
       I: GetHolidayRequest,
       O: GetHolidayResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.calendar.v1.HolidayService.NumberOfWorkDays
+     */
+    numberOfWorkDays: {
+      name: "NumberOfWorkDays",
+      I: NumberOfWorkDaysRequest,
+      O: NumberOfWorkDaysResponse,
       kind: MethodKind.Unary,
     },
   }

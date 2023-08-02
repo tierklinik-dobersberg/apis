@@ -1,0 +1,160 @@
+
+syntax = "proto3";
+
+package tkd.roster.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+import "tkd/roster/v1/workshift.proto";
+import "tkd/roster/v1/worktime.proto";
+
+message PlannedShift {
+    repeated string assigned_user_ids = 1;
+    string work_shift_id = 2;
+    bool is_holiday = 3;
+    bool is_weekend = 4;
+    google.protobuf.Timestamp from = 5;
+    google.protobuf.Timestamp to = 6;
+    google.protobuf.Duration time_worth = 7;
+
+    WorkShift shift = 8;
+    repeated string eligible_user_ids = 9;
+
+    google.protobuf.FieldMask read_mask = 10;
+}
+
+message RosterMeta {
+    string id = 1;
+    int64 month = 2;
+    int64 year = 3;
+    bool approved = 4;
+    google.protobuf.Timestamp approved_at = 5;
+    string last_modified_by = 6;
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+}
+
+message WorkTimeStatus {
+    google.protobuf.Duration time_per_week = 1;
+    google.protobuf.Duration expected_work_time = 2;
+    google.protobuf.Duration planned_work_time = 3;
+}
+
+service RosterService {
+    rpc Session(stream SessionRequest) returns (stream SessionResponse) {} 
+    rpc ApproveRoster(ApproveRosterRequest) returns (ApproveRosterResponse) {}
+    rpc DeleteRoster(DeleteRosterRequest) returns (DeleteRosterResponse) {}
+    rpc GetRoster(GetRosterRequest) returns (GetRosterResponse) {}
+    rpc GetWorkingStaff(GetWorkingStaffRequest) returns (GetWorkingStaffResponse) {}
+}
+
+message StartSessionRequest {
+    int32 year = 1;
+    int32 month = 3;
+}
+
+message StartSessionResponse {
+    RosterMeta meta = 1;
+    repeated PlannedShift planned_shifts = 2;
+    repeated string active_users = 3;
+}
+
+message AssignUserToShift {
+    string user_id = 1;
+    string shift_id = 2;
+    google.protobuf.Timestamp from = 3;
+    google.protobuf.Timestamp to = 4;
+}
+
+message UnassignUserFromShift {
+    string user_id = 1;
+    string shift_id = 2;
+    google.protobuf.Timestamp from = 3;
+    google.protobuf.Timestamp to = 4;
+}
+
+message ShiftUpdateEvent {
+    PlannedShift shift = 1;
+    string changed_by = 2;
+}
+
+message WorkTimeUpdateEvent {
+    map<string, WorkTimeStatus> work_times = 1;
+}
+
+message SessionPing {}
+
+message SessionRequest {
+    oneof kind {
+        StartSessionRequest start_session = 1;
+        AssignUserToShift assign_user = 2;
+        UnassignUserFromShift unassign_user = 3;
+        SessionPing ping = 4;
+    }
+}
+
+message SessionResponse {
+    oneof kind {
+        StartSessionResponse start_session = 1;
+        ShiftUpdateEvent shift_update = 2;
+        WorkTimeUpdateEvent work_time_update = 3;
+        UserJoinedSessionEvent user_joined = 4;
+        UserLeftSessionEvent user_left = 5;
+        UserChatMessageEvent message = 6;
+        SessionPing ping = 7;
+    }
+}
+
+message UserJoinedSessionEvent {
+    string user_id = 1;
+}
+
+message UserLeftSessionEvent {
+    string user_id = 1;
+}
+
+message UserChatMessageEvent {
+    string sender_user_id = 1;
+    string message = 2;
+}
+
+message ApproveRosterRequest {
+    string id = 1;
+}
+
+message ApproveRosterResponse {}
+
+message DeleteRosterRequest {
+    string id = 1;
+}
+
+message DeleteRosterResponse {}
+
+message GetByDate {
+    int32 year = 1;
+    int32 month = 3;
+}
+
+message GetRosterRequest {
+    oneof search {
+        string id = 1;
+        GetByDate date = 2;
+    };
+    google.protobuf.FieldMask read_mask = 3;
+}
+
+message GetRosterResponse {
+    RosterMeta meta = 1;
+    repeated PlannedShift shifts = 2;
+}
+
+message GetWorkingStaffRequest {
+    google.protobuf.Timestamp time = 1;
+    google.protobuf.FieldMask read_maks = 2;
+}
+
+message GetWorkingStaffResponse {
+    repeated string user_ids = 1;
+    repeated PlannedShift current_shifts = 2;
+}
