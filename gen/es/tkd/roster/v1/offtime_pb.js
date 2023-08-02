@@ -14,7 +14,6 @@ export const OffTimeType = proto3.makeEnum(
     {no: 0, name: "OFF_TIME_TYPE_UNSPECIFIED", localName: "UNSPECIFIED"},
     {no: 1, name: "OFF_TIME_TYPE_VACATION", localName: "VACATION"},
     {no: 2, name: "OFF_TIME_TYPE_TIME_OFF", localName: "TIME_OFF"},
-    {no: 3, name: "OFF_TIME_TYPE_CREDITS", localName: "CREDITS"},
   ],
 );
 
@@ -31,26 +30,30 @@ export const ApprovalRequestType = proto3.makeEnum(
 );
 
 /**
- * @generated from message tkd.roster.v1.OffTimeCosts
- */
-export const OffTimeCosts = proto3.makeMessageType(
-  "tkd.roster.v1.OffTimeCosts",
-  () => [
-    { no: 1, name: "vacation_days", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
-    { no: 2, name: "duration", kind: "message", T: Duration },
-  ],
-);
-
-/**
  * @generated from message tkd.roster.v1.OffTimeApproval
  */
 export const OffTimeApproval = proto3.makeMessageType(
   "tkd.roster.v1.OffTimeApproval",
   () => [
-    { no: 1, name: "approved", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 2, name: "approved_at", kind: "message", T: Timestamp },
-    { no: 3, name: "comment", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "actual_costs", kind: "message", T: OffTimeCosts },
+    { no: 2, name: "approved", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "approved_at", kind: "message", T: Timestamp },
+    { no: 4, name: "approver_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "comment", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.OffTimeCosts
+ */
+export const OffTimeCosts = proto3.makeMessageType(
+  "tkd.roster.v1.OffTimeCosts",
+  () => [
+    { no: 1, name: "offtime_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "roster_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "created_at", kind: "message", T: Timestamp },
+    { no: 4, name: "creator_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "costs", kind: "message", T: Duration },
+    { no: 6, name: "is_vacation", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
@@ -61,25 +64,14 @@ export const OffTimeEntry = proto3.makeMessageType(
   "tkd.roster.v1.OffTimeEntry",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "from", kind: "message", T: Timestamp },
-    { no: 3, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "type", kind: "enum", T: proto3.getEnumType(OffTimeType) },
-    { no: 6, name: "created_at", kind: "message", T: Timestamp },
-    { no: 7, name: "created_by_user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 8, name: "costs", kind: "message", T: OffTimeCosts },
-    { no: 9, name: "approval", kind: "message", T: OffTimeApproval },
-  ],
-);
-
-/**
- * @generated from message tkd.roster.v1.OffTimeCredits
- */
-export const OffTimeCredits = proto3.makeMessageType(
-  "tkd.roster.v1.OffTimeCredits",
-  () => [
-    { no: 1, name: "days", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
-    { no: 2, name: "duration", kind: "message", T: Duration },
+    { no: 2, name: "requestor_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "from", kind: "message", T: Timestamp },
+    { no: 4, name: "to", kind: "message", T: Timestamp },
+    { no: 5, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "type", kind: "enum", T: proto3.getEnumType(OffTimeType) },
+    { no: 7, name: "approval", kind: "message", T: OffTimeApproval },
+    { no: 8, name: "created_at", kind: "message", T: Timestamp },
+    { no: 9, name: "creator_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -89,7 +81,7 @@ export const OffTimeCredits = proto3.makeMessageType(
 export const GetOffTimeEntryRequest = proto3.makeMessageType(
   "tkd.roster.v1.GetOffTimeEntryRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -99,7 +91,7 @@ export const GetOffTimeEntryRequest = proto3.makeMessageType(
 export const GetOffTimeEntryResponse = proto3.makeMessageType(
   "tkd.roster.v1.GetOffTimeEntryResponse",
   () => [
-    { no: 1, name: "entry", kind: "message", T: OffTimeEntry },
+    { no: 1, name: "entry", kind: "message", T: OffTimeEntry, repeated: true },
   ],
 );
 
@@ -111,7 +103,7 @@ export const CreateOffTimeRequestRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "from", kind: "message", T: Timestamp },
     { no: 2, name: "to", kind: "message", T: Timestamp },
-    { no: 3, name: "staff_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "requestor_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "request_type", kind: "enum", T: proto3.getEnumType(OffTimeType) },
   ],
@@ -128,12 +120,14 @@ export const CreateOffTimeRequestResponse = proto3.makeMessageType(
 );
 
 /**
+ * Request deletion of one or more off-time-request.
+ *
  * @generated from message tkd.roster.v1.DeleteOffTimeRequestRequest
  */
 export const DeleteOffTimeRequestRequest = proto3.makeMessageType(
   "tkd.roster.v1.DeleteOffTimeRequestRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -178,7 +172,6 @@ export const ApproveOrRejectRequest = proto3.makeMessageType(
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "comment", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "type", kind: "enum", T: proto3.getEnumType(ApprovalRequestType) },
-    { no: 4, name: "actual_costs", kind: "message", T: Duration },
   ],
 );
 
@@ -193,22 +186,20 @@ export const ApproveOrRejectResponse = proto3.makeMessageType(
 );
 
 /**
- * @generated from message tkd.roster.v1.GetOffTimeCreditsRequest
+ * @generated from message tkd.roster.v1.AddOffTimeCostsRequest
  */
-export const GetOffTimeCreditsRequest = proto3.makeMessageType(
-  "tkd.roster.v1.GetOffTimeCreditsRequest",
+export const AddOffTimeCostsRequest = proto3.makeMessageType(
+  "tkd.roster.v1.AddOffTimeCostsRequest",
   () => [
-    { no: 1, name: "user_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "add_costs", kind: "message", T: OffTimeCosts, repeated: true },
   ],
 );
 
 /**
- * @generated from message tkd.roster.v1.GetOffTimeCreditsResponse
+ * @generated from message tkd.roster.v1.AddOffTimeCostsResponse
  */
-export const GetOffTimeCreditsResponse = proto3.makeMessageType(
-  "tkd.roster.v1.GetOffTimeCreditsResponse",
-  () => [
-    { no: 1, name: "results", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: OffTimeCredits} },
-  ],
+export const AddOffTimeCostsResponse = proto3.makeMessageType(
+  "tkd.roster.v1.AddOffTimeCostsResponse",
+  [],
 );
 

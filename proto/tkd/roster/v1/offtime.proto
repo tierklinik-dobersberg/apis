@@ -10,56 +10,83 @@ import "google/protobuf/wrappers.proto";
 import "tkd/common/v1/descriptor.proto";
 import "buf/validate/validate.proto";
 
-message OffTimeCosts {
-    float vacation_days = 1;
-    google.protobuf.Duration duration = 2;
+message OffTimeApproval {
+    // Approved is set to true when the off-time request has been approved
+    // by a manager.
+    bool approved = 2;
+
+    // ApprovedAt is set to the time-stamp the off-time request has been
+    // approved.
+    google.protobuf.Timestamp approved_at = 3;
+
+    // ApproverId holds the ID of the user that approved the request.
+    string approver_id = 4;
+    
+    // Comment may hold an additional comment from management.
+    string comment = 5;
 }
 
-message OffTimeApproval {
-    bool approved = 1;
-    google.protobuf.Timestamp approved_at = 2;
-    string comment = 3;
-    OffTimeCosts actual_costs = 4;
+message OffTimeCosts {
+    // OfftimeId is the ID of the off-time request, if any.
+    string offtime_id = 1;
+
+    // RosterId is the ID of the roster this OffTimeCosts belong to.
+    string roster_id = 2;
+
+    // CreatedAt is set to the time this off-time-costs entry has been
+    // created. This field must not be set during OffTimeService.AddOffTimeCosts.
+    google.protobuf.Timestamp created_at = 3;
+
+    // CreatorId holds the ID of the user that created this entry.
+    // This field must not be set during OffTimeService.AddOffTimeCosts.
+    string creator_id = 4;
+
+    // The actual duration costs of this entry.
+    google.protobuf.Duration costs = 5;
+
+    // IsVacation is set to true if the off-time-costs apply to the vacation
+    // credits. If set to false, the off-time costs are for time compensation.
+    bool is_vacation = 6;
 }
 
 enum OffTimeType {
+    // Unspecified means that the requestor does not care whether the off-time
+    // is based on vacation credits of time compenstation.
     OFF_TIME_TYPE_UNSPECIFIED = 0;
+
+    // Vacation is used to tell the manager that this off-time is highly required
+    // and the requestor is fine with spending vacation credits.
     OFF_TIME_TYPE_VACATION = 1;
+
+    // TimeOff is used to tell the manager that this off-time is not mandatory
+    // and that the requestor is only willing to spend time-compensation.
     OFF_TIME_TYPE_TIME_OFF = 2;
-    OFF_TIME_TYPE_CREDITS = 3;
 }
 
 message OffTimeEntry {
+    // Id is a unique identifier for this off-time entry.
     string id = 1;
-    google.protobuf.Timestamp from = 2;
-    string description = 3;
-    string user_id = 4;
-    OffTimeType type = 5;
-    google.protobuf.Timestamp created_at = 6;
-    string created_by_user_id = 7;
-    OffTimeCosts costs = 8;
-    OffTimeApproval approval = 9;
 
-    option (tkd.common.v1.readable) = {
-        field_mask: {
-            paths: [
-                "from",
-                "description",
-                "type",
-                "user_id"
-            ]
-        },
-        owner_field_name: "user_id",
-        allowed_roles: [
-            "roster_manager",
-            "idm_superuser"
-        ]
-    };
-}
+    // RequestorId is the ID of the user that requested off-time.
+    string requestor_id = 2;
 
-message OffTimeCredits {
-    float days = 1;
-    google.protobuf.Duration duration = 2;
+    // The date/time (inclusive) at which the off-time should start.
+    google.protobuf.Timestamp from = 3;
+
+    // The date/time (inclusive) at which the off-time should end.
+    google.protobuf.Timestamp to = 4;
+
+    // An optional description for management in Markdown format.
+    string description = 5;
+
+    // The type of the off-time request.
+    OffTimeType type = 6;
+
+    // If approved/rejected by management, this field will be poluated.
+    OffTimeApproval approval = 7;
+
+    google.protobuf.Timestamp created_at = 8;
+    string creator_id = 9;
 }
 
 service OffTimeService {
@@ -94,18 +121,23 @@ service OffTimeService {
         };
     };
 
-    rpc GetOffTimeCredits(GetOffTimeCreditsRequest) returns (GetOffTimeCreditsResponse) {
+    rpc AddOffTimeCosts(AddOffTimeCostsRequest) returns (AddOffTimeCostsResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
         };
-    };
+    }
 }
 
 message GetOffTimeEntryRequest {
-    string id = 1 [(buf.validate.field).required = true];
+    // A list of OffTimeEntry IDs to load.
+    repeated string ids = 1 [
+        (buf.validate.field).required = true
+    ];
 }
+
 message GetOffTimeEntryResponse {
-    OffTimeEntry entry =  1;
+    repeated OffTimeEntry entry =  1;
 }
 
 message CreateOffTimeRequestRequest {
@@ -119,18 +151,29 @@ message CreateOffTimeRequestRequest {
         (buf.validate.field).timestamp.gt_now = true
     ];
 
-    string staff_id = 3;
+    // The ID of the user that requests off-time. Only administrators may
+    // set this field.
+    // For non-administrators, or if the field is empty, it defaults to the
+    // user-id that performs the request.
+    string requestor_id = 3;
+
+    // An optional description of the off-time-request.
     string description = 4;
-    OffTimeType request_type = 5; // Must not be OFF_TIME_TYPE_CREDITS
+
+    // The type of off-time request.
+    OffTimeType request_type = 5; 
 }
 
 message CreateOffTimeRequestResponse {
+    // Holds the created off-time request entry.
     OffTimeEntry entry =  1;
 }
 
+// Request deletion of one or more off-time-request.
 message DeleteOffTimeRequestRequest {
-    string id = 1 [(buf.validate.field).required = true];
+    repeated string id = 1 [(buf.validate.field).required = true];
 }
+
 message DeleteOffTimeRequestResponse {}
 
 message FindOffTimeRequestsRequest {
@@ -156,17 +199,14 @@ message ApproveOrRejectRequest {
     string id = 1 [(buf.validate.field).required = true];
     string comment = 2;
     ApprovalRequestType type = 3 [(buf.validate.field).required = true];
-    google.protobuf.Duration actual_costs = 4;
 }
 
 message ApproveOrRejectResponse {
     OffTimeEntry entry = 1;
 }
 
-message GetOffTimeCreditsRequest {
-    repeated string user_ids = 1;
+message AddOffTimeCostsRequest {
+    repeated OffTimeCosts add_costs = 1;
 }
 
-message GetOffTimeCreditsResponse {
-    map<string, OffTimeCredits> results = 1;
-}
+message AddOffTimeCostsResponse {}

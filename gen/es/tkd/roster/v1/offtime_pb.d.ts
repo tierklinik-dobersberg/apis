@@ -11,24 +11,28 @@ import { Message, proto3 } from "@bufbuild/protobuf";
  */
 export declare enum OffTimeType {
   /**
+   * Unspecified means that the requestor does not care whether the off-time
+   * is based on vacation credits of time compenstation.
+   *
    * @generated from enum value: OFF_TIME_TYPE_UNSPECIFIED = 0;
    */
   UNSPECIFIED = 0,
 
   /**
+   * Vacation is used to tell the manager that this off-time is highly required
+   * and the requestor is fine with spending vacation credits.
+   *
    * @generated from enum value: OFF_TIME_TYPE_VACATION = 1;
    */
   VACATION = 1,
 
   /**
+   * TimeOff is used to tell the manager that this off-time is not mandatory
+   * and that the requestor is only willing to spend time-compensation.
+   *
    * @generated from enum value: OFF_TIME_TYPE_TIME_OFF = 2;
    */
   TIME_OFF = 2,
-
-  /**
-   * @generated from enum value: OFF_TIME_TYPE_CREDITS = 3;
-   */
-  CREDITS = 3,
 }
 
 /**
@@ -52,57 +56,38 @@ export declare enum ApprovalRequestType {
 }
 
 /**
- * @generated from message tkd.roster.v1.OffTimeCosts
- */
-export declare class OffTimeCosts extends Message<OffTimeCosts> {
-  /**
-   * @generated from field: float vacation_days = 1;
-   */
-  vacationDays: number;
-
-  /**
-   * @generated from field: google.protobuf.Duration duration = 2;
-   */
-  duration?: Duration;
-
-  constructor(data?: PartialMessage<OffTimeCosts>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.OffTimeCosts";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OffTimeCosts;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OffTimeCosts;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OffTimeCosts;
-
-  static equals(a: OffTimeCosts | PlainMessage<OffTimeCosts> | undefined, b: OffTimeCosts | PlainMessage<OffTimeCosts> | undefined): boolean;
-}
-
-/**
  * @generated from message tkd.roster.v1.OffTimeApproval
  */
 export declare class OffTimeApproval extends Message<OffTimeApproval> {
   /**
-   * @generated from field: bool approved = 1;
+   * Approved is set to true when the off-time request has been approved
+   * by a manager.
+   *
+   * @generated from field: bool approved = 2;
    */
   approved: boolean;
 
   /**
-   * @generated from field: google.protobuf.Timestamp approved_at = 2;
+   * ApprovedAt is set to the time-stamp the off-time request has been
+   * approved.
+   *
+   * @generated from field: google.protobuf.Timestamp approved_at = 3;
    */
   approvedAt?: Timestamp;
 
   /**
-   * @generated from field: string comment = 3;
+   * ApproverId holds the ID of the user that approved the request.
+   *
+   * @generated from field: string approver_id = 4;
    */
-  comment: string;
+  approverId: string;
 
   /**
-   * @generated from field: tkd.roster.v1.OffTimeCosts actual_costs = 4;
+   * Comment may hold an additional comment from management.
+   *
+   * @generated from field: string comment = 5;
    */
-  actualCosts?: OffTimeCosts;
+  comment: string;
 
   constructor(data?: PartialMessage<OffTimeApproval>);
 
@@ -120,53 +105,131 @@ export declare class OffTimeApproval extends Message<OffTimeApproval> {
 }
 
 /**
+ * @generated from message tkd.roster.v1.OffTimeCosts
+ */
+export declare class OffTimeCosts extends Message<OffTimeCosts> {
+  /**
+   * OfftimeId is the ID of the off-time request, if any.
+   *
+   * @generated from field: string offtime_id = 1;
+   */
+  offtimeId: string;
+
+  /**
+   * RosterId is the ID of the roster this OffTimeCosts belong to.
+   *
+   * @generated from field: string roster_id = 2;
+   */
+  rosterId: string;
+
+  /**
+   * CreatedAt is set to the time this off-time-costs entry has been
+   * created. This field must not be set during OffTimeService.AddOffTimeCosts.
+   *
+   * @generated from field: google.protobuf.Timestamp created_at = 3;
+   */
+  createdAt?: Timestamp;
+
+  /**
+   * CreatorId holds the ID of the user that created this entry.
+   * This field must not be set during OffTimeService.AddOffTimeCosts.
+   *
+   * @generated from field: string creator_id = 4;
+   */
+  creatorId: string;
+
+  /**
+   * The actual duration costs of this entry.
+   *
+   * @generated from field: google.protobuf.Duration costs = 5;
+   */
+  costs?: Duration;
+
+  /**
+   * IsVacation is set to true if the off-time-costs apply to the vacation
+   * credits. If set to false, the off-time costs are for time compensation.
+   *
+   * @generated from field: bool is_vacation = 6;
+   */
+  isVacation: boolean;
+
+  constructor(data?: PartialMessage<OffTimeCosts>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.OffTimeCosts";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OffTimeCosts;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OffTimeCosts;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OffTimeCosts;
+
+  static equals(a: OffTimeCosts | PlainMessage<OffTimeCosts> | undefined, b: OffTimeCosts | PlainMessage<OffTimeCosts> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.roster.v1.OffTimeEntry
  */
 export declare class OffTimeEntry extends Message<OffTimeEntry> {
   /**
+   * Id is a unique identifier for this off-time entry.
+   *
    * @generated from field: string id = 1;
    */
   id: string;
 
   /**
-   * @generated from field: google.protobuf.Timestamp from = 2;
+   * RequestorId is the ID of the user that requested off-time.
+   *
+   * @generated from field: string requestor_id = 2;
+   */
+  requestorId: string;
+
+  /**
+   * The date/time (inclusive) at which the off-time should start.
+   *
+   * @generated from field: google.protobuf.Timestamp from = 3;
    */
   from?: Timestamp;
 
   /**
-   * @generated from field: string description = 3;
+   * The date/time (inclusive) at which the off-time should end.
+   *
+   * @generated from field: google.protobuf.Timestamp to = 4;
+   */
+  to?: Timestamp;
+
+  /**
+   * An optional description for management in Markdown format.
+   *
+   * @generated from field: string description = 5;
    */
   description: string;
 
   /**
-   * @generated from field: string user_id = 4;
-   */
-  userId: string;
-
-  /**
-   * @generated from field: tkd.roster.v1.OffTimeType type = 5;
+   * The type of the off-time request.
+   *
+   * @generated from field: tkd.roster.v1.OffTimeType type = 6;
    */
   type: OffTimeType;
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 6;
+   * If approved/rejected by management, this field will be poluated.
+   *
+   * @generated from field: tkd.roster.v1.OffTimeApproval approval = 7;
+   */
+  approval?: OffTimeApproval;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 8;
    */
   createdAt?: Timestamp;
 
   /**
-   * @generated from field: string created_by_user_id = 7;
+   * @generated from field: string creator_id = 9;
    */
-  createdByUserId: string;
-
-  /**
-   * @generated from field: tkd.roster.v1.OffTimeCosts costs = 8;
-   */
-  costs?: OffTimeCosts;
-
-  /**
-   * @generated from field: tkd.roster.v1.OffTimeApproval approval = 9;
-   */
-  approval?: OffTimeApproval;
+  creatorId: string;
 
   constructor(data?: PartialMessage<OffTimeEntry>);
 
@@ -184,42 +247,15 @@ export declare class OffTimeEntry extends Message<OffTimeEntry> {
 }
 
 /**
- * @generated from message tkd.roster.v1.OffTimeCredits
- */
-export declare class OffTimeCredits extends Message<OffTimeCredits> {
-  /**
-   * @generated from field: float days = 1;
-   */
-  days: number;
-
-  /**
-   * @generated from field: google.protobuf.Duration duration = 2;
-   */
-  duration?: Duration;
-
-  constructor(data?: PartialMessage<OffTimeCredits>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.OffTimeCredits";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OffTimeCredits;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OffTimeCredits;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OffTimeCredits;
-
-  static equals(a: OffTimeCredits | PlainMessage<OffTimeCredits> | undefined, b: OffTimeCredits | PlainMessage<OffTimeCredits> | undefined): boolean;
-}
-
-/**
  * @generated from message tkd.roster.v1.GetOffTimeEntryRequest
  */
 export declare class GetOffTimeEntryRequest extends Message<GetOffTimeEntryRequest> {
   /**
-   * @generated from field: string id = 1;
+   * A list of OffTimeEntry IDs to load.
+   *
+   * @generated from field: repeated string ids = 1;
    */
-  id: string;
+  ids: string[];
 
   constructor(data?: PartialMessage<GetOffTimeEntryRequest>);
 
@@ -241,9 +277,9 @@ export declare class GetOffTimeEntryRequest extends Message<GetOffTimeEntryReque
  */
 export declare class GetOffTimeEntryResponse extends Message<GetOffTimeEntryResponse> {
   /**
-   * @generated from field: tkd.roster.v1.OffTimeEntry entry = 1;
+   * @generated from field: repeated tkd.roster.v1.OffTimeEntry entry = 1;
    */
-  entry?: OffTimeEntry;
+  entry: OffTimeEntry[];
 
   constructor(data?: PartialMessage<GetOffTimeEntryResponse>);
 
@@ -275,17 +311,24 @@ export declare class CreateOffTimeRequestRequest extends Message<CreateOffTimeRe
   to?: Timestamp;
 
   /**
-   * @generated from field: string staff_id = 3;
+   * The ID of the user that requests off-time. Only administrators may
+   * set this field.
+   * For non-administrators, or if the field is empty, it defaults to the
+   * user-id that performs the request.
+   *
+   * @generated from field: string requestor_id = 3;
    */
-  staffId: string;
+  requestorId: string;
 
   /**
+   * An optional description of the off-time-request.
+   *
    * @generated from field: string description = 4;
    */
   description: string;
 
   /**
-   * Must not be OFF_TIME_TYPE_CREDITS
+   * The type of off-time request.
    *
    * @generated from field: tkd.roster.v1.OffTimeType request_type = 5;
    */
@@ -311,6 +354,8 @@ export declare class CreateOffTimeRequestRequest extends Message<CreateOffTimeRe
  */
 export declare class CreateOffTimeRequestResponse extends Message<CreateOffTimeRequestResponse> {
   /**
+   * Holds the created off-time request entry.
+   *
    * @generated from field: tkd.roster.v1.OffTimeEntry entry = 1;
    */
   entry?: OffTimeEntry;
@@ -331,13 +376,15 @@ export declare class CreateOffTimeRequestResponse extends Message<CreateOffTimeR
 }
 
 /**
+ * Request deletion of one or more off-time-request.
+ *
  * @generated from message tkd.roster.v1.DeleteOffTimeRequestRequest
  */
 export declare class DeleteOffTimeRequestRequest extends Message<DeleteOffTimeRequestRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: repeated string id = 1;
    */
-  id: string;
+  id: string[];
 
   constructor(data?: PartialMessage<DeleteOffTimeRequestRequest>);
 
@@ -460,11 +507,6 @@ export declare class ApproveOrRejectRequest extends Message<ApproveOrRejectReque
    */
   type: ApprovalRequestType;
 
-  /**
-   * @generated from field: google.protobuf.Duration actual_costs = 4;
-   */
-  actualCosts?: Duration;
-
   constructor(data?: PartialMessage<ApproveOrRejectRequest>);
 
   static readonly runtime: typeof proto3;
@@ -505,50 +547,45 @@ export declare class ApproveOrRejectResponse extends Message<ApproveOrRejectResp
 }
 
 /**
- * @generated from message tkd.roster.v1.GetOffTimeCreditsRequest
+ * @generated from message tkd.roster.v1.AddOffTimeCostsRequest
  */
-export declare class GetOffTimeCreditsRequest extends Message<GetOffTimeCreditsRequest> {
+export declare class AddOffTimeCostsRequest extends Message<AddOffTimeCostsRequest> {
   /**
-   * @generated from field: repeated string user_ids = 1;
+   * @generated from field: repeated tkd.roster.v1.OffTimeCosts add_costs = 1;
    */
-  userIds: string[];
+  addCosts: OffTimeCosts[];
 
-  constructor(data?: PartialMessage<GetOffTimeCreditsRequest>);
+  constructor(data?: PartialMessage<AddOffTimeCostsRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.GetOffTimeCreditsRequest";
+  static readonly typeName = "tkd.roster.v1.AddOffTimeCostsRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetOffTimeCreditsRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddOffTimeCostsRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetOffTimeCreditsRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddOffTimeCostsRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetOffTimeCreditsRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddOffTimeCostsRequest;
 
-  static equals(a: GetOffTimeCreditsRequest | PlainMessage<GetOffTimeCreditsRequest> | undefined, b: GetOffTimeCreditsRequest | PlainMessage<GetOffTimeCreditsRequest> | undefined): boolean;
+  static equals(a: AddOffTimeCostsRequest | PlainMessage<AddOffTimeCostsRequest> | undefined, b: AddOffTimeCostsRequest | PlainMessage<AddOffTimeCostsRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.GetOffTimeCreditsResponse
+ * @generated from message tkd.roster.v1.AddOffTimeCostsResponse
  */
-export declare class GetOffTimeCreditsResponse extends Message<GetOffTimeCreditsResponse> {
-  /**
-   * @generated from field: map<string, tkd.roster.v1.OffTimeCredits> results = 1;
-   */
-  results: { [key: string]: OffTimeCredits };
-
-  constructor(data?: PartialMessage<GetOffTimeCreditsResponse>);
+export declare class AddOffTimeCostsResponse extends Message<AddOffTimeCostsResponse> {
+  constructor(data?: PartialMessage<AddOffTimeCostsResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.GetOffTimeCreditsResponse";
+  static readonly typeName = "tkd.roster.v1.AddOffTimeCostsResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetOffTimeCreditsResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddOffTimeCostsResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetOffTimeCreditsResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddOffTimeCostsResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetOffTimeCreditsResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddOffTimeCostsResponse;
 
-  static equals(a: GetOffTimeCreditsResponse | PlainMessage<GetOffTimeCreditsResponse> | undefined, b: GetOffTimeCreditsResponse | PlainMessage<GetOffTimeCreditsResponse> | undefined): boolean;
+  static equals(a: AddOffTimeCostsResponse | PlainMessage<AddOffTimeCostsResponse> | undefined, b: AddOffTimeCostsResponse | PlainMessage<AddOffTimeCostsResponse> | undefined): boolean;
 }
 

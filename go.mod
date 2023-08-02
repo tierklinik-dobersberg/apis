@@ -3,8 +3,8 @@ module github.com/tierklinik-dobersberg/apis
 go 1.20
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.31.0-20230721003620-2341cbb21958.1
-	github.com/bufbuild/connect-go v1.8.0
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.31.0-20230721020619-4464c06fa399.1
+	github.com/bufbuild/connect-go v1.10.0
 	github.com/bufbuild/protovalidate-go v0.2.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/hashicorp/go-multierror v1.1.1
@@ -13,8 +13,8 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
-	golang.org/x/net v0.12.0
+	golang.org/x/exp v0.0.0-20230801115018-d63ba01acd4b
+	golang.org/x/net v0.13.0
 	golang.org/x/sync v0.3.0
 	google.golang.org/protobuf v1.31.0
 )
