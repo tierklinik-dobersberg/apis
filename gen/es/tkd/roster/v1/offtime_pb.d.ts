@@ -109,16 +109,21 @@ export declare class OffTimeApproval extends Message<OffTimeApproval> {
  */
 export declare class OffTimeCosts extends Message<OffTimeCosts> {
   /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
    * OfftimeId is the ID of the off-time request, if any.
    *
-   * @generated from field: string offtime_id = 1;
+   * @generated from field: string offtime_id = 2;
    */
   offtimeId: string;
 
   /**
    * RosterId is the ID of the roster this OffTimeCosts belong to.
    *
-   * @generated from field: string roster_id = 2;
+   * @generated from field: string roster_id = 3;
    */
   rosterId: string;
 
@@ -126,7 +131,7 @@ export declare class OffTimeCosts extends Message<OffTimeCosts> {
    * CreatedAt is set to the time this off-time-costs entry has been
    * created. This field must not be set during OffTimeService.AddOffTimeCosts.
    *
-   * @generated from field: google.protobuf.Timestamp created_at = 3;
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
    */
   createdAt?: Timestamp;
 
@@ -134,14 +139,14 @@ export declare class OffTimeCosts extends Message<OffTimeCosts> {
    * CreatorId holds the ID of the user that created this entry.
    * This field must not be set during OffTimeService.AddOffTimeCosts.
    *
-   * @generated from field: string creator_id = 4;
+   * @generated from field: string creator_id = 5;
    */
   creatorId: string;
 
   /**
    * The actual duration costs of this entry.
    *
-   * @generated from field: google.protobuf.Duration costs = 5;
+   * @generated from field: google.protobuf.Duration costs = 6;
    */
   costs?: Duration;
 
@@ -149,7 +154,7 @@ export declare class OffTimeCosts extends Message<OffTimeCosts> {
    * IsVacation is set to true if the off-time-costs apply to the vacation
    * credits. If set to false, the off-time costs are for time compensation.
    *
-   * @generated from field: bool is_vacation = 6;
+   * @generated from field: bool is_vacation = 7;
    */
   isVacation: boolean;
 

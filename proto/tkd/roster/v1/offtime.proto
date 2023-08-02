@@ -27,26 +27,28 @@ message OffTimeApproval {
 }
 
 message OffTimeCosts {
+    string id = 1;
+
     // OfftimeId is the ID of the off-time request, if any.
-    string offtime_id = 1;
+    string offtime_id = 2;
 
     // RosterId is the ID of the roster this OffTimeCosts belong to.
-    string roster_id = 2;
+    string roster_id = 3;
 
     // CreatedAt is set to the time this off-time-costs entry has been
     // created. This field must not be set during OffTimeService.AddOffTimeCosts.
-    google.protobuf.Timestamp created_at = 3;
+    google.protobuf.Timestamp created_at = 4;
 
     // CreatorId holds the ID of the user that created this entry.
     // This field must not be set during OffTimeService.AddOffTimeCosts.
-    string creator_id = 4;
+    string creator_id = 5;
 
     // The actual duration costs of this entry.
-    google.protobuf.Duration costs = 5;
+    google.protobuf.Duration costs = 6;
 
     // IsVacation is set to true if the off-time-costs apply to the vacation
     // credits. If set to false, the off-time costs are for time compensation.
-    bool is_vacation = 6;
+    bool is_vacation = 7;
 }
 
 enum OffTimeType {

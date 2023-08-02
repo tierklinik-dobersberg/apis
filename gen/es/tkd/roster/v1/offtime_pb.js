@@ -48,12 +48,13 @@ export const OffTimeApproval = proto3.makeMessageType(
 export const OffTimeCosts = proto3.makeMessageType(
   "tkd.roster.v1.OffTimeCosts",
   () => [
-    { no: 1, name: "offtime_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "roster_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "created_at", kind: "message", T: Timestamp },
-    { no: 4, name: "creator_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "costs", kind: "message", T: Duration },
-    { no: 6, name: "is_vacation", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "offtime_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "roster_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "created_at", kind: "message", T: Timestamp },
+    { no: 5, name: "creator_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "costs", kind: "message", T: Duration },
+    { no: 7, name: "is_vacation", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
