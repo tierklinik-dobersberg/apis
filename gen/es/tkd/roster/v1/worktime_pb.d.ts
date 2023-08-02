@@ -217,3 +217,104 @@ export declare class GetWorkTimeResponse extends Message<GetWorkTimeResponse> {
   static equals(a: GetWorkTimeResponse | PlainMessage<GetWorkTimeResponse> | undefined, b: GetWorkTimeResponse | PlainMessage<GetWorkTimeResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.roster.v1.SumForUsers
+ */
+export declare class SumForUsers extends Message<SumForUsers> {
+  /**
+   * @generated from field: repeated string user_ids = 1;
+   */
+  userIds: string[];
+
+  constructor(data?: PartialMessage<SumForUsers>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.SumForUsers";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SumForUsers;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SumForUsers;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SumForUsers;
+
+  static equals(a: SumForUsers | PlainMessage<SumForUsers> | undefined, b: SumForUsers | PlainMessage<SumForUsers> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.GetVacationCreditsLeftRequest
+ */
+export declare class GetVacationCreditsLeftRequest extends Message<GetVacationCreditsLeftRequest> {
+  /**
+   * @generated from field: tkd.roster.v1.SumForUsers for_users = 1;
+   */
+  forUsers?: SumForUsers;
+
+  constructor(data?: PartialMessage<GetVacationCreditsLeftRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.GetVacationCreditsLeftRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetVacationCreditsLeftRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetVacationCreditsLeftRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetVacationCreditsLeftRequest;
+
+  static equals(a: GetVacationCreditsLeftRequest | PlainMessage<GetVacationCreditsLeftRequest> | undefined, b: GetVacationCreditsLeftRequest | PlainMessage<GetVacationCreditsLeftRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.UserVacationSum
+ */
+export declare class UserVacationSum extends Message<UserVacationSum> {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: google.protobuf.Duration vacation_credits_left = 2;
+   */
+  vacationCreditsLeft?: Duration;
+
+  constructor(data?: PartialMessage<UserVacationSum>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.UserVacationSum";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UserVacationSum;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UserVacationSum;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UserVacationSum;
+
+  static equals(a: UserVacationSum | PlainMessage<UserVacationSum> | undefined, b: UserVacationSum | PlainMessage<UserVacationSum> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.GetVacationCreditsLeftResponse
+ */
+export declare class GetVacationCreditsLeftResponse extends Message<GetVacationCreditsLeftResponse> {
+  /**
+   * @generated from field: repeated tkd.roster.v1.UserVacationSum results = 1;
+   */
+  results: UserVacationSum[];
+
+  constructor(data?: PartialMessage<GetVacationCreditsLeftResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.GetVacationCreditsLeftResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetVacationCreditsLeftResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetVacationCreditsLeftResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetVacationCreditsLeftResponse;
+
+  static equals(a: GetVacationCreditsLeftResponse | PlainMessage<GetVacationCreditsLeftResponse> | undefined, b: GetVacationCreditsLeftResponse | PlainMessage<GetVacationCreditsLeftResponse> | undefined): boolean;
+}
+

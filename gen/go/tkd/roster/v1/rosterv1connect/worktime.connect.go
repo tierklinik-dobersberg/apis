@@ -39,12 +39,16 @@ const (
 	// WorkTimeServiceGetWorkTimeProcedure is the fully-qualified name of the WorkTimeService's
 	// GetWorkTime RPC.
 	WorkTimeServiceGetWorkTimeProcedure = "/tkd.roster.v1.WorkTimeService/GetWorkTime"
+	// WorkTimeServiceGetVacationCreditsLeftProcedure is the fully-qualified name of the
+	// WorkTimeService's GetVacationCreditsLeft RPC.
+	WorkTimeServiceGetVacationCreditsLeftProcedure = "/tkd.roster.v1.WorkTimeService/GetVacationCreditsLeft"
 )
 
 // WorkTimeServiceClient is a client for the tkd.roster.v1.WorkTimeService service.
 type WorkTimeServiceClient interface {
 	SetWorkTime(context.Context, *connect_go.Request[v1.SetWorkTimeRequest]) (*connect_go.Response[v1.SetWorkTimeResponse], error)
 	GetWorkTime(context.Context, *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error)
+	GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error)
 }
 
 // NewWorkTimeServiceClient constructs a client for the tkd.roster.v1.WorkTimeService service. By
@@ -67,13 +71,19 @@ func NewWorkTimeServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+WorkTimeServiceGetWorkTimeProcedure,
 			opts...,
 		),
+		getVacationCreditsLeft: connect_go.NewClient[v1.GetVacationCreditsLeftRequest, v1.GetVacationCreditsLeftResponse](
+			httpClient,
+			baseURL+WorkTimeServiceGetVacationCreditsLeftProcedure,
+			opts...,
+		),
 	}
 }
 
 // workTimeServiceClient implements WorkTimeServiceClient.
 type workTimeServiceClient struct {
-	setWorkTime *connect_go.Client[v1.SetWorkTimeRequest, v1.SetWorkTimeResponse]
-	getWorkTime *connect_go.Client[v1.GetWorkTimeRequest, v1.GetWorkTimeResponse]
+	setWorkTime            *connect_go.Client[v1.SetWorkTimeRequest, v1.SetWorkTimeResponse]
+	getWorkTime            *connect_go.Client[v1.GetWorkTimeRequest, v1.GetWorkTimeResponse]
+	getVacationCreditsLeft *connect_go.Client[v1.GetVacationCreditsLeftRequest, v1.GetVacationCreditsLeftResponse]
 }
 
 // SetWorkTime calls tkd.roster.v1.WorkTimeService.SetWorkTime.
@@ -86,10 +96,16 @@ func (c *workTimeServiceClient) GetWorkTime(ctx context.Context, req *connect_go
 	return c.getWorkTime.CallUnary(ctx, req)
 }
 
+// GetVacationCreditsLeft calls tkd.roster.v1.WorkTimeService.GetVacationCreditsLeft.
+func (c *workTimeServiceClient) GetVacationCreditsLeft(ctx context.Context, req *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error) {
+	return c.getVacationCreditsLeft.CallUnary(ctx, req)
+}
+
 // WorkTimeServiceHandler is an implementation of the tkd.roster.v1.WorkTimeService service.
 type WorkTimeServiceHandler interface {
 	SetWorkTime(context.Context, *connect_go.Request[v1.SetWorkTimeRequest]) (*connect_go.Response[v1.SetWorkTimeResponse], error)
 	GetWorkTime(context.Context, *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error)
+	GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error)
 }
 
 // NewWorkTimeServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -108,12 +124,19 @@ func NewWorkTimeServiceHandler(svc WorkTimeServiceHandler, opts ...connect_go.Ha
 		svc.GetWorkTime,
 		opts...,
 	)
+	workTimeServiceGetVacationCreditsLeftHandler := connect_go.NewUnaryHandler(
+		WorkTimeServiceGetVacationCreditsLeftProcedure,
+		svc.GetVacationCreditsLeft,
+		opts...,
+	)
 	return "/tkd.roster.v1.WorkTimeService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case WorkTimeServiceSetWorkTimeProcedure:
 			workTimeServiceSetWorkTimeHandler.ServeHTTP(w, r)
 		case WorkTimeServiceGetWorkTimeProcedure:
 			workTimeServiceGetWorkTimeHandler.ServeHTTP(w, r)
+		case WorkTimeServiceGetVacationCreditsLeftProcedure:
+			workTimeServiceGetVacationCreditsLeftHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -129,4 +152,8 @@ func (UnimplementedWorkTimeServiceHandler) SetWorkTime(context.Context, *connect
 
 func (UnimplementedWorkTimeServiceHandler) GetWorkTime(context.Context, *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.WorkTimeService.GetWorkTime is not implemented"))
+}
+
+func (UnimplementedWorkTimeServiceHandler) GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.WorkTimeService.GetVacationCreditsLeft is not implemented"))
 }

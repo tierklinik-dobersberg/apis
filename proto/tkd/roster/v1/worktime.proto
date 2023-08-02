@@ -51,6 +51,12 @@ service WorkTimeService {
             require: AUTH_REQ_REQUIRED,
         };
     };
+
+    rpc GetVacationCreditsLeft(GetVacationCreditsLeftRequest) returns (GetVacationCreditsLeftResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message SetWorkTimeRequest {
@@ -93,4 +99,21 @@ message UserWorkTime {
 
 message GetWorkTimeResponse {
     repeated UserWorkTime results = 1;
+}
+
+message SumForUsers {
+    repeated string user_ids = 1;
+}
+
+message GetVacationCreditsLeftRequest {
+    SumForUsers for_users = 1;
+}
+
+message UserVacationSum {
+    string user_id = 1;
+    google.protobuf.Duration vacation_credits_left = 2;
+}
+
+message GetVacationCreditsLeftResponse {
+    repeated UserVacationSum results = 1;
 }

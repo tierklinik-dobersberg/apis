@@ -74,3 +74,44 @@ export const GetWorkTimeResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message tkd.roster.v1.SumForUsers
+ */
+export const SumForUsers = proto3.makeMessageType(
+  "tkd.roster.v1.SumForUsers",
+  () => [
+    { no: 1, name: "user_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.GetVacationCreditsLeftRequest
+ */
+export const GetVacationCreditsLeftRequest = proto3.makeMessageType(
+  "tkd.roster.v1.GetVacationCreditsLeftRequest",
+  () => [
+    { no: 1, name: "for_users", kind: "message", T: SumForUsers },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.UserVacationSum
+ */
+export const UserVacationSum = proto3.makeMessageType(
+  "tkd.roster.v1.UserVacationSum",
+  () => [
+    { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "vacation_credits_left", kind: "message", T: Duration },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.GetVacationCreditsLeftResponse
+ */
+export const GetVacationCreditsLeftResponse = proto3.makeMessageType(
+  "tkd.roster.v1.GetVacationCreditsLeftResponse",
+  () => [
+    { no: 1, name: "results", kind: "message", T: UserVacationSum, repeated: true },
+  ],
+);
+

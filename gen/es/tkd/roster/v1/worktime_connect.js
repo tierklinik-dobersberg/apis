@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetWorkTimeRequest, GetWorkTimeResponse, SetWorkTimeRequest, SetWorkTimeResponse } from "./worktime_pb.js";
+import { GetVacationCreditsLeftRequest, GetVacationCreditsLeftResponse, GetWorkTimeRequest, GetWorkTimeResponse, SetWorkTimeRequest, SetWorkTimeResponse } from "./worktime_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -28,6 +28,15 @@ export const WorkTimeService = {
       name: "GetWorkTime",
       I: GetWorkTimeRequest,
       O: GetWorkTimeResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.WorkTimeService.GetVacationCreditsLeft
+     */
+    getVacationCreditsLeft: {
+      name: "GetVacationCreditsLeft",
+      I: GetVacationCreditsLeftRequest,
+      O: GetVacationCreditsLeftResponse,
       kind: MethodKind.Unary,
     },
   }
