@@ -114,6 +114,7 @@ message SumForUsers {
 
 message GetVacationCreditsLeftRequest {
     SumForUsers for_users = 1;
+    google.protobuf.Timestamp until = 2;
     bool analyze = 3;
 }
 

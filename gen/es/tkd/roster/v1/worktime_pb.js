@@ -92,6 +92,7 @@ export const GetVacationCreditsLeftRequest = proto3.makeMessageType(
   "tkd.roster.v1.GetVacationCreditsLeftRequest",
   () => [
     { no: 1, name: "for_users", kind: "message", T: SumForUsers },
+    { no: 2, name: "until", kind: "message", T: Timestamp },
     { no: 3, name: "analyze", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );

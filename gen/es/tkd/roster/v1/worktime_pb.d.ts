@@ -252,6 +252,11 @@ export declare class GetVacationCreditsLeftRequest extends Message<GetVacationCr
   forUsers?: SumForUsers;
 
   /**
+   * @generated from field: google.protobuf.Timestamp until = 2;
+   */
+  until?: Timestamp;
+
+  /**
    * @generated from field: bool analyze = 3;
    */
   analyze: boolean;
