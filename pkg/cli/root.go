@@ -12,6 +12,9 @@ import (
 	"github.com/bufbuild/connect-go"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1/calendarv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1/idmv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
 )
 
 type BaseURLS struct {
@@ -31,6 +34,38 @@ type Root struct {
 	outputYAML         bool
 	Print              OutputFunc
 	Transport          http.RoundTripper
+}
+
+func (root *Root) OffTime() rosterv1connect.OffTimeServiceClient {
+	return rosterv1connect.NewOffTimeServiceClient(root.HttpClient, root.BaseURLS.Roster)
+}
+
+func (root *Root) WorkTime() rosterv1connect.WorkTimeServiceClient {
+	return rosterv1connect.NewWorkTimeServiceClient(root.HttpClient, root.BaseURLS.Roster)
+}
+
+func (root *Root) WorkShift() rosterv1connect.WorkShiftServiceClient {
+	return rosterv1connect.NewWorkShiftServiceClient(root.HttpClient, root.BaseURLS.Roster)
+}
+
+func (root *Root) Users() idmv1connect.UserServiceClient {
+	return idmv1connect.NewUserServiceClient(root.HttpClient, root.BaseURLS.Idm)
+}
+
+func (root *Root) Roles() idmv1connect.RoleServiceClient {
+	return idmv1connect.NewRoleServiceClient(root.HttpClient, root.BaseURLS.Idm)
+}
+
+func (root *Root) SelfService() idmv1connect.SelfServiceServiceClient {
+	return idmv1connect.NewSelfServiceServiceClient(root.HttpClient, root.BaseURLS.Idm)
+}
+
+func (root *Root) Auth() idmv1connect.AuthServiceClient {
+	return idmv1connect.NewAuthServiceClient(root.HttpClient, root.BaseURLS.Idm)
+}
+
+func (root *Root) Calendar() calendarv1connect.CalendarServiceClient {
+	return calendarv1connect.NewCalendarServiceClient(root.HttpClient, root.BaseURLS.Calendar)
 }
 
 func New(name string) *Root {
