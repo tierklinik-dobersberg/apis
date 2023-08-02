@@ -741,3 +741,46 @@ export declare class GetOffTimeCostsResponse extends Message<GetOffTimeCostsResp
   static equals(a: GetOffTimeCostsResponse | PlainMessage<GetOffTimeCostsResponse> | undefined, b: GetOffTimeCostsResponse | PlainMessage<GetOffTimeCostsResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.roster.v1.DeleteOffTimeCostsRequest
+ */
+export declare class DeleteOffTimeCostsRequest extends Message<DeleteOffTimeCostsRequest> {
+  /**
+   * @generated from field: repeated string ids = 1;
+   */
+  ids: string[];
+
+  constructor(data?: PartialMessage<DeleteOffTimeCostsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.DeleteOffTimeCostsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteOffTimeCostsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteOffTimeCostsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteOffTimeCostsRequest;
+
+  static equals(a: DeleteOffTimeCostsRequest | PlainMessage<DeleteOffTimeCostsRequest> | undefined, b: DeleteOffTimeCostsRequest | PlainMessage<DeleteOffTimeCostsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.DeleteOffTimeCostsResponse
+ */
+export declare class DeleteOffTimeCostsResponse extends Message<DeleteOffTimeCostsResponse> {
+  constructor(data?: PartialMessage<DeleteOffTimeCostsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.DeleteOffTimeCostsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteOffTimeCostsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteOffTimeCostsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteOffTimeCostsResponse;
+
+  static equals(a: DeleteOffTimeCostsResponse | PlainMessage<DeleteOffTimeCostsResponse> | undefined, b: DeleteOffTimeCostsResponse | PlainMessage<DeleteOffTimeCostsResponse> | undefined): boolean;
+}
+

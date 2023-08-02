@@ -138,6 +138,12 @@ service OffTimeService {
             require: AUTH_REQ_REQUIRED,
         };
     }
+    
+    rpc DeleteOffTimeCosts(DeleteOffTimeCostsRequest) returns (DeleteOffTimeCostsResponse){
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message GetOffTimeEntryRequest {
@@ -245,3 +251,9 @@ message UserOffTimeCosts {
 message GetOffTimeCostsResponse {
     repeated UserOffTimeCosts results = 1;
 }
+
+message DeleteOffTimeCostsRequest {
+    repeated string ids = 1;
+}
+
+message DeleteOffTimeCostsResponse {}

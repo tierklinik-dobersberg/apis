@@ -259,3 +259,21 @@ export const GetOffTimeCostsResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message tkd.roster.v1.DeleteOffTimeCostsRequest
+ */
+export const DeleteOffTimeCostsRequest = proto3.makeMessageType(
+  "tkd.roster.v1.DeleteOffTimeCostsRequest",
+  () => [
+    { no: 1, name: "ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.DeleteOffTimeCostsResponse
+ */
+export const DeleteOffTimeCostsResponse = proto3.makeMessageType(
+  "tkd.roster.v1.DeleteOffTimeCostsResponse",
+  [],
+);
+

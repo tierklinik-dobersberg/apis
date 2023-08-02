@@ -54,6 +54,9 @@ const (
 	// OffTimeServiceGetOffTimeCostsProcedure is the fully-qualified name of the OffTimeService's
 	// GetOffTimeCosts RPC.
 	OffTimeServiceGetOffTimeCostsProcedure = "/tkd.roster.v1.OffTimeService/GetOffTimeCosts"
+	// OffTimeServiceDeleteOffTimeCostsProcedure is the fully-qualified name of the OffTimeService's
+	// DeleteOffTimeCosts RPC.
+	OffTimeServiceDeleteOffTimeCostsProcedure = "/tkd.roster.v1.OffTimeService/DeleteOffTimeCosts"
 )
 
 // OffTimeServiceClient is a client for the tkd.roster.v1.OffTimeService service.
@@ -65,6 +68,7 @@ type OffTimeServiceClient interface {
 	ApproveOrReject(context.Context, *connect_go.Request[v1.ApproveOrRejectRequest]) (*connect_go.Response[v1.ApproveOrRejectResponse], error)
 	AddOffTimeCosts(context.Context, *connect_go.Request[v1.AddOffTimeCostsRequest]) (*connect_go.Response[v1.AddOffTimeCostsResponse], error)
 	GetOffTimeCosts(context.Context, *connect_go.Request[v1.GetOffTimeCostsRequest]) (*connect_go.Response[v1.GetOffTimeCostsResponse], error)
+	DeleteOffTimeCosts(context.Context, *connect_go.Request[v1.DeleteOffTimeCostsRequest]) (*connect_go.Response[v1.DeleteOffTimeCostsResponse], error)
 }
 
 // NewOffTimeServiceClient constructs a client for the tkd.roster.v1.OffTimeService service. By
@@ -112,6 +116,11 @@ func NewOffTimeServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 			baseURL+OffTimeServiceGetOffTimeCostsProcedure,
 			opts...,
 		),
+		deleteOffTimeCosts: connect_go.NewClient[v1.DeleteOffTimeCostsRequest, v1.DeleteOffTimeCostsResponse](
+			httpClient,
+			baseURL+OffTimeServiceDeleteOffTimeCostsProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -124,6 +133,7 @@ type offTimeServiceClient struct {
 	approveOrReject      *connect_go.Client[v1.ApproveOrRejectRequest, v1.ApproveOrRejectResponse]
 	addOffTimeCosts      *connect_go.Client[v1.AddOffTimeCostsRequest, v1.AddOffTimeCostsResponse]
 	getOffTimeCosts      *connect_go.Client[v1.GetOffTimeCostsRequest, v1.GetOffTimeCostsResponse]
+	deleteOffTimeCosts   *connect_go.Client[v1.DeleteOffTimeCostsRequest, v1.DeleteOffTimeCostsResponse]
 }
 
 // GetOffTimeEntry calls tkd.roster.v1.OffTimeService.GetOffTimeEntry.
@@ -161,6 +171,11 @@ func (c *offTimeServiceClient) GetOffTimeCosts(ctx context.Context, req *connect
 	return c.getOffTimeCosts.CallUnary(ctx, req)
 }
 
+// DeleteOffTimeCosts calls tkd.roster.v1.OffTimeService.DeleteOffTimeCosts.
+func (c *offTimeServiceClient) DeleteOffTimeCosts(ctx context.Context, req *connect_go.Request[v1.DeleteOffTimeCostsRequest]) (*connect_go.Response[v1.DeleteOffTimeCostsResponse], error) {
+	return c.deleteOffTimeCosts.CallUnary(ctx, req)
+}
+
 // OffTimeServiceHandler is an implementation of the tkd.roster.v1.OffTimeService service.
 type OffTimeServiceHandler interface {
 	GetOffTimeEntry(context.Context, *connect_go.Request[v1.GetOffTimeEntryRequest]) (*connect_go.Response[v1.GetOffTimeEntryResponse], error)
@@ -170,6 +185,7 @@ type OffTimeServiceHandler interface {
 	ApproveOrReject(context.Context, *connect_go.Request[v1.ApproveOrRejectRequest]) (*connect_go.Response[v1.ApproveOrRejectResponse], error)
 	AddOffTimeCosts(context.Context, *connect_go.Request[v1.AddOffTimeCostsRequest]) (*connect_go.Response[v1.AddOffTimeCostsResponse], error)
 	GetOffTimeCosts(context.Context, *connect_go.Request[v1.GetOffTimeCostsRequest]) (*connect_go.Response[v1.GetOffTimeCostsResponse], error)
+	DeleteOffTimeCosts(context.Context, *connect_go.Request[v1.DeleteOffTimeCostsRequest]) (*connect_go.Response[v1.DeleteOffTimeCostsResponse], error)
 }
 
 // NewOffTimeServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -213,6 +229,11 @@ func NewOffTimeServiceHandler(svc OffTimeServiceHandler, opts ...connect_go.Hand
 		svc.GetOffTimeCosts,
 		opts...,
 	)
+	offTimeServiceDeleteOffTimeCostsHandler := connect_go.NewUnaryHandler(
+		OffTimeServiceDeleteOffTimeCostsProcedure,
+		svc.DeleteOffTimeCosts,
+		opts...,
+	)
 	return "/tkd.roster.v1.OffTimeService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case OffTimeServiceGetOffTimeEntryProcedure:
@@ -229,6 +250,8 @@ func NewOffTimeServiceHandler(svc OffTimeServiceHandler, opts ...connect_go.Hand
 			offTimeServiceAddOffTimeCostsHandler.ServeHTTP(w, r)
 		case OffTimeServiceGetOffTimeCostsProcedure:
 			offTimeServiceGetOffTimeCostsHandler.ServeHTTP(w, r)
+		case OffTimeServiceDeleteOffTimeCostsProcedure:
+			offTimeServiceDeleteOffTimeCostsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -264,4 +287,8 @@ func (UnimplementedOffTimeServiceHandler) AddOffTimeCosts(context.Context, *conn
 
 func (UnimplementedOffTimeServiceHandler) GetOffTimeCosts(context.Context, *connect_go.Request[v1.GetOffTimeCostsRequest]) (*connect_go.Response[v1.GetOffTimeCostsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.OffTimeService.GetOffTimeCosts is not implemented"))
+}
+
+func (UnimplementedOffTimeServiceHandler) DeleteOffTimeCosts(context.Context, *connect_go.Request[v1.DeleteOffTimeCostsRequest]) (*connect_go.Response[v1.DeleteOffTimeCostsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.OffTimeService.DeleteOffTimeCosts is not implemented"))
 }
