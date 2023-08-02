@@ -125,10 +125,10 @@ func New(name string) *Root {
 			defaultTokenPath = filepath.Join(os.Getenv("HOME"), ".idm-token")
 		}
 
-		flags.StringVarP(&root.BaseURLS.Idm, "idm-url", "U", os.Getenv("IDM_URL"), "The Base URL for the  server")
-		flags.StringVarP(&root.BaseURLS.Calendar, "cal-url", "U", os.Getenv("CAL_URL"), "The Base URL for the  server")
-		flags.StringVarP(&root.BaseURLS.Roster, "roster-url", "U", os.Getenv("ROSTER_URL"), "The Base URL for the  server")
-		flags.StringVarP(&root.TokenPath, "token-file", "t", defaultTokenPath, "The path to the cached access token")
+		flags.StringVar(&root.BaseURLS.Idm, "idm-url", os.Getenv("IDM_URL"), "The Base URL for the  server")
+		flags.StringVar(&root.BaseURLS.Calendar, "cal-url", os.Getenv("CAL_URL"), "The Base URL for the  server")
+		flags.StringVar(&root.BaseURLS.Roster, "roster-url", os.Getenv("ROSTER_URL"), "The Base URL for the  server")
+		flags.StringVar(&root.TokenPath, "token-file", defaultTokenPath, "The path to the cached access token")
 		flags.BoolVar(&root.insecureSkipVerify, "insecure", false, "Do not validate TLS certificates")
 		flags.BoolVar(&root.outputYAML, "yaml", false, "Display YAML output instead of JSON")
 	}
