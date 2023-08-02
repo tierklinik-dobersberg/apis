@@ -14,11 +14,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type BaseURLS struct {
+	Idm      string
+	Calendar string
+	Roster   string
+}
+
 type Root struct {
 	*cobra.Command
 
+	BaseURLS
+
 	HttpClient         connect.HTTPClient
-	BaseURL            string
 	TokenPath          string
 	insecureSkipVerify bool
 	outputYAML         bool
@@ -83,7 +90,9 @@ func New(name string) *Root {
 			defaultTokenPath = filepath.Join(os.Getenv("HOME"), ".idm-token")
 		}
 
-		flags.StringVarP(&root.BaseURL, "url", "U", os.Getenv("SERVER"), "The Base URL for the  server")
+		flags.StringVarP(&root.BaseURLS.Idm, "idm-url", "U", os.Getenv("IDM_URL"), "The Base URL for the  server")
+		flags.StringVarP(&root.BaseURLS.Calendar, "cal-url", "U", os.Getenv("CAL_URL"), "The Base URL for the  server")
+		flags.StringVarP(&root.BaseURLS.Roster, "roster-url", "U", os.Getenv("ROSTER_URL"), "The Base URL for the  server")
 		flags.StringVarP(&root.TokenPath, "token-file", "t", defaultTokenPath, "The path to the cached access token")
 		flags.BoolVar(&root.insecureSkipVerify, "insecure", false, "Do not validate TLS certificates")
 		flags.BoolVar(&root.outputYAML, "yaml", false, "Display YAML output instead of JSON")
