@@ -57,6 +57,12 @@ service WorkTimeService {
             require: AUTH_REQ_REQUIRED,
         };
     }
+
+    rpc DeleteWorkTime(DeleteWorkTimeRequest) returns (DeleteWorkTimeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message SetWorkTimeRequest {
@@ -117,3 +123,9 @@ message UserVacationSum {
 message GetVacationCreditsLeftResponse {
     repeated UserVacationSum results = 1;
 }
+
+message DeleteWorkTimeRequest {
+    repeated string ids = 1;
+}
+
+message DeleteWorkTimeResponse {}

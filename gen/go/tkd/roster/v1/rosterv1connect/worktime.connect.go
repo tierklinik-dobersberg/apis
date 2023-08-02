@@ -42,6 +42,9 @@ const (
 	// WorkTimeServiceGetVacationCreditsLeftProcedure is the fully-qualified name of the
 	// WorkTimeService's GetVacationCreditsLeft RPC.
 	WorkTimeServiceGetVacationCreditsLeftProcedure = "/tkd.roster.v1.WorkTimeService/GetVacationCreditsLeft"
+	// WorkTimeServiceDeleteWorkTimeProcedure is the fully-qualified name of the WorkTimeService's
+	// DeleteWorkTime RPC.
+	WorkTimeServiceDeleteWorkTimeProcedure = "/tkd.roster.v1.WorkTimeService/DeleteWorkTime"
 )
 
 // WorkTimeServiceClient is a client for the tkd.roster.v1.WorkTimeService service.
@@ -49,6 +52,7 @@ type WorkTimeServiceClient interface {
 	SetWorkTime(context.Context, *connect_go.Request[v1.SetWorkTimeRequest]) (*connect_go.Response[v1.SetWorkTimeResponse], error)
 	GetWorkTime(context.Context, *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error)
 	GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error)
+	DeleteWorkTime(context.Context, *connect_go.Request[v1.DeleteWorkTimeRequest]) (*connect_go.Response[v1.DeleteWorkTimeResponse], error)
 }
 
 // NewWorkTimeServiceClient constructs a client for the tkd.roster.v1.WorkTimeService service. By
@@ -76,6 +80,11 @@ func NewWorkTimeServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+WorkTimeServiceGetVacationCreditsLeftProcedure,
 			opts...,
 		),
+		deleteWorkTime: connect_go.NewClient[v1.DeleteWorkTimeRequest, v1.DeleteWorkTimeResponse](
+			httpClient,
+			baseURL+WorkTimeServiceDeleteWorkTimeProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -84,6 +93,7 @@ type workTimeServiceClient struct {
 	setWorkTime            *connect_go.Client[v1.SetWorkTimeRequest, v1.SetWorkTimeResponse]
 	getWorkTime            *connect_go.Client[v1.GetWorkTimeRequest, v1.GetWorkTimeResponse]
 	getVacationCreditsLeft *connect_go.Client[v1.GetVacationCreditsLeftRequest, v1.GetVacationCreditsLeftResponse]
+	deleteWorkTime         *connect_go.Client[v1.DeleteWorkTimeRequest, v1.DeleteWorkTimeResponse]
 }
 
 // SetWorkTime calls tkd.roster.v1.WorkTimeService.SetWorkTime.
@@ -101,11 +111,17 @@ func (c *workTimeServiceClient) GetVacationCreditsLeft(ctx context.Context, req 
 	return c.getVacationCreditsLeft.CallUnary(ctx, req)
 }
 
+// DeleteWorkTime calls tkd.roster.v1.WorkTimeService.DeleteWorkTime.
+func (c *workTimeServiceClient) DeleteWorkTime(ctx context.Context, req *connect_go.Request[v1.DeleteWorkTimeRequest]) (*connect_go.Response[v1.DeleteWorkTimeResponse], error) {
+	return c.deleteWorkTime.CallUnary(ctx, req)
+}
+
 // WorkTimeServiceHandler is an implementation of the tkd.roster.v1.WorkTimeService service.
 type WorkTimeServiceHandler interface {
 	SetWorkTime(context.Context, *connect_go.Request[v1.SetWorkTimeRequest]) (*connect_go.Response[v1.SetWorkTimeResponse], error)
 	GetWorkTime(context.Context, *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error)
 	GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error)
+	DeleteWorkTime(context.Context, *connect_go.Request[v1.DeleteWorkTimeRequest]) (*connect_go.Response[v1.DeleteWorkTimeResponse], error)
 }
 
 // NewWorkTimeServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -129,6 +145,11 @@ func NewWorkTimeServiceHandler(svc WorkTimeServiceHandler, opts ...connect_go.Ha
 		svc.GetVacationCreditsLeft,
 		opts...,
 	)
+	workTimeServiceDeleteWorkTimeHandler := connect_go.NewUnaryHandler(
+		WorkTimeServiceDeleteWorkTimeProcedure,
+		svc.DeleteWorkTime,
+		opts...,
+	)
 	return "/tkd.roster.v1.WorkTimeService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case WorkTimeServiceSetWorkTimeProcedure:
@@ -137,6 +158,8 @@ func NewWorkTimeServiceHandler(svc WorkTimeServiceHandler, opts ...connect_go.Ha
 			workTimeServiceGetWorkTimeHandler.ServeHTTP(w, r)
 		case WorkTimeServiceGetVacationCreditsLeftProcedure:
 			workTimeServiceGetVacationCreditsLeftHandler.ServeHTTP(w, r)
+		case WorkTimeServiceDeleteWorkTimeProcedure:
+			workTimeServiceDeleteWorkTimeHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -156,4 +179,8 @@ func (UnimplementedWorkTimeServiceHandler) GetWorkTime(context.Context, *connect
 
 func (UnimplementedWorkTimeServiceHandler) GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.WorkTimeService.GetVacationCreditsLeft is not implemented"))
+}
+
+func (UnimplementedWorkTimeServiceHandler) DeleteWorkTime(context.Context, *connect_go.Request[v1.DeleteWorkTimeRequest]) (*connect_go.Response[v1.DeleteWorkTimeResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.WorkTimeService.DeleteWorkTime is not implemented"))
 }

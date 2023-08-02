@@ -115,3 +115,21 @@ export const GetVacationCreditsLeftResponse = proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message tkd.roster.v1.DeleteWorkTimeRequest
+ */
+export const DeleteWorkTimeRequest = proto3.makeMessageType(
+  "tkd.roster.v1.DeleteWorkTimeRequest",
+  () => [
+    { no: 1, name: "ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.DeleteWorkTimeResponse
+ */
+export const DeleteWorkTimeResponse = proto3.makeMessageType(
+  "tkd.roster.v1.DeleteWorkTimeResponse",
+  [],
+);
+

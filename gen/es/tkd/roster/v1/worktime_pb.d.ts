@@ -318,3 +318,46 @@ export declare class GetVacationCreditsLeftResponse extends Message<GetVacationC
   static equals(a: GetVacationCreditsLeftResponse | PlainMessage<GetVacationCreditsLeftResponse> | undefined, b: GetVacationCreditsLeftResponse | PlainMessage<GetVacationCreditsLeftResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.roster.v1.DeleteWorkTimeRequest
+ */
+export declare class DeleteWorkTimeRequest extends Message<DeleteWorkTimeRequest> {
+  /**
+   * @generated from field: repeated string ids = 1;
+   */
+  ids: string[];
+
+  constructor(data?: PartialMessage<DeleteWorkTimeRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.DeleteWorkTimeRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteWorkTimeRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteWorkTimeRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteWorkTimeRequest;
+
+  static equals(a: DeleteWorkTimeRequest | PlainMessage<DeleteWorkTimeRequest> | undefined, b: DeleteWorkTimeRequest | PlainMessage<DeleteWorkTimeRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.DeleteWorkTimeResponse
+ */
+export declare class DeleteWorkTimeResponse extends Message<DeleteWorkTimeResponse> {
+  constructor(data?: PartialMessage<DeleteWorkTimeResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.DeleteWorkTimeResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteWorkTimeResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteWorkTimeResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteWorkTimeResponse;
+
+  static equals(a: DeleteWorkTimeResponse | PlainMessage<DeleteWorkTimeResponse> | undefined, b: DeleteWorkTimeResponse | PlainMessage<DeleteWorkTimeResponse> | undefined): boolean;
+}
+

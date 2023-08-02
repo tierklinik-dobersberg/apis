@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetVacationCreditsLeftRequest, GetVacationCreditsLeftResponse, GetWorkTimeRequest, GetWorkTimeResponse, SetWorkTimeRequest, SetWorkTimeResponse } from "./worktime_pb.js";
+import { DeleteWorkTimeRequest, DeleteWorkTimeResponse, GetVacationCreditsLeftRequest, GetVacationCreditsLeftResponse, GetWorkTimeRequest, GetWorkTimeResponse, SetWorkTimeRequest, SetWorkTimeResponse } from "./worktime_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -37,6 +37,15 @@ export declare const WorkTimeService: {
       readonly name: "GetVacationCreditsLeft",
       readonly I: typeof GetVacationCreditsLeftRequest,
       readonly O: typeof GetVacationCreditsLeftResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.WorkTimeService.DeleteWorkTime
+     */
+    readonly deleteWorkTime: {
+      readonly name: "DeleteWorkTime",
+      readonly I: typeof DeleteWorkTimeRequest,
+      readonly O: typeof DeleteWorkTimeResponse,
       readonly kind: MethodKind.Unary,
     },
   }
