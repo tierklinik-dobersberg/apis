@@ -52,6 +52,9 @@ message OffTimeCosts {
     // IsVacation is set to true if the off-time-costs apply to the vacation
     // credits. If set to false, the off-time costs are for time compensation.
     bool is_vacation = 8;
+
+    // Date holds the date of the off-time costs.
+    google.protobuf.Timestamp date = 9;
 }
 
 enum OffTimeType {

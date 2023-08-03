@@ -108,6 +108,8 @@ export const AnalyzeVacationSum = proto3.makeMessageType(
     { no: 3, name: "number_of_days", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
     { no: 4, name: "vacation_weeks_per_day", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
     { no: 5, name: "vacation_per_work_time", kind: "message", T: Duration },
+    { no: 6, name: "costs", kind: "message", T: OffTimeCosts, repeated: true },
+    { no: 7, name: "costs_sum", kind: "message", T: Duration },
   ],
 );
 
@@ -118,7 +120,6 @@ export const AnalyzeVacation = proto3.makeMessageType(
   "tkd.roster.v1.AnalyzeVacation",
   () => [
     { no: 1, name: "slices", kind: "message", T: AnalyzeVacationSum, repeated: true },
-    { no: 2, name: "costs", kind: "message", T: OffTimeCosts, repeated: true },
   ],
 );
 

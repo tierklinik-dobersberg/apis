@@ -56,6 +56,7 @@ export const OffTimeCosts = proto3.makeMessageType(
     { no: 6, name: "creator_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 7, name: "costs", kind: "message", T: Duration },
     { no: 8, name: "is_vacation", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 9, name: "date", kind: "message", T: Timestamp },
   ],
 );
 

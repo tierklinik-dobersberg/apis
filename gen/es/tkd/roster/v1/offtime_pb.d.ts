@@ -165,6 +165,13 @@ export declare class OffTimeCosts extends Message<OffTimeCosts> {
    */
   isVacation: boolean;
 
+  /**
+   * Date holds the date of the off-time costs.
+   *
+   * @generated from field: google.protobuf.Timestamp date = 9;
+   */
+  date?: Timestamp;
+
   constructor(data?: PartialMessage<OffTimeCosts>);
 
   static readonly runtime: typeof proto3;

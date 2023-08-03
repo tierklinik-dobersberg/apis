@@ -305,6 +305,16 @@ export declare class AnalyzeVacationSum extends Message<AnalyzeVacationSum> {
    */
   vacationPerWorkTime?: Duration;
 
+  /**
+   * @generated from field: repeated tkd.roster.v1.OffTimeCosts costs = 6;
+   */
+  costs: OffTimeCosts[];
+
+  /**
+   * @generated from field: google.protobuf.Duration costs_sum = 7;
+   */
+  costsSum?: Duration;
+
   constructor(data?: PartialMessage<AnalyzeVacationSum>);
 
   static readonly runtime: typeof proto3;
@@ -328,11 +338,6 @@ export declare class AnalyzeVacation extends Message<AnalyzeVacation> {
    * @generated from field: repeated tkd.roster.v1.AnalyzeVacationSum slices = 1;
    */
   slices: AnalyzeVacationSum[];
-
-  /**
-   * @generated from field: repeated tkd.roster.v1.OffTimeCosts costs = 2;
-   */
-  costs: OffTimeCosts[];
 
   constructor(data?: PartialMessage<AnalyzeVacation>);
 

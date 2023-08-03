@@ -230,6 +230,8 @@ type OffTimeCosts struct {
 	// IsVacation is set to true if the off-time-costs apply to the vacation
 	// credits. If set to false, the off-time costs are for time compensation.
 	IsVacation bool `protobuf:"varint,8,opt,name=is_vacation,json=isVacation,proto3" json:"is_vacation,omitempty"`
+	// Date holds the date of the off-time costs.
+	Date *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=date,proto3" json:"date,omitempty"`
 }
 
 func (x *OffTimeCosts) Reset() {
@@ -318,6 +320,13 @@ func (x *OffTimeCosts) GetIsVacation() bool {
 		return x.IsVacation
 	}
 	return false
+}
+
+func (x *OffTimeCosts) GetDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Date
+	}
+	return nil
 }
 
 type OffTimeEntry struct {
@@ -1453,7 +1462,7 @@ var file_tkd_roster_v1_offtime_proto_rawDesc = []byte{
 	0x72, 0x6f, 0x76, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a,
 	0x61, 0x70, 0x70, 0x72, 0x6f, 0x76, 0x65, 0x72, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x6f,
 	0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x6f, 0x6d,
-	0x6d, 0x65, 0x6e, 0x74, 0x22, 0x9f, 0x02, 0x0a, 0x0c, 0x4f, 0x66, 0x66, 0x54, 0x69, 0x6d, 0x65,
+	0x6d, 0x65, 0x6e, 0x74, 0x22, 0xcf, 0x02, 0x0a, 0x0c, 0x4f, 0x66, 0x66, 0x54, 0x69, 0x6d, 0x65,
 	0x43, 0x6f, 0x73, 0x74, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x6f, 0x66, 0x66, 0x74, 0x69, 0x6d, 0x65,
 	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6f, 0x66, 0x66, 0x74, 0x69,
@@ -1471,7 +1480,10 @@ var file_tkd_roster_v1_offtime_proto_rawDesc = []byte{
 	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x05,
 	0x63, 0x6f, 0x73, 0x74, 0x73, 0x12, 0x1f, 0x0a, 0x0b, 0x69, 0x73, 0x5f, 0x76, 0x61, 0x63, 0x61,
 	0x74, 0x69, 0x6f, 0x6e, 0x18, 0x08, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0a, 0x69, 0x73, 0x56, 0x61,
-	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x85, 0x03, 0x0a, 0x0c, 0x4f, 0x66, 0x66, 0x54, 0x69,
+	0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x2e, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x65, 0x18, 0x09,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70,
+	0x52, 0x04, 0x64, 0x61, 0x74, 0x65, 0x22, 0x85, 0x03, 0x0a, 0x0c, 0x4f, 0x66, 0x66, 0x54, 0x69,
 	0x6d, 0x65, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x21, 0x0a, 0x0c, 0x72, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x6f, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x72,
@@ -1754,52 +1766,53 @@ var file_tkd_roster_v1_offtime_proto_depIdxs = []int32{
 	24, // 0: tkd.roster.v1.OffTimeApproval.approved_at:type_name -> google.protobuf.Timestamp
 	24, // 1: tkd.roster.v1.OffTimeCosts.created_at:type_name -> google.protobuf.Timestamp
 	25, // 2: tkd.roster.v1.OffTimeCosts.costs:type_name -> google.protobuf.Duration
-	24, // 3: tkd.roster.v1.OffTimeEntry.from:type_name -> google.protobuf.Timestamp
-	24, // 4: tkd.roster.v1.OffTimeEntry.to:type_name -> google.protobuf.Timestamp
-	0,  // 5: tkd.roster.v1.OffTimeEntry.type:type_name -> tkd.roster.v1.OffTimeType
-	2,  // 6: tkd.roster.v1.OffTimeEntry.approval:type_name -> tkd.roster.v1.OffTimeApproval
-	24, // 7: tkd.roster.v1.OffTimeEntry.created_at:type_name -> google.protobuf.Timestamp
-	4,  // 8: tkd.roster.v1.GetOffTimeEntryResponse.entry:type_name -> tkd.roster.v1.OffTimeEntry
-	24, // 9: tkd.roster.v1.CreateOffTimeRequestRequest.from:type_name -> google.protobuf.Timestamp
-	24, // 10: tkd.roster.v1.CreateOffTimeRequestRequest.to:type_name -> google.protobuf.Timestamp
-	0,  // 11: tkd.roster.v1.CreateOffTimeRequestRequest.request_type:type_name -> tkd.roster.v1.OffTimeType
-	4,  // 12: tkd.roster.v1.CreateOffTimeRequestResponse.entry:type_name -> tkd.roster.v1.OffTimeEntry
-	24, // 13: tkd.roster.v1.FindOffTimeRequestsRequest.from:type_name -> google.protobuf.Timestamp
-	24, // 14: tkd.roster.v1.FindOffTimeRequestsRequest.to:type_name -> google.protobuf.Timestamp
-	26, // 15: tkd.roster.v1.FindOffTimeRequestsRequest.approved:type_name -> google.protobuf.BoolValue
-	27, // 16: tkd.roster.v1.FindOffTimeRequestsRequest.read_mask:type_name -> google.protobuf.FieldMask
-	4,  // 17: tkd.roster.v1.FindOffTimeRequestsResponse.results:type_name -> tkd.roster.v1.OffTimeEntry
-	1,  // 18: tkd.roster.v1.ApproveOrRejectRequest.type:type_name -> tkd.roster.v1.ApprovalRequestType
-	4,  // 19: tkd.roster.v1.ApproveOrRejectResponse.entry:type_name -> tkd.roster.v1.OffTimeEntry
-	3,  // 20: tkd.roster.v1.AddOffTimeCostsRequest.add_costs:type_name -> tkd.roster.v1.OffTimeCosts
-	17, // 21: tkd.roster.v1.GetOffTimeCostsRequest.for_users:type_name -> tkd.roster.v1.CostsForUsers
-	27, // 22: tkd.roster.v1.GetOffTimeCostsRequest.read_mask:type_name -> google.protobuf.FieldMask
-	25, // 23: tkd.roster.v1.OffTimeCostSummary.vacation:type_name -> google.protobuf.Duration
-	25, // 24: tkd.roster.v1.OffTimeCostSummary.time_off:type_name -> google.protobuf.Duration
-	3,  // 25: tkd.roster.v1.UserOffTimeCosts.costs:type_name -> tkd.roster.v1.OffTimeCosts
-	19, // 26: tkd.roster.v1.UserOffTimeCosts.summary:type_name -> tkd.roster.v1.OffTimeCostSummary
-	20, // 27: tkd.roster.v1.GetOffTimeCostsResponse.results:type_name -> tkd.roster.v1.UserOffTimeCosts
-	5,  // 28: tkd.roster.v1.OffTimeService.GetOffTimeEntry:input_type -> tkd.roster.v1.GetOffTimeEntryRequest
-	7,  // 29: tkd.roster.v1.OffTimeService.CreateOffTimeRequest:input_type -> tkd.roster.v1.CreateOffTimeRequestRequest
-	9,  // 30: tkd.roster.v1.OffTimeService.DeleteOffTimeRequest:input_type -> tkd.roster.v1.DeleteOffTimeRequestRequest
-	11, // 31: tkd.roster.v1.OffTimeService.FindOffTimeRequests:input_type -> tkd.roster.v1.FindOffTimeRequestsRequest
-	13, // 32: tkd.roster.v1.OffTimeService.ApproveOrReject:input_type -> tkd.roster.v1.ApproveOrRejectRequest
-	15, // 33: tkd.roster.v1.OffTimeService.AddOffTimeCosts:input_type -> tkd.roster.v1.AddOffTimeCostsRequest
-	18, // 34: tkd.roster.v1.OffTimeService.GetOffTimeCosts:input_type -> tkd.roster.v1.GetOffTimeCostsRequest
-	22, // 35: tkd.roster.v1.OffTimeService.DeleteOffTimeCosts:input_type -> tkd.roster.v1.DeleteOffTimeCostsRequest
-	6,  // 36: tkd.roster.v1.OffTimeService.GetOffTimeEntry:output_type -> tkd.roster.v1.GetOffTimeEntryResponse
-	8,  // 37: tkd.roster.v1.OffTimeService.CreateOffTimeRequest:output_type -> tkd.roster.v1.CreateOffTimeRequestResponse
-	10, // 38: tkd.roster.v1.OffTimeService.DeleteOffTimeRequest:output_type -> tkd.roster.v1.DeleteOffTimeRequestResponse
-	12, // 39: tkd.roster.v1.OffTimeService.FindOffTimeRequests:output_type -> tkd.roster.v1.FindOffTimeRequestsResponse
-	14, // 40: tkd.roster.v1.OffTimeService.ApproveOrReject:output_type -> tkd.roster.v1.ApproveOrRejectResponse
-	16, // 41: tkd.roster.v1.OffTimeService.AddOffTimeCosts:output_type -> tkd.roster.v1.AddOffTimeCostsResponse
-	21, // 42: tkd.roster.v1.OffTimeService.GetOffTimeCosts:output_type -> tkd.roster.v1.GetOffTimeCostsResponse
-	23, // 43: tkd.roster.v1.OffTimeService.DeleteOffTimeCosts:output_type -> tkd.roster.v1.DeleteOffTimeCostsResponse
-	36, // [36:44] is the sub-list for method output_type
-	28, // [28:36] is the sub-list for method input_type
-	28, // [28:28] is the sub-list for extension type_name
-	28, // [28:28] is the sub-list for extension extendee
-	0,  // [0:28] is the sub-list for field type_name
+	24, // 3: tkd.roster.v1.OffTimeCosts.date:type_name -> google.protobuf.Timestamp
+	24, // 4: tkd.roster.v1.OffTimeEntry.from:type_name -> google.protobuf.Timestamp
+	24, // 5: tkd.roster.v1.OffTimeEntry.to:type_name -> google.protobuf.Timestamp
+	0,  // 6: tkd.roster.v1.OffTimeEntry.type:type_name -> tkd.roster.v1.OffTimeType
+	2,  // 7: tkd.roster.v1.OffTimeEntry.approval:type_name -> tkd.roster.v1.OffTimeApproval
+	24, // 8: tkd.roster.v1.OffTimeEntry.created_at:type_name -> google.protobuf.Timestamp
+	4,  // 9: tkd.roster.v1.GetOffTimeEntryResponse.entry:type_name -> tkd.roster.v1.OffTimeEntry
+	24, // 10: tkd.roster.v1.CreateOffTimeRequestRequest.from:type_name -> google.protobuf.Timestamp
+	24, // 11: tkd.roster.v1.CreateOffTimeRequestRequest.to:type_name -> google.protobuf.Timestamp
+	0,  // 12: tkd.roster.v1.CreateOffTimeRequestRequest.request_type:type_name -> tkd.roster.v1.OffTimeType
+	4,  // 13: tkd.roster.v1.CreateOffTimeRequestResponse.entry:type_name -> tkd.roster.v1.OffTimeEntry
+	24, // 14: tkd.roster.v1.FindOffTimeRequestsRequest.from:type_name -> google.protobuf.Timestamp
+	24, // 15: tkd.roster.v1.FindOffTimeRequestsRequest.to:type_name -> google.protobuf.Timestamp
+	26, // 16: tkd.roster.v1.FindOffTimeRequestsRequest.approved:type_name -> google.protobuf.BoolValue
+	27, // 17: tkd.roster.v1.FindOffTimeRequestsRequest.read_mask:type_name -> google.protobuf.FieldMask
+	4,  // 18: tkd.roster.v1.FindOffTimeRequestsResponse.results:type_name -> tkd.roster.v1.OffTimeEntry
+	1,  // 19: tkd.roster.v1.ApproveOrRejectRequest.type:type_name -> tkd.roster.v1.ApprovalRequestType
+	4,  // 20: tkd.roster.v1.ApproveOrRejectResponse.entry:type_name -> tkd.roster.v1.OffTimeEntry
+	3,  // 21: tkd.roster.v1.AddOffTimeCostsRequest.add_costs:type_name -> tkd.roster.v1.OffTimeCosts
+	17, // 22: tkd.roster.v1.GetOffTimeCostsRequest.for_users:type_name -> tkd.roster.v1.CostsForUsers
+	27, // 23: tkd.roster.v1.GetOffTimeCostsRequest.read_mask:type_name -> google.protobuf.FieldMask
+	25, // 24: tkd.roster.v1.OffTimeCostSummary.vacation:type_name -> google.protobuf.Duration
+	25, // 25: tkd.roster.v1.OffTimeCostSummary.time_off:type_name -> google.protobuf.Duration
+	3,  // 26: tkd.roster.v1.UserOffTimeCosts.costs:type_name -> tkd.roster.v1.OffTimeCosts
+	19, // 27: tkd.roster.v1.UserOffTimeCosts.summary:type_name -> tkd.roster.v1.OffTimeCostSummary
+	20, // 28: tkd.roster.v1.GetOffTimeCostsResponse.results:type_name -> tkd.roster.v1.UserOffTimeCosts
+	5,  // 29: tkd.roster.v1.OffTimeService.GetOffTimeEntry:input_type -> tkd.roster.v1.GetOffTimeEntryRequest
+	7,  // 30: tkd.roster.v1.OffTimeService.CreateOffTimeRequest:input_type -> tkd.roster.v1.CreateOffTimeRequestRequest
+	9,  // 31: tkd.roster.v1.OffTimeService.DeleteOffTimeRequest:input_type -> tkd.roster.v1.DeleteOffTimeRequestRequest
+	11, // 32: tkd.roster.v1.OffTimeService.FindOffTimeRequests:input_type -> tkd.roster.v1.FindOffTimeRequestsRequest
+	13, // 33: tkd.roster.v1.OffTimeService.ApproveOrReject:input_type -> tkd.roster.v1.ApproveOrRejectRequest
+	15, // 34: tkd.roster.v1.OffTimeService.AddOffTimeCosts:input_type -> tkd.roster.v1.AddOffTimeCostsRequest
+	18, // 35: tkd.roster.v1.OffTimeService.GetOffTimeCosts:input_type -> tkd.roster.v1.GetOffTimeCostsRequest
+	22, // 36: tkd.roster.v1.OffTimeService.DeleteOffTimeCosts:input_type -> tkd.roster.v1.DeleteOffTimeCostsRequest
+	6,  // 37: tkd.roster.v1.OffTimeService.GetOffTimeEntry:output_type -> tkd.roster.v1.GetOffTimeEntryResponse
+	8,  // 38: tkd.roster.v1.OffTimeService.CreateOffTimeRequest:output_type -> tkd.roster.v1.CreateOffTimeRequestResponse
+	10, // 39: tkd.roster.v1.OffTimeService.DeleteOffTimeRequest:output_type -> tkd.roster.v1.DeleteOffTimeRequestResponse
+	12, // 40: tkd.roster.v1.OffTimeService.FindOffTimeRequests:output_type -> tkd.roster.v1.FindOffTimeRequestsResponse
+	14, // 41: tkd.roster.v1.OffTimeService.ApproveOrReject:output_type -> tkd.roster.v1.ApproveOrRejectResponse
+	16, // 42: tkd.roster.v1.OffTimeService.AddOffTimeCosts:output_type -> tkd.roster.v1.AddOffTimeCostsResponse
+	21, // 43: tkd.roster.v1.OffTimeService.GetOffTimeCosts:output_type -> tkd.roster.v1.GetOffTimeCostsResponse
+	23, // 44: tkd.roster.v1.OffTimeService.DeleteOffTimeCosts:output_type -> tkd.roster.v1.DeleteOffTimeCostsResponse
+	37, // [37:45] is the sub-list for method output_type
+	29, // [29:37] is the sub-list for method input_type
+	29, // [29:29] is the sub-list for extension type_name
+	29, // [29:29] is the sub-list for extension extendee
+	0,  // [0:29] is the sub-list for field type_name
 }
 
 func init() { file_tkd_roster_v1_offtime_proto_init() }
