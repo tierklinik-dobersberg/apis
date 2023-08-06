@@ -1,0 +1,125 @@
+syntax = "proto3";
+
+package tkd.roster.v1;
+
+import "tkd/roster/v1/offtime.proto";
+import "tkd/common/v1/descriptor.proto";
+import "buf/validate/validate.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+// OffTimeViolation is a constraint type due to a off-time request.
+message OffTimeViolation {
+    // Entry holds the OffTimeEntry.
+    OffTimeEntry entry = 1;
+}
+
+// ConstraintEvaluationViolation is a constraint type that is the result
+// of evaluating a constraint expression for a user or roster.
+message ConstraintEvaluationViolation {
+    // Id is the unique identifier of the Constraint that caused the violation.
+    string id = 1;
+
+    // Description is the description of the Constraint and copied to the
+    // ConstraintEvaluationViolation for convenience.
+    string description = 2;
+}
+
+// ConstraintViolation is a violation of a constraint for a given
+// user or roster.
+message ConstraintViolation {
+    bool hard = 1;
+
+    oneof kind {
+        OffTimeViolation off_time = 2;
+        ConstraintEvaluationViolation evaluation = 3;
+    }
+}
+
+// ConstraintViolationList holds all ConstraintViolations for a
+// user.
+message ConstraintViolationList {
+    string user_id = 1;
+    repeated ConstraintViolation violations = 2;
+}
+
+message Constraint {
+    string id = 1;
+    string description = 2;
+    string expression = 3;
+    repeated string role_ids = 4;
+    repeated string user_ids = 5;
+    bool hard = 6;
+    float penalty = 7;
+    bool deny = 8;
+    bool roster_only = 9;
+
+    google.protobuf.Timestamp created_at = 10;
+    string creator_id = 11;
+
+    google.protobuf.Timestamp updated_at = 12;
+    string last_updated_by = 13;
+}
+
+service ConstraintService {
+    rpc CreateConstraint(CreateConstraintRequest) returns (CreateConstraintResponse) {}
+    rpc UpdateConstraint(UpdateConstraintRequest) returns (UpdateConstraintResponse) {}
+    rpc DeleteConstraint(DeleteConstraintRequest) returns (DeleteConstraintResponse) {}
+    rpc FindConstraints(FindConstraintsRequest) returns (FindConstraintsResponse) {}
+}
+
+message CreateConstraintRequest {
+    string description = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string expression = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    repeated string role_ids = 3;
+    repeated string user_ids = 4;
+    bool hard = 5;
+    float penalty = 6;
+    bool deny = 7;
+    bool roster_only = 8;
+}
+
+message CreateConstraintResponse {
+    Constraint constraint = 1;
+}
+
+message UpdateConstraintRequest {
+    string id = 1;
+    string description = 2;
+    string expression = 3;
+    repeated string role_ids = 4;
+    repeated string user_ids = 5;
+    bool hard = 6;
+    float penalty = 7;
+    bool deny = 8;
+    bool roster_only = 9;
+
+    google.protobuf.FieldMask write_mask = 20;
+}
+
+message UpdateConstraintResponse {
+    Constraint constraint = 1;
+}
+
+message DeleteConstraintRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message DeleteConstraintResponse {}
+
+message FindConstraintsRequest {
+    repeated string user_ids = 1;
+    repeated string role_ids = 2;
+}
+
+message FindConstraintsResponse {
+    repeated Constraint results = 1;
+}

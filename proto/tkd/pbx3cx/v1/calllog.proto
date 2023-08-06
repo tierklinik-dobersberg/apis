@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+package tkd.pbx3cx.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "tkd/common/v1/descriptor.proto";
+import "tkd/common/v1/time_range.proto";
+import "tkd/customer/v1/customer.proto";
+import "tkd/idm/v1/user.proto";
+import "google/protobuf/empty.proto";
+import "buf/validate/validate.proto";
+
+message CallEntry {
+    string id = 1;
+    string caller = 2;
+    string inbound_number = 3;
+    google.protobuf.Timestamp received_at = 4;
+    google.protobuf.Duration duration = 5;
+    string call_type = 6;
+    string agent_user_id = 7;
+    string customer_id = 8;
+    string customer_source = 9;
+    bool error = 10;
+    string transfer_target = 11;
+}
+
+message OnCall {
+    tkd.idm.v1.Profile profile = 1;
+    string transfer_target = 2;
+}
+
+message CustomOverwrite {
+    string transfer_target = 1;
+    string display_name = 2;
+}
+
+message Overwrite {
+    string id = 1;
+    google.protobuf.Timestamp from = 2;
+    google.protobuf.Timestamp to = 3;
+
+    oneof target {
+        CustomOverwrite custom = 4;
+        string user_id = 5;
+    }
+
+    google.protobuf.Timestamp created_at = 6;
+    string created_by_user_id = 7;
+}
+
+service CallService {
+    option (tkd.common.v1.default_host) = "3cx-support.dobersberg.vet";
+
+    // Recording APIS 
+    rpc RecordCall(RecordCallRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // On-Duty/Call APIs
+    rpc GetOnCall(GetOnCallRequest) returns (GetOnCallResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // Overwrite APIS
+    rpc CreateOverwrite(CreateOverwriteRequest) returns (CreateOverwriteResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc DeleteOverwrite(DeleteOverwriteRequest) returns (DeleteOverwriteResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc GetOverwrite(GetOverwriteRequest) returns (GetOverwriteResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // Calllog APIs
+    rpc GetLogsForDate(GetLogsForDateRequest) returns (GetLogsForDateResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc SearchCallLogs(SearchCallLogsRequest) returns (SearchCallLogsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc GetLogsForCustomer(GetLogsForCustomerRequest) returns(GetLogsForCustomerResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+}
+
+message RecordCallRequest {
+    string duration = 1;
+    string number = 2;
+    string agetn = 3;
+    string call_type = 4;
+    string date_time = 5;
+    string customer_id = 6;
+    string customer_source = 7;
+}
+
+message GetLogsForCustomerRequest {
+    string source = 1 [(buf.validate.field).required = true];
+    string id = 2 [(buf.validate.field).required = true];
+}
+
+message GetLogsForCustomerResponse {
+    repeated CallEntry results = 1;
+}
+
+message GetLogsForDateRequest {
+    string date = 1 [(buf.validate.field).required = true]; // YYYY-MM-DD
+}
+
+message GetLogsForDateResponse {
+    repeated CallEntry results = 1;
+}
+
+message SearchCallLogsRequest {
+    string date = 1; // YYYY-MM-DD
+    tkd.common.v1.TimeRange time_range = 2;
+    tkd.customer.v1.CustomerRef customer_ref = 3;
+}
+
+message SearchCallLogsResponse {
+    repeated CallEntry results = 1;
+}
+
+message GetOnCallRequest {
+    string date = 1; // YYYY-MM-DD
+    bool ignore_overwrites = 2;
+}
+
+message GetOnCallResponse {
+    repeated OnCall on_call = 1;
+    google.protobuf.Timestamp until = 2;
+    string roster_date = 3; // YYYY-MM-DD
+    bool is_overwrite = 4;
+}
+
+message CreateOverwriteRequest {
+    oneof transfer_target {
+        CustomOverwrite custom = 1;
+        string user_id = 2;
+    }
+
+    google.protobuf.Timestamp from = 3;
+    google.protobuf.Timestamp to = 4;
+}
+
+message CreateOverwriteResponse {
+    Overwrite overwrite = 1;
+}
+
+message DeleteOverwriteRequest {
+    oneof selector {
+        string overwrite_id = 1;
+        google.protobuf.Timestamp  active_at = 2;
+    }
+}
+message DeleteOverwriteResponse {}
+
+message GetOverwriteRequest {
+    oneof selector {
+        string overwrite_id = 1;
+        google.protobuf.Timestamp  active_at = 2;
+        tkd.common.v1.TimeRange time_range = 3;
+    }
+}
+
+message GetOverwriteResponse {
+    repeated Overwrite overwrites = 1;
+}

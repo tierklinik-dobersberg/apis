@@ -33,28 +33,48 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// RosterServiceSessionProcedure is the fully-qualified name of the RosterService's Session RPC.
-	RosterServiceSessionProcedure = "/tkd.roster.v1.RosterService/Session"
-	// RosterServiceApproveRosterProcedure is the fully-qualified name of the RosterService's
-	// ApproveRoster RPC.
-	RosterServiceApproveRosterProcedure = "/tkd.roster.v1.RosterService/ApproveRoster"
+	// RosterServiceSaveRosterProcedure is the fully-qualified name of the RosterService's SaveRoster
+	// RPC.
+	RosterServiceSaveRosterProcedure = "/tkd.roster.v1.RosterService/SaveRoster"
 	// RosterServiceDeleteRosterProcedure is the fully-qualified name of the RosterService's
 	// DeleteRoster RPC.
 	RosterServiceDeleteRosterProcedure = "/tkd.roster.v1.RosterService/DeleteRoster"
+	// RosterServiceAnalyzeWorkTimeProcedure is the fully-qualified name of the RosterService's
+	// AnalyzeWorkTime RPC.
+	RosterServiceAnalyzeWorkTimeProcedure = "/tkd.roster.v1.RosterService/AnalyzeWorkTime"
+	// RosterServiceApproveRosterProcedure is the fully-qualified name of the RosterService's
+	// ApproveRoster RPC.
+	RosterServiceApproveRosterProcedure = "/tkd.roster.v1.RosterService/ApproveRoster"
 	// RosterServiceGetRosterProcedure is the fully-qualified name of the RosterService's GetRoster RPC.
 	RosterServiceGetRosterProcedure = "/tkd.roster.v1.RosterService/GetRoster"
 	// RosterServiceGetWorkingStaffProcedure is the fully-qualified name of the RosterService's
 	// GetWorkingStaff RPC.
 	RosterServiceGetWorkingStaffProcedure = "/tkd.roster.v1.RosterService/GetWorkingStaff"
+	// RosterServiceGetRequiredShiftsProcedure is the fully-qualified name of the RosterService's
+	// GetRequiredShifts RPC.
+	RosterServiceGetRequiredShiftsProcedure = "/tkd.roster.v1.RosterService/GetRequiredShifts"
 )
 
 // RosterServiceClient is a client for the tkd.roster.v1.RosterService service.
 type RosterServiceClient interface {
-	Session(context.Context) *connect_go.BidiStreamForClient[v1.SessionRequest, v1.SessionResponse]
-	ApproveRoster(context.Context, *connect_go.Request[v1.ApproveRosterRequest]) (*connect_go.Response[v1.ApproveRosterResponse], error)
+	// SaveRoster saves a duty roster. It may be used to initially create a new
+	// roster or to save subsequent changes.
+	SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error)
+	// DeleteRoster deletes a roster from the internal storage. This operation
+	// cannot be undone!
 	DeleteRoster(context.Context, *connect_go.Request[v1.DeleteRosterRequest]) (*connect_go.Response[v1.DeleteRosterResponse], error)
+	// AnalyzeWorkTime can be used to analyze the work time of users to determine
+	// undertime or overtime in a given time-range.
+	AnalyzeWorkTime(context.Context, *connect_go.Request[v1.AnalyzeWorkTimeRequest]) (*connect_go.Response[v1.AnalyzeWorkTimeResponse], error)
+	// ApproveRoster marks a roster as approved by management.
+	ApproveRoster(context.Context, *connect_go.Request[v1.ApproveRosterRequest]) (*connect_go.Response[v1.ApproveRosterResponse], error)
+	// GetRoster returns a previously saved roster.
 	GetRoster(context.Context, *connect_go.Request[v1.GetRosterRequest]) (*connect_go.Response[v1.GetRosterResponse], error)
+	// GetWorkingStaff returns a list of user_ids that are working at the
+	// date specified in GetWorkingStaffRequest. If date is unset, it defaults
+	// to NOW.
 	GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
+	GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error)
 }
 
 // NewRosterServiceClient constructs a client for the tkd.roster.v1.RosterService service. By
@@ -67,19 +87,24 @@ type RosterServiceClient interface {
 func NewRosterServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) RosterServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &rosterServiceClient{
-		session: connect_go.NewClient[v1.SessionRequest, v1.SessionResponse](
+		saveRoster: connect_go.NewClient[v1.SaveRosterRequest, v1.SaveRosterResponse](
 			httpClient,
-			baseURL+RosterServiceSessionProcedure,
-			opts...,
-		),
-		approveRoster: connect_go.NewClient[v1.ApproveRosterRequest, v1.ApproveRosterResponse](
-			httpClient,
-			baseURL+RosterServiceApproveRosterProcedure,
+			baseURL+RosterServiceSaveRosterProcedure,
 			opts...,
 		),
 		deleteRoster: connect_go.NewClient[v1.DeleteRosterRequest, v1.DeleteRosterResponse](
 			httpClient,
 			baseURL+RosterServiceDeleteRosterProcedure,
+			opts...,
+		),
+		analyzeWorkTime: connect_go.NewClient[v1.AnalyzeWorkTimeRequest, v1.AnalyzeWorkTimeResponse](
+			httpClient,
+			baseURL+RosterServiceAnalyzeWorkTimeProcedure,
+			opts...,
+		),
+		approveRoster: connect_go.NewClient[v1.ApproveRosterRequest, v1.ApproveRosterResponse](
+			httpClient,
+			baseURL+RosterServiceApproveRosterProcedure,
 			opts...,
 		),
 		getRoster: connect_go.NewClient[v1.GetRosterRequest, v1.GetRosterResponse](
@@ -92,31 +117,43 @@ func NewRosterServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+RosterServiceGetWorkingStaffProcedure,
 			opts...,
 		),
+		getRequiredShifts: connect_go.NewClient[v1.GetRequiredShiftsRequest, v1.GetRequiredShiftsResponse](
+			httpClient,
+			baseURL+RosterServiceGetRequiredShiftsProcedure,
+			opts...,
+		),
 	}
 }
 
 // rosterServiceClient implements RosterServiceClient.
 type rosterServiceClient struct {
-	session         *connect_go.Client[v1.SessionRequest, v1.SessionResponse]
-	approveRoster   *connect_go.Client[v1.ApproveRosterRequest, v1.ApproveRosterResponse]
-	deleteRoster    *connect_go.Client[v1.DeleteRosterRequest, v1.DeleteRosterResponse]
-	getRoster       *connect_go.Client[v1.GetRosterRequest, v1.GetRosterResponse]
-	getWorkingStaff *connect_go.Client[v1.GetWorkingStaffRequest, v1.GetWorkingStaffResponse]
+	saveRoster        *connect_go.Client[v1.SaveRosterRequest, v1.SaveRosterResponse]
+	deleteRoster      *connect_go.Client[v1.DeleteRosterRequest, v1.DeleteRosterResponse]
+	analyzeWorkTime   *connect_go.Client[v1.AnalyzeWorkTimeRequest, v1.AnalyzeWorkTimeResponse]
+	approveRoster     *connect_go.Client[v1.ApproveRosterRequest, v1.ApproveRosterResponse]
+	getRoster         *connect_go.Client[v1.GetRosterRequest, v1.GetRosterResponse]
+	getWorkingStaff   *connect_go.Client[v1.GetWorkingStaffRequest, v1.GetWorkingStaffResponse]
+	getRequiredShifts *connect_go.Client[v1.GetRequiredShiftsRequest, v1.GetRequiredShiftsResponse]
 }
 
-// Session calls tkd.roster.v1.RosterService.Session.
-func (c *rosterServiceClient) Session(ctx context.Context) *connect_go.BidiStreamForClient[v1.SessionRequest, v1.SessionResponse] {
-	return c.session.CallBidiStream(ctx)
-}
-
-// ApproveRoster calls tkd.roster.v1.RosterService.ApproveRoster.
-func (c *rosterServiceClient) ApproveRoster(ctx context.Context, req *connect_go.Request[v1.ApproveRosterRequest]) (*connect_go.Response[v1.ApproveRosterResponse], error) {
-	return c.approveRoster.CallUnary(ctx, req)
+// SaveRoster calls tkd.roster.v1.RosterService.SaveRoster.
+func (c *rosterServiceClient) SaveRoster(ctx context.Context, req *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error) {
+	return c.saveRoster.CallUnary(ctx, req)
 }
 
 // DeleteRoster calls tkd.roster.v1.RosterService.DeleteRoster.
 func (c *rosterServiceClient) DeleteRoster(ctx context.Context, req *connect_go.Request[v1.DeleteRosterRequest]) (*connect_go.Response[v1.DeleteRosterResponse], error) {
 	return c.deleteRoster.CallUnary(ctx, req)
+}
+
+// AnalyzeWorkTime calls tkd.roster.v1.RosterService.AnalyzeWorkTime.
+func (c *rosterServiceClient) AnalyzeWorkTime(ctx context.Context, req *connect_go.Request[v1.AnalyzeWorkTimeRequest]) (*connect_go.Response[v1.AnalyzeWorkTimeResponse], error) {
+	return c.analyzeWorkTime.CallUnary(ctx, req)
+}
+
+// ApproveRoster calls tkd.roster.v1.RosterService.ApproveRoster.
+func (c *rosterServiceClient) ApproveRoster(ctx context.Context, req *connect_go.Request[v1.ApproveRosterRequest]) (*connect_go.Response[v1.ApproveRosterResponse], error) {
+	return c.approveRoster.CallUnary(ctx, req)
 }
 
 // GetRoster calls tkd.roster.v1.RosterService.GetRoster.
@@ -129,13 +166,31 @@ func (c *rosterServiceClient) GetWorkingStaff(ctx context.Context, req *connect_
 	return c.getWorkingStaff.CallUnary(ctx, req)
 }
 
+// GetRequiredShifts calls tkd.roster.v1.RosterService.GetRequiredShifts.
+func (c *rosterServiceClient) GetRequiredShifts(ctx context.Context, req *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error) {
+	return c.getRequiredShifts.CallUnary(ctx, req)
+}
+
 // RosterServiceHandler is an implementation of the tkd.roster.v1.RosterService service.
 type RosterServiceHandler interface {
-	Session(context.Context, *connect_go.BidiStream[v1.SessionRequest, v1.SessionResponse]) error
-	ApproveRoster(context.Context, *connect_go.Request[v1.ApproveRosterRequest]) (*connect_go.Response[v1.ApproveRosterResponse], error)
+	// SaveRoster saves a duty roster. It may be used to initially create a new
+	// roster or to save subsequent changes.
+	SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error)
+	// DeleteRoster deletes a roster from the internal storage. This operation
+	// cannot be undone!
 	DeleteRoster(context.Context, *connect_go.Request[v1.DeleteRosterRequest]) (*connect_go.Response[v1.DeleteRosterResponse], error)
+	// AnalyzeWorkTime can be used to analyze the work time of users to determine
+	// undertime or overtime in a given time-range.
+	AnalyzeWorkTime(context.Context, *connect_go.Request[v1.AnalyzeWorkTimeRequest]) (*connect_go.Response[v1.AnalyzeWorkTimeResponse], error)
+	// ApproveRoster marks a roster as approved by management.
+	ApproveRoster(context.Context, *connect_go.Request[v1.ApproveRosterRequest]) (*connect_go.Response[v1.ApproveRosterResponse], error)
+	// GetRoster returns a previously saved roster.
 	GetRoster(context.Context, *connect_go.Request[v1.GetRosterRequest]) (*connect_go.Response[v1.GetRosterResponse], error)
+	// GetWorkingStaff returns a list of user_ids that are working at the
+	// date specified in GetWorkingStaffRequest. If date is unset, it defaults
+	// to NOW.
 	GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
+	GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error)
 }
 
 // NewRosterServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -144,19 +199,24 @@ type RosterServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	rosterServiceSessionHandler := connect_go.NewBidiStreamHandler(
-		RosterServiceSessionProcedure,
-		svc.Session,
-		opts...,
-	)
-	rosterServiceApproveRosterHandler := connect_go.NewUnaryHandler(
-		RosterServiceApproveRosterProcedure,
-		svc.ApproveRoster,
+	rosterServiceSaveRosterHandler := connect_go.NewUnaryHandler(
+		RosterServiceSaveRosterProcedure,
+		svc.SaveRoster,
 		opts...,
 	)
 	rosterServiceDeleteRosterHandler := connect_go.NewUnaryHandler(
 		RosterServiceDeleteRosterProcedure,
 		svc.DeleteRoster,
+		opts...,
+	)
+	rosterServiceAnalyzeWorkTimeHandler := connect_go.NewUnaryHandler(
+		RosterServiceAnalyzeWorkTimeProcedure,
+		svc.AnalyzeWorkTime,
+		opts...,
+	)
+	rosterServiceApproveRosterHandler := connect_go.NewUnaryHandler(
+		RosterServiceApproveRosterProcedure,
+		svc.ApproveRoster,
 		opts...,
 	)
 	rosterServiceGetRosterHandler := connect_go.NewUnaryHandler(
@@ -169,18 +229,27 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 		svc.GetWorkingStaff,
 		opts...,
 	)
+	rosterServiceGetRequiredShiftsHandler := connect_go.NewUnaryHandler(
+		RosterServiceGetRequiredShiftsProcedure,
+		svc.GetRequiredShifts,
+		opts...,
+	)
 	return "/tkd.roster.v1.RosterService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case RosterServiceSessionProcedure:
-			rosterServiceSessionHandler.ServeHTTP(w, r)
-		case RosterServiceApproveRosterProcedure:
-			rosterServiceApproveRosterHandler.ServeHTTP(w, r)
+		case RosterServiceSaveRosterProcedure:
+			rosterServiceSaveRosterHandler.ServeHTTP(w, r)
 		case RosterServiceDeleteRosterProcedure:
 			rosterServiceDeleteRosterHandler.ServeHTTP(w, r)
+		case RosterServiceAnalyzeWorkTimeProcedure:
+			rosterServiceAnalyzeWorkTimeHandler.ServeHTTP(w, r)
+		case RosterServiceApproveRosterProcedure:
+			rosterServiceApproveRosterHandler.ServeHTTP(w, r)
 		case RosterServiceGetRosterProcedure:
 			rosterServiceGetRosterHandler.ServeHTTP(w, r)
 		case RosterServiceGetWorkingStaffProcedure:
 			rosterServiceGetWorkingStaffHandler.ServeHTTP(w, r)
+		case RosterServiceGetRequiredShiftsProcedure:
+			rosterServiceGetRequiredShiftsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -190,16 +259,20 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 // UnimplementedRosterServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedRosterServiceHandler struct{}
 
-func (UnimplementedRosterServiceHandler) Session(context.Context, *connect_go.BidiStream[v1.SessionRequest, v1.SessionResponse]) error {
-	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.Session is not implemented"))
-}
-
-func (UnimplementedRosterServiceHandler) ApproveRoster(context.Context, *connect_go.Request[v1.ApproveRosterRequest]) (*connect_go.Response[v1.ApproveRosterResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.ApproveRoster is not implemented"))
+func (UnimplementedRosterServiceHandler) SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.SaveRoster is not implemented"))
 }
 
 func (UnimplementedRosterServiceHandler) DeleteRoster(context.Context, *connect_go.Request[v1.DeleteRosterRequest]) (*connect_go.Response[v1.DeleteRosterResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.DeleteRoster is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) AnalyzeWorkTime(context.Context, *connect_go.Request[v1.AnalyzeWorkTimeRequest]) (*connect_go.Response[v1.AnalyzeWorkTimeResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.AnalyzeWorkTime is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) ApproveRoster(context.Context, *connect_go.Request[v1.ApproveRosterRequest]) (*connect_go.Response[v1.ApproveRosterResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.ApproveRoster is not implemented"))
 }
 
 func (UnimplementedRosterServiceHandler) GetRoster(context.Context, *connect_go.Request[v1.GetRosterRequest]) (*connect_go.Response[v1.GetRosterResponse], error) {
@@ -208,4 +281,8 @@ func (UnimplementedRosterServiceHandler) GetRoster(context.Context, *connect_go.
 
 func (UnimplementedRosterServiceHandler) GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.GetWorkingStaff is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.GetRequiredShifts is not implemented"))
 }

@@ -48,6 +48,14 @@ func (root *Root) WorkShift() rosterv1connect.WorkShiftServiceClient {
 	return rosterv1connect.NewWorkShiftServiceClient(root.HttpClient, root.BaseURLS.Roster)
 }
 
+func (root *Root) Roster() rosterv1connect.RosterServiceClient {
+	return rosterv1connect.NewRosterServiceClient(root.HttpClient, root.BaseURLS.Roster)
+}
+
+func (root *Root) Constraints() rosterv1connect.ConstraintServiceClient {
+	return rosterv1connect.NewConstraintServiceClient(root.HttpClient, root.BaseURLS.Roster)
+}
+
 func (root *Root) Users() idmv1connect.UserServiceClient {
 	return idmv1connect.NewUserServiceClient(root.HttpClient, root.BaseURLS.Idm)
 }
@@ -80,6 +88,8 @@ func New(name string) *Root {
 			if err != nil {
 				if !os.IsNotExist(err) {
 					return fmt.Errorf("failed to read token at %s: %w", root.TokenPath, err)
+				} else {
+					logrus.Warnf("failed to get token: %s", err)
 				}
 			}
 

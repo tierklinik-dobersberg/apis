@@ -8,115 +8,274 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/field_mask.proto";
 import "tkd/roster/v1/workshift.proto";
 import "tkd/roster/v1/worktime.proto";
+import "tkd/roster/v1/constraint.proto";
+import "tkd/common/v1/descriptor.proto";
+import "buf/validate/validate.proto";
 
+message RequiredShift {
+    // From holds the time at which the shift begins.
+    google.protobuf.Timestamp from = 1;
+
+    // To holds the time at which the shift ends.
+    google.protobuf.Timestamp to = 2;
+
+    // WorkShiftID is the ID of the work-shift definition.
+    string work_shift_id = 3;
+
+    // EligibleUserIds is set to a list of user ids that are eligible for this
+    // work-shift.
+    repeated string eligible_user_ids = 4;
+
+    // OnHoliday is set to true if the shift is on a public holiday.
+    bool on_holiday = 5;
+
+    // onWeekend is set to true if the shift is on a week-end day (Saturday or Sunday).
+    bool on_weekend = 6;
+
+    // ViolationsPerUserId is a map indexed with user ids that holds a list of
+    // violations and resoning of why a user is not part of RequiredShift.eligible_user_ids
+    // even if the user would be eligible by WorkShift.eligible_roles.
+    map<string, ConstraintViolationList> violations_per_user_id = 7;
+}
+
+// PlannedShift is a planned work-shift in a roster.
 message PlannedShift {
-    repeated string assigned_user_ids = 1;
-    string work_shift_id = 2;
-    bool is_holiday = 3;
-    bool is_weekend = 4;
-    google.protobuf.Timestamp from = 5;
-    google.protobuf.Timestamp to = 6;
-    google.protobuf.Duration time_worth = 7;
+    // From holds the time at which the shift begins.
+    google.protobuf.Timestamp from = 1 [
+        (buf.validate.field).required = true
+    ];
 
-    WorkShift shift = 8;
-    repeated string eligible_user_ids = 9;
+    // To holds the time at which the shift ends.
+    google.protobuf.Timestamp to = 2 [
+        (buf.validate.field).required = true
+    ];
 
-    google.protobuf.FieldMask read_mask = 10;
+    // AsssignedUserIds is a list of user IDs that are assigned to work
+    // during the shift.
+    repeated string assigned_user_ids = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    // WorkShiftId is the ID of the work-shift definition.
+    string work_shift_id = 4 [
+        (buf.validate.field).required = true
+    ];
 }
 
-message RosterMeta {
+// Roster is a planned roster for a given time period.
+message Roster {
+    // ID is a unique identifier for the roster.
     string id = 1;
-    int64 month = 2;
-    int64 year = 3;
-    bool approved = 4;
-    google.protobuf.Timestamp approved_at = 5;
-    string last_modified_by = 6;
-    google.protobuf.Timestamp created_at = 7;
-    google.protobuf.Timestamp updated_at = 8;
-}
 
-message WorkTimeStatus {
-    google.protobuf.Duration time_per_week = 1;
-    google.protobuf.Duration expected_work_time = 2;
-    google.protobuf.Duration planned_work_time = 3;
+    // From holds the date of the first day in the roster.
+    // It should follow the format YYYY-MM-DD as in 2006-01-02.
+    string from = 2;
+
+    // To holds the date of the lalst day in the roster.
+    // It should follow the format YYYY-MM-DD as in 2006-01-02.
+    string to = 3;
+
+    // Shifts holds all planned work-shifts for the roster.
+    // Implementations should sort the shifts by increasing
+    // from time.
+    repeated PlannedShift shifts = 4;
+
+    // Approved is set to true when the roster has been approved by
+    // management.
+    bool approved = 5;
+
+    // ApprovedAt is set to the timestamp at which the roster has been
+    // approved by management.
+    google.protobuf.Timestamp approved_at = 6;
+
+    // ApproverUserId is set to the ID of the management user that approved
+    // the roster.
+    string approver_user_id = 7;
+
+    // LastModifiedBy is set to the ID of the user that last changed the roster.
+    string last_modified_by = 8;
+
+    // CreatedAt is set to the timestamp at which the roster has been initially
+    // created.
+    google.protobuf.Timestamp created_at = 9;
+
+    // UpdatedAt is set to the timestamp at which the roster has been updated
+    // last.
+    google.protobuf.Timestamp updated_at = 10;
 }
 
 service RosterService {
-    rpc Session(stream SessionRequest) returns (stream SessionResponse) {} 
-    rpc ApproveRoster(ApproveRosterRequest) returns (ApproveRosterResponse) {}
-    rpc DeleteRoster(DeleteRosterRequest) returns (DeleteRosterResponse) {}
-    rpc GetRoster(GetRosterRequest) returns (GetRosterResponse) {}
-    rpc GetWorkingStaff(GetWorkingStaffRequest) returns (GetWorkingStaffResponse) {}
+    // SaveRoster saves a duty roster. It may be used to initially create a new
+    // roster or to save subsequent changes.
+    rpc SaveRoster(SaveRosterRequest) returns (SaveRosterResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
+
+    // DeleteRoster deletes a roster from the internal storage. This operation
+    // cannot be undone!
+    rpc DeleteRoster(DeleteRosterRequest) returns (DeleteRosterResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
+
+    // AnalyzeWorkTime can be used to analyze the work time of users to determine
+    // undertime or overtime in a given time-range.
+    rpc AnalyzeWorkTime(AnalyzeWorkTimeRequest) returns (AnalyzeWorkTimeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // ApproveRoster marks a roster as approved by management.
+    rpc ApproveRoster(ApproveRosterRequest) returns (ApproveRosterResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
+
+    // GetRoster returns a previously saved roster.
+    rpc GetRoster(GetRosterRequest) returns (GetRosterResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // GetWorkingStaff returns a list of user_ids that are working at the
+    // date specified in GetWorkingStaffRequest. If date is unset, it defaults
+    // to NOW.
+    rpc GetWorkingStaff(GetWorkingStaffRequest) returns (GetWorkingStaffResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc GetRequiredShifts(GetRequiredShiftsRequest) returns (GetRequiredShiftsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
 }
 
-message StartSessionRequest {
+message SaveRosterRequest {
+    // ID is the unique ID of the roster. If the roster is created for the first
+    // time this field may be empty. Subsequent SaveRosterRequests should populate
+    // the ID returned in the response of the first SaveRosterRequest.
+    string id = 1 [
+        (buf.validate.field).ignore_empty = true
+    ];
+
+    // From holds the date of the first day in the roster.
+    // It should follow the format YYYY-MM-DD as in 2006-01-02.
+    // Note that chaning the from-time after the roster has been
+    // initialy created is not allowed.
+    string from = 2 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.pattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
+    ];
+
+    // To holds the date of the lalst day in the roster.
+    // It should follow the format YYYY-MM-DD as in 2006-01-02.
+    // Note that chaning the to-time after the roster has been
+    // initialy created is not allowed.
+    string to = 3 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.pattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
+    ];
+
+    // Shifts is a list of planned roster shifts.
+    repeated PlannedShift shifts = 4 [
+        (buf.validate.field).required = true
+    ];
+
+    // ReadMask may be used to limit the response of the SaveRosterRequest.
+    google.protobuf.FieldMask read_mask = 5;
+}
+
+message WorkTimeAnalysisWeek {
     int32 year = 1;
-    int32 month = 3;
+    int32 week = 2;
+    int32 working_days = 3;
+    google.protobuf.Duration expected_work = 4;
+    google.protobuf.Duration planned = 5;
 }
 
-message StartSessionResponse {
-    RosterMeta meta = 1;
-    repeated PlannedShift planned_shifts = 2;
-    repeated string active_users = 3;
+message WorkTimeAnalysisStep {
+    string work_time_id = 1;
+    repeated WorkTimeAnalysisWeek weeks = 2;
+    google.protobuf.Duration expected_work_time = 3;
+    google.protobuf.Duration work_time_per_week = 4;
+    string from = 5; // YYYY-MM-DD
+    string to = 6; // YYYY-MM-DD
+    google.protobuf.Duration planned = 7;
 }
 
-message AssignUserToShift {
+message WorkTimeAnalysis {
+    // UserId is the ID of the user this WorkTimeAnalysis belongs to.
     string user_id = 1;
-    string shift_id = 2;
-    google.protobuf.Timestamp from = 3;
-    google.protobuf.Timestamp to = 4;
+
+    // PlannedTime is the actual working time that is planned for the
+    // user.
+    google.protobuf.Duration planned_time = 2;
+
+    // ExpectedTime holds the work-time that the user is expected to
+    // deliver.
+    google.protobuf.Duration expected_time = 3;
+
+    repeated WorkTimeAnalysisStep steps = 4;
 }
 
-message UnassignUserFromShift {
-    string user_id = 1;
-    string shift_id = 2;
-    google.protobuf.Timestamp from = 3;
-    google.protobuf.Timestamp to = 4;
+message SaveRosterResponse {
+    // Roster is the final saved roster.
+    // Use read_mask in SaveRosterRequest if you don't need
+    // to retrieve the full roster after saving a change.
+    Roster roster = 1;
+
+    // WorkTimeAnalysis holds work-time statistics for each user
+    // that has a WorkTime set.
+    repeated WorkTimeAnalysis work_time_analysis = 2;
 }
 
-message ShiftUpdateEvent {
-    PlannedShift shift = 1;
-    string changed_by = 2;
+message UsersToAnalyze {
+    // UserIds is a list of users to analyze.
+    repeated string user_ids = 1;
+
+    // AllUsers may be set to true if all users that have a work-time specified
+    // should be included in analysis.
+    bool all_users = 2;
 }
 
-message WorkTimeUpdateEvent {
-    map<string, WorkTimeStatus> work_times = 1;
+message AnalyzeWorkTimeRequest {
+    // Users specifies which users should be analyzed. If unset (i.e. a nil message) than
+    // only the user that performs the request will be analyzed.
+    // Note that the role roster_manager is required when this field is set.
+    UsersToAnalyze users = 1;
+
+    // From holds the date (format YYYY-MM-DD; ie. 2006-01-02) of the first day to include in analysis.
+    // Not that if a work-shift begins the day before but spans into the date specified here it will
+    // NOT be included in analysis.
+    string from = 3 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.pattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
+    ];
+
+    // To holds teh date (format YYYY-MM-DD; ie. 2006-01-02) of the last day to include in analysis.
+    // Note that if a work-shift begins at the specified date but spans to the next date it will still
+    // be included as a whole in the analysis.
+    string to = 4 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.pattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
+    ];
 }
 
-message SessionPing {}
-
-message SessionRequest {
-    oneof kind {
-        StartSessionRequest start_session = 1;
-        AssignUserToShift assign_user = 2;
-        UnassignUserFromShift unassign_user = 3;
-        SessionPing ping = 4;
-    }
-}
-
-message SessionResponse {
-    oneof kind {
-        StartSessionResponse start_session = 1;
-        ShiftUpdateEvent shift_update = 2;
-        WorkTimeUpdateEvent work_time_update = 3;
-        UserJoinedSessionEvent user_joined = 4;
-        UserLeftSessionEvent user_left = 5;
-        UserChatMessageEvent message = 6;
-        SessionPing ping = 7;
-    }
-}
-
-message UserJoinedSessionEvent {
-    string user_id = 1;
-}
-
-message UserLeftSessionEvent {
-    string user_id = 1;
-}
-
-message UserChatMessageEvent {
-    string sender_user_id = 1;
-    string message = 2;
+message AnalyzeWorkTimeResponse {
+    repeated WorkTimeAnalysis results = 1;
 }
 
 message ApproveRosterRequest {
@@ -126,35 +285,62 @@ message ApproveRosterRequest {
 message ApproveRosterResponse {}
 
 message DeleteRosterRequest {
-    string id = 1;
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message DeleteRosterResponse {}
 
-message GetByDate {
-    int32 year = 1;
-    int32 month = 3;
-}
-
 message GetRosterRequest {
     oneof search {
         string id = 1;
-        GetByDate date = 2;
+        google.protobuf.Timestamp date = 2;
+
+        option (buf.validate.oneof).required = true;
     };
+
     google.protobuf.FieldMask read_mask = 3;
 }
 
 message GetRosterResponse {
-    RosterMeta meta = 1;
-    repeated PlannedShift shifts = 2;
+    repeated Roster roster = 1;
 }
 
 message GetWorkingStaffRequest {
     google.protobuf.Timestamp time = 1;
     google.protobuf.FieldMask read_maks = 2;
+    repeated string filter_shifts_by_tag = 3;
 }
 
 message GetWorkingStaffResponse {
     repeated string user_ids = 1;
     repeated PlannedShift current_shifts = 2;
+    repeated string roster_id = 3;
+}
+
+message GetRequiredShiftsRequest {
+    // From holds the date (format YYYY-MM-DD; ie. 2006-01-02) of the first day to include.
+    string from = 1 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.pattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
+    ];
+
+    // To holds teh date (format YYYY-MM-DD; ie. 2006-01-02) of the last day to include.
+    string to = 2 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.pattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
+    ];
+
+    // ReadMask may be use to limit which fields should be included in the response.
+    google.protobuf.FieldMask read_mask = 3;
+}
+
+message GetRequiredShiftsResponse {
+    // RequiredShifts holds a list of shifts that must be configured for a valid roster.
+    repeated RequiredShift required_shifts = 1;
+
+    // WorkShiftDefinitions (if requested by GetRequiredShiftsRequest.read_mask; default: yes)
+    // is set to a list of WorkShift definitions that are referenced by GetRequiredShiftsResponse.required_shifts.work_shift_id;
+    repeated WorkShift work_shift_definitions = 2;
 }

@@ -5,61 +5,114 @@
 
 import type { BinaryReadOptions, Duration, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
+import type { ConstraintViolationList } from "./constraint_pb.js";
 import type { WorkShift } from "./workshift_pb.js";
 
 /**
- * @generated from message tkd.roster.v1.PlannedShift
+ * @generated from message tkd.roster.v1.RequiredShift
  */
-export declare class PlannedShift extends Message<PlannedShift> {
+export declare class RequiredShift extends Message<RequiredShift> {
   /**
-   * @generated from field: repeated string assigned_user_ids = 1;
-   */
-  assignedUserIds: string[];
-
-  /**
-   * @generated from field: string work_shift_id = 2;
-   */
-  workShiftId: string;
-
-  /**
-   * @generated from field: bool is_holiday = 3;
-   */
-  isHoliday: boolean;
-
-  /**
-   * @generated from field: bool is_weekend = 4;
-   */
-  isWeekend: boolean;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp from = 5;
+   * From holds the time at which the shift begins.
+   *
+   * @generated from field: google.protobuf.Timestamp from = 1;
    */
   from?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Timestamp to = 6;
+   * To holds the time at which the shift ends.
+   *
+   * @generated from field: google.protobuf.Timestamp to = 2;
    */
   to?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Duration time_worth = 7;
+   * WorkShiftID is the ID of the work-shift definition.
+   *
+   * @generated from field: string work_shift_id = 3;
    */
-  timeWorth?: Duration;
+  workShiftId: string;
 
   /**
-   * @generated from field: tkd.roster.v1.WorkShift shift = 8;
-   */
-  shift?: WorkShift;
-
-  /**
-   * @generated from field: repeated string eligible_user_ids = 9;
+   * EligibleUserIds is set to a list of user ids that are eligible for this
+   * work-shift.
+   *
+   * @generated from field: repeated string eligible_user_ids = 4;
    */
   eligibleUserIds: string[];
 
   /**
-   * @generated from field: google.protobuf.FieldMask read_mask = 10;
+   * OnHoliday is set to true if the shift is on a public holiday.
+   *
+   * @generated from field: bool on_holiday = 5;
    */
-  readMask?: FieldMask;
+  onHoliday: boolean;
+
+  /**
+   * onWeekend is set to true if the shift is on a week-end day (Saturday or Sunday).
+   *
+   * @generated from field: bool on_weekend = 6;
+   */
+  onWeekend: boolean;
+
+  /**
+   * ViolationsPerUserId is a map indexed with user ids that holds a list of
+   * violations and resoning of why a user is not part of RequiredShift.eligible_user_ids
+   * even if the user would be eligible by WorkShift.eligible_roles.
+   *
+   * @generated from field: map<string, tkd.roster.v1.ConstraintViolationList> violations_per_user_id = 7;
+   */
+  violationsPerUserId: { [key: string]: ConstraintViolationList };
+
+  constructor(data?: PartialMessage<RequiredShift>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.RequiredShift";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RequiredShift;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RequiredShift;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RequiredShift;
+
+  static equals(a: RequiredShift | PlainMessage<RequiredShift> | undefined, b: RequiredShift | PlainMessage<RequiredShift> | undefined): boolean;
+}
+
+/**
+ * PlannedShift is a planned work-shift in a roster.
+ *
+ * @generated from message tkd.roster.v1.PlannedShift
+ */
+export declare class PlannedShift extends Message<PlannedShift> {
+  /**
+   * From holds the time at which the shift begins.
+   *
+   * @generated from field: google.protobuf.Timestamp from = 1;
+   */
+  from?: Timestamp;
+
+  /**
+   * To holds the time at which the shift ends.
+   *
+   * @generated from field: google.protobuf.Timestamp to = 2;
+   */
+  to?: Timestamp;
+
+  /**
+   * AsssignedUserIds is a list of user IDs that are assigned to work
+   * during the shift.
+   *
+   * @generated from field: repeated string assigned_user_ids = 3;
+   */
+  assignedUserIds: string[];
+
+  /**
+   * WorkShiftId is the ID of the work-shift definition.
+   *
+   * @generated from field: string work_shift_id = 4;
+   */
+  workShiftId: string;
 
   constructor(data?: PartialMessage<PlannedShift>);
 
@@ -77,500 +130,454 @@ export declare class PlannedShift extends Message<PlannedShift> {
 }
 
 /**
- * @generated from message tkd.roster.v1.RosterMeta
+ * Roster is a planned roster for a given time period.
+ *
+ * @generated from message tkd.roster.v1.Roster
  */
-export declare class RosterMeta extends Message<RosterMeta> {
+export declare class Roster extends Message<Roster> {
   /**
+   * ID is a unique identifier for the roster.
+   *
    * @generated from field: string id = 1;
    */
   id: string;
 
   /**
-   * @generated from field: int64 month = 2;
+   * From holds the date of the first day in the roster.
+   * It should follow the format YYYY-MM-DD as in 2006-01-02.
+   *
+   * @generated from field: string from = 2;
    */
-  month: bigint;
+  from: string;
 
   /**
-   * @generated from field: int64 year = 3;
+   * To holds the date of the lalst day in the roster.
+   * It should follow the format YYYY-MM-DD as in 2006-01-02.
+   *
+   * @generated from field: string to = 3;
    */
-  year: bigint;
+  to: string;
 
   /**
-   * @generated from field: bool approved = 4;
+   * Shifts holds all planned work-shifts for the roster.
+   * Implementations should sort the shifts by increasing
+   * from time.
+   *
+   * @generated from field: repeated tkd.roster.v1.PlannedShift shifts = 4;
+   */
+  shifts: PlannedShift[];
+
+  /**
+   * Approved is set to true when the roster has been approved by
+   * management.
+   *
+   * @generated from field: bool approved = 5;
    */
   approved: boolean;
 
   /**
-   * @generated from field: google.protobuf.Timestamp approved_at = 5;
+   * ApprovedAt is set to the timestamp at which the roster has been
+   * approved by management.
+   *
+   * @generated from field: google.protobuf.Timestamp approved_at = 6;
    */
   approvedAt?: Timestamp;
 
   /**
-   * @generated from field: string last_modified_by = 6;
+   * ApproverUserId is set to the ID of the management user that approved
+   * the roster.
+   *
+   * @generated from field: string approver_user_id = 7;
+   */
+  approverUserId: string;
+
+  /**
+   * LastModifiedBy is set to the ID of the user that last changed the roster.
+   *
+   * @generated from field: string last_modified_by = 8;
    */
   lastModifiedBy: string;
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 7;
+   * CreatedAt is set to the timestamp at which the roster has been initially
+   * created.
+   *
+   * @generated from field: google.protobuf.Timestamp created_at = 9;
    */
   createdAt?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 8;
+   * UpdatedAt is set to the timestamp at which the roster has been updated
+   * last.
+   *
+   * @generated from field: google.protobuf.Timestamp updated_at = 10;
    */
   updatedAt?: Timestamp;
 
-  constructor(data?: PartialMessage<RosterMeta>);
+  constructor(data?: PartialMessage<Roster>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.RosterMeta";
+  static readonly typeName = "tkd.roster.v1.Roster";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RosterMeta;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Roster;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RosterMeta;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Roster;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RosterMeta;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Roster;
 
-  static equals(a: RosterMeta | PlainMessage<RosterMeta> | undefined, b: RosterMeta | PlainMessage<RosterMeta> | undefined): boolean;
+  static equals(a: Roster | PlainMessage<Roster> | undefined, b: Roster | PlainMessage<Roster> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.WorkTimeStatus
+ * @generated from message tkd.roster.v1.SaveRosterRequest
  */
-export declare class WorkTimeStatus extends Message<WorkTimeStatus> {
+export declare class SaveRosterRequest extends Message<SaveRosterRequest> {
   /**
-   * @generated from field: google.protobuf.Duration time_per_week = 1;
+   * ID is the unique ID of the roster. If the roster is created for the first
+   * time this field may be empty. Subsequent SaveRosterRequests should populate
+   * the ID returned in the response of the first SaveRosterRequest.
+   *
+   * @generated from field: string id = 1;
    */
-  timePerWeek?: Duration;
+  id: string;
 
   /**
-   * @generated from field: google.protobuf.Duration expected_work_time = 2;
+   * From holds the date of the first day in the roster.
+   * It should follow the format YYYY-MM-DD as in 2006-01-02.
+   * Note that chaning the from-time after the roster has been
+   * initialy created is not allowed.
+   *
+   * @generated from field: string from = 2;
    */
-  expectedWorkTime?: Duration;
+  from: string;
 
   /**
-   * @generated from field: google.protobuf.Duration planned_work_time = 3;
+   * To holds the date of the lalst day in the roster.
+   * It should follow the format YYYY-MM-DD as in 2006-01-02.
+   * Note that chaning the to-time after the roster has been
+   * initialy created is not allowed.
+   *
+   * @generated from field: string to = 3;
    */
-  plannedWorkTime?: Duration;
+  to: string;
 
-  constructor(data?: PartialMessage<WorkTimeStatus>);
+  /**
+   * Shifts is a list of planned roster shifts.
+   *
+   * @generated from field: repeated tkd.roster.v1.PlannedShift shifts = 4;
+   */
+  shifts: PlannedShift[];
+
+  /**
+   * ReadMask may be used to limit the response of the SaveRosterRequest.
+   *
+   * @generated from field: google.protobuf.FieldMask read_mask = 5;
+   */
+  readMask?: FieldMask;
+
+  constructor(data?: PartialMessage<SaveRosterRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.WorkTimeStatus";
+  static readonly typeName = "tkd.roster.v1.SaveRosterRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WorkTimeStatus;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SaveRosterRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WorkTimeStatus;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SaveRosterRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WorkTimeStatus;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SaveRosterRequest;
 
-  static equals(a: WorkTimeStatus | PlainMessage<WorkTimeStatus> | undefined, b: WorkTimeStatus | PlainMessage<WorkTimeStatus> | undefined): boolean;
+  static equals(a: SaveRosterRequest | PlainMessage<SaveRosterRequest> | undefined, b: SaveRosterRequest | PlainMessage<SaveRosterRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.StartSessionRequest
+ * @generated from message tkd.roster.v1.WorkTimeAnalysisWeek
  */
-export declare class StartSessionRequest extends Message<StartSessionRequest> {
+export declare class WorkTimeAnalysisWeek extends Message<WorkTimeAnalysisWeek> {
   /**
    * @generated from field: int32 year = 1;
    */
   year: number;
 
   /**
-   * @generated from field: int32 month = 3;
+   * @generated from field: int32 week = 2;
    */
-  month: number;
+  week: number;
 
-  constructor(data?: PartialMessage<StartSessionRequest>);
+  /**
+   * @generated from field: int32 working_days = 3;
+   */
+  workingDays: number;
+
+  /**
+   * @generated from field: google.protobuf.Duration expected_work = 4;
+   */
+  expectedWork?: Duration;
+
+  /**
+   * @generated from field: google.protobuf.Duration planned = 5;
+   */
+  planned?: Duration;
+
+  constructor(data?: PartialMessage<WorkTimeAnalysisWeek>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.StartSessionRequest";
+  static readonly typeName = "tkd.roster.v1.WorkTimeAnalysisWeek";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): StartSessionRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WorkTimeAnalysisWeek;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): StartSessionRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WorkTimeAnalysisWeek;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): StartSessionRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WorkTimeAnalysisWeek;
 
-  static equals(a: StartSessionRequest | PlainMessage<StartSessionRequest> | undefined, b: StartSessionRequest | PlainMessage<StartSessionRequest> | undefined): boolean;
+  static equals(a: WorkTimeAnalysisWeek | PlainMessage<WorkTimeAnalysisWeek> | undefined, b: WorkTimeAnalysisWeek | PlainMessage<WorkTimeAnalysisWeek> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.StartSessionResponse
+ * @generated from message tkd.roster.v1.WorkTimeAnalysisStep
  */
-export declare class StartSessionResponse extends Message<StartSessionResponse> {
+export declare class WorkTimeAnalysisStep extends Message<WorkTimeAnalysisStep> {
   /**
-   * @generated from field: tkd.roster.v1.RosterMeta meta = 1;
+   * @generated from field: string work_time_id = 1;
    */
-  meta?: RosterMeta;
+  workTimeId: string;
 
   /**
-   * @generated from field: repeated tkd.roster.v1.PlannedShift planned_shifts = 2;
+   * @generated from field: repeated tkd.roster.v1.WorkTimeAnalysisWeek weeks = 2;
    */
-  plannedShifts: PlannedShift[];
+  weeks: WorkTimeAnalysisWeek[];
 
   /**
-   * @generated from field: repeated string active_users = 3;
+   * @generated from field: google.protobuf.Duration expected_work_time = 3;
    */
-  activeUsers: string[];
+  expectedWorkTime?: Duration;
 
-  constructor(data?: PartialMessage<StartSessionResponse>);
+  /**
+   * @generated from field: google.protobuf.Duration work_time_per_week = 4;
+   */
+  workTimePerWeek?: Duration;
+
+  /**
+   * YYYY-MM-DD
+   *
+   * @generated from field: string from = 5;
+   */
+  from: string;
+
+  /**
+   * YYYY-MM-DD
+   *
+   * @generated from field: string to = 6;
+   */
+  to: string;
+
+  /**
+   * @generated from field: google.protobuf.Duration planned = 7;
+   */
+  planned?: Duration;
+
+  constructor(data?: PartialMessage<WorkTimeAnalysisStep>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.StartSessionResponse";
+  static readonly typeName = "tkd.roster.v1.WorkTimeAnalysisStep";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): StartSessionResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WorkTimeAnalysisStep;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): StartSessionResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WorkTimeAnalysisStep;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): StartSessionResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WorkTimeAnalysisStep;
 
-  static equals(a: StartSessionResponse | PlainMessage<StartSessionResponse> | undefined, b: StartSessionResponse | PlainMessage<StartSessionResponse> | undefined): boolean;
+  static equals(a: WorkTimeAnalysisStep | PlainMessage<WorkTimeAnalysisStep> | undefined, b: WorkTimeAnalysisStep | PlainMessage<WorkTimeAnalysisStep> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.AssignUserToShift
+ * @generated from message tkd.roster.v1.WorkTimeAnalysis
  */
-export declare class AssignUserToShift extends Message<AssignUserToShift> {
+export declare class WorkTimeAnalysis extends Message<WorkTimeAnalysis> {
   /**
+   * UserId is the ID of the user this WorkTimeAnalysis belongs to.
+   *
    * @generated from field: string user_id = 1;
    */
   userId: string;
 
   /**
-   * @generated from field: string shift_id = 2;
+   * PlannedTime is the actual working time that is planned for the
+   * user.
+   *
+   * @generated from field: google.protobuf.Duration planned_time = 2;
    */
-  shiftId: string;
+  plannedTime?: Duration;
 
   /**
-   * @generated from field: google.protobuf.Timestamp from = 3;
+   * ExpectedTime holds the work-time that the user is expected to
+   * deliver.
+   *
+   * @generated from field: google.protobuf.Duration expected_time = 3;
    */
-  from?: Timestamp;
+  expectedTime?: Duration;
 
   /**
-   * @generated from field: google.protobuf.Timestamp to = 4;
+   * @generated from field: repeated tkd.roster.v1.WorkTimeAnalysisStep steps = 4;
    */
-  to?: Timestamp;
+  steps: WorkTimeAnalysisStep[];
 
-  constructor(data?: PartialMessage<AssignUserToShift>);
+  constructor(data?: PartialMessage<WorkTimeAnalysis>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.AssignUserToShift";
+  static readonly typeName = "tkd.roster.v1.WorkTimeAnalysis";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AssignUserToShift;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WorkTimeAnalysis;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AssignUserToShift;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WorkTimeAnalysis;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AssignUserToShift;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WorkTimeAnalysis;
 
-  static equals(a: AssignUserToShift | PlainMessage<AssignUserToShift> | undefined, b: AssignUserToShift | PlainMessage<AssignUserToShift> | undefined): boolean;
+  static equals(a: WorkTimeAnalysis | PlainMessage<WorkTimeAnalysis> | undefined, b: WorkTimeAnalysis | PlainMessage<WorkTimeAnalysis> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.UnassignUserFromShift
+ * @generated from message tkd.roster.v1.SaveRosterResponse
  */
-export declare class UnassignUserFromShift extends Message<UnassignUserFromShift> {
+export declare class SaveRosterResponse extends Message<SaveRosterResponse> {
   /**
-   * @generated from field: string user_id = 1;
+   * Roster is the final saved roster.
+   * Use read_mask in SaveRosterRequest if you don't need
+   * to retrieve the full roster after saving a change.
+   *
+   * @generated from field: tkd.roster.v1.Roster roster = 1;
    */
-  userId: string;
+  roster?: Roster;
 
   /**
-   * @generated from field: string shift_id = 2;
+   * WorkTimeAnalysis holds work-time statistics for each user
+   * that has a WorkTime set.
+   *
+   * @generated from field: repeated tkd.roster.v1.WorkTimeAnalysis work_time_analysis = 2;
    */
-  shiftId: string;
+  workTimeAnalysis: WorkTimeAnalysis[];
 
-  /**
-   * @generated from field: google.protobuf.Timestamp from = 3;
-   */
-  from?: Timestamp;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp to = 4;
-   */
-  to?: Timestamp;
-
-  constructor(data?: PartialMessage<UnassignUserFromShift>);
+  constructor(data?: PartialMessage<SaveRosterResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.UnassignUserFromShift";
+  static readonly typeName = "tkd.roster.v1.SaveRosterResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UnassignUserFromShift;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SaveRosterResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UnassignUserFromShift;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SaveRosterResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UnassignUserFromShift;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SaveRosterResponse;
 
-  static equals(a: UnassignUserFromShift | PlainMessage<UnassignUserFromShift> | undefined, b: UnassignUserFromShift | PlainMessage<UnassignUserFromShift> | undefined): boolean;
+  static equals(a: SaveRosterResponse | PlainMessage<SaveRosterResponse> | undefined, b: SaveRosterResponse | PlainMessage<SaveRosterResponse> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.ShiftUpdateEvent
+ * @generated from message tkd.roster.v1.UsersToAnalyze
  */
-export declare class ShiftUpdateEvent extends Message<ShiftUpdateEvent> {
+export declare class UsersToAnalyze extends Message<UsersToAnalyze> {
   /**
-   * @generated from field: tkd.roster.v1.PlannedShift shift = 1;
+   * UserIds is a list of users to analyze.
+   *
+   * @generated from field: repeated string user_ids = 1;
    */
-  shift?: PlannedShift;
+  userIds: string[];
 
   /**
-   * @generated from field: string changed_by = 2;
+   * AllUsers may be set to true if all users that have a work-time specified
+   * should be included in analysis.
+   *
+   * @generated from field: bool all_users = 2;
    */
-  changedBy: string;
+  allUsers: boolean;
 
-  constructor(data?: PartialMessage<ShiftUpdateEvent>);
+  constructor(data?: PartialMessage<UsersToAnalyze>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.ShiftUpdateEvent";
+  static readonly typeName = "tkd.roster.v1.UsersToAnalyze";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ShiftUpdateEvent;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UsersToAnalyze;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ShiftUpdateEvent;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UsersToAnalyze;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ShiftUpdateEvent;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UsersToAnalyze;
 
-  static equals(a: ShiftUpdateEvent | PlainMessage<ShiftUpdateEvent> | undefined, b: ShiftUpdateEvent | PlainMessage<ShiftUpdateEvent> | undefined): boolean;
+  static equals(a: UsersToAnalyze | PlainMessage<UsersToAnalyze> | undefined, b: UsersToAnalyze | PlainMessage<UsersToAnalyze> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.WorkTimeUpdateEvent
+ * @generated from message tkd.roster.v1.AnalyzeWorkTimeRequest
  */
-export declare class WorkTimeUpdateEvent extends Message<WorkTimeUpdateEvent> {
+export declare class AnalyzeWorkTimeRequest extends Message<AnalyzeWorkTimeRequest> {
   /**
-   * @generated from field: map<string, tkd.roster.v1.WorkTimeStatus> work_times = 1;
+   * Users specifies which users should be analyzed. If unset (i.e. a nil message) than
+   * only the user that performs the request will be analyzed.
+   * Note that the role roster_manager is required when this field is set.
+   *
+   * @generated from field: tkd.roster.v1.UsersToAnalyze users = 1;
    */
-  workTimes: { [key: string]: WorkTimeStatus };
+  users?: UsersToAnalyze;
 
-  constructor(data?: PartialMessage<WorkTimeUpdateEvent>);
+  /**
+   * From holds the date (format YYYY-MM-DD; ie. 2006-01-02) of the first day to include in analysis.
+   * Not that if a work-shift begins the day before but spans into the date specified here it will
+   * NOT be included in analysis.
+   *
+   * @generated from field: string from = 3;
+   */
+  from: string;
+
+  /**
+   * To holds teh date (format YYYY-MM-DD; ie. 2006-01-02) of the last day to include in analysis.
+   * Note that if a work-shift begins at the specified date but spans to the next date it will still
+   * be included as a whole in the analysis.
+   *
+   * @generated from field: string to = 4;
+   */
+  to: string;
+
+  constructor(data?: PartialMessage<AnalyzeWorkTimeRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.WorkTimeUpdateEvent";
+  static readonly typeName = "tkd.roster.v1.AnalyzeWorkTimeRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WorkTimeUpdateEvent;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AnalyzeWorkTimeRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WorkTimeUpdateEvent;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AnalyzeWorkTimeRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WorkTimeUpdateEvent;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AnalyzeWorkTimeRequest;
 
-  static equals(a: WorkTimeUpdateEvent | PlainMessage<WorkTimeUpdateEvent> | undefined, b: WorkTimeUpdateEvent | PlainMessage<WorkTimeUpdateEvent> | undefined): boolean;
+  static equals(a: AnalyzeWorkTimeRequest | PlainMessage<AnalyzeWorkTimeRequest> | undefined, b: AnalyzeWorkTimeRequest | PlainMessage<AnalyzeWorkTimeRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.roster.v1.SessionPing
+ * @generated from message tkd.roster.v1.AnalyzeWorkTimeResponse
  */
-export declare class SessionPing extends Message<SessionPing> {
-  constructor(data?: PartialMessage<SessionPing>);
+export declare class AnalyzeWorkTimeResponse extends Message<AnalyzeWorkTimeResponse> {
+  /**
+   * @generated from field: repeated tkd.roster.v1.WorkTimeAnalysis results = 1;
+   */
+  results: WorkTimeAnalysis[];
+
+  constructor(data?: PartialMessage<AnalyzeWorkTimeResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.SessionPing";
+  static readonly typeName = "tkd.roster.v1.AnalyzeWorkTimeResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SessionPing;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AnalyzeWorkTimeResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SessionPing;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AnalyzeWorkTimeResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SessionPing;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AnalyzeWorkTimeResponse;
 
-  static equals(a: SessionPing | PlainMessage<SessionPing> | undefined, b: SessionPing | PlainMessage<SessionPing> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.roster.v1.SessionRequest
- */
-export declare class SessionRequest extends Message<SessionRequest> {
-  /**
-   * @generated from oneof tkd.roster.v1.SessionRequest.kind
-   */
-  kind: {
-    /**
-     * @generated from field: tkd.roster.v1.StartSessionRequest start_session = 1;
-     */
-    value: StartSessionRequest;
-    case: "startSession";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.AssignUserToShift assign_user = 2;
-     */
-    value: AssignUserToShift;
-    case: "assignUser";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.UnassignUserFromShift unassign_user = 3;
-     */
-    value: UnassignUserFromShift;
-    case: "unassignUser";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.SessionPing ping = 4;
-     */
-    value: SessionPing;
-    case: "ping";
-  } | { case: undefined; value?: undefined };
-
-  constructor(data?: PartialMessage<SessionRequest>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.SessionRequest";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SessionRequest;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SessionRequest;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SessionRequest;
-
-  static equals(a: SessionRequest | PlainMessage<SessionRequest> | undefined, b: SessionRequest | PlainMessage<SessionRequest> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.roster.v1.SessionResponse
- */
-export declare class SessionResponse extends Message<SessionResponse> {
-  /**
-   * @generated from oneof tkd.roster.v1.SessionResponse.kind
-   */
-  kind: {
-    /**
-     * @generated from field: tkd.roster.v1.StartSessionResponse start_session = 1;
-     */
-    value: StartSessionResponse;
-    case: "startSession";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.ShiftUpdateEvent shift_update = 2;
-     */
-    value: ShiftUpdateEvent;
-    case: "shiftUpdate";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.WorkTimeUpdateEvent work_time_update = 3;
-     */
-    value: WorkTimeUpdateEvent;
-    case: "workTimeUpdate";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.UserJoinedSessionEvent user_joined = 4;
-     */
-    value: UserJoinedSessionEvent;
-    case: "userJoined";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.UserLeftSessionEvent user_left = 5;
-     */
-    value: UserLeftSessionEvent;
-    case: "userLeft";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.UserChatMessageEvent message = 6;
-     */
-    value: UserChatMessageEvent;
-    case: "message";
-  } | {
-    /**
-     * @generated from field: tkd.roster.v1.SessionPing ping = 7;
-     */
-    value: SessionPing;
-    case: "ping";
-  } | { case: undefined; value?: undefined };
-
-  constructor(data?: PartialMessage<SessionResponse>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.SessionResponse";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SessionResponse;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SessionResponse;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SessionResponse;
-
-  static equals(a: SessionResponse | PlainMessage<SessionResponse> | undefined, b: SessionResponse | PlainMessage<SessionResponse> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.roster.v1.UserJoinedSessionEvent
- */
-export declare class UserJoinedSessionEvent extends Message<UserJoinedSessionEvent> {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
-
-  constructor(data?: PartialMessage<UserJoinedSessionEvent>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.UserJoinedSessionEvent";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UserJoinedSessionEvent;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UserJoinedSessionEvent;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UserJoinedSessionEvent;
-
-  static equals(a: UserJoinedSessionEvent | PlainMessage<UserJoinedSessionEvent> | undefined, b: UserJoinedSessionEvent | PlainMessage<UserJoinedSessionEvent> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.roster.v1.UserLeftSessionEvent
- */
-export declare class UserLeftSessionEvent extends Message<UserLeftSessionEvent> {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId: string;
-
-  constructor(data?: PartialMessage<UserLeftSessionEvent>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.UserLeftSessionEvent";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UserLeftSessionEvent;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UserLeftSessionEvent;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UserLeftSessionEvent;
-
-  static equals(a: UserLeftSessionEvent | PlainMessage<UserLeftSessionEvent> | undefined, b: UserLeftSessionEvent | PlainMessage<UserLeftSessionEvent> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.roster.v1.UserChatMessageEvent
- */
-export declare class UserChatMessageEvent extends Message<UserChatMessageEvent> {
-  /**
-   * @generated from field: string sender_user_id = 1;
-   */
-  senderUserId: string;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-
-  constructor(data?: PartialMessage<UserChatMessageEvent>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.UserChatMessageEvent";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UserChatMessageEvent;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UserChatMessageEvent;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UserChatMessageEvent;
-
-  static equals(a: UserChatMessageEvent | PlainMessage<UserChatMessageEvent> | undefined, b: UserChatMessageEvent | PlainMessage<UserChatMessageEvent> | undefined): boolean;
+  static equals(a: AnalyzeWorkTimeResponse | PlainMessage<AnalyzeWorkTimeResponse> | undefined, b: AnalyzeWorkTimeResponse | PlainMessage<AnalyzeWorkTimeResponse> | undefined): boolean;
 }
 
 /**
@@ -660,35 +667,6 @@ export declare class DeleteRosterResponse extends Message<DeleteRosterResponse> 
 }
 
 /**
- * @generated from message tkd.roster.v1.GetByDate
- */
-export declare class GetByDate extends Message<GetByDate> {
-  /**
-   * @generated from field: int32 year = 1;
-   */
-  year: number;
-
-  /**
-   * @generated from field: int32 month = 3;
-   */
-  month: number;
-
-  constructor(data?: PartialMessage<GetByDate>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.roster.v1.GetByDate";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetByDate;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetByDate;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetByDate;
-
-  static equals(a: GetByDate | PlainMessage<GetByDate> | undefined, b: GetByDate | PlainMessage<GetByDate> | undefined): boolean;
-}
-
-/**
  * @generated from message tkd.roster.v1.GetRosterRequest
  */
 export declare class GetRosterRequest extends Message<GetRosterRequest> {
@@ -703,9 +681,9 @@ export declare class GetRosterRequest extends Message<GetRosterRequest> {
     case: "id";
   } | {
     /**
-     * @generated from field: tkd.roster.v1.GetByDate date = 2;
+     * @generated from field: google.protobuf.Timestamp date = 2;
      */
-    value: GetByDate;
+    value: Timestamp;
     case: "date";
   } | { case: undefined; value?: undefined };
 
@@ -734,14 +712,9 @@ export declare class GetRosterRequest extends Message<GetRosterRequest> {
  */
 export declare class GetRosterResponse extends Message<GetRosterResponse> {
   /**
-   * @generated from field: tkd.roster.v1.RosterMeta meta = 1;
+   * @generated from field: repeated tkd.roster.v1.Roster roster = 1;
    */
-  meta?: RosterMeta;
-
-  /**
-   * @generated from field: repeated tkd.roster.v1.PlannedShift shifts = 2;
-   */
-  shifts: PlannedShift[];
+  roster: Roster[];
 
   constructor(data?: PartialMessage<GetRosterResponse>);
 
@@ -772,6 +745,11 @@ export declare class GetWorkingStaffRequest extends Message<GetWorkingStaffReque
    */
   readMaks?: FieldMask;
 
+  /**
+   * @generated from field: repeated string filter_shifts_by_tag = 3;
+   */
+  filterShiftsByTag: string[];
+
   constructor(data?: PartialMessage<GetWorkingStaffRequest>);
 
   static readonly runtime: typeof proto3;
@@ -801,6 +779,11 @@ export declare class GetWorkingStaffResponse extends Message<GetWorkingStaffResp
    */
   currentShifts: PlannedShift[];
 
+  /**
+   * @generated from field: repeated string roster_id = 3;
+   */
+  rosterId: string[];
+
   constructor(data?: PartialMessage<GetWorkingStaffResponse>);
 
   static readonly runtime: typeof proto3;
@@ -814,5 +797,79 @@ export declare class GetWorkingStaffResponse extends Message<GetWorkingStaffResp
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetWorkingStaffResponse;
 
   static equals(a: GetWorkingStaffResponse | PlainMessage<GetWorkingStaffResponse> | undefined, b: GetWorkingStaffResponse | PlainMessage<GetWorkingStaffResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.GetRequiredShiftsRequest
+ */
+export declare class GetRequiredShiftsRequest extends Message<GetRequiredShiftsRequest> {
+  /**
+   * From holds the date (format YYYY-MM-DD; ie. 2006-01-02) of the first day to include.
+   *
+   * @generated from field: string from = 1;
+   */
+  from: string;
+
+  /**
+   * To holds teh date (format YYYY-MM-DD; ie. 2006-01-02) of the last day to include.
+   *
+   * @generated from field: string to = 2;
+   */
+  to: string;
+
+  /**
+   * ReadMask may be use to limit which fields should be included in the response.
+   *
+   * @generated from field: google.protobuf.FieldMask read_mask = 3;
+   */
+  readMask?: FieldMask;
+
+  constructor(data?: PartialMessage<GetRequiredShiftsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.GetRequiredShiftsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetRequiredShiftsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetRequiredShiftsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetRequiredShiftsRequest;
+
+  static equals(a: GetRequiredShiftsRequest | PlainMessage<GetRequiredShiftsRequest> | undefined, b: GetRequiredShiftsRequest | PlainMessage<GetRequiredShiftsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.GetRequiredShiftsResponse
+ */
+export declare class GetRequiredShiftsResponse extends Message<GetRequiredShiftsResponse> {
+  /**
+   * RequiredShifts holds a list of shifts that must be configured for a valid roster.
+   *
+   * @generated from field: repeated tkd.roster.v1.RequiredShift required_shifts = 1;
+   */
+  requiredShifts: RequiredShift[];
+
+  /**
+   * WorkShiftDefinitions (if requested by GetRequiredShiftsRequest.read_mask; default: yes)
+   * is set to a list of WorkShift definitions that are referenced by GetRequiredShiftsResponse.required_shifts.work_shift_id;
+   *
+   * @generated from field: repeated tkd.roster.v1.WorkShift work_shift_definitions = 2;
+   */
+  workShiftDefinitions: WorkShift[];
+
+  constructor(data?: PartialMessage<GetRequiredShiftsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.GetRequiredShiftsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetRequiredShiftsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetRequiredShiftsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetRequiredShiftsResponse;
+
+  static equals(a: GetRequiredShiftsResponse | PlainMessage<GetRequiredShiftsResponse> | undefined, b: GetRequiredShiftsResponse | PlainMessage<GetRequiredShiftsResponse> | undefined): boolean;
 }
 

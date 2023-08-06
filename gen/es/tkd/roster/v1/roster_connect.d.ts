@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ApproveRosterRequest, ApproveRosterResponse, DeleteRosterRequest, DeleteRosterResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, SessionRequest, SessionResponse } from "./roster_pb.js";
+import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, DeleteRosterRequest, DeleteRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, SaveRosterRequest, SaveRosterResponse } from "./roster_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -13,24 +13,21 @@ export declare const RosterService: {
   readonly typeName: "tkd.roster.v1.RosterService",
   readonly methods: {
     /**
-     * @generated from rpc tkd.roster.v1.RosterService.Session
+     * SaveRoster saves a duty roster. It may be used to initially create a new
+     * roster or to save subsequent changes.
+     *
+     * @generated from rpc tkd.roster.v1.RosterService.SaveRoster
      */
-    readonly session: {
-      readonly name: "Session",
-      readonly I: typeof SessionRequest,
-      readonly O: typeof SessionResponse,
-      readonly kind: MethodKind.BiDiStreaming,
-    },
-    /**
-     * @generated from rpc tkd.roster.v1.RosterService.ApproveRoster
-     */
-    readonly approveRoster: {
-      readonly name: "ApproveRoster",
-      readonly I: typeof ApproveRosterRequest,
-      readonly O: typeof ApproveRosterResponse,
+    readonly saveRoster: {
+      readonly name: "SaveRoster",
+      readonly I: typeof SaveRosterRequest,
+      readonly O: typeof SaveRosterResponse,
       readonly kind: MethodKind.Unary,
     },
     /**
+     * DeleteRoster deletes a roster from the internal storage. This operation
+     * cannot be undone!
+     *
      * @generated from rpc tkd.roster.v1.RosterService.DeleteRoster
      */
     readonly deleteRoster: {
@@ -40,6 +37,31 @@ export declare const RosterService: {
       readonly kind: MethodKind.Unary,
     },
     /**
+     * AnalyzeWorkTime can be used to analyze the work time of users to determine
+     * undertime or overtime in a given time-range.
+     *
+     * @generated from rpc tkd.roster.v1.RosterService.AnalyzeWorkTime
+     */
+    readonly analyzeWorkTime: {
+      readonly name: "AnalyzeWorkTime",
+      readonly I: typeof AnalyzeWorkTimeRequest,
+      readonly O: typeof AnalyzeWorkTimeResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * ApproveRoster marks a roster as approved by management.
+     *
+     * @generated from rpc tkd.roster.v1.RosterService.ApproveRoster
+     */
+    readonly approveRoster: {
+      readonly name: "ApproveRoster",
+      readonly I: typeof ApproveRosterRequest,
+      readonly O: typeof ApproveRosterResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * GetRoster returns a previously saved roster.
+     *
      * @generated from rpc tkd.roster.v1.RosterService.GetRoster
      */
     readonly getRoster: {
@@ -49,12 +71,25 @@ export declare const RosterService: {
       readonly kind: MethodKind.Unary,
     },
     /**
+     * GetWorkingStaff returns a list of user_ids that are working at the
+     * date specified in GetWorkingStaffRequest. If date is unset, it defaults
+     * to NOW.
+     *
      * @generated from rpc tkd.roster.v1.RosterService.GetWorkingStaff
      */
     readonly getWorkingStaff: {
       readonly name: "GetWorkingStaff",
       readonly I: typeof GetWorkingStaffRequest,
       readonly O: typeof GetWorkingStaffResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.GetRequiredShifts
+     */
+    readonly getRequiredShifts: {
+      readonly name: "GetRequiredShifts",
+      readonly I: typeof GetRequiredShiftsRequest,
+      readonly O: typeof GetRequiredShiftsResponse,
       readonly kind: MethodKind.Unary,
     },
   }

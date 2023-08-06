@@ -36,8 +36,8 @@ message GetHolidayRequest {
     ];
     uint64 month = 2 [
         (buf.validate.field).ignore_empty = true,
-        (buf.validate.field).int64.lte = 12,
-        (buf.validate.field).int64.gte = 1
+        (buf.validate.field).uint64.lte = 12,
+        (buf.validate.field).uint64.gte = 1
     ];
 }
 
