@@ -121,7 +121,8 @@ export const UpdateWorkShiftRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "update", kind: "message", T: WorkShiftUpdate },
-    { no: 3, name: "write_mask", kind: "message", T: FieldMask },
+    { no: 3, name: "update_in_place", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 4, name: "write_mask", kind: "message", T: FieldMask },
   ],
 );
 

@@ -140,7 +140,8 @@ message WorkShiftUpdate {
 message UpdateWorkShiftRequest {
     string id = 1;
     WorkShiftUpdate update = 2;
-    google.protobuf.FieldMask write_mask = 3;
+    bool update_in_place = 3;
+    google.protobuf.FieldMask write_mask = 4;
 }
 
 message UpdateWorkShiftResponse {

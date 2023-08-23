@@ -381,7 +381,12 @@ export declare class UpdateWorkShiftRequest extends Message<UpdateWorkShiftReque
   update?: WorkShiftUpdate;
 
   /**
-   * @generated from field: google.protobuf.FieldMask write_mask = 3;
+   * @generated from field: bool update_in_place = 3;
+   */
+  updateInPlace: boolean;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask write_mask = 4;
    */
   writeMask?: FieldMask;
 
