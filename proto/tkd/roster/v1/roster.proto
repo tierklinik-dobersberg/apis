@@ -102,6 +102,10 @@ message Roster {
     // UpdatedAt is set to the timestamp at which the roster has been updated
     // last.
     google.protobuf.Timestamp updated_at = 10;
+
+    // A list of shift tags used to limit which work-shifts should be part of the
+    // roster. If left empty/unspecified, all shifts are eligible for the roster.
+    repeated string shift_tags = 11;
 }
 
 service RosterService {
@@ -196,6 +200,10 @@ message SaveRosterRequest {
 
     // ReadMask may be used to limit the response of the SaveRosterRequest.
     google.protobuf.FieldMask read_mask = 5;
+
+    // See Roster.shift_tags.
+    // This field must not be changed once saved.
+    repeated string shift_tags = 7;
 }
 
 message WorkTimeAnalysisWeek {
@@ -278,8 +286,18 @@ message AnalyzeWorkTimeResponse {
     repeated WorkTimeAnalysis results = 1;
 }
 
+message ApproveRosterWorkTimeSplit {
+    string user_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Duration time_off = 2;
+    google.protobuf.Duration vacation = 3;
+}
+
 message ApproveRosterRequest {
     string id = 1;
+    map<string, ApproveRosterWorkTimeSplit> work_time_split = 2;
 }
 
 message ApproveRosterResponse {}
@@ -300,11 +318,12 @@ message GetRosterRequest {
         option (buf.validate.oneof).required = true;
     };
 
-    google.protobuf.FieldMask read_mask = 3;
+    google.protobuf.FieldMask read_mask = 4;
 }
 
 message GetRosterResponse {
     repeated Roster roster = 1;
+    repeated WorkTimeAnalysis work_time_analysis = 2;
 }
 
 message GetWorkingStaffRequest {
@@ -332,8 +351,11 @@ message GetRequiredShiftsRequest {
         (buf.validate.field).string.pattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
     ];
 
+    // Limit shifts to a set of tags.
+    repeated string shift_tags = 3;
+
     // ReadMask may be use to limit which fields should be included in the response.
-    google.protobuf.FieldMask read_mask = 3;
+    google.protobuf.FieldMask read_mask = 4;
 }
 
 message GetRequiredShiftsResponse {

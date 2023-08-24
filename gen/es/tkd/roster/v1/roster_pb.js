@@ -56,6 +56,7 @@ export const Roster = proto3.makeMessageType(
     { no: 8, name: "last_modified_by", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 9, name: "created_at", kind: "message", T: Timestamp },
     { no: 10, name: "updated_at", kind: "message", T: Timestamp },
+    { no: 11, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -70,6 +71,7 @@ export const SaveRosterRequest = proto3.makeMessageType(
     { no: 3, name: "to", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "shifts", kind: "message", T: PlannedShift, repeated: true },
     { no: 5, name: "read_mask", kind: "message", T: FieldMask },
+    { no: 7, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -161,12 +163,25 @@ export const AnalyzeWorkTimeResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.roster.v1.ApproveRosterWorkTimeSplit
+ */
+export const ApproveRosterWorkTimeSplit = proto3.makeMessageType(
+  "tkd.roster.v1.ApproveRosterWorkTimeSplit",
+  () => [
+    { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "time_off", kind: "message", T: Duration },
+    { no: 3, name: "vacation", kind: "message", T: Duration },
+  ],
+);
+
+/**
  * @generated from message tkd.roster.v1.ApproveRosterRequest
  */
 export const ApproveRosterRequest = proto3.makeMessageType(
   "tkd.roster.v1.ApproveRosterRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "work_time_split", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: ApproveRosterWorkTimeSplit} },
   ],
 );
 
@@ -204,7 +219,7 @@ export const GetRosterRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search" },
     { no: 2, name: "date", kind: "message", T: Timestamp, oneof: "search" },
-    { no: 3, name: "read_mask", kind: "message", T: FieldMask },
+    { no: 4, name: "read_mask", kind: "message", T: FieldMask },
   ],
 );
 
@@ -215,6 +230,7 @@ export const GetRosterResponse = proto3.makeMessageType(
   "tkd.roster.v1.GetRosterResponse",
   () => [
     { no: 1, name: "roster", kind: "message", T: Roster, repeated: true },
+    { no: 2, name: "work_time_analysis", kind: "message", T: WorkTimeAnalysis, repeated: true },
   ],
 );
 
@@ -250,7 +266,8 @@ export const GetRequiredShiftsRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "from", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "to", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "read_mask", kind: "message", T: FieldMask },
+    { no: 3, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "read_mask", kind: "message", T: FieldMask },
   ],
 );
 

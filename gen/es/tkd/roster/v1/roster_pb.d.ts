@@ -214,6 +214,14 @@ export declare class Roster extends Message<Roster> {
    */
   updatedAt?: Timestamp;
 
+  /**
+   * A list of shift tags used to limit which work-shifts should be part of the
+   * roster. If left empty/unspecified, all shifts are eligible for the roster.
+   *
+   * @generated from field: repeated string shift_tags = 11;
+   */
+  shiftTags: string[];
+
   constructor(data?: PartialMessage<Roster>);
 
   static readonly runtime: typeof proto3;
@@ -275,6 +283,14 @@ export declare class SaveRosterRequest extends Message<SaveRosterRequest> {
    * @generated from field: google.protobuf.FieldMask read_mask = 5;
    */
   readMask?: FieldMask;
+
+  /**
+   * See Roster.shift_tags.
+   * This field must not be changed once saved.
+   *
+   * @generated from field: repeated string shift_tags = 7;
+   */
+  shiftTags: string[];
 
   constructor(data?: PartialMessage<SaveRosterRequest>);
 
@@ -581,6 +597,40 @@ export declare class AnalyzeWorkTimeResponse extends Message<AnalyzeWorkTimeResp
 }
 
 /**
+ * @generated from message tkd.roster.v1.ApproveRosterWorkTimeSplit
+ */
+export declare class ApproveRosterWorkTimeSplit extends Message<ApproveRosterWorkTimeSplit> {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: google.protobuf.Duration time_off = 2;
+   */
+  timeOff?: Duration;
+
+  /**
+   * @generated from field: google.protobuf.Duration vacation = 3;
+   */
+  vacation?: Duration;
+
+  constructor(data?: PartialMessage<ApproveRosterWorkTimeSplit>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ApproveRosterWorkTimeSplit";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ApproveRosterWorkTimeSplit;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ApproveRosterWorkTimeSplit;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ApproveRosterWorkTimeSplit;
+
+  static equals(a: ApproveRosterWorkTimeSplit | PlainMessage<ApproveRosterWorkTimeSplit> | undefined, b: ApproveRosterWorkTimeSplit | PlainMessage<ApproveRosterWorkTimeSplit> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.roster.v1.ApproveRosterRequest
  */
 export declare class ApproveRosterRequest extends Message<ApproveRosterRequest> {
@@ -588,6 +638,11 @@ export declare class ApproveRosterRequest extends Message<ApproveRosterRequest> 
    * @generated from field: string id = 1;
    */
   id: string;
+
+  /**
+   * @generated from field: map<string, tkd.roster.v1.ApproveRosterWorkTimeSplit> work_time_split = 2;
+   */
+  workTimeSplit: { [key: string]: ApproveRosterWorkTimeSplit };
 
   constructor(data?: PartialMessage<ApproveRosterRequest>);
 
@@ -688,7 +743,7 @@ export declare class GetRosterRequest extends Message<GetRosterRequest> {
   } | { case: undefined; value?: undefined };
 
   /**
-   * @generated from field: google.protobuf.FieldMask read_mask = 3;
+   * @generated from field: google.protobuf.FieldMask read_mask = 4;
    */
   readMask?: FieldMask;
 
@@ -715,6 +770,11 @@ export declare class GetRosterResponse extends Message<GetRosterResponse> {
    * @generated from field: repeated tkd.roster.v1.Roster roster = 1;
    */
   roster: Roster[];
+
+  /**
+   * @generated from field: repeated tkd.roster.v1.WorkTimeAnalysis work_time_analysis = 2;
+   */
+  workTimeAnalysis: WorkTimeAnalysis[];
 
   constructor(data?: PartialMessage<GetRosterResponse>);
 
@@ -818,9 +878,16 @@ export declare class GetRequiredShiftsRequest extends Message<GetRequiredShiftsR
   to: string;
 
   /**
+   * Limit shifts to a set of tags.
+   *
+   * @generated from field: repeated string shift_tags = 3;
+   */
+  shiftTags: string[];
+
+  /**
    * ReadMask may be use to limit which fields should be included in the response.
    *
-   * @generated from field: google.protobuf.FieldMask read_mask = 3;
+   * @generated from field: google.protobuf.FieldMask read_mask = 4;
    */
   readMask?: FieldMask;
 
