@@ -3,6 +3,7 @@ syntax = "proto3";
 package tkd.idm.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/struct.proto";
 
 // Admin API only
 //
@@ -10,26 +11,46 @@ service NotifyService {
     rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse) {}
 }
 
-enum Channel {
-    CHANNEL_UNSPECIFIED = 0;
-    CHANNEL_SMS = 1;
-    CHANNEL_MAIL = 2;
+message Attachment {
+    string name = 1;
+    string media_type = 2;
+    bytes content = 3;
+}
+
+message EMailMessage {
+    string subject = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string body = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Struct template_context = 3;
+
+    repeated Attachment attachments = 4;
+}
+
+message SMS {
+    string body = 1;
+    google.protobuf.Struct template_context = 2;
 }
 
 message SendNotificationRequest {
     oneof message {
-        string text = 1 [(buf.validate.field).required = true];
-        string template_name = 2 [(buf.validate.field).required = true];
+        SMS sms = 1;
+        EMailMessage email = 2;
+
+        option (buf.validate.oneof).required = true;
     };
 
     repeated string target_users = 3;
     repeated string target_roles = 4;
-    Channel preferred_channel = 5;
 }
 
 message DeliveryNotification {
     string target_user = 1;
-    Channel used_channel = 2;
+    string error = 2;
 }
 
 message SendNotificationResponse {

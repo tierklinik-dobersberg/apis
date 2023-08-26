@@ -3,17 +3,41 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3 } from "@bufbuild/protobuf";
+import { proto3, Struct } from "@bufbuild/protobuf";
 
 /**
- * @generated from enum tkd.idm.v1.Channel
+ * @generated from message tkd.idm.v1.Attachment
  */
-export const Channel = proto3.makeEnum(
-  "tkd.idm.v1.Channel",
-  [
-    {no: 0, name: "CHANNEL_UNSPECIFIED", localName: "UNSPECIFIED"},
-    {no: 1, name: "CHANNEL_SMS", localName: "SMS"},
-    {no: 2, name: "CHANNEL_MAIL", localName: "MAIL"},
+export const Attachment = proto3.makeMessageType(
+  "tkd.idm.v1.Attachment",
+  () => [
+    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "media_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "content", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.EMailMessage
+ */
+export const EMailMessage = proto3.makeMessageType(
+  "tkd.idm.v1.EMailMessage",
+  () => [
+    { no: 1, name: "subject", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "template_context", kind: "message", T: Struct },
+    { no: 4, name: "attachments", kind: "message", T: Attachment, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.SMS
+ */
+export const SMS = proto3.makeMessageType(
+  "tkd.idm.v1.SMS",
+  () => [
+    { no: 1, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "template_context", kind: "message", T: Struct },
   ],
 );
 
@@ -23,11 +47,10 @@ export const Channel = proto3.makeEnum(
 export const SendNotificationRequest = proto3.makeMessageType(
   "tkd.idm.v1.SendNotificationRequest",
   () => [
-    { no: 1, name: "text", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "message" },
-    { no: 2, name: "template_name", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "message" },
+    { no: 1, name: "sms", kind: "message", T: SMS, oneof: "message" },
+    { no: 2, name: "email", kind: "message", T: EMailMessage, oneof: "message" },
     { no: 3, name: "target_users", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "target_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 5, name: "preferred_channel", kind: "enum", T: proto3.getEnumType(Channel) },
   ],
 );
 
@@ -38,7 +61,7 @@ export const DeliveryNotification = proto3.makeMessageType(
   "tkd.idm.v1.DeliveryNotification",
   () => [
     { no: 1, name: "target_user", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "used_channel", kind: "enum", T: proto3.getEnumType(Channel) },
+    { no: 2, name: "error", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

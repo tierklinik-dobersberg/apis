@@ -3,27 +3,109 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
- * @generated from enum tkd.idm.v1.Channel
+ * @generated from message tkd.idm.v1.Attachment
  */
-export declare enum Channel {
+export declare class Attachment extends Message<Attachment> {
   /**
-   * @generated from enum value: CHANNEL_UNSPECIFIED = 0;
+   * @generated from field: string name = 1;
    */
-  UNSPECIFIED = 0,
+  name: string;
 
   /**
-   * @generated from enum value: CHANNEL_SMS = 1;
+   * @generated from field: string media_type = 2;
    */
-  SMS = 1,
+  mediaType: string;
 
   /**
-   * @generated from enum value: CHANNEL_MAIL = 2;
+   * @generated from field: bytes content = 3;
    */
-  MAIL = 2,
+  content: Uint8Array;
+
+  constructor(data?: PartialMessage<Attachment>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.Attachment";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Attachment;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Attachment;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Attachment;
+
+  static equals(a: Attachment | PlainMessage<Attachment> | undefined, b: Attachment | PlainMessage<Attachment> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.EMailMessage
+ */
+export declare class EMailMessage extends Message<EMailMessage> {
+  /**
+   * @generated from field: string subject = 1;
+   */
+  subject: string;
+
+  /**
+   * @generated from field: string body = 2;
+   */
+  body: string;
+
+  /**
+   * @generated from field: google.protobuf.Struct template_context = 3;
+   */
+  templateContext?: Struct;
+
+  /**
+   * @generated from field: repeated tkd.idm.v1.Attachment attachments = 4;
+   */
+  attachments: Attachment[];
+
+  constructor(data?: PartialMessage<EMailMessage>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.EMailMessage";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): EMailMessage;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): EMailMessage;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): EMailMessage;
+
+  static equals(a: EMailMessage | PlainMessage<EMailMessage> | undefined, b: EMailMessage | PlainMessage<EMailMessage> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.SMS
+ */
+export declare class SMS extends Message<SMS> {
+  /**
+   * @generated from field: string body = 1;
+   */
+  body: string;
+
+  /**
+   * @generated from field: google.protobuf.Struct template_context = 2;
+   */
+  templateContext?: Struct;
+
+  constructor(data?: PartialMessage<SMS>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.SMS";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SMS;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SMS;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SMS;
+
+  static equals(a: SMS | PlainMessage<SMS> | undefined, b: SMS | PlainMessage<SMS> | undefined): boolean;
 }
 
 /**
@@ -35,16 +117,16 @@ export declare class SendNotificationRequest extends Message<SendNotificationReq
    */
   message: {
     /**
-     * @generated from field: string text = 1;
+     * @generated from field: tkd.idm.v1.SMS sms = 1;
      */
-    value: string;
-    case: "text";
+    value: SMS;
+    case: "sms";
   } | {
     /**
-     * @generated from field: string template_name = 2;
+     * @generated from field: tkd.idm.v1.EMailMessage email = 2;
      */
-    value: string;
-    case: "templateName";
+    value: EMailMessage;
+    case: "email";
   } | { case: undefined; value?: undefined };
 
   /**
@@ -56,11 +138,6 @@ export declare class SendNotificationRequest extends Message<SendNotificationReq
    * @generated from field: repeated string target_roles = 4;
    */
   targetRoles: string[];
-
-  /**
-   * @generated from field: tkd.idm.v1.Channel preferred_channel = 5;
-   */
-  preferredChannel: Channel;
 
   constructor(data?: PartialMessage<SendNotificationRequest>);
 
@@ -87,9 +164,9 @@ export declare class DeliveryNotification extends Message<DeliveryNotification> 
   targetUser: string;
 
   /**
-   * @generated from field: tkd.idm.v1.Channel used_channel = 2;
+   * @generated from field: string error = 2;
    */
-  usedChannel: Channel;
+  error: string;
 
   constructor(data?: PartialMessage<DeliveryNotification>);
 
