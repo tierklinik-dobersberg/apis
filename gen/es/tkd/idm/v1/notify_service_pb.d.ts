@@ -55,12 +55,7 @@ export declare class EMailMessage extends Message<EMailMessage> {
   body: string;
 
   /**
-   * @generated from field: google.protobuf.Struct template_context = 3;
-   */
-  templateContext?: Struct;
-
-  /**
-   * @generated from field: repeated tkd.idm.v1.Attachment attachments = 4;
+   * @generated from field: repeated tkd.idm.v1.Attachment attachments = 3;
    */
   attachments: Attachment[];
 
@@ -87,11 +82,6 @@ export declare class SMS extends Message<SMS> {
    * @generated from field: string body = 1;
    */
   body: string;
-
-  /**
-   * @generated from field: google.protobuf.Struct template_context = 2;
-   */
-  templateContext?: Struct;
 
   constructor(data?: PartialMessage<SMS>);
 
@@ -138,6 +128,11 @@ export declare class SendNotificationRequest extends Message<SendNotificationReq
    * @generated from field: repeated string target_roles = 4;
    */
   targetRoles: string[];
+
+  /**
+   * @generated from field: map<string, google.protobuf.Struct> per_user_template_context = 5;
+   */
+  perUserTemplateContext: { [key: string]: Struct };
 
   constructor(data?: PartialMessage<SendNotificationRequest>);
 

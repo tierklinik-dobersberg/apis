@@ -26,14 +26,11 @@ message EMailMessage {
         (buf.validate.field).required = true
     ];
 
-    google.protobuf.Struct template_context = 3;
-
-    repeated Attachment attachments = 4;
+    repeated Attachment attachments = 3;
 }
 
 message SMS {
     string body = 1;
-    google.protobuf.Struct template_context = 2;
 }
 
 message SendNotificationRequest {
@@ -46,6 +43,8 @@ message SendNotificationRequest {
 
     repeated string target_users = 3;
     repeated string target_roles = 4;
+
+    map<string, google.protobuf.Struct> per_user_template_context = 5;
 }
 
 message DeliveryNotification {

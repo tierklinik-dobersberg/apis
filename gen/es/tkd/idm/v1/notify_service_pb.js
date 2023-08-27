@@ -25,8 +25,7 @@ export const EMailMessage = proto3.makeMessageType(
   () => [
     { no: 1, name: "subject", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "template_context", kind: "message", T: Struct },
-    { no: 4, name: "attachments", kind: "message", T: Attachment, repeated: true },
+    { no: 3, name: "attachments", kind: "message", T: Attachment, repeated: true },
   ],
 );
 
@@ -37,7 +36,6 @@ export const SMS = proto3.makeMessageType(
   "tkd.idm.v1.SMS",
   () => [
     { no: 1, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "template_context", kind: "message", T: Struct },
   ],
 );
 
@@ -51,6 +49,7 @@ export const SendNotificationRequest = proto3.makeMessageType(
     { no: 2, name: "email", kind: "message", T: EMailMessage, oneof: "message" },
     { no: 3, name: "target_users", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "target_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 5, name: "per_user_template_context", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Struct} },
   ],
 );
 
