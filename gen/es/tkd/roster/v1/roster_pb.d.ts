@@ -7,6 +7,7 @@ import type { BinaryReadOptions, Duration, FieldList, FieldMask, JsonReadOptions
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { ConstraintViolationList } from "./constraint_pb.js";
 import type { WorkShift } from "./workshift_pb.js";
+import type { DeliveryNotification } from "../../idm/v1/notify_service_pb.js";
 
 /**
  * @generated from message tkd.roster.v1.RequiredShift
@@ -938,5 +939,53 @@ export declare class GetRequiredShiftsResponse extends Message<GetRequiredShifts
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetRequiredShiftsResponse;
 
   static equals(a: GetRequiredShiftsResponse | PlainMessage<GetRequiredShiftsResponse> | undefined, b: GetRequiredShiftsResponse | PlainMessage<GetRequiredShiftsResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.SendRosterPreviewRequest
+ */
+export declare class SendRosterPreviewRequest extends Message<SendRosterPreviewRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  constructor(data?: PartialMessage<SendRosterPreviewRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.SendRosterPreviewRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendRosterPreviewRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendRosterPreviewRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendRosterPreviewRequest;
+
+  static equals(a: SendRosterPreviewRequest | PlainMessage<SendRosterPreviewRequest> | undefined, b: SendRosterPreviewRequest | PlainMessage<SendRosterPreviewRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.SendRosterPreviewResponse
+ */
+export declare class SendRosterPreviewResponse extends Message<SendRosterPreviewResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.DeliveryNotification delivery = 1;
+   */
+  delivery: DeliveryNotification[];
+
+  constructor(data?: PartialMessage<SendRosterPreviewResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.SendRosterPreviewResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendRosterPreviewResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendRosterPreviewResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendRosterPreviewResponse;
+
+  static equals(a: SendRosterPreviewResponse | PlainMessage<SendRosterPreviewResponse> | undefined, b: SendRosterPreviewResponse | PlainMessage<SendRosterPreviewResponse> | undefined): boolean;
 }
 

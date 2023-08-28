@@ -50,6 +50,7 @@ export const SendNotificationRequest = proto3.makeMessageType(
     { no: 3, name: "target_users", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "target_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 5, name: "per_user_template_context", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Struct} },
+    { no: 6, name: "sender_user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

@@ -134,6 +134,11 @@ export declare class SendNotificationRequest extends Message<SendNotificationReq
    */
   perUserTemplateContext: { [key: string]: Struct };
 
+  /**
+   * @generated from field: string sender_user_id = 6;
+   */
+  senderUserId: string;
+
   constructor(data?: PartialMessage<SendNotificationRequest>);
 
   static readonly runtime: typeof proto3;

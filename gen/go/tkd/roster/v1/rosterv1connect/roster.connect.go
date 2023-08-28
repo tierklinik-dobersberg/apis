@@ -53,6 +53,9 @@ const (
 	// RosterServiceGetRequiredShiftsProcedure is the fully-qualified name of the RosterService's
 	// GetRequiredShifts RPC.
 	RosterServiceGetRequiredShiftsProcedure = "/tkd.roster.v1.RosterService/GetRequiredShifts"
+	// RosterServiceSendRosterPreviewProcedure is the fully-qualified name of the RosterService's
+	// SendRosterPreview RPC.
+	RosterServiceSendRosterPreviewProcedure = "/tkd.roster.v1.RosterService/SendRosterPreview"
 )
 
 // RosterServiceClient is a client for the tkd.roster.v1.RosterService service.
@@ -75,6 +78,7 @@ type RosterServiceClient interface {
 	// to NOW.
 	GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
 	GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error)
+	SendRosterPreview(context.Context, *connect_go.Request[v1.SendRosterPreviewRequest]) (*connect_go.Response[v1.SendRosterPreviewResponse], error)
 }
 
 // NewRosterServiceClient constructs a client for the tkd.roster.v1.RosterService service. By
@@ -122,6 +126,11 @@ func NewRosterServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+RosterServiceGetRequiredShiftsProcedure,
 			opts...,
 		),
+		sendRosterPreview: connect_go.NewClient[v1.SendRosterPreviewRequest, v1.SendRosterPreviewResponse](
+			httpClient,
+			baseURL+RosterServiceSendRosterPreviewProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -134,6 +143,7 @@ type rosterServiceClient struct {
 	getRoster         *connect_go.Client[v1.GetRosterRequest, v1.GetRosterResponse]
 	getWorkingStaff   *connect_go.Client[v1.GetWorkingStaffRequest, v1.GetWorkingStaffResponse]
 	getRequiredShifts *connect_go.Client[v1.GetRequiredShiftsRequest, v1.GetRequiredShiftsResponse]
+	sendRosterPreview *connect_go.Client[v1.SendRosterPreviewRequest, v1.SendRosterPreviewResponse]
 }
 
 // SaveRoster calls tkd.roster.v1.RosterService.SaveRoster.
@@ -171,6 +181,11 @@ func (c *rosterServiceClient) GetRequiredShifts(ctx context.Context, req *connec
 	return c.getRequiredShifts.CallUnary(ctx, req)
 }
 
+// SendRosterPreview calls tkd.roster.v1.RosterService.SendRosterPreview.
+func (c *rosterServiceClient) SendRosterPreview(ctx context.Context, req *connect_go.Request[v1.SendRosterPreviewRequest]) (*connect_go.Response[v1.SendRosterPreviewResponse], error) {
+	return c.sendRosterPreview.CallUnary(ctx, req)
+}
+
 // RosterServiceHandler is an implementation of the tkd.roster.v1.RosterService service.
 type RosterServiceHandler interface {
 	// SaveRoster saves a duty roster. It may be used to initially create a new
@@ -191,6 +206,7 @@ type RosterServiceHandler interface {
 	// to NOW.
 	GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
 	GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error)
+	SendRosterPreview(context.Context, *connect_go.Request[v1.SendRosterPreviewRequest]) (*connect_go.Response[v1.SendRosterPreviewResponse], error)
 }
 
 // NewRosterServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -234,6 +250,11 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 		svc.GetRequiredShifts,
 		opts...,
 	)
+	rosterServiceSendRosterPreviewHandler := connect_go.NewUnaryHandler(
+		RosterServiceSendRosterPreviewProcedure,
+		svc.SendRosterPreview,
+		opts...,
+	)
 	return "/tkd.roster.v1.RosterService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case RosterServiceSaveRosterProcedure:
@@ -250,6 +271,8 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 			rosterServiceGetWorkingStaffHandler.ServeHTTP(w, r)
 		case RosterServiceGetRequiredShiftsProcedure:
 			rosterServiceGetRequiredShiftsHandler.ServeHTTP(w, r)
+		case RosterServiceSendRosterPreviewProcedure:
+			rosterServiceSendRosterPreviewHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -285,4 +308,8 @@ func (UnimplementedRosterServiceHandler) GetWorkingStaff(context.Context, *conne
 
 func (UnimplementedRosterServiceHandler) GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.GetRequiredShifts is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) SendRosterPreview(context.Context, *connect_go.Request[v1.SendRosterPreviewRequest]) (*connect_go.Response[v1.SendRosterPreviewResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.SendRosterPreview is not implemented"))
 }

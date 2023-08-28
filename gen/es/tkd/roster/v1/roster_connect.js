@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, DeleteRosterRequest, DeleteRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, SaveRosterRequest, SaveRosterResponse } from "./roster_pb.js";
+import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, DeleteRosterRequest, DeleteRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -90,6 +90,15 @@ export const RosterService = {
       name: "GetRequiredShifts",
       I: GetRequiredShiftsRequest,
       O: GetRequiredShiftsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.SendRosterPreview
+     */
+    sendRosterPreview: {
+      name: "SendRosterPreview",
+      I: SendRosterPreviewRequest,
+      O: SendRosterPreviewResponse,
       kind: MethodKind.Unary,
     },
   }

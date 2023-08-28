@@ -45,6 +45,10 @@ message SendNotificationRequest {
     repeated string target_roles = 4;
 
     map<string, google.protobuf.Struct> per_user_template_context = 5;
+    
+    string sender_user_id = 6 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message DeliveryNotification {

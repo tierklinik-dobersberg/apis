@@ -6,6 +6,7 @@
 import { Duration, FieldMask, proto3, Timestamp } from "@bufbuild/protobuf";
 import { ConstraintViolationList } from "./constraint_pb.js";
 import { WorkShift } from "./workshift_pb.js";
+import { DeliveryNotification } from "../../idm/v1/notify_service_pb.js";
 
 /**
  * @generated from message tkd.roster.v1.RequiredShift
@@ -279,6 +280,26 @@ export const GetRequiredShiftsResponse = proto3.makeMessageType(
   () => [
     { no: 1, name: "required_shifts", kind: "message", T: RequiredShift, repeated: true },
     { no: 2, name: "work_shift_definitions", kind: "message", T: WorkShift, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.SendRosterPreviewRequest
+ */
+export const SendRosterPreviewRequest = proto3.makeMessageType(
+  "tkd.roster.v1.SendRosterPreviewRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.SendRosterPreviewResponse
+ */
+export const SendRosterPreviewResponse = proto3.makeMessageType(
+  "tkd.roster.v1.SendRosterPreviewResponse",
+  () => [
+    { no: 1, name: "delivery", kind: "message", T: DeliveryNotification, repeated: true },
   ],
 );
 
