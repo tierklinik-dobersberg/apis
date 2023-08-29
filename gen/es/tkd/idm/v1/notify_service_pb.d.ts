@@ -25,6 +25,14 @@ export declare class Attachment extends Message<Attachment> {
    */
   content: Uint8Array;
 
+  /**
+   * ContentId is set as the Content-ID header of the attachment.
+   * If present, the attachment will be inlined.
+   *
+   * @generated from field: string content_id = 4;
+   */
+  contentId: string;
+
   constructor(data?: PartialMessage<Attachment>);
 
   static readonly runtime: typeof proto3;

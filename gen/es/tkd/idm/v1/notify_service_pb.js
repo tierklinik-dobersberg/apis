@@ -14,6 +14,7 @@ export const Attachment = proto3.makeMessageType(
     { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "media_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "content", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 4, name: "content_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
