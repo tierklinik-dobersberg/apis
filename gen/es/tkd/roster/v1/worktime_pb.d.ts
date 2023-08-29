@@ -369,7 +369,12 @@ export declare class UserVacationSum extends Message<UserVacationSum> {
   vacationCreditsLeft?: Duration;
 
   /**
-   * @generated from field: tkd.roster.v1.AnalyzeVacation analysis = 3;
+   * @generated from field: google.protobuf.Duration time_off_credits = 3;
+   */
+  timeOffCredits?: Duration;
+
+  /**
+   * @generated from field: tkd.roster.v1.AnalyzeVacation analysis = 4;
    */
   analysis?: AnalyzeVacation;
 

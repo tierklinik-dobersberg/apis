@@ -135,7 +135,8 @@ message AnalyzeVacation {
 message UserVacationSum {
     string user_id = 1;
     google.protobuf.Duration vacation_credits_left = 2;
-    AnalyzeVacation analysis = 3;
+    google.protobuf.Duration time_off_credits = 3;
+    AnalyzeVacation analysis = 4;
 }
 
 message GetVacationCreditsLeftResponse {

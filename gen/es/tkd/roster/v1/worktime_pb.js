@@ -131,7 +131,8 @@ export const UserVacationSum = proto3.makeMessageType(
   () => [
     { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "vacation_credits_left", kind: "message", T: Duration },
-    { no: 3, name: "analysis", kind: "message", T: AnalyzeVacation },
+    { no: 3, name: "time_off_credits", kind: "message", T: Duration },
+    { no: 4, name: "analysis", kind: "message", T: AnalyzeVacation },
   ],
 );
 
