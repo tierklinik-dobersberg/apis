@@ -11,13 +11,25 @@ service NotifyService {
     rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse) {}
 }
 
+enum AttachmentType {
+    UNSPECIFIED = 0;
+    INLINE = 1;
+    ATTACHEMNT = 2;
+    ALTERNATIVE_BODY = 3;
+}
+
 message Attachment {
     string name = 1;
     string media_type = 2;
     bytes content = 3;
-    // ContentId is set as the Content-ID header of the attachment.
-    // If present, the attachment will be inlined.
     string content_id = 4;
+
+    AttachmentType attachment_type = 5;
+
+    // A list of user IDs this attachment is for.
+    // if left empty, the attachment will be sent to
+    // all users.
+    repeated string for_user = 6;
 }
 
 message EMailMessage {

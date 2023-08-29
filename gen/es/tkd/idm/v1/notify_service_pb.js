@@ -6,6 +6,19 @@
 import { proto3, Struct } from "@bufbuild/protobuf";
 
 /**
+ * @generated from enum tkd.idm.v1.AttachmentType
+ */
+export const AttachmentType = proto3.makeEnum(
+  "tkd.idm.v1.AttachmentType",
+  [
+    {no: 0, name: "UNSPECIFIED"},
+    {no: 1, name: "INLINE"},
+    {no: 2, name: "ATTACHEMNT"},
+    {no: 3, name: "ALTERNATIVE_BODY"},
+  ],
+);
+
+/**
  * @generated from message tkd.idm.v1.Attachment
  */
 export const Attachment = proto3.makeMessageType(
@@ -15,6 +28,8 @@ export const Attachment = proto3.makeMessageType(
     { no: 2, name: "media_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "content", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
     { no: 4, name: "content_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "attachment_type", kind: "enum", T: proto3.getEnumType(AttachmentType) },
+    { no: 6, name: "for_user", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

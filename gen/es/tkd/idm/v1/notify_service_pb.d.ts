@@ -7,6 +7,31 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
+ * @generated from enum tkd.idm.v1.AttachmentType
+ */
+export declare enum AttachmentType {
+  /**
+   * @generated from enum value: UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: INLINE = 1;
+   */
+  INLINE = 1,
+
+  /**
+   * @generated from enum value: ATTACHEMNT = 2;
+   */
+  ATTACHEMNT = 2,
+
+  /**
+   * @generated from enum value: ALTERNATIVE_BODY = 3;
+   */
+  ALTERNATIVE_BODY = 3,
+}
+
+/**
  * @generated from message tkd.idm.v1.Attachment
  */
 export declare class Attachment extends Message<Attachment> {
@@ -26,12 +51,23 @@ export declare class Attachment extends Message<Attachment> {
   content: Uint8Array;
 
   /**
-   * ContentId is set as the Content-ID header of the attachment.
-   * If present, the attachment will be inlined.
-   *
    * @generated from field: string content_id = 4;
    */
   contentId: string;
+
+  /**
+   * @generated from field: tkd.idm.v1.AttachmentType attachment_type = 5;
+   */
+  attachmentType: AttachmentType;
+
+  /**
+   * A list of user IDs this attachment is for.
+   * if left empty, the attachment will be sent to
+   * all users.
+   *
+   * @generated from field: repeated string for_user = 6;
+   */
+  forUser: string[];
 
   constructor(data?: PartialMessage<Attachment>);
 
