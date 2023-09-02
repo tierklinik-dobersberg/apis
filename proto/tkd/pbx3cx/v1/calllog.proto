@@ -108,7 +108,7 @@ service CallService {
 message RecordCallRequest {
     string duration = 1;
     string number = 2;
-    string agetn = 3;
+    string agent = 3;
     string call_type = 4;
     string date_time = 5;
     string customer_id = 6;
@@ -158,10 +158,17 @@ message CreateOverwriteRequest {
     oneof transfer_target {
         CustomOverwrite custom = 1;
         string user_id = 2;
+
+        option (buf.validate.oneof).required = true;
     }
 
-    google.protobuf.Timestamp from = 3;
-    google.protobuf.Timestamp to = 4;
+    google.protobuf.Timestamp from = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Timestamp to = 4 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message CreateOverwriteResponse {
@@ -172,6 +179,8 @@ message DeleteOverwriteRequest {
     oneof selector {
         string overwrite_id = 1;
         google.protobuf.Timestamp  active_at = 2;
+
+        option (buf.validate.oneof).required = true;
     }
 }
 message DeleteOverwriteResponse {}
@@ -181,6 +190,8 @@ message GetOverwriteRequest {
         string overwrite_id = 1;
         google.protobuf.Timestamp  active_at = 2;
         tkd.common.v1.TimeRange time_range = 3;
+
+        option (buf.validate.oneof).required = true;
     }
 }
 

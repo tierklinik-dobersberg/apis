@@ -36,7 +36,9 @@ message OffTimeCosts {
     string roster_id = 3;
 
     // UserId is the ID of the user this off-time costs belong to.
-    string user_id = 4;
+    string user_id = 4 [
+        (buf.validate.field).required = true
+    ];
 
     // CreatedAt is set to the time this off-time-costs entry has been
     // created. This field must not be set during OffTimeService.AddOffTimeCosts.
@@ -47,7 +49,9 @@ message OffTimeCosts {
     string creator_id = 6;
 
     // The actual duration costs of this entry.
-    google.protobuf.Duration costs = 7;
+    google.protobuf.Duration costs = 7 [
+        (buf.validate.field).required = true
+    ];
 
     // IsVacation is set to true if the off-time-costs apply to the vacation
     // credits. If set to false, the off-time costs are for time compensation.
@@ -55,6 +59,9 @@ message OffTimeCosts {
 
     // Date holds the date of the off-time costs.
     google.protobuf.Timestamp date = 9;
+
+    // Comment may holde an optional comment for the off-time costs.
+    string comment = 10;
 }
 
 enum OffTimeType {
@@ -94,6 +101,7 @@ message OffTimeEntry {
     OffTimeApproval approval = 7;
 
     google.protobuf.Timestamp created_at = 8;
+
     string creator_id = 9;
 }
 
@@ -226,7 +234,9 @@ message ApproveOrRejectResponse {
 }
 
 message AddOffTimeCostsRequest {
-    repeated OffTimeCosts add_costs = 1;
+    repeated OffTimeCosts add_costs = 1 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message AddOffTimeCostsResponse {}
