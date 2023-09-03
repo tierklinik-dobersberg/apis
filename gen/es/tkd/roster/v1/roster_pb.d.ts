@@ -131,6 +131,46 @@ export declare class PlannedShift extends Message<PlannedShift> {
 }
 
 /**
+ * @generated from message tkd.roster.v1.RosterType
+ */
+export declare class RosterType extends Message<RosterType> {
+  /**
+   * UniqueName is a unique name for this roster type.
+   *
+   * @generated from field: string unique_name = 1;
+   */
+  uniqueName: string;
+
+  /**
+   * A list of shift tags that are applicable to this roster type.
+   *
+   * @generated from field: repeated string shift_tags = 2;
+   */
+  shiftTags: string[];
+
+  /**
+   * A list of shift tags that are used for on-call requests.
+   *
+   * @generated from field: repeated string on_call_tags = 3;
+   */
+  onCallTags: string[];
+
+  constructor(data?: PartialMessage<RosterType>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.RosterType";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RosterType;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RosterType;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RosterType;
+
+  static equals(a: RosterType | PlainMessage<RosterType> | undefined, b: RosterType | PlainMessage<RosterType> | undefined): boolean;
+}
+
+/**
  * Roster is a planned roster for a given time period.
  *
  * @generated from message tkd.roster.v1.Roster
@@ -216,12 +256,11 @@ export declare class Roster extends Message<Roster> {
   updatedAt?: Timestamp;
 
   /**
-   * A list of shift tags used to limit which work-shifts should be part of the
-   * roster. If left empty/unspecified, all shifts are eligible for the roster.
+   * RosterTypeName is the unique name of the roster type.
    *
-   * @generated from field: repeated string shift_tags = 11;
+   * @generated from field: string roster_type_name = 11;
    */
-  shiftTags: string[];
+  rosterTypeName: string;
 
   constructor(data?: PartialMessage<Roster>);
 
@@ -292,6 +331,13 @@ export declare class SaveRosterRequest extends Message<SaveRosterRequest> {
    * @generated from field: repeated string shift_tags = 7;
    */
   shiftTags: string[];
+
+  /**
+   * RosterTypeName is the unique name of the roster type.
+   *
+   * @generated from field: string roster_type_name = 8;
+   */
+  rosterTypeName: string;
 
   constructor(data?: PartialMessage<SaveRosterRequest>);
 
@@ -744,6 +790,11 @@ export declare class GetRosterRequest extends Message<GetRosterRequest> {
   } | { case: undefined; value?: undefined };
 
   /**
+   * @generated from field: repeated string roster_type_names = 3;
+   */
+  rosterTypeNames: string[];
+
+  /**
    * @generated from field: google.protobuf.FieldMask read_mask = 4;
    */
   readMask?: FieldMask;
@@ -807,9 +858,20 @@ export declare class GetWorkingStaffRequest extends Message<GetWorkingStaffReque
   readMaks?: FieldMask;
 
   /**
-   * @generated from field: repeated string filter_shifts_by_tag = 3;
+   * RosterTypeName may be set to the name of the roster type
+   * to limit which working-shifts are considered for the response.
+   *
+   * @generated from field: string roster_type_name = 3;
    */
-  filterShiftsByTag: string[];
+  rosterTypeName: string;
+
+  /**
+   * OnCall may be set to true to limit the response to only include
+   * working staff IDs assigned to on-call shifts. 
+   *
+   * @generated from field: bool on_call = 4;
+   */
+  onCall: boolean;
 
   constructor(data?: PartialMessage<GetWorkingStaffRequest>);
 
@@ -879,11 +941,11 @@ export declare class GetRequiredShiftsRequest extends Message<GetRequiredShiftsR
   to: string;
 
   /**
-   * Limit shifts to a set of tags.
+   * RosterTypeName is the name of the roster type for which shifts should be loaded.
    *
-   * @generated from field: repeated string shift_tags = 3;
+   * @generated from field: string roster_type_name = 3;
    */
-  shiftTags: string[];
+  rosterTypeName: string;
 
   /**
    * ReadMask may be use to limit which fields should be included in the response.
@@ -987,5 +1049,182 @@ export declare class SendRosterPreviewResponse extends Message<SendRosterPreview
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendRosterPreviewResponse;
 
   static equals(a: SendRosterPreviewResponse | PlainMessage<SendRosterPreviewResponse> | undefined, b: SendRosterPreviewResponse | PlainMessage<SendRosterPreviewResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.CreateRosterTypeRequest
+ */
+export declare class CreateRosterTypeRequest extends Message<CreateRosterTypeRequest> {
+  /**
+   * @generated from field: tkd.roster.v1.RosterType roster_type = 1;
+   */
+  rosterType?: RosterType;
+
+  constructor(data?: PartialMessage<CreateRosterTypeRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.CreateRosterTypeRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateRosterTypeRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateRosterTypeRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateRosterTypeRequest;
+
+  static equals(a: CreateRosterTypeRequest | PlainMessage<CreateRosterTypeRequest> | undefined, b: CreateRosterTypeRequest | PlainMessage<CreateRosterTypeRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.CreateRosterTypeResponse
+ */
+export declare class CreateRosterTypeResponse extends Message<CreateRosterTypeResponse> {
+  /**
+   * @generated from field: tkd.roster.v1.RosterType roster_type = 1;
+   */
+  rosterType?: RosterType;
+
+  constructor(data?: PartialMessage<CreateRosterTypeResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.CreateRosterTypeResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateRosterTypeResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateRosterTypeResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateRosterTypeResponse;
+
+  static equals(a: CreateRosterTypeResponse | PlainMessage<CreateRosterTypeResponse> | undefined, b: CreateRosterTypeResponse | PlainMessage<CreateRosterTypeResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.DeleteRosterTypeRequest
+ */
+export declare class DeleteRosterTypeRequest extends Message<DeleteRosterTypeRequest> {
+  /**
+   * @generated from field: string unique_name = 1;
+   */
+  uniqueName: string;
+
+  constructor(data?: PartialMessage<DeleteRosterTypeRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.DeleteRosterTypeRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteRosterTypeRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteRosterTypeRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteRosterTypeRequest;
+
+  static equals(a: DeleteRosterTypeRequest | PlainMessage<DeleteRosterTypeRequest> | undefined, b: DeleteRosterTypeRequest | PlainMessage<DeleteRosterTypeRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.DeleteRosterTypeResponse
+ */
+export declare class DeleteRosterTypeResponse extends Message<DeleteRosterTypeResponse> {
+  constructor(data?: PartialMessage<DeleteRosterTypeResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.DeleteRosterTypeResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteRosterTypeResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteRosterTypeResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteRosterTypeResponse;
+
+  static equals(a: DeleteRosterTypeResponse | PlainMessage<DeleteRosterTypeResponse> | undefined, b: DeleteRosterTypeResponse | PlainMessage<DeleteRosterTypeResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.ListRosterTypesRequest
+ */
+export declare class ListRosterTypesRequest extends Message<ListRosterTypesRequest> {
+  constructor(data?: PartialMessage<ListRosterTypesRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ListRosterTypesRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListRosterTypesRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListRosterTypesRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListRosterTypesRequest;
+
+  static equals(a: ListRosterTypesRequest | PlainMessage<ListRosterTypesRequest> | undefined, b: ListRosterTypesRequest | PlainMessage<ListRosterTypesRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.ListRosterTypesResponse
+ */
+export declare class ListRosterTypesResponse extends Message<ListRosterTypesResponse> {
+  /**
+   * @generated from field: repeated tkd.roster.v1.RosterType roster_types = 1;
+   */
+  rosterTypes: RosterType[];
+
+  constructor(data?: PartialMessage<ListRosterTypesResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ListRosterTypesResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListRosterTypesResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListRosterTypesResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListRosterTypesResponse;
+
+  static equals(a: ListRosterTypesResponse | PlainMessage<ListRosterTypesResponse> | undefined, b: ListRosterTypesResponse | PlainMessage<ListRosterTypesResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.ListShiftTagsRequest
+ */
+export declare class ListShiftTagsRequest extends Message<ListShiftTagsRequest> {
+  constructor(data?: PartialMessage<ListShiftTagsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ListShiftTagsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListShiftTagsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListShiftTagsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListShiftTagsRequest;
+
+  static equals(a: ListShiftTagsRequest | PlainMessage<ListShiftTagsRequest> | undefined, b: ListShiftTagsRequest | PlainMessage<ListShiftTagsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.ListShiftTagsResponse
+ */
+export declare class ListShiftTagsResponse extends Message<ListShiftTagsResponse> {
+  /**
+   * @generated from field: repeated string tags = 1;
+   */
+  tags: string[];
+
+  constructor(data?: PartialMessage<ListShiftTagsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ListShiftTagsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListShiftTagsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListShiftTagsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListShiftTagsResponse;
+
+  static equals(a: ListShiftTagsResponse | PlainMessage<ListShiftTagsResponse> | undefined, b: ListShiftTagsResponse | PlainMessage<ListShiftTagsResponse> | undefined): boolean;
 }
 

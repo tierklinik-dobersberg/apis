@@ -40,6 +40,18 @@ export const PlannedShift = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.roster.v1.RosterType
+ */
+export const RosterType = proto3.makeMessageType(
+  "tkd.roster.v1.RosterType",
+  () => [
+    { no: 1, name: "unique_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 3, name: "on_call_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
  * Roster is a planned roster for a given time period.
  *
  * @generated from message tkd.roster.v1.Roster
@@ -57,7 +69,7 @@ export const Roster = proto3.makeMessageType(
     { no: 8, name: "last_modified_by", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 9, name: "created_at", kind: "message", T: Timestamp },
     { no: 10, name: "updated_at", kind: "message", T: Timestamp },
-    { no: 11, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 11, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -73,6 +85,7 @@ export const SaveRosterRequest = proto3.makeMessageType(
     { no: 4, name: "shifts", kind: "message", T: PlannedShift, repeated: true },
     { no: 5, name: "read_mask", kind: "message", T: FieldMask },
     { no: 7, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 8, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -220,6 +233,7 @@ export const GetRosterRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search" },
     { no: 2, name: "date", kind: "message", T: Timestamp, oneof: "search" },
+    { no: 3, name: "roster_type_names", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "read_mask", kind: "message", T: FieldMask },
   ],
 );
@@ -243,7 +257,8 @@ export const GetWorkingStaffRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "time", kind: "message", T: Timestamp },
     { no: 2, name: "read_maks", kind: "message", T: FieldMask },
-    { no: 3, name: "filter_shifts_by_tag", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 3, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "on_call", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
@@ -267,7 +282,7 @@ export const GetRequiredShiftsRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "from", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "to", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 3, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "read_mask", kind: "message", T: FieldMask },
   ],
 );
@@ -300,6 +315,80 @@ export const SendRosterPreviewResponse = proto3.makeMessageType(
   "tkd.roster.v1.SendRosterPreviewResponse",
   () => [
     { no: 1, name: "delivery", kind: "message", T: DeliveryNotification, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.CreateRosterTypeRequest
+ */
+export const CreateRosterTypeRequest = proto3.makeMessageType(
+  "tkd.roster.v1.CreateRosterTypeRequest",
+  () => [
+    { no: 1, name: "roster_type", kind: "message", T: RosterType },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.CreateRosterTypeResponse
+ */
+export const CreateRosterTypeResponse = proto3.makeMessageType(
+  "tkd.roster.v1.CreateRosterTypeResponse",
+  () => [
+    { no: 1, name: "roster_type", kind: "message", T: RosterType },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.DeleteRosterTypeRequest
+ */
+export const DeleteRosterTypeRequest = proto3.makeMessageType(
+  "tkd.roster.v1.DeleteRosterTypeRequest",
+  () => [
+    { no: 1, name: "unique_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.DeleteRosterTypeResponse
+ */
+export const DeleteRosterTypeResponse = proto3.makeMessageType(
+  "tkd.roster.v1.DeleteRosterTypeResponse",
+  [],
+);
+
+/**
+ * @generated from message tkd.roster.v1.ListRosterTypesRequest
+ */
+export const ListRosterTypesRequest = proto3.makeMessageType(
+  "tkd.roster.v1.ListRosterTypesRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.roster.v1.ListRosterTypesResponse
+ */
+export const ListRosterTypesResponse = proto3.makeMessageType(
+  "tkd.roster.v1.ListRosterTypesResponse",
+  () => [
+    { no: 1, name: "roster_types", kind: "message", T: RosterType, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.ListShiftTagsRequest
+ */
+export const ListShiftTagsRequest = proto3.makeMessageType(
+  "tkd.roster.v1.ListShiftTagsRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.roster.v1.ListShiftTagsResponse
+ */
+export const ListShiftTagsResponse = proto3.makeMessageType(
+  "tkd.roster.v1.ListShiftTagsResponse",
+  () => [
+    { no: 1, name: "tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

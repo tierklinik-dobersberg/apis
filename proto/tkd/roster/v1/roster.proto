@@ -62,6 +62,19 @@ message PlannedShift {
     ];
 }
 
+message RosterType {
+    // UniqueName is a unique name for this roster type.
+    string unique_name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // A list of shift tags that are applicable to this roster type.
+    repeated string shift_tags = 2;
+
+    // A list of shift tags that are used for on-call requests.
+    repeated string on_call_tags = 3;
+}
+
 // Roster is a planned roster for a given time period.
 message Roster {
     // ID is a unique identifier for the roster.
@@ -103,12 +116,39 @@ message Roster {
     // last.
     google.protobuf.Timestamp updated_at = 10;
 
-    // A list of shift tags used to limit which work-shifts should be part of the
-    // roster. If left empty/unspecified, all shifts are eligible for the roster.
-    repeated string shift_tags = 11;
+    // RosterTypeName is the unique name of the roster type.
+    string roster_type_name = 11;
 }
 
 service RosterService {
+    rpc CreateRosterType(CreateRosterTypeRequest) returns (CreateRosterTypeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
+
+    rpc DeleteRosterType(DeleteRosterTypeRequest) returns (DeleteRosterTypeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
+
+    rpc ListRosterTypes(ListRosterTypesRequest) returns (ListRosterTypesResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
+
+    rpc ListShiftTags(ListShiftTagsRequest) returns (ListShiftTagsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser", "roster_manager"]
+        };
+    }
+
     // SaveRoster saves a duty roster. It may be used to initially create a new
     // roster or to save subsequent changes.
     rpc SaveRoster(SaveRosterRequest) returns (SaveRosterResponse) {
@@ -211,6 +251,11 @@ message SaveRosterRequest {
     // See Roster.shift_tags.
     // This field must not be changed once saved.
     repeated string shift_tags = 7;
+
+    // RosterTypeName is the unique name of the roster type.
+    string roster_type_name = 8 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message WorkTimeAnalysisWeek {
@@ -325,6 +370,8 @@ message GetRosterRequest {
         option (buf.validate.oneof).required = true;
     };
 
+    repeated string roster_type_names = 3;
+
     google.protobuf.FieldMask read_mask = 4;
 }
 
@@ -334,9 +381,19 @@ message GetRosterResponse {
 }
 
 message GetWorkingStaffRequest {
-    google.protobuf.Timestamp time = 1;
+    google.protobuf.Timestamp time = 1 [
+        (buf.validate.field).required = true
+    ];
+
     google.protobuf.FieldMask read_maks = 2;
-    repeated string filter_shifts_by_tag = 3;
+
+    // RosterTypeName may be set to the name of the roster type
+    // to limit which working-shifts are considered for the response.
+    string roster_type_name = 3;
+
+    // OnCall may be set to true to limit the response to only include
+    // working staff IDs assigned to on-call shifts. 
+    bool on_call  = 4;
 }
 
 message GetWorkingStaffResponse {
@@ -358,8 +415,10 @@ message GetRequiredShiftsRequest {
         (buf.validate.field).string.pattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
     ];
 
-    // Limit shifts to a set of tags.
-    repeated string shift_tags = 3;
+    // RosterTypeName is the name of the roster type for which shifts should be loaded.
+    string roster_type_name = 3 [
+        (buf.validate.field).required = true
+    ];
 
     // ReadMask may be use to limit which fields should be included in the response.
     google.protobuf.FieldMask read_mask = 4;
@@ -382,4 +441,31 @@ message SendRosterPreviewRequest {
 
 message SendRosterPreviewResponse {
     repeated tkd.idm.v1.DeliveryNotification delivery = 1;
+}
+
+message CreateRosterTypeRequest {
+    RosterType roster_type = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+message CreateRosterTypeResponse {
+    RosterType roster_type = 1;
+}
+
+message DeleteRosterTypeRequest {
+    string unique_name = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+message DeleteRosterTypeResponse {}
+
+message ListRosterTypesRequest {}
+
+message ListRosterTypesResponse {
+    repeated RosterType roster_types = 1;
+}
+
+message ListShiftTagsRequest {}
+message ListShiftTagsResponse {
+    repeated string tags = 1;
 }

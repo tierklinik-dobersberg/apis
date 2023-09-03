@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, DeleteRosterRequest, DeleteRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
+import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, CreateRosterTypeRequest, CreateRosterTypeResponse, DeleteRosterRequest, DeleteRosterResponse, DeleteRosterTypeRequest, DeleteRosterTypeResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, ListRosterTypesRequest, ListRosterTypesResponse, ListShiftTagsRequest, ListShiftTagsResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -12,6 +12,42 @@ import { MethodKind } from "@bufbuild/protobuf";
 export const RosterService = {
   typeName: "tkd.roster.v1.RosterService",
   methods: {
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.CreateRosterType
+     */
+    createRosterType: {
+      name: "CreateRosterType",
+      I: CreateRosterTypeRequest,
+      O: CreateRosterTypeResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.DeleteRosterType
+     */
+    deleteRosterType: {
+      name: "DeleteRosterType",
+      I: DeleteRosterTypeRequest,
+      O: DeleteRosterTypeResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.ListRosterTypes
+     */
+    listRosterTypes: {
+      name: "ListRosterTypes",
+      I: ListRosterTypesRequest,
+      O: ListRosterTypesResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.ListShiftTags
+     */
+    listShiftTags: {
+      name: "ListShiftTags",
+      I: ListShiftTagsRequest,
+      O: ListShiftTagsResponse,
+      kind: MethodKind.Unary,
+    },
     /**
      * SaveRoster saves a duty roster. It may be used to initially create a new
      * roster or to save subsequent changes.

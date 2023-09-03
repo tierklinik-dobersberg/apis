@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, DeleteRosterRequest, DeleteRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
+import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, CreateRosterTypeRequest, CreateRosterTypeResponse, DeleteRosterRequest, DeleteRosterResponse, DeleteRosterTypeRequest, DeleteRosterTypeResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, ListRosterTypesRequest, ListRosterTypesResponse, ListShiftTagsRequest, ListShiftTagsResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -12,6 +12,42 @@ import { MethodKind } from "@bufbuild/protobuf";
 export declare const RosterService: {
   readonly typeName: "tkd.roster.v1.RosterService",
   readonly methods: {
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.CreateRosterType
+     */
+    readonly createRosterType: {
+      readonly name: "CreateRosterType",
+      readonly I: typeof CreateRosterTypeRequest,
+      readonly O: typeof CreateRosterTypeResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.DeleteRosterType
+     */
+    readonly deleteRosterType: {
+      readonly name: "DeleteRosterType",
+      readonly I: typeof DeleteRosterTypeRequest,
+      readonly O: typeof DeleteRosterTypeResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.ListRosterTypes
+     */
+    readonly listRosterTypes: {
+      readonly name: "ListRosterTypes",
+      readonly I: typeof ListRosterTypesRequest,
+      readonly O: typeof ListRosterTypesResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.ListShiftTags
+     */
+    readonly listShiftTags: {
+      readonly name: "ListShiftTags",
+      readonly I: typeof ListShiftTagsRequest,
+      readonly O: typeof ListShiftTagsResponse,
+      readonly kind: MethodKind.Unary,
+    },
     /**
      * SaveRoster saves a duty roster. It may be used to initially create a new
      * roster or to save subsequent changes.

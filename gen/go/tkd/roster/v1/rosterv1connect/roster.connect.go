@@ -33,6 +33,18 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// RosterServiceCreateRosterTypeProcedure is the fully-qualified name of the RosterService's
+	// CreateRosterType RPC.
+	RosterServiceCreateRosterTypeProcedure = "/tkd.roster.v1.RosterService/CreateRosterType"
+	// RosterServiceDeleteRosterTypeProcedure is the fully-qualified name of the RosterService's
+	// DeleteRosterType RPC.
+	RosterServiceDeleteRosterTypeProcedure = "/tkd.roster.v1.RosterService/DeleteRosterType"
+	// RosterServiceListRosterTypesProcedure is the fully-qualified name of the RosterService's
+	// ListRosterTypes RPC.
+	RosterServiceListRosterTypesProcedure = "/tkd.roster.v1.RosterService/ListRosterTypes"
+	// RosterServiceListShiftTagsProcedure is the fully-qualified name of the RosterService's
+	// ListShiftTags RPC.
+	RosterServiceListShiftTagsProcedure = "/tkd.roster.v1.RosterService/ListShiftTags"
 	// RosterServiceSaveRosterProcedure is the fully-qualified name of the RosterService's SaveRoster
 	// RPC.
 	RosterServiceSaveRosterProcedure = "/tkd.roster.v1.RosterService/SaveRoster"
@@ -60,6 +72,10 @@ const (
 
 // RosterServiceClient is a client for the tkd.roster.v1.RosterService service.
 type RosterServiceClient interface {
+	CreateRosterType(context.Context, *connect_go.Request[v1.CreateRosterTypeRequest]) (*connect_go.Response[v1.CreateRosterTypeResponse], error)
+	DeleteRosterType(context.Context, *connect_go.Request[v1.DeleteRosterTypeRequest]) (*connect_go.Response[v1.DeleteRosterTypeResponse], error)
+	ListRosterTypes(context.Context, *connect_go.Request[v1.ListRosterTypesRequest]) (*connect_go.Response[v1.ListRosterTypesResponse], error)
+	ListShiftTags(context.Context, *connect_go.Request[v1.ListShiftTagsRequest]) (*connect_go.Response[v1.ListShiftTagsResponse], error)
 	// SaveRoster saves a duty roster. It may be used to initially create a new
 	// roster or to save subsequent changes.
 	SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error)
@@ -91,6 +107,26 @@ type RosterServiceClient interface {
 func NewRosterServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) RosterServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &rosterServiceClient{
+		createRosterType: connect_go.NewClient[v1.CreateRosterTypeRequest, v1.CreateRosterTypeResponse](
+			httpClient,
+			baseURL+RosterServiceCreateRosterTypeProcedure,
+			opts...,
+		),
+		deleteRosterType: connect_go.NewClient[v1.DeleteRosterTypeRequest, v1.DeleteRosterTypeResponse](
+			httpClient,
+			baseURL+RosterServiceDeleteRosterTypeProcedure,
+			opts...,
+		),
+		listRosterTypes: connect_go.NewClient[v1.ListRosterTypesRequest, v1.ListRosterTypesResponse](
+			httpClient,
+			baseURL+RosterServiceListRosterTypesProcedure,
+			opts...,
+		),
+		listShiftTags: connect_go.NewClient[v1.ListShiftTagsRequest, v1.ListShiftTagsResponse](
+			httpClient,
+			baseURL+RosterServiceListShiftTagsProcedure,
+			opts...,
+		),
 		saveRoster: connect_go.NewClient[v1.SaveRosterRequest, v1.SaveRosterResponse](
 			httpClient,
 			baseURL+RosterServiceSaveRosterProcedure,
@@ -136,6 +172,10 @@ func NewRosterServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 
 // rosterServiceClient implements RosterServiceClient.
 type rosterServiceClient struct {
+	createRosterType  *connect_go.Client[v1.CreateRosterTypeRequest, v1.CreateRosterTypeResponse]
+	deleteRosterType  *connect_go.Client[v1.DeleteRosterTypeRequest, v1.DeleteRosterTypeResponse]
+	listRosterTypes   *connect_go.Client[v1.ListRosterTypesRequest, v1.ListRosterTypesResponse]
+	listShiftTags     *connect_go.Client[v1.ListShiftTagsRequest, v1.ListShiftTagsResponse]
 	saveRoster        *connect_go.Client[v1.SaveRosterRequest, v1.SaveRosterResponse]
 	deleteRoster      *connect_go.Client[v1.DeleteRosterRequest, v1.DeleteRosterResponse]
 	analyzeWorkTime   *connect_go.Client[v1.AnalyzeWorkTimeRequest, v1.AnalyzeWorkTimeResponse]
@@ -144,6 +184,26 @@ type rosterServiceClient struct {
 	getWorkingStaff   *connect_go.Client[v1.GetWorkingStaffRequest, v1.GetWorkingStaffResponse]
 	getRequiredShifts *connect_go.Client[v1.GetRequiredShiftsRequest, v1.GetRequiredShiftsResponse]
 	sendRosterPreview *connect_go.Client[v1.SendRosterPreviewRequest, v1.SendRosterPreviewResponse]
+}
+
+// CreateRosterType calls tkd.roster.v1.RosterService.CreateRosterType.
+func (c *rosterServiceClient) CreateRosterType(ctx context.Context, req *connect_go.Request[v1.CreateRosterTypeRequest]) (*connect_go.Response[v1.CreateRosterTypeResponse], error) {
+	return c.createRosterType.CallUnary(ctx, req)
+}
+
+// DeleteRosterType calls tkd.roster.v1.RosterService.DeleteRosterType.
+func (c *rosterServiceClient) DeleteRosterType(ctx context.Context, req *connect_go.Request[v1.DeleteRosterTypeRequest]) (*connect_go.Response[v1.DeleteRosterTypeResponse], error) {
+	return c.deleteRosterType.CallUnary(ctx, req)
+}
+
+// ListRosterTypes calls tkd.roster.v1.RosterService.ListRosterTypes.
+func (c *rosterServiceClient) ListRosterTypes(ctx context.Context, req *connect_go.Request[v1.ListRosterTypesRequest]) (*connect_go.Response[v1.ListRosterTypesResponse], error) {
+	return c.listRosterTypes.CallUnary(ctx, req)
+}
+
+// ListShiftTags calls tkd.roster.v1.RosterService.ListShiftTags.
+func (c *rosterServiceClient) ListShiftTags(ctx context.Context, req *connect_go.Request[v1.ListShiftTagsRequest]) (*connect_go.Response[v1.ListShiftTagsResponse], error) {
+	return c.listShiftTags.CallUnary(ctx, req)
 }
 
 // SaveRoster calls tkd.roster.v1.RosterService.SaveRoster.
@@ -188,6 +248,10 @@ func (c *rosterServiceClient) SendRosterPreview(ctx context.Context, req *connec
 
 // RosterServiceHandler is an implementation of the tkd.roster.v1.RosterService service.
 type RosterServiceHandler interface {
+	CreateRosterType(context.Context, *connect_go.Request[v1.CreateRosterTypeRequest]) (*connect_go.Response[v1.CreateRosterTypeResponse], error)
+	DeleteRosterType(context.Context, *connect_go.Request[v1.DeleteRosterTypeRequest]) (*connect_go.Response[v1.DeleteRosterTypeResponse], error)
+	ListRosterTypes(context.Context, *connect_go.Request[v1.ListRosterTypesRequest]) (*connect_go.Response[v1.ListRosterTypesResponse], error)
+	ListShiftTags(context.Context, *connect_go.Request[v1.ListShiftTagsRequest]) (*connect_go.Response[v1.ListShiftTagsResponse], error)
 	// SaveRoster saves a duty roster. It may be used to initially create a new
 	// roster or to save subsequent changes.
 	SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error)
@@ -215,6 +279,26 @@ type RosterServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
+	rosterServiceCreateRosterTypeHandler := connect_go.NewUnaryHandler(
+		RosterServiceCreateRosterTypeProcedure,
+		svc.CreateRosterType,
+		opts...,
+	)
+	rosterServiceDeleteRosterTypeHandler := connect_go.NewUnaryHandler(
+		RosterServiceDeleteRosterTypeProcedure,
+		svc.DeleteRosterType,
+		opts...,
+	)
+	rosterServiceListRosterTypesHandler := connect_go.NewUnaryHandler(
+		RosterServiceListRosterTypesProcedure,
+		svc.ListRosterTypes,
+		opts...,
+	)
+	rosterServiceListShiftTagsHandler := connect_go.NewUnaryHandler(
+		RosterServiceListShiftTagsProcedure,
+		svc.ListShiftTags,
+		opts...,
+	)
 	rosterServiceSaveRosterHandler := connect_go.NewUnaryHandler(
 		RosterServiceSaveRosterProcedure,
 		svc.SaveRoster,
@@ -257,6 +341,14 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 	)
 	return "/tkd.roster.v1.RosterService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case RosterServiceCreateRosterTypeProcedure:
+			rosterServiceCreateRosterTypeHandler.ServeHTTP(w, r)
+		case RosterServiceDeleteRosterTypeProcedure:
+			rosterServiceDeleteRosterTypeHandler.ServeHTTP(w, r)
+		case RosterServiceListRosterTypesProcedure:
+			rosterServiceListRosterTypesHandler.ServeHTTP(w, r)
+		case RosterServiceListShiftTagsProcedure:
+			rosterServiceListShiftTagsHandler.ServeHTTP(w, r)
 		case RosterServiceSaveRosterProcedure:
 			rosterServiceSaveRosterHandler.ServeHTTP(w, r)
 		case RosterServiceDeleteRosterProcedure:
@@ -281,6 +373,22 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 
 // UnimplementedRosterServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedRosterServiceHandler struct{}
+
+func (UnimplementedRosterServiceHandler) CreateRosterType(context.Context, *connect_go.Request[v1.CreateRosterTypeRequest]) (*connect_go.Response[v1.CreateRosterTypeResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.CreateRosterType is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) DeleteRosterType(context.Context, *connect_go.Request[v1.DeleteRosterTypeRequest]) (*connect_go.Response[v1.DeleteRosterTypeResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.DeleteRosterType is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) ListRosterTypes(context.Context, *connect_go.Request[v1.ListRosterTypesRequest]) (*connect_go.Response[v1.ListRosterTypesResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.ListRosterTypes is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) ListShiftTags(context.Context, *connect_go.Request[v1.ListShiftTagsRequest]) (*connect_go.Response[v1.ListShiftTagsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.ListShiftTags is not implemented"))
+}
 
 func (UnimplementedRosterServiceHandler) SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.SaveRoster is not implemented"))
