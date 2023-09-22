@@ -6,12 +6,15 @@ import (
 	"net/http"
 	"time"
 
+	servertiming "github.com/mitchellh/go-server-timing"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"golang.org/x/sync/errgroup"
 )
 
 func Create(addr string, handler http.Handler) *http.Server {
+	handler = servertiming.Middleware(handler, nil)
+
 	srv := &http.Server{
 		Addr:    addr,
 		Handler: h2c.NewHandler(handler, &http2.Server{}),
