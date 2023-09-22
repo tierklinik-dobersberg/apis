@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/bufbuild/connect-go"
+	"github.com/tierklinik-dobersberg/apis/pkg/internal/timing"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -25,13 +26,19 @@ func NewFilterInterceptor(resolver SubjectResolver) connect.UnaryInterceptorFunc
 				return nil, err
 			}
 
-			userID, roles, err := resolver.GetRequestSubject(ctx, ar)
-			if err != nil {
-				return nil, err
-			}
+			if err := timing.Track(ctx, "privacy", func() error {
+				userID, roles, err := resolver.GetRequestSubject(ctx, ar)
+				if err != nil {
+					return err
+				}
 
-			if err := FilterAllowedFields(req.Any().(proto.Message), userID, roles); err != nil {
-				return nil, connect.NewError(connect.CodeInternal, err)
+				if err := FilterAllowedFields(req.Any().(proto.Message), userID, roles); err != nil {
+					return connect.NewError(connect.CodeInternal, err)
+				}
+
+				return nil
+			}); err != nil {
+				return nil, err
 			}
 
 			return req, nil
