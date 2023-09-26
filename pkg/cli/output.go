@@ -22,7 +22,7 @@ func (root *Root) defaultPrintFunc(res any) {
 	}
 	var blob []byte
 
-	if root.outputYAML {
+	if root.OutputYAML {
 		var err error
 		blob, err = yaml.JSONToYAML(buf.Bytes())
 		if err != nil {
