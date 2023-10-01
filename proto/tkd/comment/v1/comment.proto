@@ -15,7 +15,7 @@ enum NotificationType {
 
 message Scope {
     // The unique identifier of the scope. This must not be changed
-    // once created and referenced by comments.
+    // once created and is referenced by comments.
     string id = 1 [
         (buf.validate.field).required = true,
         (buf.validate.field).string.min_len = 3
