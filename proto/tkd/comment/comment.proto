@@ -1,0 +1,188 @@
+syntax = "proto3";
+
+package tkd.comment.v1;
+
+import "buf/validate/validate.proto";
+import "tkd/common/v1/descriptor.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+
+enum NotificationType {
+    NOTIFICATION_TYPE_UNSPECIFIED = 0;
+    NOTIFICATION_TYPE_MAIL = 1;
+    NOTIFICATION_TYPE_SMS = 2;
+}
+
+message Scope {
+    // The unique identifier of the scope. This must not be changed
+    // once created and referenced by comments.
+    string id = 1 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.min_len = 3
+    ];
+
+    // The display name of the comment scope. This is used
+    // for notifications.
+    string name = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // If set, the type of notification that will be sent for answers and
+    // mentions.
+    NotificationType notifcation_type = 3;
+}
+
+message Comment {
+    // The scope of the comment.
+    string scope = 1 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.min_len = 3
+    ];
+
+    // The scope-unique ID of the comment.
+    string id = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // The content of the comment in markdown format.
+    string content = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    // An optional Id of the parent comment. This is only set if the
+    // comment is an answer to another comment.
+    string parent_id = 4;
+
+    // The timestamp at which the comment has been created.
+    google.protobuf.Timestamp created_at = 5 [
+        (buf.validate.field).required = true
+    ];
+
+    // The user identifier that created the comment.
+    string creator_id = 6 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message CommentTree {
+    // The actual comment.
+    Comment comment = 1;
+
+    // A list of answers to this comment.
+    repeated CommentTree answers = 2;
+}
+
+service CommentService {
+    rpc CreateScope(CreateScopeRequest) returns (CreateScopeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser"]
+        };
+    }
+
+    rpc ListScope(ListScopeRequest) returns (ListScopeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser"]
+        };
+    }
+
+    rpc DeleteScope(DeleteScopeRequest) returns (DeleteScopeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+            allowed_roles: ["idm_superuser"]
+        };
+    }
+
+    rpc CreateComment(CreateCommentRequest) returns (CreateCommentResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc GetComment(GetCommentRequest) returns (GetCommentResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc ListComments(ListCommentsRequest) returns (ListCommentsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+}
+
+// CreateScopeRequest is used to create a new comment scope.
+message CreateScopeRequest {
+    string id = 1 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.min_len = 3
+    ];
+
+    string name = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    NotificationType notifcation_type = 3;
+}
+
+// CreateScopeResponse is returned when a new comment scope has been created
+// and includes the created scope definition.
+message CreateScopeResponse {
+    Scope scope = 1;
+}
+
+// 
+message ListScopeRequest {}
+message ListScopeResponse {
+    repeated Scope scopes = 1;
+}
+
+// Delete Scope
+message DeleteScopeRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+message DeleteScopeResponse {}
+
+// Create Comment
+message CreateCommentRequest {
+    string scope = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string parent_id = 2;
+
+    string content = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.FieldMask read_mask = 4;
+}
+
+message CreateCommentResponse {
+    Comment comment = 1;
+}
+
+// List Comments
+message ListCommentsRequest {
+    string scope = 1;
+    bool recurse = 2;
+}
+
+message ListCommentsResponse {
+    repeated CommentTree result = 2;
+}
+
+// Get Comments
+message GetCommentRequest {
+    string scope = 1;
+    string id = 2;
+    bool recurse = 3;
+}
+
+message GetCommentResponse {
+    CommentTree result = 2;
+}
