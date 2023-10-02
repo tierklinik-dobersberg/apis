@@ -7,6 +7,7 @@ import (
 	"errors"
 	"net"
 	"net/http"
+	"net/http/httputil"
 	"os"
 	"path/filepath"
 	"time"
@@ -32,6 +33,8 @@ type Root struct {
 	tokens TokenFile
 
 	BaseURLS `json:"urls"`
+	Debug    bool `json:"debug"`
+	Verbose  bool `json:"verbose"`
 
 	TokenPath          string `json:"tokenPath"`
 	InsecureSkipVerify bool   `json:"insecure"`
@@ -47,7 +50,31 @@ func (root *Root) RoundTrip(req *http.Request) (*http.Response, error) {
 		req.Header.Add("Authentication", "Bearer "+root.tokens.AccessToken)
 	}
 
-	return root.Transport.RoundTrip(req)
+	if root.Debug {
+		if root.Verbose {
+			blob, _ := httputil.DumpRequestOut(req, true)
+			_, _ = os.Stderr.Write(blob)
+		} else {
+			logrus.Debugf("[http] %s %q", req.Method, req.URL.String())
+		}
+	}
+
+	res, err := root.Transport.RoundTrip(req)
+
+	if root.Debug {
+		if err != nil {
+			logrus.Debugf("[http] %s %q -> error: %s", req.Method, req.URL.String(), err)
+		} else {
+			if root.Verbose {
+				blob, _ := httputil.DumpResponse(res, true)
+				_, _ = os.Stderr.Write(blob)
+			} else {
+				logrus.Debugf("[http] %s %q -> status: %d", req.Method, req.URL.String(), res.StatusCode)
+			}
+		}
+	}
+
+	return res, err
 }
 
 func (root *Root) Context() context.Context {
@@ -71,7 +98,8 @@ func New(name string) *Root {
 	}
 
 	// try to read the configuration file
-	configFileContent, err := os.ReadFile(filepath.Join(configDir, "config.yml"))
+	configFile := filepath.Join(configDir, "config.yml")
+	configFileContent, err := os.ReadFile(configFile)
 	if err == nil {
 		configFileContent, err = yaml.YAMLToJSON(configFileContent)
 		if err != nil {
@@ -102,6 +130,10 @@ func New(name string) *Root {
 	root.Command = &cobra.Command{
 		Use: name,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			if root.Debug {
+				logrus.SetLevel(logrus.DebugLevel)
+			}
+
 			dirStat, err := os.Stat(configDir)
 			if err != nil {
 				if os.IsNotExist(err) {
@@ -178,8 +210,10 @@ func New(name string) *Root {
 		flags.StringVar(&root.BaseURLS.Roster, "roster-url", root.BaseURLS.Roster, "The Base URL for the Roster server")
 		flags.StringVar(&root.BaseURLS.CallService, "call-service-url", root.BaseURLS.CallService, "The Base URL for the CallService server")
 		flags.StringVar(&root.TokenPath, "token-file", defaultTokenPath, "The path to the cached access token")
-		flags.BoolVar(&root.InsecureSkipVerify, "insecure", false, "Do not validate TLS certificates")
-		flags.BoolVar(&root.OutputYAML, "yaml", false, "Display YAML output instead of JSON")
+		flags.BoolVar(&root.InsecureSkipVerify, "insecure", root.InsecureSkipVerify, "Do not validate TLS certificates")
+		flags.BoolVar(&root.OutputYAML, "yaml", root.OutputYAML, "Display YAML output instead of JSON")
+		flags.BoolVar(&root.Debug, "debug", root.Debug, "Enable debug mode")
+		flags.BoolVar(&root.Verbose, "verbose", root.Verbose, "Enable verbose output mode")
 	}
 
 	return root

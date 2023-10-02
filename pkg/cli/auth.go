@@ -16,6 +16,8 @@ type TokenFile struct {
 }
 
 func (root *Root) Login(username string, password string, totp string) error {
+	root.tokens.AccessToken = ""
+
 	res, err := root.Auth().Login(root.Context(), connect.NewRequest(&idmv1.LoginRequest{
 		AuthType: idmv1.AuthType_AUTH_TYPE_PASSWORD,
 		Auth: &idmv1.LoginRequest_Password{
