@@ -30,6 +30,13 @@ message Scope {
     // If set, the type of notification that will be sent for answers and
     // mentions.
     NotificationType notifcation_type = 3;
+
+    // A go template/text template to generate a URL to open the comment.
+    // The template context is set to the comment.
+    //
+    // Example:
+    //      "https://roster.dobersberg.vet/comment/open/{{ .Scope }}//{{ .Id }}"
+    string view_comment_url_template = 4;
 }
 
 message Comment {
@@ -125,6 +132,9 @@ message CreateScopeRequest {
     ];
 
     NotificationType notifcation_type = 3;
+
+    // See Scope.view_comment_url_template
+    string view_comment_url_template = 4;
 }
 
 // CreateScopeResponse is returned when a new comment scope has been created

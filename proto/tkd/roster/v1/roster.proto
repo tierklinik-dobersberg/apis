@@ -29,7 +29,7 @@ message RequiredShift {
     // OnHoliday is set to true if the shift is on a public holiday.
     bool on_holiday = 5;
 
-    // onWeekend is set to true if the shift is on a week-end day (Saturday or Sunday).
+    // OnWeekend is set to true if the shift is on a week-end day (Saturday or Sunday).
     bool on_weekend = 6;
 
     // ViolationsPerUserId is a map indexed with user ids that holds a list of
