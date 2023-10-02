@@ -26,12 +26,7 @@ type BaseURLS struct {
 	CallService string `json:"callService"`
 }
 
-type Root struct {
-	*cobra.Command `json:"-"`
-
-	ctx    context.Context
-	tokens TokenFile
-
+type Config struct {
 	BaseURLS `json:"urls"`
 	Debug    bool `json:"debug"`
 	Verbose  bool `json:"verbose"`
@@ -39,19 +34,51 @@ type Root struct {
 	TokenPath          string `json:"tokenPath"`
 	InsecureSkipVerify bool   `json:"insecure"`
 	OutputYAML         bool   `json:"outputYaml"`
+}
+
+type Root struct {
+	*cobra.Command `json:"-"`
+
+	ctx    context.Context
+	tokens TokenFile
+
+	Configurations map[string]Config `json:"configs"`
+
+	activeConfig string
 
 	HttpClient connect.HTTPClient `json:"-"`
 	Print      OutputFunc         `json:"-"`
 	Transport  http.RoundTripper  `json:"-"`
 }
 
+func (root *Root) Config() Config {
+	cfg := root.activeConfig
+	if cfg == "" {
+		cfg = "default"
+	}
+
+	c, ok := root.Configurations[cfg]
+	if !ok {
+		return Config{}
+	}
+
+	return c
+}
+
+func (root *Root) Debug() bool          { return root.Config().Debug }
+func (root *Root) Verbose() bool        { return root.Config().Verbose }
+func (root *Root) TokenPath() string    { return root.Config().TokenPath }
+func (root *Root) OutputYAML() bool     { return root.Config().OutputYAML }
+func (root *Root) Insecure() bool       { return root.Config().InsecureSkipVerify }
+func (root *Root) ActiveConfig() string { return root.activeConfig }
+
 func (root *Root) RoundTrip(req *http.Request) (*http.Response, error) {
 	if root.tokens.AccessToken != "" {
 		req.Header.Add("Authentication", "Bearer "+root.tokens.AccessToken)
 	}
 
-	if root.Debug {
-		if root.Verbose {
+	if root.Debug() {
+		if root.Verbose() {
 			blob, _ := httputil.DumpRequestOut(req, true)
 			_, _ = os.Stderr.Write(blob)
 		} else {
@@ -61,11 +88,11 @@ func (root *Root) RoundTrip(req *http.Request) (*http.Response, error) {
 
 	res, err := root.Transport.RoundTrip(req)
 
-	if root.Debug {
+	if root.Debug() {
 		if err != nil {
 			logrus.Debugf("[http] %s %q -> error: %s", req.Method, req.URL.String(), err)
 		} else {
-			if root.Verbose {
+			if root.Verbose() {
 				blob, _ := httputil.DumpResponse(res, true)
 				_, _ = os.Stderr.Write(blob)
 			} else {
@@ -106,31 +133,40 @@ func New(name string) *Root {
 			logrus.Fatalf("failed to read YAML configuration: %s", err)
 		}
 
-		if err := json.Unmarshal(configFileContent, root); err != nil {
+		if err := json.Unmarshal(configFileContent, &root.Configurations); err != nil {
 			logrus.Fatalf("failed to parse configuration: %s", err)
 		}
 	} else if !os.IsNotExist(err) {
 		logrus.Fatalf("failed to open configuration file: %s", err)
 	}
 
-	// apply default from environment
-	if root.TokenPath == "" {
-		root.TokenPath = os.Getenv("CIS_CONFIG_TOKEN_PATH")
-	}
-
-	if root.TokenPath == "" {
-		root.TokenPath = filepath.Join(
-			configDir,
-			"token.json",
-		)
-	}
-
 	root.Print = root.defaultPrintFunc
+
+	var flagConfig Config
 
 	root.Command = &cobra.Command{
 		Use: name,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			if root.Debug {
+			cfg := root.Config()
+			if cfg.TokenPath == "" {
+				cfg.TokenPath = filepath.Join(
+					configDir,
+					root.activeConfig+"-tokens.json",
+				)
+			}
+
+			// apply overwrites from command line flags
+			if cmd.Flag("debug").Changed {
+				cfg.Debug = flagConfig.Debug
+			}
+			if cmd.Flag("verbose").Changed {
+				cfg.Verbose = flagConfig.Verbose
+			}
+			if cmd.Flag("insecure").Changed {
+				cfg.InsecureSkipVerify = flagConfig.InsecureSkipVerify
+			}
+
+			if cfg.Debug {
 				logrus.SetLevel(logrus.DebugLevel)
 			}
 
@@ -166,11 +202,11 @@ func New(name string) *Root {
 				TLSHandshakeTimeout:   10 * time.Second,
 				ExpectContinueTimeout: 1 * time.Second,
 				TLSClientConfig: &tls.Config{
-					InsecureSkipVerify: root.InsecureSkipVerify,
+					InsecureSkipVerify: cfg.InsecureSkipVerify,
 				},
 			}
 
-			if root.InsecureSkipVerify {
+			if cfg.InsecureSkipVerify {
 				logrus.Warn("TLS certificate validation is disabled")
 			}
 
@@ -199,21 +235,11 @@ func New(name string) *Root {
 
 	flags := root.PersistentFlags()
 	{
-
-		defaultTokenPath := os.Getenv("CIS_TOKEN_FILE")
-		if defaultTokenPath == "" {
-			defaultTokenPath = filepath.Join(configDir, "token.json")
-		}
-
-		flags.StringVar(&root.BaseURLS.Idm, "idm-url", root.BaseURLS.Idm, "The Base URL for the IDM server")
-		flags.StringVar(&root.BaseURLS.Calendar, "cal-url", root.BaseURLS.Calendar, "The Base URL for the Calendar server")
-		flags.StringVar(&root.BaseURLS.Roster, "roster-url", root.BaseURLS.Roster, "The Base URL for the Roster server")
-		flags.StringVar(&root.BaseURLS.CallService, "call-service-url", root.BaseURLS.CallService, "The Base URL for the CallService server")
-		flags.StringVar(&root.TokenPath, "token-file", defaultTokenPath, "The path to the cached access token")
-		flags.BoolVar(&root.InsecureSkipVerify, "insecure", root.InsecureSkipVerify, "Do not validate TLS certificates")
-		flags.BoolVar(&root.OutputYAML, "yaml", root.OutputYAML, "Display YAML output instead of JSON")
-		flags.BoolVar(&root.Debug, "debug", root.Debug, "Enable debug mode")
-		flags.BoolVar(&root.Verbose, "verbose", root.Verbose, "Enable verbose output mode")
+		flags.BoolVar(&flagConfig.InsecureSkipVerify, "insecure", false, "Do not validate TLS certificates")
+		flags.BoolVar(&flagConfig.OutputYAML, "yaml", false, "Display YAML output instead of JSON")
+		flags.BoolVar(&flagConfig.Debug, "debug", false, "Enable debug mode")
+		flags.BoolVar(&flagConfig.Verbose, "verbose", false, "Enable verbose output mode")
+		flags.StringVar(&root.activeConfig, "configuration", "default", "Which configuration to use.")
 	}
 
 	return root

@@ -103,17 +103,17 @@ func (root *Root) writeTokenFile() error {
 		return fmt.Errorf("marshal: %w", err)
 	}
 
-	if err := os.WriteFile(root.TokenPath, blob, 0600); err != nil {
-		return fmt.Errorf("write to %q: %w", root.TokenPath, err)
+	if err := os.WriteFile(root.TokenPath(), blob, 0600); err != nil {
+		return fmt.Errorf("write to %q: %w", root.TokenPath(), err)
 	}
 
 	return nil
 }
 
 func (root *Root) readTokenFile() error {
-	content, err := os.ReadFile(root.TokenPath)
+	content, err := os.ReadFile(root.TokenPath())
 	if err != nil {
-		return fmt.Errorf("read %s: %w", root.TokenPath, err)
+		return fmt.Errorf("read %s: %w", root.TokenPath(), err)
 	}
 
 	if err := json.Unmarshal(content, &root.tokens); err != nil {
