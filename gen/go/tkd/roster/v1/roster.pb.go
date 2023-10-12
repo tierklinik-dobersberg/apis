@@ -42,7 +42,7 @@ type RequiredShift struct {
 	EligibleUserIds []string `protobuf:"bytes,4,rep,name=eligible_user_ids,json=eligibleUserIds,proto3" json:"eligible_user_ids,omitempty"`
 	// OnHoliday is set to true if the shift is on a public holiday.
 	OnHoliday bool `protobuf:"varint,5,opt,name=on_holiday,json=onHoliday,proto3" json:"on_holiday,omitempty"`
-	// onWeekend is set to true if the shift is on a week-end day (Saturday or Sunday).
+	// OnWeekend is set to true if the shift is on a week-end day (Saturday or Sunday).
 	OnWeekend bool `protobuf:"varint,6,opt,name=on_weekend,json=onWeekend,proto3" json:"on_weekend,omitempty"`
 	// ViolationsPerUserId is a map indexed with user ids that holds a list of
 	// violations and resoning of why a user is not part of RequiredShift.eligible_user_ids
