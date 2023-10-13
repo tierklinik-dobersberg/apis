@@ -23,6 +23,7 @@ message CallEntry {
     string customer_source = 9;
     bool error = 10;
     string transfer_target = 11;
+    string accepted_agent = 12;
 }
 
 message OnCall {

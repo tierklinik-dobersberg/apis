@@ -384,6 +384,7 @@ export const RegisteredPasskey = proto3.makeMessageType(
     { no: 3, name: "client_os", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "client_device", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "cred_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "passkey_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

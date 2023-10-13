@@ -25,6 +25,7 @@ export const CallEntry = proto3.makeMessageType(
     { no: 9, name: "customer_source", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 10, name: "error", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 11, name: "transfer_target", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 12, name: "accepted_agent", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

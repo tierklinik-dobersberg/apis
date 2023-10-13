@@ -317,6 +317,7 @@ message RegisteredPasskey {
     string client_os = 3;
     string client_device = 4;
     string cred_type = 5;
+    string passkey_name = 6;
 }
 
 message GetRegisteredPasskeysRequest {}

@@ -1013,6 +1013,11 @@ export declare class RegisteredPasskey extends Message<RegisteredPasskey> {
    */
   credType: string;
 
+  /**
+   * @generated from field: string passkey_name = 6;
+   */
+  passkeyName: string;
+
   constructor(data?: PartialMessage<RegisteredPasskey>);
 
   static readonly runtime: typeof proto3;

@@ -68,6 +68,11 @@ export declare class CallEntry extends Message<CallEntry> {
    */
   transferTarget: string;
 
+  /**
+   * @generated from field: string accepted_agent = 12;
+   */
+  acceptedAgent: string;
+
   constructor(data?: PartialMessage<CallEntry>);
 
   static readonly runtime: typeof proto3;
