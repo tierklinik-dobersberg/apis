@@ -37,6 +37,7 @@ export const OnCall = proto3.makeMessageType(
   () => [
     { no: 1, name: "profile", kind: "message", T: Profile },
     { no: 2, name: "transfer_target", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "until", kind: "message", T: Timestamp },
   ],
 );
 
@@ -164,9 +165,8 @@ export const GetOnCallResponse = proto3.makeMessageType(
   "tkd.pbx3cx.v1.GetOnCallResponse",
   () => [
     { no: 1, name: "on_call", kind: "message", T: OnCall, repeated: true },
-    { no: 2, name: "until", kind: "message", T: Timestamp },
-    { no: 3, name: "roster_date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 4, name: "is_overwrite", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "roster_date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "is_overwrite", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 

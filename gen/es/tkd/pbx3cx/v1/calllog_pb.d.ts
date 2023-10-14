@@ -102,6 +102,11 @@ export declare class OnCall extends Message<OnCall> {
    */
   transferTarget: string;
 
+  /**
+   * @generated from field: google.protobuf.Timestamp until = 3;
+   */
+  until?: Timestamp;
+
   constructor(data?: PartialMessage<OnCall>);
 
   static readonly runtime: typeof proto3;
@@ -465,19 +470,14 @@ export declare class GetOnCallResponse extends Message<GetOnCallResponse> {
   onCall: OnCall[];
 
   /**
-   * @generated from field: google.protobuf.Timestamp until = 2;
-   */
-  until?: Timestamp;
-
-  /**
    * YYYY-MM-DD
    *
-   * @generated from field: string roster_date = 3;
+   * @generated from field: string roster_date = 2;
    */
   rosterDate: string;
 
   /**
-   * @generated from field: bool is_overwrite = 4;
+   * @generated from field: bool is_overwrite = 3;
    */
   isOverwrite: boolean;
 

@@ -42,7 +42,8 @@ type Root struct {
 	ctx    context.Context
 	tokens TokenFile
 
-	Configurations map[string]Config `json:"configs"`
+	ConfigurationDirectory string             `json:"-"`
+	Configurations         map[string]*Config `json:"configs"`
 
 	activeConfig string
 
@@ -51,7 +52,7 @@ type Root struct {
 	Transport  http.RoundTripper  `json:"-"`
 }
 
-func (root *Root) Config() Config {
+func (root *Root) Config() *Config {
 	cfg := root.activeConfig
 	if cfg == "" {
 		cfg = "default"
@@ -59,7 +60,7 @@ func (root *Root) Config() Config {
 
 	c, ok := root.Configurations[cfg]
 	if !ok {
-		return Config{}
+		return &Config{}
 	}
 
 	return c
@@ -121,7 +122,8 @@ func New(name string) *Root {
 	}
 
 	root := &Root{
-		ctx: context.Background(),
+		ctx:                    context.Background(),
+		ConfigurationDirectory: configDir,
 	}
 
 	// try to read the configuration file

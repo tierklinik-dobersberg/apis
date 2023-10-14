@@ -29,6 +29,7 @@ message CallEntry {
 message OnCall {
     tkd.idm.v1.Profile profile = 1;
     string transfer_target = 2;
+    google.protobuf.Timestamp until = 3;
 }
 
 message CustomOverwrite {
@@ -150,9 +151,8 @@ message GetOnCallRequest {
 
 message GetOnCallResponse {
     repeated OnCall on_call = 1;
-    google.protobuf.Timestamp until = 2;
-    string roster_date = 3; // YYYY-MM-DD
-    bool is_overwrite = 4;
+    string roster_date = 2; // YYYY-MM-DD
+    bool is_overwrite = 3;
 }
 
 message CreateOverwriteRequest {
