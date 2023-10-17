@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateUserRequest, CreateUserResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
+import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
 import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -66,6 +66,24 @@ export const UserService = {
       name: "DeleteUser",
       I: DeleteUserRequest,
       O: DeleteUserResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.UserService.SetUserExtraKey
+     */
+    setUserExtraKey: {
+      name: "SetUserExtraKey",
+      I: SetUserExtraKeyRequest,
+      O: SetUserExtraKeyResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.UserService.DeleteUserExtraKey
+     */
+    deleteUserExtraKey: {
+      name: "DeleteUserExtraKey",
+      I: DeleteUserExtraKeyRequest,
+      O: DeleteUserExtraKeyResponse,
       kind: MethodKind.Unary,
     },
   }

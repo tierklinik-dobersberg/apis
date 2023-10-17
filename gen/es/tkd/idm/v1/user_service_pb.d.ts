@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct, Value } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Profile } from "./user_pb.js";
 
@@ -405,5 +405,106 @@ export declare class InviteUserResponse extends Message<InviteUserResponse> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): InviteUserResponse;
 
   static equals(a: InviteUserResponse | PlainMessage<InviteUserResponse> | undefined, b: InviteUserResponse | PlainMessage<InviteUserResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.SetUserExtraKeyRequest
+ */
+export declare class SetUserExtraKeyRequest extends Message<SetUserExtraKeyRequest> {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: string path = 2;
+   */
+  path: string;
+
+  /**
+   * @generated from field: google.protobuf.Value value = 3;
+   */
+  value?: Value;
+
+  constructor(data?: PartialMessage<SetUserExtraKeyRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.SetUserExtraKeyRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SetUserExtraKeyRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SetUserExtraKeyRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SetUserExtraKeyRequest;
+
+  static equals(a: SetUserExtraKeyRequest | PlainMessage<SetUserExtraKeyRequest> | undefined, b: SetUserExtraKeyRequest | PlainMessage<SetUserExtraKeyRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.SetUserExtraKeyResponse
+ */
+export declare class SetUserExtraKeyResponse extends Message<SetUserExtraKeyResponse> {
+  constructor(data?: PartialMessage<SetUserExtraKeyResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.SetUserExtraKeyResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SetUserExtraKeyResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SetUserExtraKeyResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SetUserExtraKeyResponse;
+
+  static equals(a: SetUserExtraKeyResponse | PlainMessage<SetUserExtraKeyResponse> | undefined, b: SetUserExtraKeyResponse | PlainMessage<SetUserExtraKeyResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.DeleteUserExtraKeyRequest
+ */
+export declare class DeleteUserExtraKeyRequest extends Message<DeleteUserExtraKeyRequest> {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * @generated from field: string path = 2;
+   */
+  path: string;
+
+  constructor(data?: PartialMessage<DeleteUserExtraKeyRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.DeleteUserExtraKeyRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteUserExtraKeyRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteUserExtraKeyRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteUserExtraKeyRequest;
+
+  static equals(a: DeleteUserExtraKeyRequest | PlainMessage<DeleteUserExtraKeyRequest> | undefined, b: DeleteUserExtraKeyRequest | PlainMessage<DeleteUserExtraKeyRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.DeleteUserExtraKeyResponse
+ */
+export declare class DeleteUserExtraKeyResponse extends Message<DeleteUserExtraKeyResponse> {
+  constructor(data?: PartialMessage<DeleteUserExtraKeyResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.DeleteUserExtraKeyResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteUserExtraKeyResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteUserExtraKeyResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteUserExtraKeyResponse;
+
+  static equals(a: DeleteUserExtraKeyResponse | PlainMessage<DeleteUserExtraKeyResponse> | undefined, b: DeleteUserExtraKeyResponse | PlainMessage<DeleteUserExtraKeyResponse> | undefined): boolean;
 }
 

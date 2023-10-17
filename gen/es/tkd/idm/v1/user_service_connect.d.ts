@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateUserRequest, CreateUserResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
+import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
 import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -66,6 +66,24 @@ export declare const UserService: {
       readonly name: "DeleteUser",
       readonly I: typeof DeleteUserRequest,
       readonly O: typeof DeleteUserResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.UserService.SetUserExtraKey
+     */
+    readonly setUserExtraKey: {
+      readonly name: "SetUserExtraKey",
+      readonly I: typeof SetUserExtraKeyRequest,
+      readonly O: typeof SetUserExtraKeyResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.UserService.DeleteUserExtraKey
+     */
+    readonly deleteUserExtraKey: {
+      readonly name: "DeleteUserExtraKey",
+      readonly I: typeof DeleteUserExtraKeyRequest,
+      readonly O: typeof DeleteUserExtraKeyResponse,
       readonly kind: MethodKind.Unary,
     },
   }

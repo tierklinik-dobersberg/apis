@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { FieldMask, proto3, Struct } from "@bufbuild/protobuf";
+import { FieldMask, proto3, Struct, Value } from "@bufbuild/protobuf";
 import { Profile } from "./user_pb.js";
 
 /**
@@ -147,6 +147,45 @@ export const InviteUserRequest = proto3.makeMessageType(
  */
 export const InviteUserResponse = proto3.makeMessageType(
   "tkd.idm.v1.InviteUserResponse",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.SetUserExtraKeyRequest
+ */
+export const SetUserExtraKeyRequest = proto3.makeMessageType(
+  "tkd.idm.v1.SetUserExtraKeyRequest",
+  () => [
+    { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "path", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "value", kind: "message", T: Value },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.SetUserExtraKeyResponse
+ */
+export const SetUserExtraKeyResponse = proto3.makeMessageType(
+  "tkd.idm.v1.SetUserExtraKeyResponse",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.DeleteUserExtraKeyRequest
+ */
+export const DeleteUserExtraKeyRequest = proto3.makeMessageType(
+  "tkd.idm.v1.DeleteUserExtraKeyRequest",
+  () => [
+    { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "path", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.DeleteUserExtraKeyResponse
+ */
+export const DeleteUserExtraKeyResponse = proto3.makeMessageType(
+  "tkd.idm.v1.DeleteUserExtraKeyResponse",
   [],
 );
 

@@ -50,6 +50,20 @@ service UserService {
       allowed_roles: ["idm_superuser"]
     };
   }
+
+  rpc SetUserExtraKey(SetUserExtraKeyRequest) returns (SetUserExtraKeyResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
+
+  rpc DeleteUserExtraKey(DeleteUserExtraKeyRequest) returns (DeleteUserExtraKeyResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+      allowed_roles: ["idm_superuser"]
+    };
+  }
 }
 
 message GetUserRequest {
@@ -132,3 +146,31 @@ message InviteUserRequest {
   repeated string initial_roles = 2;
 }
 message InviteUserResponse {}
+
+message SetUserExtraKeyRequest {
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  string path = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  google.protobuf.Value value = 3 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message SetUserExtraKeyResponse {}
+
+message DeleteUserExtraKeyRequest {
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  string path = 2 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message DeleteUserExtraKeyResponse {}
