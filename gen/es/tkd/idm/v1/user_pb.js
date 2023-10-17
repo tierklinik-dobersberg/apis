@@ -7,6 +7,19 @@ import { FieldMask, proto3, Struct } from "@bufbuild/protobuf";
 import { Role } from "./role_service_pb.js";
 
 /**
+ * @generated from enum tkd.idm.v1.FieldType
+ */
+export const FieldType = proto3.makeEnum(
+  "tkd.idm.v1.FieldType",
+  [
+    {no: 0, name: "FIELD_TYPE_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "FIELD_TYPE_STRING", localName: "STRING"},
+    {no: 2, name: "FIELD_TYPE_NUMBER", localName: "NUMBER"},
+    {no: 3, name: "FIELD_TYPE_BOOL", localName: "BOOL"},
+  ],
+);
+
+/**
  * @generated from message tkd.idm.v1.EMail
  */
 export const EMail = proto3.makeMessageType(
@@ -81,5 +94,23 @@ export const Profile = proto3.makeMessageType(
     { no: 12, name: "password_auth_enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 20, name: "privacy_mask", kind: "message", T: FieldMask },
   ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.FieldConfig
+ */
+export const FieldConfig = proto3.makeMessageType(
+  "tkd.idm.v1.FieldConfig",
+  () => [
+    { no: 1, name: "type", kind: "enum", T: proto3.getEnumType(FieldType), oneof: "kind" },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.ExtraDataConfig
+ */
+export const ExtraDataConfig = proto3.makeMessageType(
+  "tkd.idm.v1.ExtraDataConfig",
+  [],
 );
 

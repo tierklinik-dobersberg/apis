@@ -119,7 +119,8 @@ message User {
         "avatar",
         "primary_mail",
         "primary_phone_number",
-        "birthday"
+        "birthday",
+        "extra"
       ]
     },
     owner_field_name: "id",
@@ -177,3 +178,4 @@ message Profile {
     allowed_roles: ["idm_superuser", "idm_user_manager"]
   };
 }
+
