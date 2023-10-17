@@ -8,31 +8,6 @@ import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Role } from "./role_service_pb.js";
 
 /**
- * @generated from enum tkd.idm.v1.FieldType
- */
-export declare enum FieldType {
-  /**
-   * @generated from enum value: FIELD_TYPE_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: FIELD_TYPE_STRING = 1;
-   */
-  STRING = 1,
-
-  /**
-   * @generated from enum value: FIELD_TYPE_NUMBER = 2;
-   */
-  NUMBER = 2,
-
-  /**
-   * @generated from enum value: FIELD_TYPE_BOOL = 3;
-   */
-  BOOL = 3,
-}
-
-/**
  * @generated from message tkd.idm.v1.EMail
  */
 export declare class EMail extends Message<EMail> {
@@ -355,54 +330,5 @@ export declare class Profile extends Message<Profile> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Profile;
 
   static equals(a: Profile | PlainMessage<Profile> | undefined, b: Profile | PlainMessage<Profile> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.idm.v1.FieldConfig
- */
-export declare class FieldConfig extends Message<FieldConfig> {
-  /**
-   * @generated from oneof tkd.idm.v1.FieldConfig.kind
-   */
-  kind: {
-    /**
-     * @generated from field: tkd.idm.v1.FieldType type = 1;
-     */
-    value: FieldType;
-    case: "type";
-  } | { case: undefined; value?: undefined };
-
-  constructor(data?: PartialMessage<FieldConfig>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.idm.v1.FieldConfig";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): FieldConfig;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): FieldConfig;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): FieldConfig;
-
-  static equals(a: FieldConfig | PlainMessage<FieldConfig> | undefined, b: FieldConfig | PlainMessage<FieldConfig> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.idm.v1.ExtraDataConfig
- */
-export declare class ExtraDataConfig extends Message<ExtraDataConfig> {
-  constructor(data?: PartialMessage<ExtraDataConfig>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.idm.v1.ExtraDataConfig";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ExtraDataConfig;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ExtraDataConfig;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ExtraDataConfig;
-
-  static equals(a: ExtraDataConfig | PlainMessage<ExtraDataConfig> | undefined, b: ExtraDataConfig | PlainMessage<ExtraDataConfig> | undefined): boolean;
 }
 
