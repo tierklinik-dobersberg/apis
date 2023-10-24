@@ -156,7 +156,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to find method descriptor for %s", req.Spec().Procedure))
 			}
 
-			l := log.L(ctx).WithField("method", methodDesc.FullName())
+			l := log.L(ctx)
 
 			// get the remote user
 			usr, err := extractor(ctx, req)

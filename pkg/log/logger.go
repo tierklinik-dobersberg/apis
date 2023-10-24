@@ -6,6 +6,7 @@ import (
 
 	"github.com/bufbuild/connect-go"
 	"github.com/sirupsen/logrus"
+	"github.com/tierklinik-dobersberg/apis/pkg/internal/timing"
 )
 
 var loggerContextKey = struct{ s string }{s: "logger"}
@@ -27,9 +28,20 @@ func NewLoggingInterceptor() connect.UnaryInterceptorFunc {
 	return func(uf connect.UnaryFunc) connect.UnaryFunc {
 		return func(ctx context.Context, ar connect.AnyRequest) (connect.AnyResponse, error) {
 			start := time.Now()
-			resp, err := uf(ctx, ar)
 
-			l := L(ctx).WithFields(logrus.Fields{
+			l := L(ctx).WithField("method", ar.Spec().Procedure)
+
+			ctx = WithLogger(ctx, l)
+
+			var resp connect.AnyResponse
+			err := timing.Track(ctx, ar.Spec().Procedure, func() error {
+				var err error
+
+				resp, err = uf(ctx, ar)
+				return err
+			})
+
+			l = l.WithFields(logrus.Fields{
 				"duration": time.Since(start),
 			})
 
