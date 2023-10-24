@@ -241,7 +241,7 @@ func New(name string) *Root {
 		flags.BoolVar(&flagConfig.OutputYAML, "yaml", false, "Display YAML output instead of JSON")
 		flags.BoolVar(&flagConfig.Debug, "debug", false, "Enable debug mode")
 		flags.BoolVar(&flagConfig.Verbose, "verbose", false, "Enable verbose output mode")
-		flags.StringVar(&root.activeConfig, "configuration", "default", "Which configuration to use.")
+		flags.StringVarP(&root.activeConfig, "configuration", "c", "default", "Which configuration to use.")
 	}
 
 	return root
