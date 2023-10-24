@@ -42,6 +42,10 @@ message WorkShift {
 }
 
 service WorkShiftService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["roster_manager"]
+    };
+
     rpc ListWorkShifts(ListWorkShiftsRequest) returns (ListWorkShiftsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
@@ -49,17 +53,17 @@ service WorkShiftService {
     };
     rpc CreateWorkShift(CreateWorkShiftRequest) returns (CreateWorkShiftResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED
+            require: AUTH_REQ_ADMIN
         };
     };
     rpc UpdateWorkShift(UpdateWorkShiftRequest) returns (UpdateWorkShiftResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED
+            require: AUTH_REQ_ADMIN
         };
     };
     rpc DeleteWorkShift(DeleteWorkShiftRequest) returns (DeleteWorkShiftResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED
+            require: AUTH_REQ_ADMIN
         };
     };
 }

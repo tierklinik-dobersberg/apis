@@ -122,31 +122,31 @@ message Roster {
 }
 
 service RosterService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["roster_manager"]
+    };
+
     rpc CreateRosterType(CreateRosterTypeRequest) returns (CreateRosterTypeResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 
     rpc DeleteRosterType(DeleteRosterTypeRequest) returns (DeleteRosterTypeResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 
     rpc ListRosterTypes(ListRosterTypesRequest) returns (ListRosterTypesResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
         };
     }
 
     rpc ListShiftTags(ListShiftTagsRequest) returns (ListShiftTagsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
         };
     }
 
@@ -154,8 +154,7 @@ service RosterService {
     // roster or to save subsequent changes.
     rpc SaveRoster(SaveRosterRequest) returns (SaveRosterResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 
@@ -163,8 +162,7 @@ service RosterService {
     // cannot be undone!
     rpc DeleteRoster(DeleteRosterRequest) returns (DeleteRosterResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 
@@ -179,8 +177,7 @@ service RosterService {
     // ApproveRoster marks a roster as approved by management.
     rpc ApproveRoster(ApproveRosterRequest) returns (ApproveRosterResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 
@@ -212,8 +209,7 @@ service RosterService {
     // assigned to at least one shift.
     rpc SendRosterPreview(SendRosterPreviewRequest) returns (SendRosterPreviewResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 

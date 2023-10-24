@@ -19,6 +19,35 @@ export declare enum AuthRequirement {
    * @generated from enum value: AUTH_REQ_REQUIRED = 1;
    */
   AUTH_REQ_REQUIRED = 1,
+
+  /**
+   * @generated from enum value: AUTH_REQ_ADMIN = 2;
+   */
+  AUTH_REQ_ADMIN = 2,
+}
+
+/**
+ * @generated from message tkd.common.v1.ServiceAuthDecorator
+ */
+export declare class ServiceAuthDecorator extends Message<ServiceAuthDecorator> {
+  /**
+   * @generated from field: repeated string admin_roles = 1;
+   */
+  adminRoles: string[];
+
+  constructor(data?: PartialMessage<ServiceAuthDecorator>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.common.v1.ServiceAuthDecorator";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ServiceAuthDecorator;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ServiceAuthDecorator;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ServiceAuthDecorator;
+
+  static equals(a: ServiceAuthDecorator | PlainMessage<ServiceAuthDecorator> | undefined, b: ServiceAuthDecorator | PlainMessage<ServiceAuthDecorator> | undefined): boolean;
 }
 
 /**
@@ -34,6 +63,11 @@ export declare class AuthDecorator extends Message<AuthDecorator> {
    * @generated from field: repeated string allowed_roles = 2;
    */
   allowedRoles: string[];
+
+  /**
+   * @generated from field: repeated string admin_roles = 3;
+   */
+  adminRoles: string[];
 
   constructor(data?: PartialMessage<AuthDecorator>);
 

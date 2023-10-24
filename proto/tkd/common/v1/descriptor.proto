@@ -8,11 +8,17 @@ import "google/protobuf/field_mask.proto";
 enum AuthRequirement {
     AUTH_REQ_UNSPECIFIED = 0;
     AUTH_REQ_REQUIRED = 1;
+    AUTH_REQ_ADMIN = 2;
+}
+
+message ServiceAuthDecorator {
+    repeated string admin_roles = 1;
 }
 
 message AuthDecorator {
     AuthRequirement require = 1;
     repeated string allowed_roles = 2;
+    repeated string admin_roles = 3;
 }
 
 message PrivacyACL {
@@ -31,6 +37,7 @@ message PrivacyACL {
 
 extend google.protobuf.ServiceOptions {
     string default_host = 2022;
+    ServiceAuthDecorator service_auth = 2023;
 }
 
 extend google.protobuf.MethodOptions {

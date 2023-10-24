@@ -106,6 +106,10 @@ message OffTimeEntry {
 }
 
 service OffTimeService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["roster_manager"]
+    };
+
     rpc GetOffTimeEntry(GetOffTimeEntryRequest) returns (GetOffTimeEntryResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
@@ -132,15 +136,13 @@ service OffTimeService {
 
     rpc ApproveOrReject(ApproveOrRejectRequest) returns (ApproveOrRejectResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
+            require: AUTH_REQ_ADMIN,
         };
     };
 
     rpc AddOffTimeCosts(AddOffTimeCostsRequest) returns (AddOffTimeCostsResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 

@@ -62,10 +62,33 @@ message Constraint {
 }
 
 service ConstraintService {
-    rpc CreateConstraint(CreateConstraintRequest) returns (CreateConstraintResponse) {}
-    rpc UpdateConstraint(UpdateConstraintRequest) returns (UpdateConstraintResponse) {}
-    rpc DeleteConstraint(DeleteConstraintRequest) returns (DeleteConstraintResponse) {}
-    rpc FindConstraints(FindConstraintsRequest) returns (FindConstraintsResponse) {}
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["roster_manager"]
+    };
+
+    rpc CreateConstraint(CreateConstraintRequest) returns (CreateConstraintResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
+    rpc UpdateConstraint(UpdateConstraintRequest) returns (UpdateConstraintResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
+    rpc DeleteConstraint(DeleteConstraintRequest) returns (DeleteConstraintResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+    
+    rpc FindConstraints(FindConstraintsRequest) returns (FindConstraintsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
 }
 
 message CreateConstraintRequest {

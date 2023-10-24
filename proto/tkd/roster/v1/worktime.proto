@@ -41,9 +41,13 @@ message WorkTime {
 }
 
 service WorkTimeService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["roster_manager"]
+    };
+
     rpc SetWorkTime(SetWorkTimeRequest) returns (SetWorkTimeResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
+            require: AUTH_REQ_ADMIN,
         };
     }
 
@@ -61,7 +65,7 @@ service WorkTimeService {
 
     rpc DeleteWorkTime(DeleteWorkTimeRequest) returns (DeleteWorkTimeResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
+            require: AUTH_REQ_ADMIN,
         };
     }
 }

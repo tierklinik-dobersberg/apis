@@ -13,6 +13,17 @@ export const AuthRequirement = proto3.makeEnum(
   [
     {no: 0, name: "AUTH_REQ_UNSPECIFIED"},
     {no: 1, name: "AUTH_REQ_REQUIRED"},
+    {no: 2, name: "AUTH_REQ_ADMIN"},
+  ],
+);
+
+/**
+ * @generated from message tkd.common.v1.ServiceAuthDecorator
+ */
+export const ServiceAuthDecorator = proto3.makeMessageType(
+  "tkd.common.v1.ServiceAuthDecorator",
+  () => [
+    { no: 1, name: "admin_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -24,6 +35,7 @@ export const AuthDecorator = proto3.makeMessageType(
   () => [
     { no: 1, name: "require", kind: "enum", T: proto3.getEnumType(AuthRequirement) },
     { no: 2, name: "allowed_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 3, name: "admin_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

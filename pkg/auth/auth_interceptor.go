@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"slices"
 	"strconv"
 	"strings"
 
 	"github.com/bufbuild/connect-go"
+	"github.com/tierklinik-dobersberg/apis/pkg/data"
 	"github.com/tierklinik-dobersberg/apis/pkg/log"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -25,6 +25,7 @@ type (
 		Roles               []string
 		PrimaryMail         string
 		PrimaryMailVerified *bool
+		Admin               bool
 	}
 
 	// ExtractorFunc extracts the user ID and a list of assigned user roles from req.
@@ -72,8 +73,8 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, extractor Extra
 		return connect.UnaryFunc(func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
 			parts := strings.Split(req.Spec().Procedure, "/")
 
-			methodDesc := getMethodDesc(registry, parts[1], parts[2])
-			if methodDesc == nil {
+			serviceDesc, methodDesc := getMethodDesc(registry, parts[1], parts[2])
+			if serviceDesc == nil || methodDesc == nil {
 				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to find method descriptor for %s", req.Spec().Procedure))
 			}
 
@@ -85,6 +86,14 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, extractor Extra
 				return nil, err
 			}
 
+			// get the service options and check if the user is administrator.
+			serviceOptions, _ := proto.GetExtension(serviceDesc.Options(), commonv1.E_ServiceAuth).(*commonv1.ServiceAuthDecorator)
+			if serviceOptions != nil {
+				usr.Admin = data.SliceOverlaps(serviceOptions.AdminRoles, usr.Roles)
+			}
+
+			methodOptions, _ := proto.GetExtension(methodDesc.Options(), commonv1.E_Auth).(*commonv1.AuthDecorator)
+
 			// if we have a user ID add some more information to the logger and
 			// append the user information to the request context
 			if usr.ID != "" {
@@ -92,27 +101,25 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, extractor Extra
 				ctx = context.WithValue(ctx, remoteUserContextKey, &usr)
 			}
 
-			opts, ok := proto.GetExtension(methodDesc.Options(), commonv1.E_Auth).(*commonv1.AuthDecorator)
+			if methodOptions != nil {
+				switch methodOptions.Require {
+				case commonv1.AuthRequirement_AUTH_REQ_ADMIN:
+					if usr.ID == "" {
+						return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("not access token provided"))
+					}
 
-			if ok && opts != nil {
-				switch opts.Require {
+					if !usr.Admin {
+						return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("you're not allowed to perfom this operation"))
+					}
+
 				case commonv1.AuthRequirement_AUTH_REQ_REQUIRED:
 					if usr.ID == "" {
 						return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("not access token provided"))
 					}
 
 					// make sure the user has at least one of the required roles assigned
-					if len(opts.AllowedRoles) > 0 {
-						isAllowed := false
-
-						for _, allowedRole := range opts.AllowedRoles {
-							if slices.Contains(usr.Roles, allowedRole) {
-								isAllowed = true
-								break
-							}
-						}
-
-						if !isAllowed {
+					if len(methodOptions.AllowedRoles) > 0 {
+						if !data.SliceOverlaps(methodOptions.AdminRoles, usr.Roles) {
 							return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("access token does not include one of the required roles"))
 						}
 					}
@@ -120,7 +127,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, extractor Extra
 				case commonv1.AuthRequirement_AUTH_REQ_UNSPECIFIED:
 					// nothing to do
 				default:
-					l.WithField("requirement", opts.String()).Infof("unhandeled authentication requirement")
+					l.WithField("requirement", methodOptions.String()).Infof("unhandeled authentication requirement")
 				}
 			} else {
 				l.Infof("not authentication requirement specified for service method")
@@ -135,15 +142,18 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, extractor Extra
 	return interceptor
 }
 
-func getMethodDesc(reg *protoregistry.Files, fqServiceName string, methodName string) protoreflect.MethodDescriptor {
+func getMethodDesc(reg *protoregistry.Files, fqServiceName string, methodName string) (protoreflect.ServiceDescriptor, protoreflect.MethodDescriptor) {
 	serviceNameParts := strings.Split(fqServiceName, ".")
 	serviceName := serviceNameParts[len(serviceNameParts)-1]
 
-	var methodDesc protoreflect.MethodDescriptor
+	var (
+		methodDesc  protoreflect.MethodDescriptor
+		serviceDesc protoreflect.ServiceDescriptor
+	)
 
 	reg.RangeFiles(func(fd protoreflect.FileDescriptor) bool {
 		if strings.HasPrefix(fqServiceName, string(fd.FullName())) {
-			serviceDesc := fd.Services().ByName(protoreflect.Name(serviceName))
+			serviceDesc = fd.Services().ByName(protoreflect.Name(serviceName))
 			if serviceDesc != nil {
 
 				methodDesc = serviceDesc.Methods().ByName(protoreflect.Name(methodName))
@@ -156,5 +166,5 @@ func getMethodDesc(reg *protoregistry.Files, fqServiceName string, methodName st
 		return true
 	})
 
-	return methodDesc
+	return serviceDesc, methodDesc
 }
