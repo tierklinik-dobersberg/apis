@@ -10,6 +10,7 @@ import (
 
 	"github.com/bufbuild/connect-go"
 	"github.com/tierklinik-dobersberg/apis/pkg/data"
+	"github.com/tierklinik-dobersberg/apis/pkg/internal/timing"
 	"github.com/tierklinik-dobersberg/apis/pkg/log"
 	"golang.org/x/sync/singleflight"
 	"google.golang.org/protobuf/proto"
@@ -102,18 +103,34 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 
 	// a small utility method for fetching and caching role definitions.
 	getRole := func(ctx context.Context, roleId string) (*idmv1.Role, error) {
+		l := log.L(ctx)
+
 		roleLock.RLock()
 		if r, ok := roles[roleId]; ok {
 			roleLock.RUnlock()
 
+			l.Debugf("resolved role id %q from cache: name=%q", roleId, r.Name)
+
 			return r, nil
 		}
+		roleLock.RUnlock()
 
 		res, err, _ := inFlightGroup.Do(roleId, func() (any, error) {
-			role, err := roleResolver(context.Background(), roleId)
+			var role *idmv1.Role
+			err := timing.Track(ctx, "resolve-role-id", func() error {
+				var err error
+				role, err = roleResolver(context.Background(), roleId)
+
+				return err
+			})
+
 			if err != nil {
+				l.Errorf("failed to resolve role id %q: %s", roleId, err)
+
 				return nil, err
 			}
+
+			l.Debugf("resolved role id %q: name=%q", roleId, role.Name)
 
 			roleLock.Lock()
 			defer roleLock.Unlock()
