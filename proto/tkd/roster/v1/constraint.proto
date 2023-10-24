@@ -83,7 +83,7 @@ service ConstraintService {
             require: AUTH_REQ_ADMIN,
         };
     }
-    
+
     rpc FindConstraints(FindConstraintsRequest) returns (FindConstraintsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_ADMIN,
