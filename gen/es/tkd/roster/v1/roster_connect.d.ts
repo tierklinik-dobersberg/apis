@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, CreateRosterTypeRequest, CreateRosterTypeResponse, DeleteRosterRequest, DeleteRosterResponse, DeleteRosterTypeRequest, DeleteRosterTypeResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, ListRosterTypesRequest, ListRosterTypesResponse, ListShiftTagsRequest, ListShiftTagsResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
+import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, CreateRosterTypeRequest, CreateRosterTypeResponse, DeleteRosterRequest, DeleteRosterResponse, DeleteRosterTypeRequest, DeleteRosterTypeResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetUserShiftsRequest, GetUserShiftsResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, ListRosterTypesRequest, ListRosterTypesResponse, ListShiftTagsRequest, ListShiftTagsResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -120,6 +120,9 @@ export declare const RosterService: {
       readonly kind: MethodKind.Unary,
     },
     /**
+     * GetRequiredShifts returns a list of work-shifts that are required for the requested
+     * time frame.
+     *
      * @generated from rpc tkd.roster.v1.RosterService.GetRequiredShifts
      */
     readonly getRequiredShifts: {
@@ -129,12 +132,27 @@ export declare const RosterService: {
       readonly kind: MethodKind.Unary,
     },
     /**
+     * SendRosterPreview sends a preview of the specified roster by mail to all employees that are
+     * assigned to at least one shift.
+     *
      * @generated from rpc tkd.roster.v1.RosterService.SendRosterPreview
      */
     readonly sendRosterPreview: {
       readonly name: "SendRosterPreview",
       readonly I: typeof SendRosterPreviewRequest,
       readonly O: typeof SendRosterPreviewResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * GetUserShifts returns all shifts for the requesting user within the specified
+     * time frame.
+     *
+     * @generated from rpc tkd.roster.v1.RosterService.GetUserShifts
+     */
+    readonly getUserShifts: {
+      readonly name: "GetUserShifts",
+      readonly I: typeof GetUserShiftsRequest,
+      readonly O: typeof GetUserShiftsResponse,
       readonly kind: MethodKind.Unary,
     },
   }

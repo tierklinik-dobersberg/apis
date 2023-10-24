@@ -8,6 +8,7 @@ import { Message, proto3 } from "@bufbuild/protobuf";
 import type { ConstraintViolationList } from "./constraint_pb.js";
 import type { WorkShift } from "./workshift_pb.js";
 import type { DeliveryNotification } from "../../idm/v1/notify_service_pb.js";
+import type { TimeRange } from "../../common/v1/time_range_pb.js";
 
 /**
  * @generated from message tkd.roster.v1.RequiredShift
@@ -1226,5 +1227,58 @@ export declare class ListShiftTagsResponse extends Message<ListShiftTagsResponse
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListShiftTagsResponse;
 
   static equals(a: ListShiftTagsResponse | PlainMessage<ListShiftTagsResponse> | undefined, b: ListShiftTagsResponse | PlainMessage<ListShiftTagsResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.GetUserShiftsRequest
+ */
+export declare class GetUserShiftsRequest extends Message<GetUserShiftsRequest> {
+  /**
+   * @generated from field: tkd.common.v1.TimeRange timerange = 1;
+   */
+  timerange?: TimeRange;
+
+  constructor(data?: PartialMessage<GetUserShiftsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.GetUserShiftsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetUserShiftsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetUserShiftsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetUserShiftsRequest;
+
+  static equals(a: GetUserShiftsRequest | PlainMessage<GetUserShiftsRequest> | undefined, b: GetUserShiftsRequest | PlainMessage<GetUserShiftsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.GetUserShiftsResponse
+ */
+export declare class GetUserShiftsResponse extends Message<GetUserShiftsResponse> {
+  /**
+   * @generated from field: repeated tkd.roster.v1.PlannedShift shifts = 1;
+   */
+  shifts: PlannedShift[];
+
+  /**
+   * @generated from field: repeated tkd.roster.v1.WorkShift definitions = 2;
+   */
+  definitions: WorkShift[];
+
+  constructor(data?: PartialMessage<GetUserShiftsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.GetUserShiftsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetUserShiftsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetUserShiftsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetUserShiftsResponse;
+
+  static equals(a: GetUserShiftsResponse | PlainMessage<GetUserShiftsResponse> | undefined, b: GetUserShiftsResponse | PlainMessage<GetUserShiftsResponse> | undefined): boolean;
 }
 

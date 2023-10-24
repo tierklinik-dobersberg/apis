@@ -7,6 +7,7 @@ import { Duration, FieldMask, proto3, Timestamp } from "@bufbuild/protobuf";
 import { ConstraintViolationList } from "./constraint_pb.js";
 import { WorkShift } from "./workshift_pb.js";
 import { DeliveryNotification } from "../../idm/v1/notify_service_pb.js";
+import { TimeRange } from "../../common/v1/time_range_pb.js";
 
 /**
  * @generated from message tkd.roster.v1.RequiredShift
@@ -389,6 +390,27 @@ export const ListShiftTagsResponse = proto3.makeMessageType(
   "tkd.roster.v1.ListShiftTagsResponse",
   () => [
     { no: 1, name: "tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.GetUserShiftsRequest
+ */
+export const GetUserShiftsRequest = proto3.makeMessageType(
+  "tkd.roster.v1.GetUserShiftsRequest",
+  () => [
+    { no: 1, name: "timerange", kind: "message", T: TimeRange },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.GetUserShiftsResponse
+ */
+export const GetUserShiftsResponse = proto3.makeMessageType(
+  "tkd.roster.v1.GetUserShiftsResponse",
+  () => [
+    { no: 1, name: "shifts", kind: "message", T: PlannedShift, repeated: true },
+    { no: 2, name: "definitions", kind: "message", T: WorkShift, repeated: true },
   ],
 );
 

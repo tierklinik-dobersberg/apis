@@ -68,6 +68,9 @@ const (
 	// RosterServiceSendRosterPreviewProcedure is the fully-qualified name of the RosterService's
 	// SendRosterPreview RPC.
 	RosterServiceSendRosterPreviewProcedure = "/tkd.roster.v1.RosterService/SendRosterPreview"
+	// RosterServiceGetUserShiftsProcedure is the fully-qualified name of the RosterService's
+	// GetUserShifts RPC.
+	RosterServiceGetUserShiftsProcedure = "/tkd.roster.v1.RosterService/GetUserShifts"
 )
 
 // RosterServiceClient is a client for the tkd.roster.v1.RosterService service.
@@ -93,8 +96,15 @@ type RosterServiceClient interface {
 	// date specified in GetWorkingStaffRequest. If date is unset, it defaults
 	// to NOW.
 	GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
+	// GetRequiredShifts returns a list of work-shifts that are required for the requested
+	// time frame.
 	GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error)
+	// SendRosterPreview sends a preview of the specified roster by mail to all employees that are
+	// assigned to at least one shift.
 	SendRosterPreview(context.Context, *connect_go.Request[v1.SendRosterPreviewRequest]) (*connect_go.Response[v1.SendRosterPreviewResponse], error)
+	// GetUserShifts returns all shifts for the requesting user within the specified
+	// time frame.
+	GetUserShifts(context.Context, *connect_go.Request[v1.GetUserShiftsRequest]) (*connect_go.Response[v1.GetUserShiftsResponse], error)
 }
 
 // NewRosterServiceClient constructs a client for the tkd.roster.v1.RosterService service. By
@@ -167,6 +177,11 @@ func NewRosterServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+RosterServiceSendRosterPreviewProcedure,
 			opts...,
 		),
+		getUserShifts: connect_go.NewClient[v1.GetUserShiftsRequest, v1.GetUserShiftsResponse](
+			httpClient,
+			baseURL+RosterServiceGetUserShiftsProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -184,6 +199,7 @@ type rosterServiceClient struct {
 	getWorkingStaff   *connect_go.Client[v1.GetWorkingStaffRequest, v1.GetWorkingStaffResponse]
 	getRequiredShifts *connect_go.Client[v1.GetRequiredShiftsRequest, v1.GetRequiredShiftsResponse]
 	sendRosterPreview *connect_go.Client[v1.SendRosterPreviewRequest, v1.SendRosterPreviewResponse]
+	getUserShifts     *connect_go.Client[v1.GetUserShiftsRequest, v1.GetUserShiftsResponse]
 }
 
 // CreateRosterType calls tkd.roster.v1.RosterService.CreateRosterType.
@@ -246,6 +262,11 @@ func (c *rosterServiceClient) SendRosterPreview(ctx context.Context, req *connec
 	return c.sendRosterPreview.CallUnary(ctx, req)
 }
 
+// GetUserShifts calls tkd.roster.v1.RosterService.GetUserShifts.
+func (c *rosterServiceClient) GetUserShifts(ctx context.Context, req *connect_go.Request[v1.GetUserShiftsRequest]) (*connect_go.Response[v1.GetUserShiftsResponse], error) {
+	return c.getUserShifts.CallUnary(ctx, req)
+}
+
 // RosterServiceHandler is an implementation of the tkd.roster.v1.RosterService service.
 type RosterServiceHandler interface {
 	CreateRosterType(context.Context, *connect_go.Request[v1.CreateRosterTypeRequest]) (*connect_go.Response[v1.CreateRosterTypeResponse], error)
@@ -269,8 +290,15 @@ type RosterServiceHandler interface {
 	// date specified in GetWorkingStaffRequest. If date is unset, it defaults
 	// to NOW.
 	GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
+	// GetRequiredShifts returns a list of work-shifts that are required for the requested
+	// time frame.
 	GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error)
+	// SendRosterPreview sends a preview of the specified roster by mail to all employees that are
+	// assigned to at least one shift.
 	SendRosterPreview(context.Context, *connect_go.Request[v1.SendRosterPreviewRequest]) (*connect_go.Response[v1.SendRosterPreviewResponse], error)
+	// GetUserShifts returns all shifts for the requesting user within the specified
+	// time frame.
+	GetUserShifts(context.Context, *connect_go.Request[v1.GetUserShiftsRequest]) (*connect_go.Response[v1.GetUserShiftsResponse], error)
 }
 
 // NewRosterServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -339,6 +367,11 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 		svc.SendRosterPreview,
 		opts...,
 	)
+	rosterServiceGetUserShiftsHandler := connect_go.NewUnaryHandler(
+		RosterServiceGetUserShiftsProcedure,
+		svc.GetUserShifts,
+		opts...,
+	)
 	return "/tkd.roster.v1.RosterService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case RosterServiceCreateRosterTypeProcedure:
@@ -365,6 +398,8 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 			rosterServiceGetRequiredShiftsHandler.ServeHTTP(w, r)
 		case RosterServiceSendRosterPreviewProcedure:
 			rosterServiceSendRosterPreviewHandler.ServeHTTP(w, r)
+		case RosterServiceGetUserShiftsProcedure:
+			rosterServiceGetUserShiftsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -420,4 +455,8 @@ func (UnimplementedRosterServiceHandler) GetRequiredShifts(context.Context, *con
 
 func (UnimplementedRosterServiceHandler) SendRosterPreview(context.Context, *connect_go.Request[v1.SendRosterPreviewRequest]) (*connect_go.Response[v1.SendRosterPreviewResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.SendRosterPreview is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) GetUserShifts(context.Context, *connect_go.Request[v1.GetUserShiftsRequest]) (*connect_go.Response[v1.GetUserShiftsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.GetUserShifts is not implemented"))
 }

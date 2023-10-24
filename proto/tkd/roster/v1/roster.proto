@@ -9,6 +9,7 @@ import "tkd/roster/v1/workshift.proto";
 import "tkd/roster/v1/worktime.proto";
 import "tkd/roster/v1/constraint.proto";
 import "tkd/common/v1/descriptor.proto";
+import "tkd/common/v1/time_range.proto";
 import "tkd/idm/v1/notify_service.proto";
 import "buf/validate/validate.proto";
 
@@ -199,17 +200,28 @@ service RosterService {
         };
     }
 
+    // GetRequiredShifts returns a list of work-shifts that are required for the requested
+    // time frame.
     rpc GetRequiredShifts(GetRequiredShiftsRequest) returns (GetRequiredShiftsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // SendRosterPreview sends a preview of the specified roster by mail to all employees that are
+    // assigned to at least one shift.
+    rpc SendRosterPreview(SendRosterPreviewRequest) returns (SendRosterPreviewResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
             allowed_roles: ["idm_superuser", "roster_manager"]
         };
     }
 
-    rpc SendRosterPreview(SendRosterPreviewRequest) returns (SendRosterPreviewResponse) {
+    // GetUserShifts returns all shifts for the requesting user within the specified
+    // time frame.
+    rpc GetUserShifts(GetUserShiftsRequest) returns (GetUserShiftsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser", "roster_manager"]
         };
     }
 }
@@ -468,4 +480,15 @@ message ListRosterTypesResponse {
 message ListShiftTagsRequest {}
 message ListShiftTagsResponse {
     repeated string tags = 1;
+}
+
+message GetUserShiftsRequest {
+    tkd.common.v1.TimeRange timerange = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message GetUserShiftsResponse {
+    repeated PlannedShift shifts = 1;
+    repeated WorkShift definitions = 2;
 }
