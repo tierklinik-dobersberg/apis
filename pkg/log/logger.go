@@ -2,6 +2,7 @@ package log
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/bufbuild/connect-go"
@@ -34,10 +35,11 @@ func NewLoggingInterceptor() connect.UnaryInterceptorFunc {
 			ctx = WithLogger(ctx, l)
 
 			var resp connect.AnyResponse
-			err := timing.Track(ctx, ar.Spec().Procedure, func() error {
+			err := timing.Track(ctx, strings.ReplaceAll(ar.Spec().Procedure, "/", "."), func() error {
 				var err error
 
 				resp, err = uf(ctx, ar)
+
 				return err
 			})
 

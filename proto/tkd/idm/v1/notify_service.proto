@@ -3,12 +3,21 @@ syntax = "proto3";
 package tkd.idm.v1;
 
 import "buf/validate/validate.proto";
+import "tkd/common/v1/descriptor.proto";
 import "google/protobuf/struct.proto";
 
 // Admin API only
 //
 service NotifyService {
-    rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse) {}
+  option (tkd.common.v1.service_auth) = {
+      admin_roles: ["idm_superuser"]
+  };
+
+  rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse) {
+    option (tkd.common.v1.auth) = {
+        require: AUTH_REQ_ADMIN,
+    };
+  }
 }
 
 enum AttachmentType {

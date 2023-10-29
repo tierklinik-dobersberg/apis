@@ -84,6 +84,8 @@ message GetUserResponse {
 message ListUsersRequest {
   google.protobuf.FieldMask field_mask = 1;
   bool exclude_fields = 2;
+
+  string filter_by_roles = 3;
 }
 
 message ListUsersResponse {

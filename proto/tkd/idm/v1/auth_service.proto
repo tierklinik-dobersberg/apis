@@ -11,6 +11,10 @@ import "buf/validate/validate.proto";
 // AuthService provides methods for authentication to the
 // services hosted and managed by Tierklinik Dobersberg (TKD).
 service AuthService {
+  option (tkd.common.v1.service_auth) = {
+      admin_roles: ["idm_superuser"]
+  };
+
   // Login requests authentication. The authentication type (flow) is
   // determined by the initial request and may require sub-sequent calls
   // to full-fill the requirements of the choosen authentication flow.
@@ -49,8 +53,7 @@ service AuthService {
 
   rpc GenerateRegistrationToken (GenerateRegistrationTokenRequest) returns (GenerateRegistrationTokenResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser", "idm_user_inviter"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 

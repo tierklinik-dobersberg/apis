@@ -15,52 +15,49 @@ message Role {
 }
 
 service RoleService {
+  option (tkd.common.v1.service_auth) = {
+      admin_roles: ["idm_superuser"]
+  };
+
   rpc CreateRole(CreateRoleRequest) returns (CreateRoleResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc UpdateRole(UpdateRoleRequest) returns (UpdateRoleResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc DeleteRole(DeleteRoleRequest) returns (DeleteRoleResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc ListRoles(ListRolesRequest) returns (ListRolesResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc GetRole(GetRoleRequest) returns (GetRoleResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc AssignRoleToUser(AssignRoleToUserRequest) returns (AssignRoleToUserResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc UnassignRoleFromUser(UnassignRoleFromUserRequest) returns (UnassignRoleFromUserResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 }
@@ -99,6 +96,7 @@ message CreateRoleRequest {
     string name = 1 [(buf.validate.field).required = true];
     string description = 2;
     bool delete_protection = 3;
+    string id = 4;
 }
 
 message CreateRoleResponse {

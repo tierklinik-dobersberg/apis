@@ -127,7 +127,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 			if err != nil {
 				l.Errorf("failed to resolve role id %q: %s", roleId, err)
 
-				return nil, err
+				return nil, fmt.Errorf("failed to resolve role: %w", err)
 			}
 
 			l.Debugf("resolved role id %q: name=%q", roleId, role.Name)
