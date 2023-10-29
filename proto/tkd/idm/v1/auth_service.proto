@@ -143,6 +143,7 @@ message RefreshTokenResponse {
 
 message IntrospectRequest {
   google.protobuf.FieldMask read_mask = 1;
+  bool exclude_fields = 2;
 }
 
 message IntrospectResponse {

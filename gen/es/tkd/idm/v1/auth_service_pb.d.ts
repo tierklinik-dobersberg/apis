@@ -376,6 +376,11 @@ export declare class IntrospectRequest extends Message<IntrospectRequest> {
    */
   readMask?: FieldMask;
 
+  /**
+   * @generated from field: bool exclude_fields = 2;
+   */
+  excludeFields: boolean;
+
   constructor(data?: PartialMessage<IntrospectRequest>);
 
   static readonly runtime: typeof proto3;

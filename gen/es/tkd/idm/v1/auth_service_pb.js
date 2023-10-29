@@ -150,6 +150,7 @@ export const IntrospectRequest = proto3.makeMessageType(
   "tkd.idm.v1.IntrospectRequest",
   () => [
     { no: 1, name: "read_mask", kind: "message", T: FieldMask },
+    { no: 2, name: "exclude_fields", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
