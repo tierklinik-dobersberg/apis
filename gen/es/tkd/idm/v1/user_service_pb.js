@@ -38,7 +38,7 @@ export const ListUsersRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "field_mask", kind: "message", T: FieldMask },
     { no: 2, name: "exclude_fields", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 3, name: "filter_by_roles", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "filter_by_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

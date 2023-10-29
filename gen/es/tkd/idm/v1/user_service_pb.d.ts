@@ -98,9 +98,9 @@ export declare class ListUsersRequest extends Message<ListUsersRequest> {
   excludeFields: boolean;
 
   /**
-   * @generated from field: string filter_by_roles = 3;
+   * @generated from field: repeated string filter_by_roles = 3;
    */
-  filterByRoles: string;
+  filterByRoles: string[];
 
   constructor(data?: PartialMessage<ListUsersRequest>);
 
