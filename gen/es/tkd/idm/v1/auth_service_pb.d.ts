@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, Duration, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, Duration, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Profile, User } from "./user_pb.js";
 
@@ -368,11 +368,14 @@ export declare class RefreshTokenResponse extends Message<RefreshTokenResponse> 
 }
 
 /**
- * empty on purpose
- *
  * @generated from message tkd.idm.v1.IntrospectRequest
  */
 export declare class IntrospectRequest extends Message<IntrospectRequest> {
+  /**
+   * @generated from field: google.protobuf.FieldMask read_mask = 1;
+   */
+  readMask?: FieldMask;
+
   constructor(data?: PartialMessage<IntrospectRequest>);
 
   static readonly runtime: typeof proto3;

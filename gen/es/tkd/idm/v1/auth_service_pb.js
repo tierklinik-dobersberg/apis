@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Duration, proto3, Timestamp } from "@bufbuild/protobuf";
+import { Duration, FieldMask, proto3, Timestamp } from "@bufbuild/protobuf";
 import { Profile, User } from "./user_pb.js";
 
 /**
@@ -144,13 +144,13 @@ export const RefreshTokenResponse = proto3.makeMessageType(
 );
 
 /**
- * empty on purpose
- *
  * @generated from message tkd.idm.v1.IntrospectRequest
  */
 export const IntrospectRequest = proto3.makeMessageType(
   "tkd.idm.v1.IntrospectRequest",
-  [],
+  () => [
+    { no: 1, name: "read_mask", kind: "message", T: FieldMask },
+  ],
 );
 
 /**

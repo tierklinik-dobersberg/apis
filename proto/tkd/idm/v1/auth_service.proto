@@ -4,6 +4,7 @@ package tkd.idm.v1;
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
 import "tkd/idm/v1/user.proto";
 import "tkd/common/v1/descriptor.proto";
 import "buf/validate/validate.proto";
@@ -141,7 +142,7 @@ message RefreshTokenResponse {
 }
 
 message IntrospectRequest {
-  // empty on purpose
+  google.protobuf.FieldMask read_mask = 1;
 }
 
 message IntrospectResponse {
