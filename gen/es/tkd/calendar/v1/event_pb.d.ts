@@ -35,6 +35,13 @@ export declare class Calendar extends Message<Calendar> {
    */
   timezone: string;
 
+  /**
+   * Color holds the calendar color.
+   *
+   * @generated from field: string color = 4;
+   */
+  color: string;
+
   constructor(data?: PartialMessage<Calendar>);
 
   static readonly runtime: typeof proto3;

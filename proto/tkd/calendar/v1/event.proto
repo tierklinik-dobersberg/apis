@@ -17,6 +17,9 @@ message Calendar {
     // Timezone holds the timezone information for the calendar.
     // In the format of Europe/Vienna.
     string timezone = 3;
+
+    // Color holds the calendar color.
+    string color = 4;
 }
 
 message CalendarEvent {
