@@ -125,6 +125,17 @@ export const DeleteScopeResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.comment.v1.RootComment
+ */
+export const RootComment = proto3.makeMessageType(
+  "tkd.comment.v1.RootComment",
+  () => [
+    { no: 1, name: "scope", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "reference", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * Create Comment
  *
  * @generated from message tkd.comment.v1.CreateCommentRequest
@@ -132,7 +143,7 @@ export const DeleteScopeResponse = proto3.makeMessageType(
 export const CreateCommentRequest = proto3.makeMessageType(
   "tkd.comment.v1.CreateCommentRequest",
   () => [
-    { no: 1, name: "scope", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "kind" },
+    { no: 1, name: "root", kind: "message", T: RootComment, oneof: "kind" },
     { no: 2, name: "parent_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "kind" },
     { no: 3, name: "content", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "read_mask", kind: "message", T: FieldMask },

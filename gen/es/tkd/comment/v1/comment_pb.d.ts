@@ -336,6 +336,35 @@ export declare class DeleteScopeResponse extends Message<DeleteScopeResponse> {
 }
 
 /**
+ * @generated from message tkd.comment.v1.RootComment
+ */
+export declare class RootComment extends Message<RootComment> {
+  /**
+   * @generated from field: string scope = 1;
+   */
+  scope: string;
+
+  /**
+   * @generated from field: string reference = 2;
+   */
+  reference: string;
+
+  constructor(data?: PartialMessage<RootComment>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.comment.v1.RootComment";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RootComment;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RootComment;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RootComment;
+
+  static equals(a: RootComment | PlainMessage<RootComment> | undefined, b: RootComment | PlainMessage<RootComment> | undefined): boolean;
+}
+
+/**
  * Create Comment
  *
  * @generated from message tkd.comment.v1.CreateCommentRequest
@@ -346,10 +375,10 @@ export declare class CreateCommentRequest extends Message<CreateCommentRequest> 
    */
   kind: {
     /**
-     * @generated from field: string scope = 1;
+     * @generated from field: tkd.comment.v1.RootComment root = 1;
      */
-    value: string;
-    case: "scope";
+    value: RootComment;
+    case: "root";
   } | {
     /**
      * @generated from field: string parent_id = 2;

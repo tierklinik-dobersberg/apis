@@ -157,10 +157,20 @@ message DeleteScopeRequest {
 }
 message DeleteScopeResponse {}
 
+message RootComment {
+    string scope = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string reference = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
 // Create Comment
 message CreateCommentRequest {
     oneof kind {
-        string scope = 1;
+        RootComment root = 1;
         string parent_id = 2;
 
         option (buf.validate.oneof).required = true;

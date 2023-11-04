@@ -600,6 +600,61 @@ func (*DeleteScopeResponse) Descriptor() ([]byte, []int) {
 	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{8}
 }
 
+type RootComment struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Scope     string `protobuf:"bytes,1,opt,name=scope,proto3" json:"scope,omitempty"`
+	Reference string `protobuf:"bytes,2,opt,name=reference,proto3" json:"reference,omitempty"`
+}
+
+func (x *RootComment) Reset() {
+	*x = RootComment{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tkd_comment_v1_comment_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RootComment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RootComment) ProtoMessage() {}
+
+func (x *RootComment) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_comment_v1_comment_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RootComment.ProtoReflect.Descriptor instead.
+func (*RootComment) Descriptor() ([]byte, []int) {
+	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *RootComment) GetScope() string {
+	if x != nil {
+		return x.Scope
+	}
+	return ""
+}
+
+func (x *RootComment) GetReference() string {
+	if x != nil {
+		return x.Reference
+	}
+	return ""
+}
+
 // Create Comment
 type CreateCommentRequest struct {
 	state         protoimpl.MessageState
@@ -608,7 +663,7 @@ type CreateCommentRequest struct {
 
 	// Types that are assignable to Kind:
 	//
-	//	*CreateCommentRequest_Scope
+	//	*CreateCommentRequest_Root
 	//	*CreateCommentRequest_ParentId
 	Kind     isCreateCommentRequest_Kind `protobuf_oneof:"kind"`
 	Content  string                      `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
@@ -618,7 +673,7 @@ type CreateCommentRequest struct {
 func (x *CreateCommentRequest) Reset() {
 	*x = CreateCommentRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tkd_comment_v1_comment_proto_msgTypes[9]
+		mi := &file_tkd_comment_v1_comment_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -631,7 +686,7 @@ func (x *CreateCommentRequest) String() string {
 func (*CreateCommentRequest) ProtoMessage() {}
 
 func (x *CreateCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_comment_v1_comment_proto_msgTypes[9]
+	mi := &file_tkd_comment_v1_comment_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -644,7 +699,7 @@ func (x *CreateCommentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCommentRequest.ProtoReflect.Descriptor instead.
 func (*CreateCommentRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{9}
+	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{10}
 }
 
 func (m *CreateCommentRequest) GetKind() isCreateCommentRequest_Kind {
@@ -654,11 +709,11 @@ func (m *CreateCommentRequest) GetKind() isCreateCommentRequest_Kind {
 	return nil
 }
 
-func (x *CreateCommentRequest) GetScope() string {
-	if x, ok := x.GetKind().(*CreateCommentRequest_Scope); ok {
-		return x.Scope
+func (x *CreateCommentRequest) GetRoot() *RootComment {
+	if x, ok := x.GetKind().(*CreateCommentRequest_Root); ok {
+		return x.Root
 	}
-	return ""
+	return nil
 }
 
 func (x *CreateCommentRequest) GetParentId() string {
@@ -686,15 +741,15 @@ type isCreateCommentRequest_Kind interface {
 	isCreateCommentRequest_Kind()
 }
 
-type CreateCommentRequest_Scope struct {
-	Scope string `protobuf:"bytes,1,opt,name=scope,proto3,oneof"`
+type CreateCommentRequest_Root struct {
+	Root *RootComment `protobuf:"bytes,1,opt,name=root,proto3,oneof"`
 }
 
 type CreateCommentRequest_ParentId struct {
 	ParentId string `protobuf:"bytes,2,opt,name=parent_id,json=parentId,proto3,oneof"`
 }
 
-func (*CreateCommentRequest_Scope) isCreateCommentRequest_Kind() {}
+func (*CreateCommentRequest_Root) isCreateCommentRequest_Kind() {}
 
 func (*CreateCommentRequest_ParentId) isCreateCommentRequest_Kind() {}
 
@@ -709,7 +764,7 @@ type CreateCommentResponse struct {
 func (x *CreateCommentResponse) Reset() {
 	*x = CreateCommentResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tkd_comment_v1_comment_proto_msgTypes[10]
+		mi := &file_tkd_comment_v1_comment_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -722,7 +777,7 @@ func (x *CreateCommentResponse) String() string {
 func (*CreateCommentResponse) ProtoMessage() {}
 
 func (x *CreateCommentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_comment_v1_comment_proto_msgTypes[10]
+	mi := &file_tkd_comment_v1_comment_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -735,7 +790,7 @@ func (x *CreateCommentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCommentResponse.ProtoReflect.Descriptor instead.
 func (*CreateCommentResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{10}
+	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CreateCommentResponse) GetComment() *Comment {
@@ -759,7 +814,7 @@ type ListCommentsRequest struct {
 func (x *ListCommentsRequest) Reset() {
 	*x = ListCommentsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tkd_comment_v1_comment_proto_msgTypes[11]
+		mi := &file_tkd_comment_v1_comment_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -772,7 +827,7 @@ func (x *ListCommentsRequest) String() string {
 func (*ListCommentsRequest) ProtoMessage() {}
 
 func (x *ListCommentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_comment_v1_comment_proto_msgTypes[11]
+	mi := &file_tkd_comment_v1_comment_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -785,7 +840,7 @@ func (x *ListCommentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCommentsRequest.ProtoReflect.Descriptor instead.
 func (*ListCommentsRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{11}
+	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ListCommentsRequest) GetScope() string {
@@ -820,7 +875,7 @@ type ListCommentsResponse struct {
 func (x *ListCommentsResponse) Reset() {
 	*x = ListCommentsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tkd_comment_v1_comment_proto_msgTypes[12]
+		mi := &file_tkd_comment_v1_comment_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -833,7 +888,7 @@ func (x *ListCommentsResponse) String() string {
 func (*ListCommentsResponse) ProtoMessage() {}
 
 func (x *ListCommentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_comment_v1_comment_proto_msgTypes[12]
+	mi := &file_tkd_comment_v1_comment_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -846,7 +901,7 @@ func (x *ListCommentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCommentsResponse.ProtoReflect.Descriptor instead.
 func (*ListCommentsResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{12}
+	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListCommentsResponse) GetResult() []*CommentTree {
@@ -870,7 +925,7 @@ type GetCommentRequest struct {
 func (x *GetCommentRequest) Reset() {
 	*x = GetCommentRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tkd_comment_v1_comment_proto_msgTypes[13]
+		mi := &file_tkd_comment_v1_comment_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -883,7 +938,7 @@ func (x *GetCommentRequest) String() string {
 func (*GetCommentRequest) ProtoMessage() {}
 
 func (x *GetCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_comment_v1_comment_proto_msgTypes[13]
+	mi := &file_tkd_comment_v1_comment_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -896,7 +951,7 @@ func (x *GetCommentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCommentRequest.ProtoReflect.Descriptor instead.
 func (*GetCommentRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{13}
+	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *GetCommentRequest) GetId() string {
@@ -931,7 +986,7 @@ type GetCommentResponse struct {
 func (x *GetCommentResponse) Reset() {
 	*x = GetCommentResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tkd_comment_v1_comment_proto_msgTypes[14]
+		mi := &file_tkd_comment_v1_comment_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -944,7 +999,7 @@ func (x *GetCommentResponse) String() string {
 func (*GetCommentResponse) ProtoMessage() {}
 
 func (x *GetCommentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_comment_v1_comment_proto_msgTypes[14]
+	mi := &file_tkd_comment_v1_comment_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -957,7 +1012,7 @@ func (x *GetCommentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCommentResponse.ProtoReflect.Descriptor instead.
 func (*GetCommentResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{14}
+	return file_tkd_comment_v1_comment_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GetCommentResponse) GetResult() *CommentTree {
@@ -1044,10 +1099,17 @@ var file_tkd_comment_v1_comment_proto_rawDesc = []byte{
 	0x73, 0x74, 0x12, 0x17, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x07,
 	0xfa, 0xf7, 0x18, 0x03, 0xc8, 0x01, 0x01, 0x52, 0x02, 0x69, 0x64, 0x22, 0x15, 0x0a, 0x13, 0x44,
 	0x65, 0x6c, 0x65, 0x74, 0x65, 0x53, 0x63, 0x6f, 0x70, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x22, 0xb9, 0x01, 0x0a, 0x14, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6d,
-	0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x05, 0x73,
-	0x63, 0x6f, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x05, 0x73, 0x63,
-	0x6f, 0x70, 0x65, 0x12, 0x1d, 0x0a, 0x09, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64,
+	0x73, 0x65, 0x22, 0x53, 0x0a, 0x0b, 0x52, 0x6f, 0x6f, 0x74, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e,
+	0x74, 0x12, 0x1d, 0x0a, 0x05, 0x73, 0x63, 0x6f, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x42, 0x07, 0xfa, 0xf7, 0x18, 0x03, 0xc8, 0x01, 0x01, 0x52, 0x05, 0x73, 0x63, 0x6f, 0x70, 0x65,
+	0x12, 0x25, 0x0a, 0x09, 0x72, 0x65, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x42, 0x07, 0xfa, 0xf7, 0x18, 0x03, 0xc8, 0x01, 0x01, 0x52, 0x09, 0x72, 0x65,
+	0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x22, 0xd4, 0x01, 0x0a, 0x14, 0x43, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x31, 0x0a, 0x04, 0x72, 0x6f, 0x6f, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b,
+	0x2e, 0x74, 0x6b, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x76, 0x31, 0x2e,
+	0x52, 0x6f, 0x6f, 0x74, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x48, 0x00, 0x52, 0x04, 0x72,
+	0x6f, 0x6f, 0x74, 0x12, 0x1d, 0x0a, 0x09, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64,
 	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x08, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x74,
 	0x49, 0x64, 0x12, 0x21, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x03, 0x20,
 	0x01, 0x28, 0x09, 0x42, 0x07, 0xfa, 0xf7, 0x18, 0x03, 0xc8, 0x01, 0x01, 0x52, 0x07, 0x63, 0x6f,
@@ -1157,7 +1219,7 @@ func file_tkd_comment_v1_comment_proto_rawDescGZIP() []byte {
 }
 
 var file_tkd_comment_v1_comment_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tkd_comment_v1_comment_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_tkd_comment_v1_comment_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_tkd_comment_v1_comment_proto_goTypes = []interface{}{
 	(NotificationType)(0),         // 0: tkd.comment.v1.NotificationType
 	(*Scope)(nil),                 // 1: tkd.comment.v1.Scope
@@ -1169,44 +1231,46 @@ var file_tkd_comment_v1_comment_proto_goTypes = []interface{}{
 	(*ListScopeResponse)(nil),     // 7: tkd.comment.v1.ListScopeResponse
 	(*DeleteScopeRequest)(nil),    // 8: tkd.comment.v1.DeleteScopeRequest
 	(*DeleteScopeResponse)(nil),   // 9: tkd.comment.v1.DeleteScopeResponse
-	(*CreateCommentRequest)(nil),  // 10: tkd.comment.v1.CreateCommentRequest
-	(*CreateCommentResponse)(nil), // 11: tkd.comment.v1.CreateCommentResponse
-	(*ListCommentsRequest)(nil),   // 12: tkd.comment.v1.ListCommentsRequest
-	(*ListCommentsResponse)(nil),  // 13: tkd.comment.v1.ListCommentsResponse
-	(*GetCommentRequest)(nil),     // 14: tkd.comment.v1.GetCommentRequest
-	(*GetCommentResponse)(nil),    // 15: tkd.comment.v1.GetCommentResponse
-	(*timestamppb.Timestamp)(nil), // 16: google.protobuf.Timestamp
-	(*fieldmaskpb.FieldMask)(nil), // 17: google.protobuf.FieldMask
+	(*RootComment)(nil),           // 10: tkd.comment.v1.RootComment
+	(*CreateCommentRequest)(nil),  // 11: tkd.comment.v1.CreateCommentRequest
+	(*CreateCommentResponse)(nil), // 12: tkd.comment.v1.CreateCommentResponse
+	(*ListCommentsRequest)(nil),   // 13: tkd.comment.v1.ListCommentsRequest
+	(*ListCommentsResponse)(nil),  // 14: tkd.comment.v1.ListCommentsResponse
+	(*GetCommentRequest)(nil),     // 15: tkd.comment.v1.GetCommentRequest
+	(*GetCommentResponse)(nil),    // 16: tkd.comment.v1.GetCommentResponse
+	(*timestamppb.Timestamp)(nil), // 17: google.protobuf.Timestamp
+	(*fieldmaskpb.FieldMask)(nil), // 18: google.protobuf.FieldMask
 }
 var file_tkd_comment_v1_comment_proto_depIdxs = []int32{
 	0,  // 0: tkd.comment.v1.Scope.notifcation_type:type_name -> tkd.comment.v1.NotificationType
-	16, // 1: tkd.comment.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
+	17, // 1: tkd.comment.v1.Comment.created_at:type_name -> google.protobuf.Timestamp
 	2,  // 2: tkd.comment.v1.CommentTree.comment:type_name -> tkd.comment.v1.Comment
 	3,  // 3: tkd.comment.v1.CommentTree.answers:type_name -> tkd.comment.v1.CommentTree
 	0,  // 4: tkd.comment.v1.CreateScopeRequest.notifcation_type:type_name -> tkd.comment.v1.NotificationType
 	1,  // 5: tkd.comment.v1.CreateScopeResponse.scope:type_name -> tkd.comment.v1.Scope
 	1,  // 6: tkd.comment.v1.ListScopeResponse.scopes:type_name -> tkd.comment.v1.Scope
-	17, // 7: tkd.comment.v1.CreateCommentRequest.read_mask:type_name -> google.protobuf.FieldMask
-	2,  // 8: tkd.comment.v1.CreateCommentResponse.comment:type_name -> tkd.comment.v1.Comment
-	3,  // 9: tkd.comment.v1.ListCommentsResponse.result:type_name -> tkd.comment.v1.CommentTree
-	3,  // 10: tkd.comment.v1.GetCommentResponse.result:type_name -> tkd.comment.v1.CommentTree
-	4,  // 11: tkd.comment.v1.CommentService.CreateScope:input_type -> tkd.comment.v1.CreateScopeRequest
-	6,  // 12: tkd.comment.v1.CommentService.ListScope:input_type -> tkd.comment.v1.ListScopeRequest
-	8,  // 13: tkd.comment.v1.CommentService.DeleteScope:input_type -> tkd.comment.v1.DeleteScopeRequest
-	10, // 14: tkd.comment.v1.CommentService.CreateComment:input_type -> tkd.comment.v1.CreateCommentRequest
-	14, // 15: tkd.comment.v1.CommentService.GetComment:input_type -> tkd.comment.v1.GetCommentRequest
-	12, // 16: tkd.comment.v1.CommentService.ListComments:input_type -> tkd.comment.v1.ListCommentsRequest
-	5,  // 17: tkd.comment.v1.CommentService.CreateScope:output_type -> tkd.comment.v1.CreateScopeResponse
-	7,  // 18: tkd.comment.v1.CommentService.ListScope:output_type -> tkd.comment.v1.ListScopeResponse
-	9,  // 19: tkd.comment.v1.CommentService.DeleteScope:output_type -> tkd.comment.v1.DeleteScopeResponse
-	11, // 20: tkd.comment.v1.CommentService.CreateComment:output_type -> tkd.comment.v1.CreateCommentResponse
-	15, // 21: tkd.comment.v1.CommentService.GetComment:output_type -> tkd.comment.v1.GetCommentResponse
-	13, // 22: tkd.comment.v1.CommentService.ListComments:output_type -> tkd.comment.v1.ListCommentsResponse
-	17, // [17:23] is the sub-list for method output_type
-	11, // [11:17] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	10, // 7: tkd.comment.v1.CreateCommentRequest.root:type_name -> tkd.comment.v1.RootComment
+	18, // 8: tkd.comment.v1.CreateCommentRequest.read_mask:type_name -> google.protobuf.FieldMask
+	2,  // 9: tkd.comment.v1.CreateCommentResponse.comment:type_name -> tkd.comment.v1.Comment
+	3,  // 10: tkd.comment.v1.ListCommentsResponse.result:type_name -> tkd.comment.v1.CommentTree
+	3,  // 11: tkd.comment.v1.GetCommentResponse.result:type_name -> tkd.comment.v1.CommentTree
+	4,  // 12: tkd.comment.v1.CommentService.CreateScope:input_type -> tkd.comment.v1.CreateScopeRequest
+	6,  // 13: tkd.comment.v1.CommentService.ListScope:input_type -> tkd.comment.v1.ListScopeRequest
+	8,  // 14: tkd.comment.v1.CommentService.DeleteScope:input_type -> tkd.comment.v1.DeleteScopeRequest
+	11, // 15: tkd.comment.v1.CommentService.CreateComment:input_type -> tkd.comment.v1.CreateCommentRequest
+	15, // 16: tkd.comment.v1.CommentService.GetComment:input_type -> tkd.comment.v1.GetCommentRequest
+	13, // 17: tkd.comment.v1.CommentService.ListComments:input_type -> tkd.comment.v1.ListCommentsRequest
+	5,  // 18: tkd.comment.v1.CommentService.CreateScope:output_type -> tkd.comment.v1.CreateScopeResponse
+	7,  // 19: tkd.comment.v1.CommentService.ListScope:output_type -> tkd.comment.v1.ListScopeResponse
+	9,  // 20: tkd.comment.v1.CommentService.DeleteScope:output_type -> tkd.comment.v1.DeleteScopeResponse
+	12, // 21: tkd.comment.v1.CommentService.CreateComment:output_type -> tkd.comment.v1.CreateCommentResponse
+	16, // 22: tkd.comment.v1.CommentService.GetComment:output_type -> tkd.comment.v1.GetCommentResponse
+	14, // 23: tkd.comment.v1.CommentService.ListComments:output_type -> tkd.comment.v1.ListCommentsResponse
+	18, // [18:24] is the sub-list for method output_type
+	12, // [12:18] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_tkd_comment_v1_comment_proto_init() }
@@ -1324,7 +1388,7 @@ func file_tkd_comment_v1_comment_proto_init() {
 			}
 		}
 		file_tkd_comment_v1_comment_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateCommentRequest); i {
+			switch v := v.(*RootComment); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1336,7 +1400,7 @@ func file_tkd_comment_v1_comment_proto_init() {
 			}
 		}
 		file_tkd_comment_v1_comment_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateCommentResponse); i {
+			switch v := v.(*CreateCommentRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1348,7 +1412,7 @@ func file_tkd_comment_v1_comment_proto_init() {
 			}
 		}
 		file_tkd_comment_v1_comment_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListCommentsRequest); i {
+			switch v := v.(*CreateCommentResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1360,7 +1424,7 @@ func file_tkd_comment_v1_comment_proto_init() {
 			}
 		}
 		file_tkd_comment_v1_comment_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListCommentsResponse); i {
+			switch v := v.(*ListCommentsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1372,7 +1436,7 @@ func file_tkd_comment_v1_comment_proto_init() {
 			}
 		}
 		file_tkd_comment_v1_comment_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetCommentRequest); i {
+			switch v := v.(*ListCommentsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1384,6 +1448,18 @@ func file_tkd_comment_v1_comment_proto_init() {
 			}
 		}
 		file_tkd_comment_v1_comment_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetCommentRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tkd_comment_v1_comment_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetCommentResponse); i {
 			case 0:
 				return &v.state
@@ -1396,8 +1472,8 @@ func file_tkd_comment_v1_comment_proto_init() {
 			}
 		}
 	}
-	file_tkd_comment_v1_comment_proto_msgTypes[9].OneofWrappers = []interface{}{
-		(*CreateCommentRequest_Scope)(nil),
+	file_tkd_comment_v1_comment_proto_msgTypes[10].OneofWrappers = []interface{}{
+		(*CreateCommentRequest_Root)(nil),
 		(*CreateCommentRequest_ParentId)(nil),
 	}
 	type x struct{}
@@ -1406,7 +1482,7 @@ func file_tkd_comment_v1_comment_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_tkd_comment_v1_comment_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   15,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
