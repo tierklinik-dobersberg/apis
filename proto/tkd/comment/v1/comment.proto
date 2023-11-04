@@ -207,15 +207,9 @@ message ListCommentsResponse {
 
 // Get Comments
 message GetCommentRequest {
-    oneof search {
-        string id = 1;
-        RootComment root = 2;
-
-        option (buf.validate.oneof).required = true;
-    }
-
-    bool recurse = 3;
-    bool render_html = 4;
+    string id = 1;
+    bool recurse = 2;
+    bool render_html = 3;
 }
 
 message GetCommentResponse {

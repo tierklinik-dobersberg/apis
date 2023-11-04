@@ -515,29 +515,17 @@ export declare class ListCommentsResponse extends Message<ListCommentsResponse> 
  */
 export declare class GetCommentRequest extends Message<GetCommentRequest> {
   /**
-   * @generated from oneof tkd.comment.v1.GetCommentRequest.search
+   * @generated from field: string id = 1;
    */
-  search: {
-    /**
-     * @generated from field: string id = 1;
-     */
-    value: string;
-    case: "id";
-  } | {
-    /**
-     * @generated from field: tkd.comment.v1.RootComment root = 2;
-     */
-    value: RootComment;
-    case: "root";
-  } | { case: undefined; value?: undefined };
+  id: string;
 
   /**
-   * @generated from field: bool recurse = 3;
+   * @generated from field: bool recurse = 2;
    */
   recurse: boolean;
 
   /**
-   * @generated from field: bool render_html = 4;
+   * @generated from field: bool render_html = 3;
    */
   renderHtml: boolean;
 

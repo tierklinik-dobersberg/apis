@@ -194,10 +194,9 @@ export const ListCommentsResponse = proto3.makeMessageType(
 export const GetCommentRequest = proto3.makeMessageType(
   "tkd.comment.v1.GetCommentRequest",
   () => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search" },
-    { no: 2, name: "root", kind: "message", T: RootComment, oneof: "search" },
-    { no: 3, name: "recurse", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 4, name: "render_html", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "recurse", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "render_html", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
