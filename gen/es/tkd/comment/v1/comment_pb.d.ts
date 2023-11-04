@@ -127,6 +127,13 @@ export declare class Comment extends Message<Comment> {
    */
   creatorId: string;
 
+  /**
+   * A opaque reference of the comment.
+   *
+   * @generated from field: string reference = 7;
+   */
+  reference: string;
+
   constructor(data?: PartialMessage<Comment>);
 
   static readonly runtime: typeof proto3;
@@ -448,12 +455,17 @@ export declare class ListCommentsRequest extends Message<ListCommentsRequest> {
   scope: string;
 
   /**
-   * @generated from field: bool recurse = 2;
+   * @generated from field: string reference = 2;
+   */
+  reference: string;
+
+  /**
+   * @generated from field: bool recurse = 3;
    */
   recurse: boolean;
 
   /**
-   * @generated from field: bool render_html = 3;
+   * @generated from field: bool render_html = 4;
    */
   renderHtml: boolean;
 
@@ -503,17 +515,29 @@ export declare class ListCommentsResponse extends Message<ListCommentsResponse> 
  */
 export declare class GetCommentRequest extends Message<GetCommentRequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from oneof tkd.comment.v1.GetCommentRequest.search
    */
-  id: string;
+  search: {
+    /**
+     * @generated from field: string id = 1;
+     */
+    value: string;
+    case: "id";
+  } | {
+    /**
+     * @generated from field: tkd.comment.v1.RootComment root = 2;
+     */
+    value: RootComment;
+    case: "root";
+  } | { case: undefined; value?: undefined };
 
   /**
-   * @generated from field: bool recurse = 2;
+   * @generated from field: bool recurse = 3;
    */
   recurse: boolean;
 
   /**
-   * @generated from field: bool render_html = 3;
+   * @generated from field: bool render_html = 4;
    */
   renderHtml: boolean;
 

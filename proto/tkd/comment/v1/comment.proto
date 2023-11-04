@@ -69,6 +69,9 @@ message Comment {
     string creator_id = 6 [
         (buf.validate.field).required = true
     ];
+
+    // A opaque reference of the comment.
+    string reference = 7;
 }
 
 message CommentTree {
@@ -189,9 +192,13 @@ message CreateCommentResponse {
 
 // List Comments
 message ListCommentsRequest {
-    string scope = 1;
-    bool recurse = 2;
-    bool render_html = 3;
+    string scope = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string reference = 2;
+    bool recurse = 3;
+    bool render_html = 4;
 }
 
 message ListCommentsResponse {
@@ -200,9 +207,15 @@ message ListCommentsResponse {
 
 // Get Comments
 message GetCommentRequest {
-    string id = 1;
-    bool recurse = 2;
-    bool render_html = 3;
+    oneof search {
+        string id = 1;
+        RootComment root = 2;
+
+        option (buf.validate.oneof).required = true;
+    }
+
+    bool recurse = 3;
+    bool render_html = 4;
 }
 
 message GetCommentResponse {
