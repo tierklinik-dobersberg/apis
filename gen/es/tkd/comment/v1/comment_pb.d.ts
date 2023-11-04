@@ -342,14 +342,21 @@ export declare class DeleteScopeResponse extends Message<DeleteScopeResponse> {
  */
 export declare class CreateCommentRequest extends Message<CreateCommentRequest> {
   /**
-   * @generated from field: string scope = 1;
+   * @generated from oneof tkd.comment.v1.CreateCommentRequest.kind
    */
-  scope: string;
-
-  /**
-   * @generated from field: string parent_id = 2;
-   */
-  parentId: string;
+  kind: {
+    /**
+     * @generated from field: string scope = 1;
+     */
+    value: string;
+    case: "scope";
+  } | {
+    /**
+     * @generated from field: string parent_id = 2;
+     */
+    value: string;
+    case: "parentId";
+  } | { case: undefined; value?: undefined };
 
   /**
    * @generated from field: string content = 3;
@@ -416,6 +423,11 @@ export declare class ListCommentsRequest extends Message<ListCommentsRequest> {
    */
   recurse: boolean;
 
+  /**
+   * @generated from field: bool render_html = 3;
+   */
+  renderHtml: boolean;
+
   constructor(data?: PartialMessage<ListCommentsRequest>);
 
   static readonly runtime: typeof proto3;
@@ -462,19 +474,19 @@ export declare class ListCommentsResponse extends Message<ListCommentsResponse> 
  */
 export declare class GetCommentRequest extends Message<GetCommentRequest> {
   /**
-   * @generated from field: string scope = 1;
-   */
-  scope: string;
-
-  /**
-   * @generated from field: string id = 2;
+   * @generated from field: string id = 1;
    */
   id: string;
 
   /**
-   * @generated from field: bool recurse = 3;
+   * @generated from field: bool recurse = 2;
    */
   recurse: boolean;
+
+  /**
+   * @generated from field: bool render_html = 3;
+   */
+  renderHtml: boolean;
 
   constructor(data?: PartialMessage<GetCommentRequest>);
 

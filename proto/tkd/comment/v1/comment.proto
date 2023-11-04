@@ -159,11 +159,12 @@ message DeleteScopeResponse {}
 
 // Create Comment
 message CreateCommentRequest {
-    string scope = 1 [
-        (buf.validate.field).required = true
-    ];
+    oneof kind {
+        string scope = 1;
+        string parent_id = 2;
 
-    string parent_id = 2;
+        option (buf.validate.oneof).required = true;
+    };
 
     string content = 3 [
         (buf.validate.field).required = true
@@ -180,6 +181,7 @@ message CreateCommentResponse {
 message ListCommentsRequest {
     string scope = 1;
     bool recurse = 2;
+    bool render_html = 3;
 }
 
 message ListCommentsResponse {
@@ -188,9 +190,9 @@ message ListCommentsResponse {
 
 // Get Comments
 message GetCommentRequest {
-    string scope = 1;
-    string id = 2;
-    bool recurse = 3;
+    string id = 1;
+    bool recurse = 2;
+    bool render_html = 3;
 }
 
 message GetCommentResponse {

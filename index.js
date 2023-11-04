@@ -23,4 +23,7 @@ export * from './gen/es/tkd/roster/v1/workshift_connect.js';
 export * from './gen/es/tkd/roster/v1/workshift_pb.js';
 export * from './gen/es/tkd/roster/v1/worktime_connect.js';
 export * from './gen/es/tkd/roster/v1/worktime_pb.js';
-
+export * from './gen/es/tkd/pbx3cx/v1/calllog_connect.js';
+export * from './gen/es/tkd/pbx3cx/v1/calllog_pb.js';
+export * from './gen/es/tkd/comment/v1/comment_connect.js';
+export * from './gen/es/tkd/comment/v1/comment_pb.js';

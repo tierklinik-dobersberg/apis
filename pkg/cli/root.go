@@ -20,10 +20,11 @@ import (
 )
 
 type BaseURLS struct {
-	Idm         string `json:"idm"`
-	Calendar    string `json:"calendar"`
-	Roster      string `json:"roster"`
-	CallService string `json:"callService"`
+	Idm            string `json:"idm"`
+	Calendar       string `json:"calendar"`
+	Roster         string `json:"roster"`
+	CallService    string `json:"callService"`
+	CommentService string `json:"commentService"`
 }
 
 type Config struct {
