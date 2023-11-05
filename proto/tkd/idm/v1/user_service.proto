@@ -10,6 +10,10 @@ import "tkd/idm/v1/user.proto";
 import "tkd/common/v1/descriptor.proto";
 
 service UserService {
+  option (tkd.common.v1.service_auth) = {
+    admin_roles: ["idm_superuser"]
+  };
+
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {
     option (tkd.common.v1.auth) = {
       require: AUTH_REQ_REQUIRED
@@ -32,36 +36,31 @@ service UserService {
 
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc SetUserExtraKey(SetUserExtraKeyRequest) returns (SetUserExtraKeyResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 
   rpc DeleteUserExtraKey(DeleteUserExtraKeyRequest) returns (DeleteUserExtraKeyResponse) {
     option (tkd.common.v1.auth) = {
-      require: AUTH_REQ_REQUIRED,
-      allowed_roles: ["idm_superuser"]
+      require: AUTH_REQ_ADMIN,
     };
   }
 }
