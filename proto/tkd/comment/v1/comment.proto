@@ -169,9 +169,10 @@ message UpdateScopeRequest {
     string name = 2;
     NotificationType notifcation_type = 3;
     string view_comment_url_template = 4;
-    repeated string scope_owner_ids = 5;
+    repeated string add_scope_owner_ids = 5;
+    repeated string remove_scope_owner_ids = 6;
 
-    google.protobuf.FieldMask write_mask = 6;
+    google.protobuf.FieldMask write_mask = 7;
 }
 
 message UpdateScopeResponse {

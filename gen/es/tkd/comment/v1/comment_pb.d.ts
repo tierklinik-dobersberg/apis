@@ -291,12 +291,17 @@ export declare class UpdateScopeRequest extends Message<UpdateScopeRequest> {
   viewCommentUrlTemplate: string;
 
   /**
-   * @generated from field: repeated string scope_owner_ids = 5;
+   * @generated from field: repeated string add_scope_owner_ids = 5;
    */
-  scopeOwnerIds: string[];
+  addScopeOwnerIds: string[];
 
   /**
-   * @generated from field: google.protobuf.FieldMask write_mask = 6;
+   * @generated from field: repeated string remove_scope_owner_ids = 6;
+   */
+  removeScopeOwnerIds: string[];
+
+  /**
+   * @generated from field: google.protobuf.FieldMask write_mask = 7;
    */
   writeMask?: FieldMask;
 

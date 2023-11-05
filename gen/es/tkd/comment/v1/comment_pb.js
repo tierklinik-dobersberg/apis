@@ -97,8 +97,9 @@ export const UpdateScopeRequest = proto3.makeMessageType(
     { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "notifcation_type", kind: "enum", T: proto3.getEnumType(NotificationType) },
     { no: 4, name: "view_comment_url_template", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 5, name: "scope_owner_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
-    { no: 6, name: "write_mask", kind: "message", T: FieldMask },
+    { no: 5, name: "add_scope_owner_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 6, name: "remove_scope_owner_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 7, name: "write_mask", kind: "message", T: FieldMask },
   ],
 );
 
