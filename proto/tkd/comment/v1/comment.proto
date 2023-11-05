@@ -37,6 +37,11 @@ message Scope {
     // Example:
     //      "https://roster.dobersberg.vet/comment/open/{{ .Scope }}//{{ .Id }}"
     string view_comment_url_template = 4;
+
+    // A list of user IDs that are marked as scope owners.
+    // Owners will always get notfied when a new comment has been
+    // created in an owned scope.
+    repeated string scope_owner_ids = 5;
 }
 
 message Comment {
@@ -83,24 +88,31 @@ message CommentTree {
 }
 
 service CommentService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["idm_superuser"]
+    };
+
     rpc CreateScope(CreateScopeRequest) returns (CreateScopeResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser"]
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
+    rpc UpdateScope(UpdateScopeRequest) returns (UpdateScopeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
         };
     }
 
     rpc ListScope(ListScopeRequest) returns (ListScopeResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 
     rpc DeleteScope(DeleteScopeRequest) returns (DeleteScopeResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
-            allowed_roles: ["idm_superuser"]
+            require: AUTH_REQ_ADMIN,
         };
     }
 
@@ -138,11 +150,31 @@ message CreateScopeRequest {
 
     // See Scope.view_comment_url_template
     string view_comment_url_template = 4;
+
+    repeated string scope_owner_ids = 5;
 }
 
 // CreateScopeResponse is returned when a new comment scope has been created
 // and includes the created scope definition.
 message CreateScopeResponse {
+    Scope scope = 1;
+}
+
+message UpdateScopeRequest {
+    string id = 1 [
+        (buf.validate.field).required = true,
+        (buf.validate.field).string.min_len = 3
+    ];
+
+    string name = 2;
+    NotificationType notifcation_type = 3;
+    string view_comment_url_template = 4;
+    repeated string scope_owner_ids = 5;
+
+    google.protobuf.FieldMask write_mask = 6;
+}
+
+message UpdateScopeResponse {
     Scope scope = 1;
 }
 

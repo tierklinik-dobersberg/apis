@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateCommentRequest, CreateCommentResponse, CreateScopeRequest, CreateScopeResponse, DeleteScopeRequest, DeleteScopeResponse, GetCommentRequest, GetCommentResponse, ListCommentsRequest, ListCommentsResponse, ListScopeRequest, ListScopeResponse } from "./comment_pb.js";
+import { CreateCommentRequest, CreateCommentResponse, CreateScopeRequest, CreateScopeResponse, DeleteScopeRequest, DeleteScopeResponse, GetCommentRequest, GetCommentResponse, ListCommentsRequest, ListCommentsResponse, ListScopeRequest, ListScopeResponse, UpdateScopeRequest, UpdateScopeResponse } from "./comment_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -19,6 +19,15 @@ export declare const CommentService: {
       readonly name: "CreateScope",
       readonly I: typeof CreateScopeRequest,
       readonly O: typeof CreateScopeResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.comment.v1.CommentService.UpdateScope
+     */
+    readonly updateScope: {
+      readonly name: "UpdateScope",
+      readonly I: typeof UpdateScopeRequest,
+      readonly O: typeof UpdateScopeResponse,
       readonly kind: MethodKind.Unary,
     },
     /**

@@ -27,6 +27,7 @@ export const Scope = proto3.makeMessageType(
     { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "notifcation_type", kind: "enum", T: proto3.getEnumType(NotificationType) },
     { no: 4, name: "view_comment_url_template", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "scope_owner_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -69,6 +70,7 @@ export const CreateScopeRequest = proto3.makeMessageType(
     { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "notifcation_type", kind: "enum", T: proto3.getEnumType(NotificationType) },
     { no: 4, name: "view_comment_url_template", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "scope_owner_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -80,6 +82,31 @@ export const CreateScopeRequest = proto3.makeMessageType(
  */
 export const CreateScopeResponse = proto3.makeMessageType(
   "tkd.comment.v1.CreateScopeResponse",
+  () => [
+    { no: 1, name: "scope", kind: "message", T: Scope },
+  ],
+);
+
+/**
+ * @generated from message tkd.comment.v1.UpdateScopeRequest
+ */
+export const UpdateScopeRequest = proto3.makeMessageType(
+  "tkd.comment.v1.UpdateScopeRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "notifcation_type", kind: "enum", T: proto3.getEnumType(NotificationType) },
+    { no: 4, name: "view_comment_url_template", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "scope_owner_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 6, name: "write_mask", kind: "message", T: FieldMask },
+  ],
+);
+
+/**
+ * @generated from message tkd.comment.v1.UpdateScopeResponse
+ */
+export const UpdateScopeResponse = proto3.makeMessageType(
+  "tkd.comment.v1.UpdateScopeResponse",
   () => [
     { no: 1, name: "scope", kind: "message", T: Scope },
   ],

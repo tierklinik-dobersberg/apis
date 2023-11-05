@@ -36,6 +36,9 @@ const (
 	// CommentServiceCreateScopeProcedure is the fully-qualified name of the CommentService's
 	// CreateScope RPC.
 	CommentServiceCreateScopeProcedure = "/tkd.comment.v1.CommentService/CreateScope"
+	// CommentServiceUpdateScopeProcedure is the fully-qualified name of the CommentService's
+	// UpdateScope RPC.
+	CommentServiceUpdateScopeProcedure = "/tkd.comment.v1.CommentService/UpdateScope"
 	// CommentServiceListScopeProcedure is the fully-qualified name of the CommentService's ListScope
 	// RPC.
 	CommentServiceListScopeProcedure = "/tkd.comment.v1.CommentService/ListScope"
@@ -56,6 +59,7 @@ const (
 // CommentServiceClient is a client for the tkd.comment.v1.CommentService service.
 type CommentServiceClient interface {
 	CreateScope(context.Context, *connect_go.Request[v1.CreateScopeRequest]) (*connect_go.Response[v1.CreateScopeResponse], error)
+	UpdateScope(context.Context, *connect_go.Request[v1.UpdateScopeRequest]) (*connect_go.Response[v1.UpdateScopeResponse], error)
 	ListScope(context.Context, *connect_go.Request[v1.ListScopeRequest]) (*connect_go.Response[v1.ListScopeResponse], error)
 	DeleteScope(context.Context, *connect_go.Request[v1.DeleteScopeRequest]) (*connect_go.Response[v1.DeleteScopeResponse], error)
 	CreateComment(context.Context, *connect_go.Request[v1.CreateCommentRequest]) (*connect_go.Response[v1.CreateCommentResponse], error)
@@ -76,6 +80,11 @@ func NewCommentServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 		createScope: connect_go.NewClient[v1.CreateScopeRequest, v1.CreateScopeResponse](
 			httpClient,
 			baseURL+CommentServiceCreateScopeProcedure,
+			opts...,
+		),
+		updateScope: connect_go.NewClient[v1.UpdateScopeRequest, v1.UpdateScopeResponse](
+			httpClient,
+			baseURL+CommentServiceUpdateScopeProcedure,
 			opts...,
 		),
 		listScope: connect_go.NewClient[v1.ListScopeRequest, v1.ListScopeResponse](
@@ -109,6 +118,7 @@ func NewCommentServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 // commentServiceClient implements CommentServiceClient.
 type commentServiceClient struct {
 	createScope   *connect_go.Client[v1.CreateScopeRequest, v1.CreateScopeResponse]
+	updateScope   *connect_go.Client[v1.UpdateScopeRequest, v1.UpdateScopeResponse]
 	listScope     *connect_go.Client[v1.ListScopeRequest, v1.ListScopeResponse]
 	deleteScope   *connect_go.Client[v1.DeleteScopeRequest, v1.DeleteScopeResponse]
 	createComment *connect_go.Client[v1.CreateCommentRequest, v1.CreateCommentResponse]
@@ -119,6 +129,11 @@ type commentServiceClient struct {
 // CreateScope calls tkd.comment.v1.CommentService.CreateScope.
 func (c *commentServiceClient) CreateScope(ctx context.Context, req *connect_go.Request[v1.CreateScopeRequest]) (*connect_go.Response[v1.CreateScopeResponse], error) {
 	return c.createScope.CallUnary(ctx, req)
+}
+
+// UpdateScope calls tkd.comment.v1.CommentService.UpdateScope.
+func (c *commentServiceClient) UpdateScope(ctx context.Context, req *connect_go.Request[v1.UpdateScopeRequest]) (*connect_go.Response[v1.UpdateScopeResponse], error) {
+	return c.updateScope.CallUnary(ctx, req)
 }
 
 // ListScope calls tkd.comment.v1.CommentService.ListScope.
@@ -149,6 +164,7 @@ func (c *commentServiceClient) ListComments(ctx context.Context, req *connect_go
 // CommentServiceHandler is an implementation of the tkd.comment.v1.CommentService service.
 type CommentServiceHandler interface {
 	CreateScope(context.Context, *connect_go.Request[v1.CreateScopeRequest]) (*connect_go.Response[v1.CreateScopeResponse], error)
+	UpdateScope(context.Context, *connect_go.Request[v1.UpdateScopeRequest]) (*connect_go.Response[v1.UpdateScopeResponse], error)
 	ListScope(context.Context, *connect_go.Request[v1.ListScopeRequest]) (*connect_go.Response[v1.ListScopeResponse], error)
 	DeleteScope(context.Context, *connect_go.Request[v1.DeleteScopeRequest]) (*connect_go.Response[v1.DeleteScopeResponse], error)
 	CreateComment(context.Context, *connect_go.Request[v1.CreateCommentRequest]) (*connect_go.Response[v1.CreateCommentResponse], error)
@@ -165,6 +181,11 @@ func NewCommentServiceHandler(svc CommentServiceHandler, opts ...connect_go.Hand
 	commentServiceCreateScopeHandler := connect_go.NewUnaryHandler(
 		CommentServiceCreateScopeProcedure,
 		svc.CreateScope,
+		opts...,
+	)
+	commentServiceUpdateScopeHandler := connect_go.NewUnaryHandler(
+		CommentServiceUpdateScopeProcedure,
+		svc.UpdateScope,
 		opts...,
 	)
 	commentServiceListScopeHandler := connect_go.NewUnaryHandler(
@@ -196,6 +217,8 @@ func NewCommentServiceHandler(svc CommentServiceHandler, opts ...connect_go.Hand
 		switch r.URL.Path {
 		case CommentServiceCreateScopeProcedure:
 			commentServiceCreateScopeHandler.ServeHTTP(w, r)
+		case CommentServiceUpdateScopeProcedure:
+			commentServiceUpdateScopeHandler.ServeHTTP(w, r)
 		case CommentServiceListScopeProcedure:
 			commentServiceListScopeHandler.ServeHTTP(w, r)
 		case CommentServiceDeleteScopeProcedure:
@@ -217,6 +240,10 @@ type UnimplementedCommentServiceHandler struct{}
 
 func (UnimplementedCommentServiceHandler) CreateScope(context.Context, *connect_go.Request[v1.CreateScopeRequest]) (*connect_go.Response[v1.CreateScopeResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.comment.v1.CommentService.CreateScope is not implemented"))
+}
+
+func (UnimplementedCommentServiceHandler) UpdateScope(context.Context, *connect_go.Request[v1.UpdateScopeRequest]) (*connect_go.Response[v1.UpdateScopeResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.comment.v1.CommentService.UpdateScope is not implemented"))
 }
 
 func (UnimplementedCommentServiceHandler) ListScope(context.Context, *connect_go.Request[v1.ListScopeRequest]) (*connect_go.Response[v1.ListScopeResponse], error) {

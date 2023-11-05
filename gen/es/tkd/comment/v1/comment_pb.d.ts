@@ -65,6 +65,15 @@ export declare class Scope extends Message<Scope> {
    */
   viewCommentUrlTemplate: string;
 
+  /**
+   * A list of user IDs that are marked as scope owners.
+   * Owners will always get notfied when a new comment has been
+   * created in an owned scope.
+   *
+   * @generated from field: repeated string scope_owner_ids = 5;
+   */
+  scopeOwnerIds: string[];
+
   constructor(data?: PartialMessage<Scope>);
 
   static readonly runtime: typeof proto3;
@@ -210,6 +219,11 @@ export declare class CreateScopeRequest extends Message<CreateScopeRequest> {
    */
   viewCommentUrlTemplate: string;
 
+  /**
+   * @generated from field: repeated string scope_owner_ids = 5;
+   */
+  scopeOwnerIds: string[];
+
   constructor(data?: PartialMessage<CreateScopeRequest>);
 
   static readonly runtime: typeof proto3;
@@ -250,6 +264,79 @@ export declare class CreateScopeResponse extends Message<CreateScopeResponse> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateScopeResponse;
 
   static equals(a: CreateScopeResponse | PlainMessage<CreateScopeResponse> | undefined, b: CreateScopeResponse | PlainMessage<CreateScopeResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.comment.v1.UpdateScopeRequest
+ */
+export declare class UpdateScopeRequest extends Message<UpdateScopeRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name: string;
+
+  /**
+   * @generated from field: tkd.comment.v1.NotificationType notifcation_type = 3;
+   */
+  notifcationType: NotificationType;
+
+  /**
+   * @generated from field: string view_comment_url_template = 4;
+   */
+  viewCommentUrlTemplate: string;
+
+  /**
+   * @generated from field: repeated string scope_owner_ids = 5;
+   */
+  scopeOwnerIds: string[];
+
+  /**
+   * @generated from field: google.protobuf.FieldMask write_mask = 6;
+   */
+  writeMask?: FieldMask;
+
+  constructor(data?: PartialMessage<UpdateScopeRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.comment.v1.UpdateScopeRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateScopeRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateScopeRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateScopeRequest;
+
+  static equals(a: UpdateScopeRequest | PlainMessage<UpdateScopeRequest> | undefined, b: UpdateScopeRequest | PlainMessage<UpdateScopeRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.comment.v1.UpdateScopeResponse
+ */
+export declare class UpdateScopeResponse extends Message<UpdateScopeResponse> {
+  /**
+   * @generated from field: tkd.comment.v1.Scope scope = 1;
+   */
+  scope?: Scope;
+
+  constructor(data?: PartialMessage<UpdateScopeResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.comment.v1.UpdateScopeResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateScopeResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateScopeResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateScopeResponse;
+
+  static equals(a: UpdateScopeResponse | PlainMessage<UpdateScopeResponse> | undefined, b: UpdateScopeResponse | PlainMessage<UpdateScopeResponse> | undefined): boolean;
 }
 
 /**
