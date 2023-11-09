@@ -38,6 +38,9 @@ message WorkTime {
         (buf.validate.field).int32.gt = 0,
         (buf.validate.field).int32.lt = 52
     ];
+
+    // Overtime Allowance per month.
+    google.protobuf.Duration overtime_allowance_per_month = 6;
 }
 
 service WorkTimeService {

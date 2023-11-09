@@ -22,8 +22,6 @@
     "typescript": "^5.1.3"
   },
   "peerDependencies": {
-    "@bufbuild/connect": "^0.9.1",
-    "@bufbuild/connect-web": "^0.9.1",
     "@bufbuild/protobuf": "^1.2.1"
   }
 }
