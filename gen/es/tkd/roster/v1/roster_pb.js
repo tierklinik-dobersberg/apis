@@ -117,6 +117,7 @@ export const WorkTimeAnalysisStep = proto3.makeMessageType(
     { no: 5, name: "from", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 6, name: "to", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 7, name: "planned", kind: "message", T: Duration },
+    { no: 8, name: "overtime", kind: "message", T: Duration },
   ],
 );
 
@@ -130,6 +131,7 @@ export const WorkTimeAnalysis = proto3.makeMessageType(
     { no: 2, name: "planned_time", kind: "message", T: Duration },
     { no: 3, name: "expected_time", kind: "message", T: Duration },
     { no: 4, name: "steps", kind: "message", T: WorkTimeAnalysisStep, repeated: true },
+    { no: 5, name: "overtime", kind: "message", T: Duration },
   ],
 );
 

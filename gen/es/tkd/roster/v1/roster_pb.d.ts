@@ -442,6 +442,14 @@ export declare class WorkTimeAnalysisStep extends Message<WorkTimeAnalysisStep> 
    */
   planned?: Duration;
 
+  /**
+   * Overtime holds the overtime of the user taking overtime allowance per month
+   * into consideration.
+   *
+   * @generated from field: google.protobuf.Duration overtime = 8;
+   */
+  overtime?: Duration;
+
   constructor(data?: PartialMessage<WorkTimeAnalysisStep>);
 
   static readonly runtime: typeof proto3;
@@ -488,6 +496,14 @@ export declare class WorkTimeAnalysis extends Message<WorkTimeAnalysis> {
    * @generated from field: repeated tkd.roster.v1.WorkTimeAnalysisStep steps = 4;
    */
   steps: WorkTimeAnalysisStep[];
+
+  /**
+   * Overtime holds the overtime of the user taking overtime allowance per month
+   * into consideration.
+   *
+   * @generated from field: google.protobuf.Duration overtime = 5;
+   */
+  overtime?: Duration;
 
   constructor(data?: PartialMessage<WorkTimeAnalysis>);
 

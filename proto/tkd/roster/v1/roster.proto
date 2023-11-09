@@ -282,6 +282,10 @@ message WorkTimeAnalysisStep {
     string from = 5; // YYYY-MM-DD
     string to = 6; // YYYY-MM-DD
     google.protobuf.Duration planned = 7;
+
+    // Overtime holds the overtime of the user taking overtime allowance per month
+    // into consideration.
+    google.protobuf.Duration overtime = 8;
 }
 
 message WorkTimeAnalysis {
@@ -297,6 +301,10 @@ message WorkTimeAnalysis {
     google.protobuf.Duration expected_time = 3;
 
     repeated WorkTimeAnalysisStep steps = 4;
+
+    // Overtime holds the overtime of the user taking overtime allowance per month
+    // into consideration.
+    google.protobuf.Duration overtime = 5;
 }
 
 message SaveRosterResponse {
