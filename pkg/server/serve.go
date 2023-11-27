@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -12,15 +13,43 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func Create(addr string, handler http.Handler) *http.Server {
+// CreateOption can be used to customize the server returned by Create.
+type CreateOption func(srv *http.Server) error
+
+// Create creates a new http.Server that uses h2c to support cleartext HTTP/2.
+//
+// Deprecated: use CreateWithOptions instead.
+func Create(addr string, handler http.Handler, opts ...CreateOption) *http.Server {
+	srv, err := CreateWithOptions(addr, handler)
+	if err != nil {
+		// This shouldn't happen as only CreateOption may return an error and there
+		// aren't any.
+		panic(fmt.Sprintf("failed to create server: %s", err))
+	}
+
+	return srv
+}
+
+// Create creates a new http.Server that uses h2c to support cleartext HTTP/2 and supports server
+// customization using CreateOption's.
+func CreateWithOptions(addr string, handler http.Handler, opts ...CreateOption) (*http.Server, error) {
 	handler = servertiming.Middleware(handler, nil)
 
 	srv := &http.Server{
 		Addr:    addr,
-		Handler: h2c.NewHandler(handler, &http2.Server{}),
+		Handler: handler, // h2c.NewHandler(handler, &http2.Server{}),
 	}
 
-	return srv
+	for _, opt := range opts {
+		if err := opt(srv); err != nil {
+			return nil, fmt.Errorf("create option: %w", err)
+		}
+	}
+
+	// finally, apply h2c middleware
+	srv.Handler = h2c.NewHandler(srv.Handler, &http2.Server{})
+
+	return srv, nil
 }
 
 type ServeAndShutdown interface {
