@@ -204,6 +204,8 @@ func WithTrustedProxies(networks []string) CreateOption {
 			ctx := r.Context()
 			l := log.L(ctx)
 
+			var realIP net.IP
+
 			if r.RemoteAddr != "" {
 				sip, _, err := net.SplitHostPort(r.RemoteAddr)
 				if err == nil {
@@ -214,7 +216,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 					case !isAllowed(ip):
 
 						// this seems to be the real client IP
-						ctx = WithRealIP(ctx, ip)
+						realIP = ip
 
 					case isAllowed(ip):
 						if xffh := r.Header.Get("X-Forwarded-For"); xffh != "" {
@@ -236,18 +238,23 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 								l.Debugf("found real client ip: %s", parsedIP)
 
-								ctx = WithRealIP(ctx, parsedIP)
+								realIP = parsedIP
 
 								break
 							}
 						} else {
-							ctx = WithRealIP(ctx, ip)
+							realIP = ip
 						}
 					}
 				}
 			}
 
-			r = r.WithContext(ctx)
+			if realIP != nil {
+				ctx = WithRealIP(ctx, realIP)
+				ctx = log.WithLogger(ctx, l.WithField("remoteIP", realIP.String()))
+
+				r = r.WithContext(ctx)
+			}
 
 			prevHandler.ServeHTTP(w, r)
 		})
