@@ -119,7 +119,27 @@ func WithTrustedProxies(networks []string) CreateOption {
 				continue
 			}
 
-			nets = append(nets, n)
+			// try to parse it as net.IPNet
+			if _, _, err := net.ParseCIDR(n); err == nil {
+				nets = append(nets, n)
+
+				continue
+			}
+
+			if ips, err := net.LookupIP(n); err == nil {
+				for _, ip := range ips {
+					ones, _ := ip.DefaultMask().Size()
+					netStr := fmt.Sprintf("%s/%d", ip, ones)
+
+					log.L(context.TODO()).Infof("adding resolved ip %s for hostname %s as trusted network", netStr, n)
+
+					nets = append(nets, netStr)
+				}
+
+				continue
+			}
+
+			return fmt.Errorf("failed to determine IP address or network for %q", n)
 		}
 
 		// remove all duplicates
