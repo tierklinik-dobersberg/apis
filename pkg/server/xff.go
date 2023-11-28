@@ -103,6 +103,8 @@ func WithTrustedProxies(networks []string) CreateOption {
 		var ipNets []*net.IPNet
 		var lock sync.RWMutex
 
+		l := log.L(context.TODO()).WithField("server", srv.Addr)
+
 		parseNetworks := func() error {
 			lock.Lock()
 			defer lock.Unlock()
@@ -121,7 +123,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 				if n == "local" {
 					// all iface addresses
 					for iface, addrs := range allIfaces {
-						log.L(context.TODO()).Infof("adding addresses from interface %s as trusted networks: %v", iface, addrs)
+						l.Infof("adding addresses from interface %s as trusted networks: %v", iface, addrs)
 
 						nets = append(nets, addrs...)
 					}
@@ -140,7 +142,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 					for _, ip := range ips {
 						netStr := fmt.Sprintf("%s/32", ip)
 
-						log.L(context.TODO()).Infof("adding resolved ip %s for hostname %s as trusted network", netStr, n)
+						l.Infof("adding resolved ip %s for hostname %s as trusted network", netStr, n)
 
 						nets = append(nets, netStr)
 					}
@@ -166,7 +168,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 				ipNets[idx] = parsed
 			}
 
-			log.L(context.TODO()).Infof("Updated trusted networks for X-Forwarded-For headers: %v", nets)
+			l.Infof("updated trusted networks for X-Forwarded-For headers: %v", nets)
 
 			return nil
 		}
@@ -180,7 +182,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 			for range ticker.C {
 				if err := parseNetworks(); err != nil {
-					log.L(context.TODO()).Errorf("failed to refresh trusted networks: %s", err)
+					l.Errorf("failed to refresh trusted networks: %s", err)
 				}
 			}
 		}()
