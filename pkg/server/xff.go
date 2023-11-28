@@ -100,7 +100,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 		}
 
 		// create a slice of net.IPNet
-		ipNets := make([]*net.IPNet, len(nets))
+		var ipNets []*net.IPNet
 		var lock sync.RWMutex
 
 		parseNetworks := func() error {
@@ -166,6 +166,8 @@ func WithTrustedProxies(networks []string) CreateOption {
 				ipNets[idx] = parsed
 			}
 
+			log.L(context.TODO()).Infof("Updated trusted networks for X-Forwarded-For headers: %v", nets)
+
 			return nil
 		}
 
@@ -195,8 +197,6 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 			return false
 		}
-
-		log.L(context.TODO()).Infof("trusted networks for X-Forwarded-For headers: %v", nets)
 
 		prevHandler := srv.Handler
 
