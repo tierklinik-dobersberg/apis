@@ -6,6 +6,8 @@ import (
 	"net"
 	"net/http"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/sebest/xff"
 	"github.com/tierklinik-dobersberg/apis/pkg/data"
@@ -97,68 +99,94 @@ func WithTrustedProxies(networks []string) CreateOption {
 			return fmt.Errorf("failed to enumerate interace addresses: %w", err)
 		}
 
-		nets := make([]string, 0, len(networks))
-
-		for _, n := range networks {
-			ifaceAddr, ok := allIfaces[n]
-			if ok {
-				// this is an interface name
-				nets = append(nets, ifaceAddr...)
-
-				continue
-			}
-
-			if n == "local" {
-				// all iface addresses
-				for iface, addrs := range allIfaces {
-					log.L(context.TODO()).Infof("adding addresses from interface %s as trusted networks: %v", iface, addrs)
-
-					nets = append(nets, addrs...)
-				}
-
-				continue
-			}
-
-			// try to parse it as net.IPNet
-			if _, _, err := net.ParseCIDR(n); err == nil {
-				nets = append(nets, n)
-
-				continue
-			}
-
-			if ips, err := net.LookupIP(n); err == nil {
-				for _, ip := range ips {
-					ones, _ := ip.DefaultMask().Size()
-					netStr := fmt.Sprintf("%s/%d", ip, ones)
-
-					log.L(context.TODO()).Infof("adding resolved ip %s for hostname %s as trusted network", netStr, n)
-
-					nets = append(nets, netStr)
-				}
-
-				continue
-			}
-
-			return fmt.Errorf("failed to determine IP address or network for %q", n)
-		}
-
-		// remove all duplicates
-		nets = data.MapToSlice(
-			data.IndexSlice(nets, func(n string) string { return n }),
-		)
-
 		// create a slice of net.IPNet
 		ipNets := make([]*net.IPNet, len(nets))
-		for idx, n := range nets {
-			_, parsed, err := net.ParseCIDR(n)
-			if err != nil {
-				return fmt.Errorf("failed to parse %s: %w", n, err)
+		var lock sync.RWMutex
+
+		parseNetworks := func() error {
+			lock.Lock()
+			defer lock.Unlock()
+
+			nets := make([]string, 0, len(networks))
+
+			for _, n := range networks {
+				ifaceAddr, ok := allIfaces[n]
+				if ok {
+					// this is an interface name
+					nets = append(nets, ifaceAddr...)
+
+					continue
+				}
+
+				if n == "local" {
+					// all iface addresses
+					for iface, addrs := range allIfaces {
+						log.L(context.TODO()).Infof("adding addresses from interface %s as trusted networks: %v", iface, addrs)
+
+						nets = append(nets, addrs...)
+					}
+
+					continue
+				}
+
+				// try to parse it as net.IPNet
+				if _, _, err := net.ParseCIDR(n); err == nil {
+					nets = append(nets, n)
+
+					continue
+				}
+
+				if ips, err := net.LookupIP(n); err == nil {
+					for _, ip := range ips {
+						netStr := fmt.Sprintf("%s/32", ip)
+
+						log.L(context.TODO()).Infof("adding resolved ip %s for hostname %s as trusted network", netStr, n)
+
+						nets = append(nets, netStr)
+					}
+
+					continue
+				}
+
+				return fmt.Errorf("failed to determine IP address or network for %q", n)
 			}
 
-			ipNets[idx] = parsed
+			// remove all duplicates
+			nets = data.MapToSlice(
+				data.IndexSlice(nets, func(n string) string { return n }),
+			)
+
+			ipNets = make([]*net.IPNet, len(nets))
+			for idx, n := range nets {
+				_, parsed, err := net.ParseCIDR(n)
+				if err != nil {
+					return fmt.Errorf("failed to parse %s: %w", n, err)
+				}
+
+				ipNets[idx] = parsed
+			}
+
+			return nil
 		}
 
+		if err := parseNetworks(); err != nil {
+			return err
+		}
+
+		go func() {
+			ticker := time.NewTicker(time.Minute)
+
+			for range ticker.C {
+				if err := parseNetworks(); err != nil {
+					log.L(context.TODO()).Errorf("failed to refresh trusted networks: %s", err)
+				}
+			}
+		}()
+
 		isAllowed := func(ip net.IP) bool {
+			lock.RLock()
+			defer lock.RUnlock()
+
 			for _, n := range ipNets {
 				if n.Contains(ip) {
 					return true
