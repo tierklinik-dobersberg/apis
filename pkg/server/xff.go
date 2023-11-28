@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 
 	"github.com/sebest/xff"
 	"github.com/tierklinik-dobersberg/apis/pkg/data"
@@ -126,8 +127,11 @@ func WithTrustedProxies(networks []string) CreateOption {
 			data.IndexSlice(nets, func(n string) string { return n }),
 		)
 
+		log.L(context.TODO()).Infof("trusted networks for X-Forwarded-For headers: %v", nets)
+
 		xffHandler, err := xff.New(xff.Options{
 			AllowedSubnets: nets,
+			Debug:          true,
 		})
 		if err != nil {
 			return err
@@ -135,7 +139,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 		prevHandler := srv.Handler
 
-		srv.Handler = xffHandler.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		xffHandlerFunc := xffHandler.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
 
 			if r.RemoteAddr != "" {
@@ -154,6 +158,16 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 			prevHandler.ServeHTTP(w, r)
 		}))
+
+		if os.Getenv("DEBUG") != "" {
+			srv.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				log.L(r.Context()).Infof("RemoteAddr: %s | X-Forwarded-For: %s", r.RemoteAddr, r.Header.Get("X-Forwarded-For"))
+
+				xffHandlerFunc.ServeHTTP(w, r)
+			})
+		} else {
+			srv.Handler = xffHandlerFunc
+		}
 
 		return nil
 	}
