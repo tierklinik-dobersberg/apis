@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
+	"strings"
 
 	"github.com/sebest/xff"
 	"github.com/tierklinik-dobersberg/apis/pkg/data"
@@ -127,47 +127,81 @@ func WithTrustedProxies(networks []string) CreateOption {
 			data.IndexSlice(nets, func(n string) string { return n }),
 		)
 
-		log.L(context.TODO()).Infof("trusted networks for X-Forwarded-For headers: %v", nets)
+		// create a slice of net.IPNet
+		ipNets := make([]*net.IPNet, len(nets))
+		for idx, n := range nets {
+			_, parsed, err := net.ParseCIDR(n)
+			if err != nil {
+				return fmt.Errorf("failed to parse %s: %w", n, err)
+			}
 
-		xffHandler, err := xff.New(xff.Options{
-			AllowedSubnets: nets,
-			Debug:          true,
-		})
-		if err != nil {
-			return err
+			ipNets[idx] = parsed
 		}
+
+		isAllowed := func(ip net.IP) bool {
+			for _, n := range ipNets {
+				if n.Contains(ip) {
+					return true
+				}
+			}
+
+			return false
+		}
+
+		log.L(context.TODO()).Infof("trusted networks for X-Forwarded-For headers: %v", nets)
 
 		prevHandler := srv.Handler
 
-		xffHandlerFunc := xffHandler.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		srv.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
+			l := log.L(ctx)
 
 			if r.RemoteAddr != "" {
 				sip, _, err := net.SplitHostPort(r.RemoteAddr)
 				if err == nil {
 					ip := net.ParseIP(sip)
-					if ip != nil {
+					switch {
+					case ip == nil:
+						// there's nothing we can do here
+					case !isAllowed(ip):
+						// this seems to be the real client IP
 						ctx = WithRealIP(ctx, ip)
+
+					case isAllowed(ip):
+						if xffh := r.Header.Get("X-Forwarded-For"); xffh != "" {
+							for _, ip := range strings.Split(xffh, ",") {
+								ip = strings.TrimSpace(ip)
+
+								parsedIP := net.ParseIP(ip)
+								if parsedIP == nil {
+									l.Infof("failed to parse entry in XFF header: %s", ip)
+
+									continue
+								}
+
+								if isAllowed(parsedIP) {
+									l.Infof("found trusted proxy IP in XFF header %s, continuing ...", parsedIP)
+
+									continue
+								}
+
+								l.Infof("found real client ip: %s", parsedIP)
+
+								ctx = WithRealIP(ctx, parsedIP)
+
+								break
+							}
+						} else {
+							ctx = WithRealIP(ctx, ip)
+						}
 					}
-				} else {
-					// TODO(ppacher): log the output?
 				}
 			}
 
 			r = r.WithContext(ctx)
 
 			prevHandler.ServeHTTP(w, r)
-		}))
-
-		if os.Getenv("DEBUG") != "" {
-			srv.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				log.L(r.Context()).Infof("RemoteAddr: %s | X-Forwarded-For: %s", r.RemoteAddr, r.Header.Get("X-Forwarded-For"))
-
-				xffHandlerFunc.ServeHTTP(w, r)
-			})
-		} else {
-			srv.Handler = xffHandlerFunc
-		}
+		})
 
 		return nil
 	}
