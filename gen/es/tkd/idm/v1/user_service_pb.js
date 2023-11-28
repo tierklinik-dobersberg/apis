@@ -190,3 +190,21 @@ export const DeleteUserExtraKeyResponse = proto3.makeMessageType(
   [],
 );
 
+/**
+ * @generated from message tkd.idm.v1.SendAccountCreationNoticeRequest
+ */
+export const SendAccountCreationNoticeRequest = proto3.makeMessageType(
+  "tkd.idm.v1.SendAccountCreationNoticeRequest",
+  () => [
+    { no: 1, name: "user_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.SendAccountCreationNoticeResponse
+ */
+export const SendAccountCreationNoticeResponse = proto3.makeMessageType(
+  "tkd.idm.v1.SendAccountCreationNoticeResponse",
+  [],
+);
+

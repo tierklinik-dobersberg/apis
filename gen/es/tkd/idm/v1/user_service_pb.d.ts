@@ -513,3 +513,46 @@ export declare class DeleteUserExtraKeyResponse extends Message<DeleteUserExtraK
   static equals(a: DeleteUserExtraKeyResponse | PlainMessage<DeleteUserExtraKeyResponse> | undefined, b: DeleteUserExtraKeyResponse | PlainMessage<DeleteUserExtraKeyResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.idm.v1.SendAccountCreationNoticeRequest
+ */
+export declare class SendAccountCreationNoticeRequest extends Message<SendAccountCreationNoticeRequest> {
+  /**
+   * @generated from field: repeated string user_ids = 1;
+   */
+  userIds: string[];
+
+  constructor(data?: PartialMessage<SendAccountCreationNoticeRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.SendAccountCreationNoticeRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendAccountCreationNoticeRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendAccountCreationNoticeRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendAccountCreationNoticeRequest;
+
+  static equals(a: SendAccountCreationNoticeRequest | PlainMessage<SendAccountCreationNoticeRequest> | undefined, b: SendAccountCreationNoticeRequest | PlainMessage<SendAccountCreationNoticeRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.SendAccountCreationNoticeResponse
+ */
+export declare class SendAccountCreationNoticeResponse extends Message<SendAccountCreationNoticeResponse> {
+  constructor(data?: PartialMessage<SendAccountCreationNoticeResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.SendAccountCreationNoticeResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SendAccountCreationNoticeResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SendAccountCreationNoticeResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendAccountCreationNoticeResponse;
+
+  static equals(a: SendAccountCreationNoticeResponse | PlainMessage<SendAccountCreationNoticeResponse> | undefined, b: SendAccountCreationNoticeResponse | PlainMessage<SendAccountCreationNoticeResponse> | undefined): boolean;
+}
+

@@ -51,6 +51,9 @@ const (
 	// UserServiceDeleteUserExtraKeyProcedure is the fully-qualified name of the UserService's
 	// DeleteUserExtraKey RPC.
 	UserServiceDeleteUserExtraKeyProcedure = "/tkd.idm.v1.UserService/DeleteUserExtraKey"
+	// UserServiceSendAccountCreationNoticeProcedure is the fully-qualified name of the UserService's
+	// SendAccountCreationNotice RPC.
+	UserServiceSendAccountCreationNoticeProcedure = "/tkd.idm.v1.UserService/SendAccountCreationNotice"
 )
 
 // UserServiceClient is a client for the tkd.idm.v1.UserService service.
@@ -63,6 +66,7 @@ type UserServiceClient interface {
 	DeleteUser(context.Context, *connect_go.Request[v1.DeleteUserRequest]) (*connect_go.Response[v1.DeleteUserResponse], error)
 	SetUserExtraKey(context.Context, *connect_go.Request[v1.SetUserExtraKeyRequest]) (*connect_go.Response[v1.SetUserExtraKeyResponse], error)
 	DeleteUserExtraKey(context.Context, *connect_go.Request[v1.DeleteUserExtraKeyRequest]) (*connect_go.Response[v1.DeleteUserExtraKeyResponse], error)
+	SendAccountCreationNotice(context.Context, *connect_go.Request[v1.SendAccountCreationNoticeRequest]) (*connect_go.Response[v1.SendAccountCreationNoticeResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the tkd.idm.v1.UserService service. By default, it
@@ -117,19 +121,25 @@ func NewUserServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+UserServiceDeleteUserExtraKeyProcedure,
 			opts...,
 		),
+		sendAccountCreationNotice: connect_go.NewClient[v1.SendAccountCreationNoticeRequest, v1.SendAccountCreationNoticeResponse](
+			httpClient,
+			baseURL+UserServiceSendAccountCreationNoticeProcedure,
+			opts...,
+		),
 	}
 }
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	getUser            *connect_go.Client[v1.GetUserRequest, v1.GetUserResponse]
-	inviteUser         *connect_go.Client[v1.InviteUserRequest, v1.InviteUserResponse]
-	listUsers          *connect_go.Client[v1.ListUsersRequest, v1.ListUsersResponse]
-	createUser         *connect_go.Client[v1.CreateUserRequest, v1.CreateUserResponse]
-	updateUser         *connect_go.Client[v1.UpdateUserRequest, v1.UpdateUserResponse]
-	deleteUser         *connect_go.Client[v1.DeleteUserRequest, v1.DeleteUserResponse]
-	setUserExtraKey    *connect_go.Client[v1.SetUserExtraKeyRequest, v1.SetUserExtraKeyResponse]
-	deleteUserExtraKey *connect_go.Client[v1.DeleteUserExtraKeyRequest, v1.DeleteUserExtraKeyResponse]
+	getUser                   *connect_go.Client[v1.GetUserRequest, v1.GetUserResponse]
+	inviteUser                *connect_go.Client[v1.InviteUserRequest, v1.InviteUserResponse]
+	listUsers                 *connect_go.Client[v1.ListUsersRequest, v1.ListUsersResponse]
+	createUser                *connect_go.Client[v1.CreateUserRequest, v1.CreateUserResponse]
+	updateUser                *connect_go.Client[v1.UpdateUserRequest, v1.UpdateUserResponse]
+	deleteUser                *connect_go.Client[v1.DeleteUserRequest, v1.DeleteUserResponse]
+	setUserExtraKey           *connect_go.Client[v1.SetUserExtraKeyRequest, v1.SetUserExtraKeyResponse]
+	deleteUserExtraKey        *connect_go.Client[v1.DeleteUserExtraKeyRequest, v1.DeleteUserExtraKeyResponse]
+	sendAccountCreationNotice *connect_go.Client[v1.SendAccountCreationNoticeRequest, v1.SendAccountCreationNoticeResponse]
 }
 
 // GetUser calls tkd.idm.v1.UserService.GetUser.
@@ -172,6 +182,11 @@ func (c *userServiceClient) DeleteUserExtraKey(ctx context.Context, req *connect
 	return c.deleteUserExtraKey.CallUnary(ctx, req)
 }
 
+// SendAccountCreationNotice calls tkd.idm.v1.UserService.SendAccountCreationNotice.
+func (c *userServiceClient) SendAccountCreationNotice(ctx context.Context, req *connect_go.Request[v1.SendAccountCreationNoticeRequest]) (*connect_go.Response[v1.SendAccountCreationNoticeResponse], error) {
+	return c.sendAccountCreationNotice.CallUnary(ctx, req)
+}
+
 // UserServiceHandler is an implementation of the tkd.idm.v1.UserService service.
 type UserServiceHandler interface {
 	GetUser(context.Context, *connect_go.Request[v1.GetUserRequest]) (*connect_go.Response[v1.GetUserResponse], error)
@@ -182,6 +197,7 @@ type UserServiceHandler interface {
 	DeleteUser(context.Context, *connect_go.Request[v1.DeleteUserRequest]) (*connect_go.Response[v1.DeleteUserResponse], error)
 	SetUserExtraKey(context.Context, *connect_go.Request[v1.SetUserExtraKeyRequest]) (*connect_go.Response[v1.SetUserExtraKeyResponse], error)
 	DeleteUserExtraKey(context.Context, *connect_go.Request[v1.DeleteUserExtraKeyRequest]) (*connect_go.Response[v1.DeleteUserExtraKeyResponse], error)
+	SendAccountCreationNotice(context.Context, *connect_go.Request[v1.SendAccountCreationNoticeRequest]) (*connect_go.Response[v1.SendAccountCreationNoticeResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -232,6 +248,11 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect_go.HandlerOpt
 		svc.DeleteUserExtraKey,
 		opts...,
 	)
+	userServiceSendAccountCreationNoticeHandler := connect_go.NewUnaryHandler(
+		UserServiceSendAccountCreationNoticeProcedure,
+		svc.SendAccountCreationNotice,
+		opts...,
+	)
 	return "/tkd.idm.v1.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case UserServiceGetUserProcedure:
@@ -250,6 +271,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect_go.HandlerOpt
 			userServiceSetUserExtraKeyHandler.ServeHTTP(w, r)
 		case UserServiceDeleteUserExtraKeyProcedure:
 			userServiceDeleteUserExtraKeyHandler.ServeHTTP(w, r)
+		case UserServiceSendAccountCreationNoticeProcedure:
+			userServiceSendAccountCreationNoticeHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -289,4 +312,8 @@ func (UnimplementedUserServiceHandler) SetUserExtraKey(context.Context, *connect
 
 func (UnimplementedUserServiceHandler) DeleteUserExtraKey(context.Context, *connect_go.Request[v1.DeleteUserExtraKeyRequest]) (*connect_go.Response[v1.DeleteUserExtraKeyResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.UserService.DeleteUserExtraKey is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) SendAccountCreationNotice(context.Context, *connect_go.Request[v1.SendAccountCreationNoticeRequest]) (*connect_go.Response[v1.SendAccountCreationNoticeResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.UserService.SendAccountCreationNotice is not implemented"))
 }

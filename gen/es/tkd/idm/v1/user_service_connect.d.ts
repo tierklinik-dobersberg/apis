@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
+import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SendAccountCreationNoticeRequest, SendAccountCreationNoticeResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
 import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -84,6 +84,15 @@ export declare const UserService: {
       readonly name: "DeleteUserExtraKey",
       readonly I: typeof DeleteUserExtraKeyRequest,
       readonly O: typeof DeleteUserExtraKeyResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.UserService.SendAccountCreationNotice
+     */
+    readonly sendAccountCreationNotice: {
+      readonly name: "SendAccountCreationNotice",
+      readonly I: typeof SendAccountCreationNoticeRequest,
+      readonly O: typeof SendAccountCreationNoticeResponse,
       readonly kind: MethodKind.Unary,
     },
   }

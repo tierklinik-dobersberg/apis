@@ -197,4 +197,5 @@ message RequestPasswordResetRequest {
     PasswordReset password_reset = 2;
   }
 }
+
 message RequestPasswordResetResponse {}

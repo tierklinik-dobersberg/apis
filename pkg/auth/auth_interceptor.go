@@ -26,6 +26,7 @@ type (
 	// RemoteUser defines the user that is currently accessing a RPC method.
 	RemoteUser struct {
 		ID                  string
+		Username            string
 		DisplayName         string
 		RoleIDs             []string
 		PrimaryMail         string
@@ -58,7 +59,8 @@ func RemoteHeaderExtractor(ctx context.Context, req connect.AnyRequest) (RemoteU
 
 	remoteUser := RemoteUser{
 		ID:          headers.Get("X-Remote-User-ID"),
-		DisplayName: headers.Get("X-Remote-User"),
+		Username:    headers.Get("X-Remote-User"),
+		DisplayName: headers.Get("X-Remote-User-Display-Name"),
 		RoleIDs:     headers.Values("X-Remote-Role"),
 		PrimaryMail: headers.Get("X-Remote-Mail"),
 	}
@@ -178,12 +180,12 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 			serviceOptions, _ := proto.GetExtension(serviceDesc.Options(), commonv1.E_ServiceAuth).(*commonv1.ServiceAuthDecorator)
 			if serviceOptions != nil {
 				// first check if the user has the specified role ID assigned.
-				usr.Admin = data.SliceOverlaps(serviceOptions.AdminRoles, usr.RoleIDs)
+				usr.Admin = data.ElemInBothSlices(serviceOptions.AdminRoles, usr.RoleIDs)
 
 				if !usr.Admin {
 					// the tkd.common.v1.service_auth option may also be used to specify role names instead of IDs
 					// so we need to check for the names as well.
-					usr.Admin = data.SliceOverlapsFunc(serviceOptions.AdminRoles, usr.ResolvedRoles, func(role *idmv1.Role) string {
+					usr.Admin = data.ElemInBothSlicesFunc(serviceOptions.AdminRoles, usr.ResolvedRoles, func(role *idmv1.Role) string {
 						return role.Name
 					})
 				}
@@ -217,10 +219,10 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 
 					// make sure the user has at least one of the required roles assigned
 					if len(methodOptions.AllowedRoles) > 0 {
-						isAllowed := data.SliceOverlaps(methodOptions.AllowedRoles, usr.RoleIDs)
+						isAllowed := data.ElemInBothSlices(methodOptions.AllowedRoles, usr.RoleIDs)
 
 						if !isAllowed {
-							isAllowed = data.SliceOverlapsFunc(methodOptions.AllowedRoles, usr.ResolvedRoles, func(role *idmv1.Role) string {
+							isAllowed = data.ElemInBothSlicesFunc(methodOptions.AllowedRoles, usr.ResolvedRoles, func(role *idmv1.Role) string {
 								return role.Name
 							})
 						}

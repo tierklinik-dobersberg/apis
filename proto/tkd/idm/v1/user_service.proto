@@ -63,6 +63,12 @@ service UserService {
       require: AUTH_REQ_ADMIN,
     };
   }
+
+  rpc SendAccountCreationNotice(SendAccountCreationNoticeRequest) returns (SendAccountCreationNoticeResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_ADMIN,
+    };
+  }
 }
 
 message GetUserRequest {
@@ -175,3 +181,11 @@ message DeleteUserExtraKeyRequest {
 }
 
 message DeleteUserExtraKeyResponse {}
+
+message SendAccountCreationNoticeRequest {
+  repeated string user_ids = 1 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message SendAccountCreationNoticeResponse {}
