@@ -2,10 +2,13 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"net/http"
 
 	"github.com/sebest/xff"
+	"github.com/tierklinik-dobersberg/apis/pkg/data"
+	"github.com/tierklinik-dobersberg/apis/pkg/log"
 )
 
 var clientIPContextKey = struct{ s string }{s: "clientIPContextKey"}
@@ -25,12 +28,106 @@ func RealIPFromContext(ctx context.Context) net.IP {
 	return v
 }
 
+func getLocalAddresses() (map[string][]string, error) {
+	ifaces, err := net.Interfaces()
+	if err != nil {
+		return nil, err
+	}
+
+	result := make(map[string][]string, len(ifaces))
+
+	for _, iface := range ifaces {
+		addrs, err := iface.Addrs()
+		if err != nil {
+			log.L(context.TODO()).Errorf("failed to get IP addresses for interface %s", iface.Name)
+
+			continue
+		}
+
+		for _, a := range addrs {
+			switch v := a.(type) {
+			case *net.IPAddr:
+				if v.IP.To4() == nil {
+					log.L(context.TODO()).Infof("skipping IPv6 address %s", v.IP)
+
+					continue
+				}
+
+				if xff.IsPublicIP(v.IP) {
+					log.L(context.TODO()).Infof("skipping public IP address %s", v.IP)
+
+					continue
+				}
+
+				ones, _ := v.IP.DefaultMask().Size()
+				result[iface.Name] = append(result[iface.Name], fmt.Sprintf("%s/%d", v.IP, ones))
+
+			case *net.IPNet:
+				if v.IP.To4() == nil {
+					log.L(context.TODO()).Infof("skipping IPv6 address %s", v.IP)
+
+					continue
+				}
+
+				if xff.IsPublicIP(v.IP) {
+					log.L(context.TODO()).Infof("skipping public IP address %s", v.IP)
+
+					continue
+				}
+
+				ones, _ := v.Mask.Size()
+				result[iface.Name] = append(result[iface.Name], fmt.Sprintf("%s/%d", v.IP, ones))
+
+			default:
+				log.L(context.TODO()).Warnf("unsupported interface address type %T", a)
+			}
+		}
+	}
+
+	return result, nil
+}
+
 // WithTrustedProxies adds a HTTP middleware that extracts the
 // real client IP address from X-Forwareded-For headers.
 func WithTrustedProxies(networks []string) CreateOption {
 	return func(srv *http.Server) error {
+		allIfaces, err := getLocalAddresses()
+		if err != nil {
+			return fmt.Errorf("failed to enumerate interace addresses: %w", err)
+		}
+
+		nets := make([]string, 0, len(networks))
+
+		for _, n := range networks {
+			ifaceAddr, ok := allIfaces[n]
+			if ok {
+				// this is an interface name
+				nets = append(nets, ifaceAddr...)
+
+				continue
+			}
+
+			if n == "local" {
+				// all iface addresses
+				for iface, addrs := range allIfaces {
+					log.L(context.TODO()).Infof("adding addresses from interface %s as trusted networks: %v", iface, addrs)
+
+					nets = append(nets, addrs...)
+				}
+
+				continue
+			}
+
+			nets = append(nets, n)
+		}
+
+		// remove all duplicates
+		nets = data.MapToSlice(
+			data.IndexSlice(nets, func(n string) string { return n }),
+		)
+
 		xffHandler, err := xff.New(xff.Options{
-			AllowedSubnets: networks,
+			AllowedSubnets: nets,
 		})
 		if err != nil {
 			return err
