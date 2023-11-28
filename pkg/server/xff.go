@@ -164,6 +164,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 					case ip == nil:
 						// there's nothing we can do here
 					case !isAllowed(ip):
+
 						// this seems to be the real client IP
 						ctx = WithRealIP(ctx, ip)
 
@@ -174,18 +175,18 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 								parsedIP := net.ParseIP(ip)
 								if parsedIP == nil {
-									l.Infof("failed to parse entry in XFF header: %s", ip)
+									l.Debugf("failed to parse entry in XFF header: %s", ip)
 
 									continue
 								}
 
 								if isAllowed(parsedIP) {
-									l.Infof("found trusted proxy IP in XFF header %s, continuing ...", parsedIP)
+									l.Debugf("found trusted proxy IP in XFF header %s, continuing ...", parsedIP)
 
 									continue
 								}
 
-								l.Infof("found real client ip: %s", parsedIP)
+								l.Debugf("found real client ip: %s", parsedIP)
 
 								ctx = WithRealIP(ctx, parsedIP)
 
