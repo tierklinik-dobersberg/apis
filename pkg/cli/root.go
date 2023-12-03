@@ -35,6 +35,7 @@ type Config struct {
 	TokenPath          string `json:"tokenPath"`
 	InsecureSkipVerify bool   `json:"insecure"`
 	OutputYAML         bool   `json:"outputYaml"`
+	Format             string `json:"-"`
 }
 
 type Root struct {
@@ -168,6 +169,12 @@ func New(name string) *Root {
 			if cmd.Flag("insecure").Changed {
 				cfg.InsecureSkipVerify = flagConfig.InsecureSkipVerify
 			}
+			if cmd.Flag("yaml").Changed {
+				cfg.OutputYAML = flagConfig.OutputYAML
+			}
+			if cmd.Flag("format").Changed {
+				cfg.Format = flagConfig.Format
+			}
 
 			if cfg.Debug {
 				logrus.SetLevel(logrus.DebugLevel)
@@ -243,6 +250,7 @@ func New(name string) *Root {
 		flags.BoolVar(&flagConfig.Debug, "debug", false, "Enable debug mode")
 		flags.BoolVar(&flagConfig.Verbose, "verbose", false, "Enable verbose output mode")
 		flags.StringVarP(&root.activeConfig, "configuration", "c", "default", "Which configuration to use.")
+		flags.StringVar(&flagConfig.Format, "format", "", "Use go text/template for output formatting")
 	}
 
 	return root

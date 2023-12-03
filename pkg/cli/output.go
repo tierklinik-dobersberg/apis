@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"io"
 	"os"
+	"strings"
+	"text/template"
 
 	"github.com/ghodss/yaml"
 	"github.com/sirupsen/logrus"
@@ -13,6 +15,30 @@ import (
 type OutputFunc func(res any)
 
 func (root *Root) defaultPrintFunc(res any) {
+	if fm := root.Config().Format; fm != "" {
+		if strings.HasPrefix(fm, "@") {
+			path := strings.TrimPrefix(fm, "@")
+
+			content, err := os.ReadFile(path)
+			if err != nil {
+				logrus.Fatalf("failed to read format from file %s: %q", path, err)
+			}
+
+			fm = string(content)
+		}
+
+		tmp, err := template.New("").Parse(fm)
+		if err != nil {
+			logrus.Fatalf("failed to parse --format template: %s", err)
+		}
+
+		if err := tmp.Execute(os.Stdout, res); err != nil {
+			logrus.Fatalf("failed to execute --format template: %s", err)
+		}
+
+		return
+	}
+
 	var buf = new(bytes.Buffer)
 	enc := json.NewEncoder(buf)
 	enc.SetIndent("", "  ")
