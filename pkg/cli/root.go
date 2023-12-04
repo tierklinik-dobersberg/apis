@@ -84,7 +84,7 @@ func (root *Root) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	if token != "" {
-		req.Header.Add("Authentication", "Bearer "+root.tokens.AccessToken)
+		req.Header.Add("Authentication", "Bearer "+token)
 	}
 
 	if root.Debug() {

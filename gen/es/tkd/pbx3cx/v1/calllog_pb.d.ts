@@ -481,6 +481,11 @@ export declare class GetOnCallResponse extends Message<GetOnCallResponse> {
    */
   isOverwrite: boolean;
 
+  /**
+   * @generated from field: string primary_transfer_target = 4;
+   */
+  primaryTransferTarget: string;
+
   constructor(data?: PartialMessage<GetOnCallResponse>);
 
   static readonly runtime: typeof proto3;

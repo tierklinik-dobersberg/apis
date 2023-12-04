@@ -153,6 +153,7 @@ message GetOnCallResponse {
     repeated OnCall on_call = 1;
     string roster_date = 2; // YYYY-MM-DD
     bool is_overwrite = 3;
+    string primary_transfer_target = 4;
 }
 
 message CreateOverwriteRequest {
