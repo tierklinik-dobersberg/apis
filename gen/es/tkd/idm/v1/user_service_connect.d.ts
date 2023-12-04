@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SendAccountCreationNoticeRequest, SendAccountCreationNoticeResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
+import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, ImpersonateRequest, ImpersonateResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SendAccountCreationNoticeRequest, SendAccountCreationNoticeResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
 import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -12,6 +12,15 @@ import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 export declare const UserService: {
   readonly typeName: "tkd.idm.v1.UserService",
   readonly methods: {
+    /**
+     * @generated from rpc tkd.idm.v1.UserService.Impersonate
+     */
+    readonly impersonate: {
+      readonly name: "Impersonate",
+      readonly I: typeof ImpersonateRequest,
+      readonly O: typeof ImpersonateResponse,
+      readonly kind: MethodKind.Unary,
+    },
     /**
      * @generated from rpc tkd.idm.v1.UserService.GetUser
      */

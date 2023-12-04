@@ -33,6 +33,8 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// UserServiceImpersonateProcedure is the fully-qualified name of the UserService's Impersonate RPC.
+	UserServiceImpersonateProcedure = "/tkd.idm.v1.UserService/Impersonate"
 	// UserServiceGetUserProcedure is the fully-qualified name of the UserService's GetUser RPC.
 	UserServiceGetUserProcedure = "/tkd.idm.v1.UserService/GetUser"
 	// UserServiceInviteUserProcedure is the fully-qualified name of the UserService's InviteUser RPC.
@@ -58,6 +60,7 @@ const (
 
 // UserServiceClient is a client for the tkd.idm.v1.UserService service.
 type UserServiceClient interface {
+	Impersonate(context.Context, *connect_go.Request[v1.ImpersonateRequest]) (*connect_go.Response[v1.ImpersonateResponse], error)
 	GetUser(context.Context, *connect_go.Request[v1.GetUserRequest]) (*connect_go.Response[v1.GetUserResponse], error)
 	InviteUser(context.Context, *connect_go.Request[v1.InviteUserRequest]) (*connect_go.Response[v1.InviteUserResponse], error)
 	ListUsers(context.Context, *connect_go.Request[v1.ListUsersRequest]) (*connect_go.Response[v1.ListUsersResponse], error)
@@ -79,6 +82,11 @@ type UserServiceClient interface {
 func NewUserServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) UserServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &userServiceClient{
+		impersonate: connect_go.NewClient[v1.ImpersonateRequest, v1.ImpersonateResponse](
+			httpClient,
+			baseURL+UserServiceImpersonateProcedure,
+			opts...,
+		),
 		getUser: connect_go.NewClient[v1.GetUserRequest, v1.GetUserResponse](
 			httpClient,
 			baseURL+UserServiceGetUserProcedure,
@@ -131,6 +139,7 @@ func NewUserServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
+	impersonate               *connect_go.Client[v1.ImpersonateRequest, v1.ImpersonateResponse]
 	getUser                   *connect_go.Client[v1.GetUserRequest, v1.GetUserResponse]
 	inviteUser                *connect_go.Client[v1.InviteUserRequest, v1.InviteUserResponse]
 	listUsers                 *connect_go.Client[v1.ListUsersRequest, v1.ListUsersResponse]
@@ -140,6 +149,11 @@ type userServiceClient struct {
 	setUserExtraKey           *connect_go.Client[v1.SetUserExtraKeyRequest, v1.SetUserExtraKeyResponse]
 	deleteUserExtraKey        *connect_go.Client[v1.DeleteUserExtraKeyRequest, v1.DeleteUserExtraKeyResponse]
 	sendAccountCreationNotice *connect_go.Client[v1.SendAccountCreationNoticeRequest, v1.SendAccountCreationNoticeResponse]
+}
+
+// Impersonate calls tkd.idm.v1.UserService.Impersonate.
+func (c *userServiceClient) Impersonate(ctx context.Context, req *connect_go.Request[v1.ImpersonateRequest]) (*connect_go.Response[v1.ImpersonateResponse], error) {
+	return c.impersonate.CallUnary(ctx, req)
 }
 
 // GetUser calls tkd.idm.v1.UserService.GetUser.
@@ -189,6 +203,7 @@ func (c *userServiceClient) SendAccountCreationNotice(ctx context.Context, req *
 
 // UserServiceHandler is an implementation of the tkd.idm.v1.UserService service.
 type UserServiceHandler interface {
+	Impersonate(context.Context, *connect_go.Request[v1.ImpersonateRequest]) (*connect_go.Response[v1.ImpersonateResponse], error)
 	GetUser(context.Context, *connect_go.Request[v1.GetUserRequest]) (*connect_go.Response[v1.GetUserResponse], error)
 	InviteUser(context.Context, *connect_go.Request[v1.InviteUserRequest]) (*connect_go.Response[v1.InviteUserResponse], error)
 	ListUsers(context.Context, *connect_go.Request[v1.ListUsersRequest]) (*connect_go.Response[v1.ListUsersResponse], error)
@@ -206,6 +221,11 @@ type UserServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewUserServiceHandler(svc UserServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
+	userServiceImpersonateHandler := connect_go.NewUnaryHandler(
+		UserServiceImpersonateProcedure,
+		svc.Impersonate,
+		opts...,
+	)
 	userServiceGetUserHandler := connect_go.NewUnaryHandler(
 		UserServiceGetUserProcedure,
 		svc.GetUser,
@@ -255,6 +275,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect_go.HandlerOpt
 	)
 	return "/tkd.idm.v1.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case UserServiceImpersonateProcedure:
+			userServiceImpersonateHandler.ServeHTTP(w, r)
 		case UserServiceGetUserProcedure:
 			userServiceGetUserHandler.ServeHTTP(w, r)
 		case UserServiceInviteUserProcedure:
@@ -281,6 +303,10 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect_go.HandlerOpt
 
 // UnimplementedUserServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedUserServiceHandler struct{}
+
+func (UnimplementedUserServiceHandler) Impersonate(context.Context, *connect_go.Request[v1.ImpersonateRequest]) (*connect_go.Response[v1.ImpersonateResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.UserService.Impersonate is not implemented"))
+}
 
 func (UnimplementedUserServiceHandler) GetUser(context.Context, *connect_go.Request[v1.GetUserRequest]) (*connect_go.Response[v1.GetUserResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.UserService.GetUser is not implemented"))

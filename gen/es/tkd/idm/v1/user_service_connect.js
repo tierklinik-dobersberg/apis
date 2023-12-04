@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SendAccountCreationNoticeRequest, SendAccountCreationNoticeResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
+import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, ImpersonateRequest, ImpersonateResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SendAccountCreationNoticeRequest, SendAccountCreationNoticeResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
 import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -12,6 +12,15 @@ import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 export const UserService = {
   typeName: "tkd.idm.v1.UserService",
   methods: {
+    /**
+     * @generated from rpc tkd.idm.v1.UserService.Impersonate
+     */
+    impersonate: {
+      name: "Impersonate",
+      I: ImpersonateRequest,
+      O: ImpersonateResponse,
+      kind: MethodKind.Unary,
+    },
     /**
      * @generated from rpc tkd.idm.v1.UserService.GetUser
      */

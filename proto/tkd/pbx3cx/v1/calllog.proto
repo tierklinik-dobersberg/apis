@@ -52,7 +52,7 @@ message Overwrite {
 }
 
 service CallService {
-    option (tkd.common.v1.default_host) = "3cx-support.dobersberg.vet";
+    option (tkd.common.v1.default_host) = "3cx.dobersberg.vet";
 
     // Recording APIS 
     rpc RecordCall(RecordCallRequest) returns (google.protobuf.Empty) {
