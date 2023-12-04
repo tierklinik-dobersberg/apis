@@ -76,7 +76,14 @@ func (root *Root) Insecure() bool       { return root.Config().InsecureSkipVerif
 func (root *Root) ActiveConfig() string { return root.activeConfig }
 
 func (root *Root) RoundTrip(req *http.Request) (*http.Response, error) {
-	if root.tokens.AccessToken != "" {
+	token := root.tokens.AccessToken
+
+	if envToken := os.Getenv("CIS_ACCESS_TOKEN"); envToken != "" {
+		logrus.Infof("using access token from environment variable CIS_ACCESS_TOKEN")
+		token = envToken
+	}
+
+	if token != "" {
 		req.Header.Add("Authentication", "Bearer "+root.tokens.AccessToken)
 	}
 
