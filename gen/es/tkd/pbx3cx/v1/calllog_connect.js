@@ -4,7 +4,7 @@
 // @ts-nocheck
 
 import { CreateOverwriteRequest, CreateOverwriteResponse, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse } from "./calllog_pb.js";
-import { Empty, MethodKind } from "@bufbuild/protobuf";
+import { Empty, MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
  * @generated from service tkd.pbx3cx.v1.CallService
@@ -33,6 +33,7 @@ export const CallService = {
       I: GetOnCallRequest,
       O: GetOnCallResponse,
       kind: MethodKind.Unary,
+      idempotency: MethodIdempotency.NoSideEffects,
     },
     /**
      * Overwrite APIS

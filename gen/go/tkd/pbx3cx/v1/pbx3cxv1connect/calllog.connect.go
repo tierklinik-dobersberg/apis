@@ -19,7 +19,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect_go.IsAtLeastVersion1_7_0
 
 const (
 	// CallServiceName is the fully-qualified name of the CallService service.
@@ -92,7 +92,8 @@ func NewCallServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		getOnCall: connect_go.NewClient[v1.GetOnCallRequest, v1.GetOnCallResponse](
 			httpClient,
 			baseURL+CallServiceGetOnCallProcedure,
-			opts...,
+			connect_go.WithIdempotency(connect_go.IdempotencyNoSideEffects),
+			connect_go.WithClientOptions(opts...),
 		),
 		createOverwrite: connect_go.NewClient[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse](
 			httpClient,
@@ -209,7 +210,8 @@ func NewCallServiceHandler(svc CallServiceHandler, opts ...connect_go.HandlerOpt
 	callServiceGetOnCallHandler := connect_go.NewUnaryHandler(
 		CallServiceGetOnCallProcedure,
 		svc.GetOnCall,
-		opts...,
+		connect_go.WithIdempotency(connect_go.IdempotencyNoSideEffects),
+		connect_go.WithHandlerOptions(opts...),
 	)
 	callServiceCreateOverwriteHandler := connect_go.NewUnaryHandler(
 		CallServiceCreateOverwriteProcedure,

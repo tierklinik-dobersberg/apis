@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package tkd.pbx3cx.v1;
 
+import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 import "tkd/common/v1/descriptor.proto";
@@ -66,6 +67,8 @@ service CallService {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
         };
+
+        option idempotency_level = NO_SIDE_EFFECTS;
     }
 
     // Overwrite APIS
