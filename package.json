@@ -1,18 +1,23 @@
 {
-  "name": "@tkd/apis",
+  "name": "@tierklinik-dobersberg/apis",
   "version": "0.0.1",
-  "description": "Protobuf and Connect-ES generated files",
+  "description": "Connect-ES API definitions for Tierklinik Dobersberg services",
   "types": "./index.d.ts",
   "main": "./index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "files": [
+    "./index.js",
+    "./index.d.ts",
+    "./gen/es/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tierklinik-dobersberg/apis.git"
   },
-  "author": "",
-  "license": "ISC",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "author": "Tierklinik Dobersberg",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/tierklinik-dobersberg/apis/issues"
   },
@@ -25,5 +30,7 @@
     "@bufbuild/protobuf": "^1.4.2",
     "@connectrpc/connect": "^1.1.3",
     "@connectrpc/connect-web": "^1.1.3"
-  }
+  },
+  "sideEffects": false
 }
+
