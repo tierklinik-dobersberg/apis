@@ -76,7 +76,7 @@ service UserService {
     };
   }
 
-  rpc SetUserPassword(SetUserPasswordRequest) returns (SetUserExtraKeyResponse) {
+  rpc SetUserPassword(SetUserPasswordRequest) returns (SetUserPasswordResponse) {
     option (tkd.common.v1.auth) = {
       require: AUTH_REQ_ADMIN,
     };

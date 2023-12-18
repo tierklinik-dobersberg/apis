@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, ImpersonateRequest, ImpersonateResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SendAccountCreationNoticeRequest, SendAccountCreationNoticeResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, SetUserPasswordRequest, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
+import { CreateUserRequest, CreateUserResponse, DeleteUserExtraKeyRequest, DeleteUserExtraKeyResponse, DeleteUserRequest, DeleteUserResponse, GetUserRequest, GetUserResponse, ImpersonateRequest, ImpersonateResponse, InviteUserRequest, InviteUserResponse, ListUsersRequest, ListUsersResponse, SendAccountCreationNoticeRequest, SendAccountCreationNoticeResponse, SetUserExtraKeyRequest, SetUserExtraKeyResponse, SetUserPasswordRequest, SetUserPasswordResponse, UpdateUserRequest, UpdateUserResponse } from "./user_service_pb.js";
 import { MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -110,7 +110,7 @@ export declare const UserService: {
     readonly setUserPassword: {
       readonly name: "SetUserPassword",
       readonly I: typeof SetUserPasswordRequest,
-      readonly O: typeof SetUserExtraKeyResponse,
+      readonly O: typeof SetUserPasswordResponse,
       readonly kind: MethodKind.Unary,
     },
   }

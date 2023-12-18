@@ -73,7 +73,7 @@ type UserServiceClient interface {
 	SetUserExtraKey(context.Context, *connect_go.Request[v1.SetUserExtraKeyRequest]) (*connect_go.Response[v1.SetUserExtraKeyResponse], error)
 	DeleteUserExtraKey(context.Context, *connect_go.Request[v1.DeleteUserExtraKeyRequest]) (*connect_go.Response[v1.DeleteUserExtraKeyResponse], error)
 	SendAccountCreationNotice(context.Context, *connect_go.Request[v1.SendAccountCreationNoticeRequest]) (*connect_go.Response[v1.SendAccountCreationNoticeResponse], error)
-	SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserExtraKeyResponse], error)
+	SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserPasswordResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the tkd.idm.v1.UserService service. By default, it
@@ -138,7 +138,7 @@ func NewUserServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+UserServiceSendAccountCreationNoticeProcedure,
 			opts...,
 		),
-		setUserPassword: connect_go.NewClient[v1.SetUserPasswordRequest, v1.SetUserExtraKeyResponse](
+		setUserPassword: connect_go.NewClient[v1.SetUserPasswordRequest, v1.SetUserPasswordResponse](
 			httpClient,
 			baseURL+UserServiceSetUserPasswordProcedure,
 			opts...,
@@ -158,7 +158,7 @@ type userServiceClient struct {
 	setUserExtraKey           *connect_go.Client[v1.SetUserExtraKeyRequest, v1.SetUserExtraKeyResponse]
 	deleteUserExtraKey        *connect_go.Client[v1.DeleteUserExtraKeyRequest, v1.DeleteUserExtraKeyResponse]
 	sendAccountCreationNotice *connect_go.Client[v1.SendAccountCreationNoticeRequest, v1.SendAccountCreationNoticeResponse]
-	setUserPassword           *connect_go.Client[v1.SetUserPasswordRequest, v1.SetUserExtraKeyResponse]
+	setUserPassword           *connect_go.Client[v1.SetUserPasswordRequest, v1.SetUserPasswordResponse]
 }
 
 // Impersonate calls tkd.idm.v1.UserService.Impersonate.
@@ -212,7 +212,7 @@ func (c *userServiceClient) SendAccountCreationNotice(ctx context.Context, req *
 }
 
 // SetUserPassword calls tkd.idm.v1.UserService.SetUserPassword.
-func (c *userServiceClient) SetUserPassword(ctx context.Context, req *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserExtraKeyResponse], error) {
+func (c *userServiceClient) SetUserPassword(ctx context.Context, req *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserPasswordResponse], error) {
 	return c.setUserPassword.CallUnary(ctx, req)
 }
 
@@ -228,7 +228,7 @@ type UserServiceHandler interface {
 	SetUserExtraKey(context.Context, *connect_go.Request[v1.SetUserExtraKeyRequest]) (*connect_go.Response[v1.SetUserExtraKeyResponse], error)
 	DeleteUserExtraKey(context.Context, *connect_go.Request[v1.DeleteUserExtraKeyRequest]) (*connect_go.Response[v1.DeleteUserExtraKeyResponse], error)
 	SendAccountCreationNotice(context.Context, *connect_go.Request[v1.SendAccountCreationNoticeRequest]) (*connect_go.Response[v1.SendAccountCreationNoticeResponse], error)
-	SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserExtraKeyResponse], error)
+	SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserPasswordResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -367,6 +367,6 @@ func (UnimplementedUserServiceHandler) SendAccountCreationNotice(context.Context
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.UserService.SendAccountCreationNotice is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserExtraKeyResponse], error) {
+func (UnimplementedUserServiceHandler) SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserPasswordResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.UserService.SetUserPassword is not implemented"))
 }
