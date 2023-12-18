@@ -75,6 +75,12 @@ service UserService {
       require: AUTH_REQ_ADMIN,
     };
   }
+
+  rpc SetUserPassword(SetUserPasswordRequest) returns (SetUserExtraKeyResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_ADMIN,
+    };
+  }
 }
 
 message ImpersonateRequest {
@@ -203,3 +209,15 @@ message SendAccountCreationNoticeRequest {
 }
 
 message SendAccountCreationNoticeResponse {}
+
+message SetUserPasswordRequest {
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  string password = 2 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message SetUserPasswordResponse {}
