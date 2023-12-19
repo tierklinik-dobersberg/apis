@@ -39,6 +39,9 @@ const (
 	// OffTimeServiceCreateOffTimeRequestProcedure is the fully-qualified name of the OffTimeService's
 	// CreateOffTimeRequest RPC.
 	OffTimeServiceCreateOffTimeRequestProcedure = "/tkd.roster.v1.OffTimeService/CreateOffTimeRequest"
+	// OffTimeServiceUpdateOffTimeRequestProcedure is the fully-qualified name of the OffTimeService's
+	// UpdateOffTimeRequest RPC.
+	OffTimeServiceUpdateOffTimeRequestProcedure = "/tkd.roster.v1.OffTimeService/UpdateOffTimeRequest"
 	// OffTimeServiceDeleteOffTimeRequestProcedure is the fully-qualified name of the OffTimeService's
 	// DeleteOffTimeRequest RPC.
 	OffTimeServiceDeleteOffTimeRequestProcedure = "/tkd.roster.v1.OffTimeService/DeleteOffTimeRequest"
@@ -63,6 +66,7 @@ const (
 type OffTimeServiceClient interface {
 	GetOffTimeEntry(context.Context, *connect_go.Request[v1.GetOffTimeEntryRequest]) (*connect_go.Response[v1.GetOffTimeEntryResponse], error)
 	CreateOffTimeRequest(context.Context, *connect_go.Request[v1.CreateOffTimeRequestRequest]) (*connect_go.Response[v1.CreateOffTimeRequestResponse], error)
+	UpdateOffTimeRequest(context.Context, *connect_go.Request[v1.UpdateOffTimeRequestRequest]) (*connect_go.Response[v1.UpdateOffTimeRequestResponse], error)
 	DeleteOffTimeRequest(context.Context, *connect_go.Request[v1.DeleteOffTimeRequestRequest]) (*connect_go.Response[v1.DeleteOffTimeRequestResponse], error)
 	FindOffTimeRequests(context.Context, *connect_go.Request[v1.FindOffTimeRequestsRequest]) (*connect_go.Response[v1.FindOffTimeRequestsResponse], error)
 	ApproveOrReject(context.Context, *connect_go.Request[v1.ApproveOrRejectRequest]) (*connect_go.Response[v1.ApproveOrRejectResponse], error)
@@ -89,6 +93,11 @@ func NewOffTimeServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 		createOffTimeRequest: connect_go.NewClient[v1.CreateOffTimeRequestRequest, v1.CreateOffTimeRequestResponse](
 			httpClient,
 			baseURL+OffTimeServiceCreateOffTimeRequestProcedure,
+			opts...,
+		),
+		updateOffTimeRequest: connect_go.NewClient[v1.UpdateOffTimeRequestRequest, v1.UpdateOffTimeRequestResponse](
+			httpClient,
+			baseURL+OffTimeServiceUpdateOffTimeRequestProcedure,
 			opts...,
 		),
 		deleteOffTimeRequest: connect_go.NewClient[v1.DeleteOffTimeRequestRequest, v1.DeleteOffTimeRequestResponse](
@@ -128,6 +137,7 @@ func NewOffTimeServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 type offTimeServiceClient struct {
 	getOffTimeEntry      *connect_go.Client[v1.GetOffTimeEntryRequest, v1.GetOffTimeEntryResponse]
 	createOffTimeRequest *connect_go.Client[v1.CreateOffTimeRequestRequest, v1.CreateOffTimeRequestResponse]
+	updateOffTimeRequest *connect_go.Client[v1.UpdateOffTimeRequestRequest, v1.UpdateOffTimeRequestResponse]
 	deleteOffTimeRequest *connect_go.Client[v1.DeleteOffTimeRequestRequest, v1.DeleteOffTimeRequestResponse]
 	findOffTimeRequests  *connect_go.Client[v1.FindOffTimeRequestsRequest, v1.FindOffTimeRequestsResponse]
 	approveOrReject      *connect_go.Client[v1.ApproveOrRejectRequest, v1.ApproveOrRejectResponse]
@@ -144,6 +154,11 @@ func (c *offTimeServiceClient) GetOffTimeEntry(ctx context.Context, req *connect
 // CreateOffTimeRequest calls tkd.roster.v1.OffTimeService.CreateOffTimeRequest.
 func (c *offTimeServiceClient) CreateOffTimeRequest(ctx context.Context, req *connect_go.Request[v1.CreateOffTimeRequestRequest]) (*connect_go.Response[v1.CreateOffTimeRequestResponse], error) {
 	return c.createOffTimeRequest.CallUnary(ctx, req)
+}
+
+// UpdateOffTimeRequest calls tkd.roster.v1.OffTimeService.UpdateOffTimeRequest.
+func (c *offTimeServiceClient) UpdateOffTimeRequest(ctx context.Context, req *connect_go.Request[v1.UpdateOffTimeRequestRequest]) (*connect_go.Response[v1.UpdateOffTimeRequestResponse], error) {
+	return c.updateOffTimeRequest.CallUnary(ctx, req)
 }
 
 // DeleteOffTimeRequest calls tkd.roster.v1.OffTimeService.DeleteOffTimeRequest.
@@ -180,6 +195,7 @@ func (c *offTimeServiceClient) DeleteOffTimeCosts(ctx context.Context, req *conn
 type OffTimeServiceHandler interface {
 	GetOffTimeEntry(context.Context, *connect_go.Request[v1.GetOffTimeEntryRequest]) (*connect_go.Response[v1.GetOffTimeEntryResponse], error)
 	CreateOffTimeRequest(context.Context, *connect_go.Request[v1.CreateOffTimeRequestRequest]) (*connect_go.Response[v1.CreateOffTimeRequestResponse], error)
+	UpdateOffTimeRequest(context.Context, *connect_go.Request[v1.UpdateOffTimeRequestRequest]) (*connect_go.Response[v1.UpdateOffTimeRequestResponse], error)
 	DeleteOffTimeRequest(context.Context, *connect_go.Request[v1.DeleteOffTimeRequestRequest]) (*connect_go.Response[v1.DeleteOffTimeRequestResponse], error)
 	FindOffTimeRequests(context.Context, *connect_go.Request[v1.FindOffTimeRequestsRequest]) (*connect_go.Response[v1.FindOffTimeRequestsResponse], error)
 	ApproveOrReject(context.Context, *connect_go.Request[v1.ApproveOrRejectRequest]) (*connect_go.Response[v1.ApproveOrRejectResponse], error)
@@ -202,6 +218,11 @@ func NewOffTimeServiceHandler(svc OffTimeServiceHandler, opts ...connect_go.Hand
 	offTimeServiceCreateOffTimeRequestHandler := connect_go.NewUnaryHandler(
 		OffTimeServiceCreateOffTimeRequestProcedure,
 		svc.CreateOffTimeRequest,
+		opts...,
+	)
+	offTimeServiceUpdateOffTimeRequestHandler := connect_go.NewUnaryHandler(
+		OffTimeServiceUpdateOffTimeRequestProcedure,
+		svc.UpdateOffTimeRequest,
 		opts...,
 	)
 	offTimeServiceDeleteOffTimeRequestHandler := connect_go.NewUnaryHandler(
@@ -240,6 +261,8 @@ func NewOffTimeServiceHandler(svc OffTimeServiceHandler, opts ...connect_go.Hand
 			offTimeServiceGetOffTimeEntryHandler.ServeHTTP(w, r)
 		case OffTimeServiceCreateOffTimeRequestProcedure:
 			offTimeServiceCreateOffTimeRequestHandler.ServeHTTP(w, r)
+		case OffTimeServiceUpdateOffTimeRequestProcedure:
+			offTimeServiceUpdateOffTimeRequestHandler.ServeHTTP(w, r)
 		case OffTimeServiceDeleteOffTimeRequestProcedure:
 			offTimeServiceDeleteOffTimeRequestHandler.ServeHTTP(w, r)
 		case OffTimeServiceFindOffTimeRequestsProcedure:
@@ -267,6 +290,10 @@ func (UnimplementedOffTimeServiceHandler) GetOffTimeEntry(context.Context, *conn
 
 func (UnimplementedOffTimeServiceHandler) CreateOffTimeRequest(context.Context, *connect_go.Request[v1.CreateOffTimeRequestRequest]) (*connect_go.Response[v1.CreateOffTimeRequestResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.OffTimeService.CreateOffTimeRequest is not implemented"))
+}
+
+func (UnimplementedOffTimeServiceHandler) UpdateOffTimeRequest(context.Context, *connect_go.Request[v1.UpdateOffTimeRequestRequest]) (*connect_go.Response[v1.UpdateOffTimeRequestResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.OffTimeService.UpdateOffTimeRequest is not implemented"))
 }
 
 func (UnimplementedOffTimeServiceHandler) DeleteOffTimeRequest(context.Context, *connect_go.Request[v1.DeleteOffTimeRequestRequest]) (*connect_go.Response[v1.DeleteOffTimeRequestResponse], error) {

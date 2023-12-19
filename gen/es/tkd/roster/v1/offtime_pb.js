@@ -124,6 +124,32 @@ export const CreateOffTimeRequestResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.roster.v1.UpdateOffTimeRequestRequest
+ */
+export const UpdateOffTimeRequestRequest = proto3.makeMessageType(
+  "tkd.roster.v1.UpdateOffTimeRequestRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "from", kind: "message", T: Timestamp },
+    { no: 3, name: "to", kind: "message", T: Timestamp },
+    { no: 4, name: "requestor_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "request_type", kind: "enum", T: proto3.getEnumType(OffTimeType) },
+    { no: 7, name: "field_mask", kind: "message", T: FieldMask },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.UpdateOffTimeRequestResponse
+ */
+export const UpdateOffTimeRequestResponse = proto3.makeMessageType(
+  "tkd.roster.v1.UpdateOffTimeRequestResponse",
+  () => [
+    { no: 1, name: "entry", kind: "message", T: OffTimeEntry },
+  ],
+);
+
+/**
  * Request deletion of one or more off-time-request.
  *
  * @generated from message tkd.roster.v1.DeleteOffTimeRequestRequest

@@ -402,6 +402,84 @@ export declare class CreateOffTimeRequestResponse extends Message<CreateOffTimeR
 }
 
 /**
+ * @generated from message tkd.roster.v1.UpdateOffTimeRequestRequest
+ */
+export declare class UpdateOffTimeRequestRequest extends Message<UpdateOffTimeRequestRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp from = 2;
+   */
+  from?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp to = 3;
+   */
+  to?: Timestamp;
+
+  /**
+   * @generated from field: string requestor_id = 4;
+   */
+  requestorId: string;
+
+  /**
+   * @generated from field: string description = 5;
+   */
+  description: string;
+
+  /**
+   * @generated from field: tkd.roster.v1.OffTimeType request_type = 6;
+   */
+  requestType: OffTimeType;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask field_mask = 7;
+   */
+  fieldMask?: FieldMask;
+
+  constructor(data?: PartialMessage<UpdateOffTimeRequestRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.UpdateOffTimeRequestRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateOffTimeRequestRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateOffTimeRequestRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateOffTimeRequestRequest;
+
+  static equals(a: UpdateOffTimeRequestRequest | PlainMessage<UpdateOffTimeRequestRequest> | undefined, b: UpdateOffTimeRequestRequest | PlainMessage<UpdateOffTimeRequestRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.UpdateOffTimeRequestResponse
+ */
+export declare class UpdateOffTimeRequestResponse extends Message<UpdateOffTimeRequestResponse> {
+  /**
+   * @generated from field: tkd.roster.v1.OffTimeEntry entry = 1;
+   */
+  entry?: OffTimeEntry;
+
+  constructor(data?: PartialMessage<UpdateOffTimeRequestResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.UpdateOffTimeRequestResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateOffTimeRequestResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateOffTimeRequestResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateOffTimeRequestResponse;
+
+  static equals(a: UpdateOffTimeRequestResponse | PlainMessage<UpdateOffTimeRequestResponse> | undefined, b: UpdateOffTimeRequestResponse | PlainMessage<UpdateOffTimeRequestResponse> | undefined): boolean;
+}
+
+/**
  * Request deletion of one or more off-time-request.
  *
  * @generated from message tkd.roster.v1.DeleteOffTimeRequestRequest

@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddOffTimeCostsRequest, AddOffTimeCostsResponse, ApproveOrRejectRequest, ApproveOrRejectResponse, CreateOffTimeRequestRequest, CreateOffTimeRequestResponse, DeleteOffTimeCostsRequest, DeleteOffTimeCostsResponse, DeleteOffTimeRequestRequest, DeleteOffTimeRequestResponse, FindOffTimeRequestsRequest, FindOffTimeRequestsResponse, GetOffTimeCostsRequest, GetOffTimeCostsResponse, GetOffTimeEntryRequest, GetOffTimeEntryResponse } from "./offtime_pb.js";
+import { AddOffTimeCostsRequest, AddOffTimeCostsResponse, ApproveOrRejectRequest, ApproveOrRejectResponse, CreateOffTimeRequestRequest, CreateOffTimeRequestResponse, DeleteOffTimeCostsRequest, DeleteOffTimeCostsResponse, DeleteOffTimeRequestRequest, DeleteOffTimeRequestResponse, FindOffTimeRequestsRequest, FindOffTimeRequestsResponse, GetOffTimeCostsRequest, GetOffTimeCostsResponse, GetOffTimeEntryRequest, GetOffTimeEntryResponse, UpdateOffTimeRequestRequest, UpdateOffTimeRequestResponse } from "./offtime_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -28,6 +28,15 @@ export declare const OffTimeService: {
       readonly name: "CreateOffTimeRequest",
       readonly I: typeof CreateOffTimeRequestRequest,
       readonly O: typeof CreateOffTimeRequestResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.OffTimeService.UpdateOffTimeRequest
+     */
+    readonly updateOffTimeRequest: {
+      readonly name: "UpdateOffTimeRequest",
+      readonly I: typeof UpdateOffTimeRequestRequest,
+      readonly O: typeof UpdateOffTimeRequestResponse,
       readonly kind: MethodKind.Unary,
     },
     /**

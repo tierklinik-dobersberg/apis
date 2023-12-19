@@ -122,6 +122,12 @@ service OffTimeService {
         };
     };
 
+    rpc UpdateOffTimeRequest(UpdateOffTimeRequestRequest) returns (UpdateOffTimeRequestResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
     rpc DeleteOffTimeRequest(DeleteOffTimeRequestRequest) returns (DeleteOffTimeRequestResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
@@ -197,6 +203,26 @@ message CreateOffTimeRequestRequest {
 message CreateOffTimeRequestResponse {
     // Holds the created off-time request entry.
     OffTimeEntry entry =  1;
+}
+
+message UpdateOffTimeRequestRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Timestamp from = 2;
+
+    google.protobuf.Timestamp to = 3;
+
+    string requestor_id = 4;
+    string description = 5;
+    OffTimeType request_type = 6;
+
+    google.protobuf.FieldMask field_mask = 7;
+}
+
+message UpdateOffTimeRequestResponse {
+    OffTimeEntry entry = 1;
 }
 
 // Request deletion of one or more off-time-request.

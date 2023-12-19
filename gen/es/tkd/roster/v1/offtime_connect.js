@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddOffTimeCostsRequest, AddOffTimeCostsResponse, ApproveOrRejectRequest, ApproveOrRejectResponse, CreateOffTimeRequestRequest, CreateOffTimeRequestResponse, DeleteOffTimeCostsRequest, DeleteOffTimeCostsResponse, DeleteOffTimeRequestRequest, DeleteOffTimeRequestResponse, FindOffTimeRequestsRequest, FindOffTimeRequestsResponse, GetOffTimeCostsRequest, GetOffTimeCostsResponse, GetOffTimeEntryRequest, GetOffTimeEntryResponse } from "./offtime_pb.js";
+import { AddOffTimeCostsRequest, AddOffTimeCostsResponse, ApproveOrRejectRequest, ApproveOrRejectResponse, CreateOffTimeRequestRequest, CreateOffTimeRequestResponse, DeleteOffTimeCostsRequest, DeleteOffTimeCostsResponse, DeleteOffTimeRequestRequest, DeleteOffTimeRequestResponse, FindOffTimeRequestsRequest, FindOffTimeRequestsResponse, GetOffTimeCostsRequest, GetOffTimeCostsResponse, GetOffTimeEntryRequest, GetOffTimeEntryResponse, UpdateOffTimeRequestRequest, UpdateOffTimeRequestResponse } from "./offtime_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -28,6 +28,15 @@ export const OffTimeService = {
       name: "CreateOffTimeRequest",
       I: CreateOffTimeRequestRequest,
       O: CreateOffTimeRequestResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.OffTimeService.UpdateOffTimeRequest
+     */
+    updateOffTimeRequest: {
+      name: "UpdateOffTimeRequest",
+      I: UpdateOffTimeRequestRequest,
+      O: UpdateOffTimeRequestResponse,
       kind: MethodKind.Unary,
     },
     /**
