@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3, Struct } from "@bufbuild/protobuf";
+import { Duration, proto3, Struct } from "@bufbuild/protobuf";
 
 /**
  * @generated from enum tkd.idm.v1.AttachmentType
@@ -15,6 +15,22 @@ export const AttachmentType = proto3.makeEnum(
     {no: 1, name: "INLINE"},
     {no: 2, name: "ATTACHEMNT"},
     {no: 3, name: "ALTERNATIVE_BODY"},
+  ],
+);
+
+/**
+ * @generated from enum tkd.idm.v1.ErrorKind
+ */
+export const ErrorKind = proto3.makeEnum(
+  "tkd.idm.v1.ErrorKind",
+  [
+    {no: 0, name: "ERROR_KIND_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "ERROR_KIND_NO_PRIMARY_MAIL", localName: "NO_PRIMARY_MAIL"},
+    {no: 2, name: "ERROR_KIND_NO_PRIMARY_PHONE", localName: "NO_PRIMARY_PHONE"},
+    {no: 3, name: "ERROR_KIND_NO_WEBPUSH_SUBSCRIPTION", localName: "NO_WEBPUSH_SUBSCRIPTION"},
+    {no: 4, name: "ERROR_KIND_TRANSPORT", localName: "TRANSPORT"},
+    {no: 5, name: "ERROR_KIND_TEMPLATE", localName: "TEMPLATE"},
+    {no: 255, name: "ERROR_KIND_OTHER", localName: "OTHER"},
   ],
 );
 
@@ -56,6 +72,17 @@ export const SMS = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.idm.v1.WebPushNotification
+ */
+export const WebPushNotification = proto3.makeMessageType(
+  "tkd.idm.v1.WebPushNotification",
+  () => [
+    { no: 1, name: "binary", kind: "scalar", T: 12 /* ScalarType.BYTES */, oneof: "kind" },
+    { no: 2, name: "template", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "kind" },
+  ],
+);
+
+/**
  * @generated from message tkd.idm.v1.SendNotificationRequest
  */
 export const SendNotificationRequest = proto3.makeMessageType(
@@ -63,6 +90,7 @@ export const SendNotificationRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "sms", kind: "message", T: SMS, oneof: "message" },
     { no: 2, name: "email", kind: "message", T: EMailMessage, oneof: "message" },
+    { no: 7, name: "webpush", kind: "message", T: WebPushNotification, oneof: "message" },
     { no: 3, name: "target_users", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "target_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 5, name: "per_user_template_context", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Struct} },
@@ -78,6 +106,7 @@ export const DeliveryNotification = proto3.makeMessageType(
   () => [
     { no: 1, name: "target_user", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "error", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "error_kind", kind: "enum", T: proto3.getEnumType(ErrorKind) },
   ],
 );
 
@@ -89,5 +118,64 @@ export const SendNotificationResponse = proto3.makeMessageType(
   () => [
     { no: 1, name: "deliveries", kind: "message", T: DeliveryNotification, repeated: true },
   ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.GetVAPIDPublicKeyRequest
+ */
+export const GetVAPIDPublicKeyRequest = proto3.makeMessageType(
+  "tkd.idm.v1.GetVAPIDPublicKeyRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.GetVAPIDPublicKeyResponse
+ */
+export const GetVAPIDPublicKeyResponse = proto3.makeMessageType(
+  "tkd.idm.v1.GetVAPIDPublicKeyResponse",
+  () => [
+    { no: 1, name: "key", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.WebPushSubscription
+ */
+export const WebPushSubscription = proto3.makeMessageType(
+  "tkd.idm.v1.WebPushSubscription",
+  () => [
+    { no: 1, name: "endpoint", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "expiration_type", kind: "message", T: Duration },
+    { no: 3, name: "keys", kind: "message", T: WebPushKeys },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.WebPushKeys
+ */
+export const WebPushKeys = proto3.makeMessageType(
+  "tkd.idm.v1.WebPushKeys",
+  () => [
+    { no: 1, name: "auth", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "p256dh", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.AddWebPushSubscriptionRequest
+ */
+export const AddWebPushSubscriptionRequest = proto3.makeMessageType(
+  "tkd.idm.v1.AddWebPushSubscriptionRequest",
+  () => [
+    { no: 1, name: "subscription", kind: "message", T: WebPushSubscription },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.AddWebPushSubscriptionResponse
+ */
+export const AddWebPushSubscriptionResponse = proto3.makeMessageType(
+  "tkd.idm.v1.AddWebPushSubscriptionResponse",
+  [],
 );
 

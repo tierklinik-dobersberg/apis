@@ -5,9 +5,8 @@ package tkd.idm.v1;
 import "buf/validate/validate.proto";
 import "tkd/common/v1/descriptor.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/duration.proto";
 
-// Admin API only
-//
 service NotifyService {
   option (tkd.common.v1.service_auth) = {
       admin_roles: ["idm_superuser"]
@@ -16,6 +15,18 @@ service NotifyService {
   rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse) {
     option (tkd.common.v1.auth) = {
         require: AUTH_REQ_ADMIN,
+    };
+  }
+
+  rpc GetVAPIDPublicKey(GetVAPIDPublicKeyRequest) returns (GetVAPIDPublicKeyResponse) {
+    option (tkd.common.v1.auth) = {
+        require: AUTH_REQ_REQUIRED,
+    };
+  }
+
+  rpc AddWebPushSubscription(AddWebPushSubscriptionRequest) returns (AddWebPushSubscriptionResponse) {
+    option (tkd.common.v1.auth) = {
+        require: AUTH_REQ_REQUIRED,
     };
   }
 }
@@ -57,13 +68,25 @@ message SMS {
     string body = 1;
 }
 
+message WebPushNotification {
+    oneof kind {
+        bytes binary = 1;
+        string template = 2;
+
+        option (buf.validate.oneof).required = true;
+    };
+}
+
 message SendNotificationRequest {
     oneof message {
         SMS sms = 1;
         EMailMessage email = 2;
+        WebPushNotification webpush = 7;
 
         option (buf.validate.oneof).required = true;
     };
+
+    reserved 8 to 12;
 
     repeated string target_users = 3;
     repeated string target_roles = 4;
@@ -75,12 +98,47 @@ message SendNotificationRequest {
     ];
 }
 
+enum ErrorKind {
+    ERROR_KIND_UNSPECIFIED = 0;
+    ERROR_KIND_NO_PRIMARY_MAIL = 1;
+    ERROR_KIND_NO_PRIMARY_PHONE = 2;
+    ERROR_KIND_NO_WEBPUSH_SUBSCRIPTION = 3;
+    ERROR_KIND_TRANSPORT = 4;
+    ERROR_KIND_TEMPLATE = 5;
+    ERROR_KIND_OTHER = 255;
+}
+
 message DeliveryNotification {
     string target_user = 1;
     string error = 2;
+    ErrorKind error_kind = 3;
 }
 
 message SendNotificationResponse {
     repeated DeliveryNotification deliveries = 1;
 }
 
+message GetVAPIDPublicKeyRequest {}
+message GetVAPIDPublicKeyResponse {
+    string key = 1;
+}
+
+message WebPushSubscription {
+    string endpoint = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Duration expiration_type = 2;
+
+    WebPushKeys keys = 3;
+}
+
+message WebPushKeys {
+    string auth = 1;
+    string p256dh = 2;
+}
+
+message AddWebPushSubscriptionRequest {
+    WebPushSubscription subscription = 1;
+}
+message AddWebPushSubscriptionResponse {}

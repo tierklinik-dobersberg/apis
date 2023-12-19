@@ -36,11 +36,19 @@ const (
 	// NotifyServiceSendNotificationProcedure is the fully-qualified name of the NotifyService's
 	// SendNotification RPC.
 	NotifyServiceSendNotificationProcedure = "/tkd.idm.v1.NotifyService/SendNotification"
+	// NotifyServiceGetVAPIDPublicKeyProcedure is the fully-qualified name of the NotifyService's
+	// GetVAPIDPublicKey RPC.
+	NotifyServiceGetVAPIDPublicKeyProcedure = "/tkd.idm.v1.NotifyService/GetVAPIDPublicKey"
+	// NotifyServiceAddWebPushSubscriptionProcedure is the fully-qualified name of the NotifyService's
+	// AddWebPushSubscription RPC.
+	NotifyServiceAddWebPushSubscriptionProcedure = "/tkd.idm.v1.NotifyService/AddWebPushSubscription"
 )
 
 // NotifyServiceClient is a client for the tkd.idm.v1.NotifyService service.
 type NotifyServiceClient interface {
 	SendNotification(context.Context, *connect_go.Request[v1.SendNotificationRequest]) (*connect_go.Response[v1.SendNotificationResponse], error)
+	GetVAPIDPublicKey(context.Context, *connect_go.Request[v1.GetVAPIDPublicKeyRequest]) (*connect_go.Response[v1.GetVAPIDPublicKeyResponse], error)
+	AddWebPushSubscription(context.Context, *connect_go.Request[v1.AddWebPushSubscriptionRequest]) (*connect_go.Response[v1.AddWebPushSubscriptionResponse], error)
 }
 
 // NewNotifyServiceClient constructs a client for the tkd.idm.v1.NotifyService service. By default,
@@ -58,12 +66,24 @@ func NewNotifyServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+NotifyServiceSendNotificationProcedure,
 			opts...,
 		),
+		getVAPIDPublicKey: connect_go.NewClient[v1.GetVAPIDPublicKeyRequest, v1.GetVAPIDPublicKeyResponse](
+			httpClient,
+			baseURL+NotifyServiceGetVAPIDPublicKeyProcedure,
+			opts...,
+		),
+		addWebPushSubscription: connect_go.NewClient[v1.AddWebPushSubscriptionRequest, v1.AddWebPushSubscriptionResponse](
+			httpClient,
+			baseURL+NotifyServiceAddWebPushSubscriptionProcedure,
+			opts...,
+		),
 	}
 }
 
 // notifyServiceClient implements NotifyServiceClient.
 type notifyServiceClient struct {
-	sendNotification *connect_go.Client[v1.SendNotificationRequest, v1.SendNotificationResponse]
+	sendNotification       *connect_go.Client[v1.SendNotificationRequest, v1.SendNotificationResponse]
+	getVAPIDPublicKey      *connect_go.Client[v1.GetVAPIDPublicKeyRequest, v1.GetVAPIDPublicKeyResponse]
+	addWebPushSubscription *connect_go.Client[v1.AddWebPushSubscriptionRequest, v1.AddWebPushSubscriptionResponse]
 }
 
 // SendNotification calls tkd.idm.v1.NotifyService.SendNotification.
@@ -71,9 +91,21 @@ func (c *notifyServiceClient) SendNotification(ctx context.Context, req *connect
 	return c.sendNotification.CallUnary(ctx, req)
 }
 
+// GetVAPIDPublicKey calls tkd.idm.v1.NotifyService.GetVAPIDPublicKey.
+func (c *notifyServiceClient) GetVAPIDPublicKey(ctx context.Context, req *connect_go.Request[v1.GetVAPIDPublicKeyRequest]) (*connect_go.Response[v1.GetVAPIDPublicKeyResponse], error) {
+	return c.getVAPIDPublicKey.CallUnary(ctx, req)
+}
+
+// AddWebPushSubscription calls tkd.idm.v1.NotifyService.AddWebPushSubscription.
+func (c *notifyServiceClient) AddWebPushSubscription(ctx context.Context, req *connect_go.Request[v1.AddWebPushSubscriptionRequest]) (*connect_go.Response[v1.AddWebPushSubscriptionResponse], error) {
+	return c.addWebPushSubscription.CallUnary(ctx, req)
+}
+
 // NotifyServiceHandler is an implementation of the tkd.idm.v1.NotifyService service.
 type NotifyServiceHandler interface {
 	SendNotification(context.Context, *connect_go.Request[v1.SendNotificationRequest]) (*connect_go.Response[v1.SendNotificationResponse], error)
+	GetVAPIDPublicKey(context.Context, *connect_go.Request[v1.GetVAPIDPublicKeyRequest]) (*connect_go.Response[v1.GetVAPIDPublicKeyResponse], error)
+	AddWebPushSubscription(context.Context, *connect_go.Request[v1.AddWebPushSubscriptionRequest]) (*connect_go.Response[v1.AddWebPushSubscriptionResponse], error)
 }
 
 // NewNotifyServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -87,10 +119,24 @@ func NewNotifyServiceHandler(svc NotifyServiceHandler, opts ...connect_go.Handle
 		svc.SendNotification,
 		opts...,
 	)
+	notifyServiceGetVAPIDPublicKeyHandler := connect_go.NewUnaryHandler(
+		NotifyServiceGetVAPIDPublicKeyProcedure,
+		svc.GetVAPIDPublicKey,
+		opts...,
+	)
+	notifyServiceAddWebPushSubscriptionHandler := connect_go.NewUnaryHandler(
+		NotifyServiceAddWebPushSubscriptionProcedure,
+		svc.AddWebPushSubscription,
+		opts...,
+	)
 	return "/tkd.idm.v1.NotifyService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case NotifyServiceSendNotificationProcedure:
 			notifyServiceSendNotificationHandler.ServeHTTP(w, r)
+		case NotifyServiceGetVAPIDPublicKeyProcedure:
+			notifyServiceGetVAPIDPublicKeyHandler.ServeHTTP(w, r)
+		case NotifyServiceAddWebPushSubscriptionProcedure:
+			notifyServiceAddWebPushSubscriptionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -102,4 +148,12 @@ type UnimplementedNotifyServiceHandler struct{}
 
 func (UnimplementedNotifyServiceHandler) SendNotification(context.Context, *connect_go.Request[v1.SendNotificationRequest]) (*connect_go.Response[v1.SendNotificationResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.NotifyService.SendNotification is not implemented"))
+}
+
+func (UnimplementedNotifyServiceHandler) GetVAPIDPublicKey(context.Context, *connect_go.Request[v1.GetVAPIDPublicKeyRequest]) (*connect_go.Response[v1.GetVAPIDPublicKeyResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.NotifyService.GetVAPIDPublicKey is not implemented"))
+}
+
+func (UnimplementedNotifyServiceHandler) AddWebPushSubscription(context.Context, *connect_go.Request[v1.AddWebPushSubscriptionRequest]) (*connect_go.Response[v1.AddWebPushSubscriptionResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.NotifyService.AddWebPushSubscription is not implemented"))
 }

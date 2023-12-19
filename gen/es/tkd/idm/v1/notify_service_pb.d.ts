@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, Duration, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
@@ -29,6 +29,46 @@ export declare enum AttachmentType {
    * @generated from enum value: ALTERNATIVE_BODY = 3;
    */
   ALTERNATIVE_BODY = 3,
+}
+
+/**
+ * @generated from enum tkd.idm.v1.ErrorKind
+ */
+export declare enum ErrorKind {
+  /**
+   * @generated from enum value: ERROR_KIND_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: ERROR_KIND_NO_PRIMARY_MAIL = 1;
+   */
+  NO_PRIMARY_MAIL = 1,
+
+  /**
+   * @generated from enum value: ERROR_KIND_NO_PRIMARY_PHONE = 2;
+   */
+  NO_PRIMARY_PHONE = 2,
+
+  /**
+   * @generated from enum value: ERROR_KIND_NO_WEBPUSH_SUBSCRIPTION = 3;
+   */
+  NO_WEBPUSH_SUBSCRIPTION = 3,
+
+  /**
+   * @generated from enum value: ERROR_KIND_TRANSPORT = 4;
+   */
+  TRANSPORT = 4,
+
+  /**
+   * @generated from enum value: ERROR_KIND_TEMPLATE = 5;
+   */
+  TEMPLATE = 5,
+
+  /**
+   * @generated from enum value: ERROR_KIND_OTHER = 255;
+   */
+  OTHER = 255,
 }
 
 /**
@@ -143,6 +183,42 @@ export declare class SMS extends Message<SMS> {
 }
 
 /**
+ * @generated from message tkd.idm.v1.WebPushNotification
+ */
+export declare class WebPushNotification extends Message<WebPushNotification> {
+  /**
+   * @generated from oneof tkd.idm.v1.WebPushNotification.kind
+   */
+  kind: {
+    /**
+     * @generated from field: bytes binary = 1;
+     */
+    value: Uint8Array;
+    case: "binary";
+  } | {
+    /**
+     * @generated from field: string template = 2;
+     */
+    value: string;
+    case: "template";
+  } | { case: undefined; value?: undefined };
+
+  constructor(data?: PartialMessage<WebPushNotification>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.WebPushNotification";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WebPushNotification;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WebPushNotification;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WebPushNotification;
+
+  static equals(a: WebPushNotification | PlainMessage<WebPushNotification> | undefined, b: WebPushNotification | PlainMessage<WebPushNotification> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.idm.v1.SendNotificationRequest
  */
 export declare class SendNotificationRequest extends Message<SendNotificationRequest> {
@@ -161,6 +237,12 @@ export declare class SendNotificationRequest extends Message<SendNotificationReq
      */
     value: EMailMessage;
     case: "email";
+  } | {
+    /**
+     * @generated from field: tkd.idm.v1.WebPushNotification webpush = 7;
+     */
+    value: WebPushNotification;
+    case: "webpush";
   } | { case: undefined; value?: undefined };
 
   /**
@@ -212,6 +294,11 @@ export declare class DeliveryNotification extends Message<DeliveryNotification> 
    */
   error: string;
 
+  /**
+   * @generated from field: tkd.idm.v1.ErrorKind error_kind = 3;
+   */
+  errorKind: ErrorKind;
+
   constructor(data?: PartialMessage<DeliveryNotification>);
 
   static readonly runtime: typeof proto3;
@@ -249,5 +336,154 @@ export declare class SendNotificationResponse extends Message<SendNotificationRe
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SendNotificationResponse;
 
   static equals(a: SendNotificationResponse | PlainMessage<SendNotificationResponse> | undefined, b: SendNotificationResponse | PlainMessage<SendNotificationResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.GetVAPIDPublicKeyRequest
+ */
+export declare class GetVAPIDPublicKeyRequest extends Message<GetVAPIDPublicKeyRequest> {
+  constructor(data?: PartialMessage<GetVAPIDPublicKeyRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.GetVAPIDPublicKeyRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetVAPIDPublicKeyRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetVAPIDPublicKeyRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetVAPIDPublicKeyRequest;
+
+  static equals(a: GetVAPIDPublicKeyRequest | PlainMessage<GetVAPIDPublicKeyRequest> | undefined, b: GetVAPIDPublicKeyRequest | PlainMessage<GetVAPIDPublicKeyRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.GetVAPIDPublicKeyResponse
+ */
+export declare class GetVAPIDPublicKeyResponse extends Message<GetVAPIDPublicKeyResponse> {
+  /**
+   * @generated from field: string key = 1;
+   */
+  key: string;
+
+  constructor(data?: PartialMessage<GetVAPIDPublicKeyResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.GetVAPIDPublicKeyResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetVAPIDPublicKeyResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetVAPIDPublicKeyResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetVAPIDPublicKeyResponse;
+
+  static equals(a: GetVAPIDPublicKeyResponse | PlainMessage<GetVAPIDPublicKeyResponse> | undefined, b: GetVAPIDPublicKeyResponse | PlainMessage<GetVAPIDPublicKeyResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.WebPushSubscription
+ */
+export declare class WebPushSubscription extends Message<WebPushSubscription> {
+  /**
+   * @generated from field: string endpoint = 1;
+   */
+  endpoint: string;
+
+  /**
+   * @generated from field: google.protobuf.Duration expiration_type = 2;
+   */
+  expirationType?: Duration;
+
+  /**
+   * @generated from field: tkd.idm.v1.WebPushKeys keys = 3;
+   */
+  keys?: WebPushKeys;
+
+  constructor(data?: PartialMessage<WebPushSubscription>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.WebPushSubscription";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WebPushSubscription;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WebPushSubscription;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WebPushSubscription;
+
+  static equals(a: WebPushSubscription | PlainMessage<WebPushSubscription> | undefined, b: WebPushSubscription | PlainMessage<WebPushSubscription> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.WebPushKeys
+ */
+export declare class WebPushKeys extends Message<WebPushKeys> {
+  /**
+   * @generated from field: string auth = 1;
+   */
+  auth: string;
+
+  /**
+   * @generated from field: string p256dh = 2;
+   */
+  p256dh: string;
+
+  constructor(data?: PartialMessage<WebPushKeys>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.WebPushKeys";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): WebPushKeys;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): WebPushKeys;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): WebPushKeys;
+
+  static equals(a: WebPushKeys | PlainMessage<WebPushKeys> | undefined, b: WebPushKeys | PlainMessage<WebPushKeys> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.AddWebPushSubscriptionRequest
+ */
+export declare class AddWebPushSubscriptionRequest extends Message<AddWebPushSubscriptionRequest> {
+  /**
+   * @generated from field: tkd.idm.v1.WebPushSubscription subscription = 1;
+   */
+  subscription?: WebPushSubscription;
+
+  constructor(data?: PartialMessage<AddWebPushSubscriptionRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.AddWebPushSubscriptionRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddWebPushSubscriptionRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddWebPushSubscriptionRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddWebPushSubscriptionRequest;
+
+  static equals(a: AddWebPushSubscriptionRequest | PlainMessage<AddWebPushSubscriptionRequest> | undefined, b: AddWebPushSubscriptionRequest | PlainMessage<AddWebPushSubscriptionRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.AddWebPushSubscriptionResponse
+ */
+export declare class AddWebPushSubscriptionResponse extends Message<AddWebPushSubscriptionResponse> {
+  constructor(data?: PartialMessage<AddWebPushSubscriptionResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.AddWebPushSubscriptionResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AddWebPushSubscriptionResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AddWebPushSubscriptionResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AddWebPushSubscriptionResponse;
+
+  static equals(a: AddWebPushSubscriptionResponse | PlainMessage<AddWebPushSubscriptionResponse> | undefined, b: AddWebPushSubscriptionResponse | PlainMessage<AddWebPushSubscriptionResponse> | undefined): boolean;
 }
 

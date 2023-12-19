@@ -3,13 +3,10 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { SendNotificationRequest, SendNotificationResponse } from "./notify_service_pb.js";
+import { AddWebPushSubscriptionRequest, AddWebPushSubscriptionResponse, GetVAPIDPublicKeyRequest, GetVAPIDPublicKeyResponse, SendNotificationRequest, SendNotificationResponse } from "./notify_service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
- * Admin API only
- *
- *
  * @generated from service tkd.idm.v1.NotifyService
  */
 export const NotifyService = {
@@ -22,6 +19,24 @@ export const NotifyService = {
       name: "SendNotification",
       I: SendNotificationRequest,
       O: SendNotificationResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.NotifyService.GetVAPIDPublicKey
+     */
+    getVAPIDPublicKey: {
+      name: "GetVAPIDPublicKey",
+      I: GetVAPIDPublicKeyRequest,
+      O: GetVAPIDPublicKeyResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.NotifyService.AddWebPushSubscription
+     */
+    addWebPushSubscription: {
+      name: "AddWebPushSubscription",
+      I: AddWebPushSubscriptionRequest,
+      O: AddWebPushSubscriptionResponse,
       kind: MethodKind.Unary,
     },
   }
