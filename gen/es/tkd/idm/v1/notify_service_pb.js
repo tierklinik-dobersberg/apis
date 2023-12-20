@@ -19,6 +19,20 @@ export const AttachmentType = proto3.makeEnum(
 );
 
 /**
+ * @generated from enum tkd.idm.v1.Operation
+ */
+export const Operation = proto3.makeEnum(
+  "tkd.idm.v1.Operation",
+  [
+    {no: 0, name: "OPERATION_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "OPERATION_OPEN_WINDOW", localName: "OPEN_WINDOW"},
+    {no: 2, name: "OPERATION_FOCUS_LAST_FOCUSED_OR_OPEN", localName: "FOCUS_LAST_FOCUSED_OR_OPEN"},
+    {no: 3, name: "OPERATION_NAVIGATE_LAST_FOCUSED_OR_OPEN", localName: "NAVIGATE_LAST_FOCUSED_OR_OPEN"},
+    {no: 4, name: "OPERATION_SEND_REQUEST", localName: "SEND_REQUEST"},
+  ],
+);
+
+/**
  * @generated from enum tkd.idm.v1.ErrorKind
  */
 export const ErrorKind = proto3.makeEnum(
@@ -72,13 +86,41 @@ export const SMS = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.idm.v1.NotificationAction
+ */
+export const NotificationAction = proto3.makeMessageType(
+  "tkd.idm.v1.NotificationAction",
+  () => [
+    { no: 1, name: "action", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "operation", kind: "enum", T: proto3.getEnumType(Operation) },
+    { no: 4, name: "url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.ServiceWorkerNotification
+ */
+export const ServiceWorkerNotification = proto3.makeMessageType(
+  "tkd.idm.v1.ServiceWorkerNotification",
+  () => [
+    { no: 1, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "body", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "default_operation", kind: "enum", T: proto3.getEnumType(Operation) },
+    { no: 4, name: "default_operation_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "actions", kind: "message", T: NotificationAction, repeated: true },
+    { no: 6, name: "data", kind: "message", T: Struct },
+  ],
+);
+
+/**
  * @generated from message tkd.idm.v1.WebPushNotification
  */
 export const WebPushNotification = proto3.makeMessageType(
   "tkd.idm.v1.WebPushNotification",
   () => [
     { no: 1, name: "binary", kind: "scalar", T: 12 /* ScalarType.BYTES */, oneof: "kind" },
-    { no: 2, name: "template", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "kind" },
+    { no: 2, name: "notification", kind: "message", T: ServiceWorkerNotification, oneof: "kind" },
   ],
 );
 

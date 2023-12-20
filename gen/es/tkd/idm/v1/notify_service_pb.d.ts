@@ -32,6 +32,36 @@ export declare enum AttachmentType {
 }
 
 /**
+ * @generated from enum tkd.idm.v1.Operation
+ */
+export declare enum Operation {
+  /**
+   * @generated from enum value: OPERATION_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: OPERATION_OPEN_WINDOW = 1;
+   */
+  OPEN_WINDOW = 1,
+
+  /**
+   * @generated from enum value: OPERATION_FOCUS_LAST_FOCUSED_OR_OPEN = 2;
+   */
+  FOCUS_LAST_FOCUSED_OR_OPEN = 2,
+
+  /**
+   * @generated from enum value: OPERATION_NAVIGATE_LAST_FOCUSED_OR_OPEN = 3;
+   */
+  NAVIGATE_LAST_FOCUSED_OR_OPEN = 3,
+
+  /**
+   * @generated from enum value: OPERATION_SEND_REQUEST = 4;
+   */
+  SEND_REQUEST = 4,
+}
+
+/**
  * @generated from enum tkd.idm.v1.ErrorKind
  */
 export declare enum ErrorKind {
@@ -183,6 +213,94 @@ export declare class SMS extends Message<SMS> {
 }
 
 /**
+ * @generated from message tkd.idm.v1.NotificationAction
+ */
+export declare class NotificationAction extends Message<NotificationAction> {
+  /**
+   * @generated from field: string action = 1;
+   */
+  action: string;
+
+  /**
+   * @generated from field: string title = 2;
+   */
+  title: string;
+
+  /**
+   * @generated from field: tkd.idm.v1.Operation operation = 3;
+   */
+  operation: Operation;
+
+  /**
+   * @generated from field: string url = 4;
+   */
+  url: string;
+
+  constructor(data?: PartialMessage<NotificationAction>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.NotificationAction";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): NotificationAction;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): NotificationAction;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): NotificationAction;
+
+  static equals(a: NotificationAction | PlainMessage<NotificationAction> | undefined, b: NotificationAction | PlainMessage<NotificationAction> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.ServiceWorkerNotification
+ */
+export declare class ServiceWorkerNotification extends Message<ServiceWorkerNotification> {
+  /**
+   * @generated from field: string title = 1;
+   */
+  title: string;
+
+  /**
+   * @generated from field: string body = 2;
+   */
+  body: string;
+
+  /**
+   * @generated from field: tkd.idm.v1.Operation default_operation = 3;
+   */
+  defaultOperation: Operation;
+
+  /**
+   * @generated from field: string default_operation_url = 4;
+   */
+  defaultOperationUrl: string;
+
+  /**
+   * @generated from field: repeated tkd.idm.v1.NotificationAction actions = 5;
+   */
+  actions: NotificationAction[];
+
+  /**
+   * @generated from field: google.protobuf.Struct data = 6;
+   */
+  data?: Struct;
+
+  constructor(data?: PartialMessage<ServiceWorkerNotification>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ServiceWorkerNotification";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ServiceWorkerNotification;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ServiceWorkerNotification;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ServiceWorkerNotification;
+
+  static equals(a: ServiceWorkerNotification | PlainMessage<ServiceWorkerNotification> | undefined, b: ServiceWorkerNotification | PlainMessage<ServiceWorkerNotification> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.idm.v1.WebPushNotification
  */
 export declare class WebPushNotification extends Message<WebPushNotification> {
@@ -197,10 +315,10 @@ export declare class WebPushNotification extends Message<WebPushNotification> {
     case: "binary";
   } | {
     /**
-     * @generated from field: string template = 2;
+     * @generated from field: tkd.idm.v1.ServiceWorkerNotification notification = 2;
      */
-    value: string;
-    case: "template";
+    value: ServiceWorkerNotification;
+    case: "notification";
   } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<WebPushNotification>);

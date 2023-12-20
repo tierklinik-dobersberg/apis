@@ -68,10 +68,46 @@ message SMS {
     string body = 1;
 }
 
+message NotificationAction {
+    string action = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string title = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    Operation operation = 3;
+    string url = 4;
+}
+
+enum Operation {
+    OPERATION_UNSPECIFIED = 0;
+    OPERATION_OPEN_WINDOW = 1;
+    OPERATION_FOCUS_LAST_FOCUSED_OR_OPEN = 2;
+    OPERATION_NAVIGATE_LAST_FOCUSED_OR_OPEN = 3;
+    OPERATION_SEND_REQUEST = 4;
+}
+
+message ServiceWorkerNotification {
+    string title = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string body = 2;
+
+    Operation default_operation = 3;
+    string default_operation_url = 4;
+
+    repeated NotificationAction actions = 5;
+
+    google.protobuf.Struct data = 6;
+}
+
 message WebPushNotification {
     oneof kind {
         bytes binary = 1;
-        string template = 2;
+        ServiceWorkerNotification notification = 2;
 
         option (buf.validate.oneof).required = true;
     };
