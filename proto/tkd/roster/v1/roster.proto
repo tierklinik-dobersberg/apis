@@ -438,6 +438,9 @@ message GetRequiredShiftsRequest {
 
     // ReadMask may be use to limit which fields should be included in the response.
     google.protobuf.FieldMask read_mask = 4;
+
+    // Only return shifts that match the roster_type on_call_tags.
+    bool on_call = 5;
 }
 
 message GetRequiredShiftsResponse {

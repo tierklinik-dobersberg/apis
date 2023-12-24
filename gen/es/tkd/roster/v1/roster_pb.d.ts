@@ -971,6 +971,13 @@ export declare class GetRequiredShiftsRequest extends Message<GetRequiredShiftsR
    */
   readMask?: FieldMask;
 
+  /**
+   * Only return shifts that match the roster_type on_call_tags.
+   *
+   * @generated from field: bool on_call = 5;
+   */
+  onCall: boolean;
+
   constructor(data?: PartialMessage<GetRequiredShiftsRequest>);
 
   static readonly runtime: typeof proto3;

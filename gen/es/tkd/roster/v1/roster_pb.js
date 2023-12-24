@@ -287,6 +287,7 @@ export const GetRequiredShiftsRequest = proto3.makeMessageType(
     { no: 2, name: "to", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "read_mask", kind: "message", T: FieldMask },
+    { no: 5, name: "on_call", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
