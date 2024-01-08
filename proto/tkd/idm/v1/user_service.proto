@@ -81,6 +81,12 @@ service UserService {
       require: AUTH_REQ_ADMIN,
     };
   }
+
+  rpc ResolveUserPermissions(ResolveUserPermissionsRequest) returns (ResolveUserPermissionsResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_REQUIRED,
+    };
+  }
 }
 
 message ImpersonateRequest {
@@ -221,3 +227,13 @@ message SetUserPasswordRequest {
 }
 
 message SetUserPasswordResponse {}
+
+message ResolveUserPermissionsRequest {
+  string user_id = 1 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message ResolveUserPermissionsResponse {
+  repeated string permissions = 1;
+}

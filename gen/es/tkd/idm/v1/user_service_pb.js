@@ -247,3 +247,23 @@ export const SetUserPasswordResponse = proto3.makeMessageType(
   [],
 );
 
+/**
+ * @generated from message tkd.idm.v1.ResolveUserPermissionsRequest
+ */
+export const ResolveUserPermissionsRequest = proto3.makeMessageType(
+  "tkd.idm.v1.ResolveUserPermissionsRequest",
+  () => [
+    { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.ResolveUserPermissionsResponse
+ */
+export const ResolveUserPermissionsResponse = proto3.makeMessageType(
+  "tkd.idm.v1.ResolveUserPermissionsResponse",
+  () => [
+    { no: 1, name: "permissions", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+

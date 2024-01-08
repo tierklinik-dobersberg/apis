@@ -60,6 +60,12 @@ service RoleService {
       require: AUTH_REQ_ADMIN,
     };
   }
+
+  rpc ResolveRolePermissions(ResolveRolePermissionsRequest) returns (ResolveRolePermissionsResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_ADMIN,
+    };
+  }
 }
 
 
@@ -121,3 +127,13 @@ message DeleteRoleRequest {
 }
 
 message DeleteRoleResponse {}
+
+message ResolveRolePermissionsRequest {
+  string role_id = 1 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message ResolveRolePermissionsResponse {
+  repeated string permissions = 1;
+}

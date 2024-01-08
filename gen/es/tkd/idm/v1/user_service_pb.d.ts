@@ -652,3 +652,51 @@ export declare class SetUserPasswordResponse extends Message<SetUserPasswordResp
   static equals(a: SetUserPasswordResponse | PlainMessage<SetUserPasswordResponse> | undefined, b: SetUserPasswordResponse | PlainMessage<SetUserPasswordResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.idm.v1.ResolveUserPermissionsRequest
+ */
+export declare class ResolveUserPermissionsRequest extends Message<ResolveUserPermissionsRequest> {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  constructor(data?: PartialMessage<ResolveUserPermissionsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ResolveUserPermissionsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ResolveUserPermissionsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ResolveUserPermissionsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ResolveUserPermissionsRequest;
+
+  static equals(a: ResolveUserPermissionsRequest | PlainMessage<ResolveUserPermissionsRequest> | undefined, b: ResolveUserPermissionsRequest | PlainMessage<ResolveUserPermissionsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.ResolveUserPermissionsResponse
+ */
+export declare class ResolveUserPermissionsResponse extends Message<ResolveUserPermissionsResponse> {
+  /**
+   * @generated from field: repeated string permissions = 1;
+   */
+  permissions: string[];
+
+  constructor(data?: PartialMessage<ResolveUserPermissionsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ResolveUserPermissionsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ResolveUserPermissionsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ResolveUserPermissionsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ResolveUserPermissionsResponse;
+
+  static equals(a: ResolveUserPermissionsResponse | PlainMessage<ResolveUserPermissionsResponse> | undefined, b: ResolveUserPermissionsResponse | PlainMessage<ResolveUserPermissionsResponse> | undefined): boolean;
+}
+

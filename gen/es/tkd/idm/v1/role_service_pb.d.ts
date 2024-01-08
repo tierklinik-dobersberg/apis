@@ -418,3 +418,51 @@ export declare class DeleteRoleResponse extends Message<DeleteRoleResponse> {
   static equals(a: DeleteRoleResponse | PlainMessage<DeleteRoleResponse> | undefined, b: DeleteRoleResponse | PlainMessage<DeleteRoleResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.idm.v1.ResolveRolePermissionsRequest
+ */
+export declare class ResolveRolePermissionsRequest extends Message<ResolveRolePermissionsRequest> {
+  /**
+   * @generated from field: string role_id = 1;
+   */
+  roleId: string;
+
+  constructor(data?: PartialMessage<ResolveRolePermissionsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ResolveRolePermissionsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ResolveRolePermissionsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ResolveRolePermissionsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ResolveRolePermissionsRequest;
+
+  static equals(a: ResolveRolePermissionsRequest | PlainMessage<ResolveRolePermissionsRequest> | undefined, b: ResolveRolePermissionsRequest | PlainMessage<ResolveRolePermissionsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.ResolveRolePermissionsResponse
+ */
+export declare class ResolveRolePermissionsResponse extends Message<ResolveRolePermissionsResponse> {
+  /**
+   * @generated from field: repeated string permissions = 1;
+   */
+  permissions: string[];
+
+  constructor(data?: PartialMessage<ResolveRolePermissionsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ResolveRolePermissionsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ResolveRolePermissionsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ResolveRolePermissionsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ResolveRolePermissionsResponse;
+
+  static equals(a: ResolveRolePermissionsResponse | PlainMessage<ResolveRolePermissionsResponse> | undefined, b: ResolveRolePermissionsResponse | PlainMessage<ResolveRolePermissionsResponse> | undefined): boolean;
+}
+

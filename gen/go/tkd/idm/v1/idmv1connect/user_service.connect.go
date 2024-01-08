@@ -59,6 +59,9 @@ const (
 	// UserServiceSetUserPasswordProcedure is the fully-qualified name of the UserService's
 	// SetUserPassword RPC.
 	UserServiceSetUserPasswordProcedure = "/tkd.idm.v1.UserService/SetUserPassword"
+	// UserServiceResolveUserPermissionsProcedure is the fully-qualified name of the UserService's
+	// ResolveUserPermissions RPC.
+	UserServiceResolveUserPermissionsProcedure = "/tkd.idm.v1.UserService/ResolveUserPermissions"
 )
 
 // UserServiceClient is a client for the tkd.idm.v1.UserService service.
@@ -74,6 +77,7 @@ type UserServiceClient interface {
 	DeleteUserExtraKey(context.Context, *connect_go.Request[v1.DeleteUserExtraKeyRequest]) (*connect_go.Response[v1.DeleteUserExtraKeyResponse], error)
 	SendAccountCreationNotice(context.Context, *connect_go.Request[v1.SendAccountCreationNoticeRequest]) (*connect_go.Response[v1.SendAccountCreationNoticeResponse], error)
 	SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserPasswordResponse], error)
+	ResolveUserPermissions(context.Context, *connect_go.Request[v1.ResolveUserPermissionsRequest]) (*connect_go.Response[v1.ResolveUserPermissionsResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the tkd.idm.v1.UserService service. By default, it
@@ -143,6 +147,11 @@ func NewUserServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+UserServiceSetUserPasswordProcedure,
 			opts...,
 		),
+		resolveUserPermissions: connect_go.NewClient[v1.ResolveUserPermissionsRequest, v1.ResolveUserPermissionsResponse](
+			httpClient,
+			baseURL+UserServiceResolveUserPermissionsProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -159,6 +168,7 @@ type userServiceClient struct {
 	deleteUserExtraKey        *connect_go.Client[v1.DeleteUserExtraKeyRequest, v1.DeleteUserExtraKeyResponse]
 	sendAccountCreationNotice *connect_go.Client[v1.SendAccountCreationNoticeRequest, v1.SendAccountCreationNoticeResponse]
 	setUserPassword           *connect_go.Client[v1.SetUserPasswordRequest, v1.SetUserPasswordResponse]
+	resolveUserPermissions    *connect_go.Client[v1.ResolveUserPermissionsRequest, v1.ResolveUserPermissionsResponse]
 }
 
 // Impersonate calls tkd.idm.v1.UserService.Impersonate.
@@ -216,6 +226,11 @@ func (c *userServiceClient) SetUserPassword(ctx context.Context, req *connect_go
 	return c.setUserPassword.CallUnary(ctx, req)
 }
 
+// ResolveUserPermissions calls tkd.idm.v1.UserService.ResolveUserPermissions.
+func (c *userServiceClient) ResolveUserPermissions(ctx context.Context, req *connect_go.Request[v1.ResolveUserPermissionsRequest]) (*connect_go.Response[v1.ResolveUserPermissionsResponse], error) {
+	return c.resolveUserPermissions.CallUnary(ctx, req)
+}
+
 // UserServiceHandler is an implementation of the tkd.idm.v1.UserService service.
 type UserServiceHandler interface {
 	Impersonate(context.Context, *connect_go.Request[v1.ImpersonateRequest]) (*connect_go.Response[v1.ImpersonateResponse], error)
@@ -229,6 +244,7 @@ type UserServiceHandler interface {
 	DeleteUserExtraKey(context.Context, *connect_go.Request[v1.DeleteUserExtraKeyRequest]) (*connect_go.Response[v1.DeleteUserExtraKeyResponse], error)
 	SendAccountCreationNotice(context.Context, *connect_go.Request[v1.SendAccountCreationNoticeRequest]) (*connect_go.Response[v1.SendAccountCreationNoticeResponse], error)
 	SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserPasswordResponse], error)
+	ResolveUserPermissions(context.Context, *connect_go.Request[v1.ResolveUserPermissionsRequest]) (*connect_go.Response[v1.ResolveUserPermissionsResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -294,6 +310,11 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect_go.HandlerOpt
 		svc.SetUserPassword,
 		opts...,
 	)
+	userServiceResolveUserPermissionsHandler := connect_go.NewUnaryHandler(
+		UserServiceResolveUserPermissionsProcedure,
+		svc.ResolveUserPermissions,
+		opts...,
+	)
 	return "/tkd.idm.v1.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case UserServiceImpersonateProcedure:
@@ -318,6 +339,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect_go.HandlerOpt
 			userServiceSendAccountCreationNoticeHandler.ServeHTTP(w, r)
 		case UserServiceSetUserPasswordProcedure:
 			userServiceSetUserPasswordHandler.ServeHTTP(w, r)
+		case UserServiceResolveUserPermissionsProcedure:
+			userServiceResolveUserPermissionsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -369,4 +392,8 @@ func (UnimplementedUserServiceHandler) SendAccountCreationNotice(context.Context
 
 func (UnimplementedUserServiceHandler) SetUserPassword(context.Context, *connect_go.Request[v1.SetUserPasswordRequest]) (*connect_go.Response[v1.SetUserPasswordResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.UserService.SetUserPassword is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) ResolveUserPermissions(context.Context, *connect_go.Request[v1.ResolveUserPermissionsRequest]) (*connect_go.Response[v1.ResolveUserPermissionsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.UserService.ResolveUserPermissions is not implemented"))
 }

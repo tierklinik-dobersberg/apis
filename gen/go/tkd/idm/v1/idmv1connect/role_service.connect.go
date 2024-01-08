@@ -49,6 +49,9 @@ const (
 	// RoleServiceUnassignRoleFromUserProcedure is the fully-qualified name of the RoleService's
 	// UnassignRoleFromUser RPC.
 	RoleServiceUnassignRoleFromUserProcedure = "/tkd.idm.v1.RoleService/UnassignRoleFromUser"
+	// RoleServiceResolveRolePermissionsProcedure is the fully-qualified name of the RoleService's
+	// ResolveRolePermissions RPC.
+	RoleServiceResolveRolePermissionsProcedure = "/tkd.idm.v1.RoleService/ResolveRolePermissions"
 )
 
 // RoleServiceClient is a client for the tkd.idm.v1.RoleService service.
@@ -60,6 +63,7 @@ type RoleServiceClient interface {
 	GetRole(context.Context, *connect_go.Request[v1.GetRoleRequest]) (*connect_go.Response[v1.GetRoleResponse], error)
 	AssignRoleToUser(context.Context, *connect_go.Request[v1.AssignRoleToUserRequest]) (*connect_go.Response[v1.AssignRoleToUserResponse], error)
 	UnassignRoleFromUser(context.Context, *connect_go.Request[v1.UnassignRoleFromUserRequest]) (*connect_go.Response[v1.UnassignRoleFromUserResponse], error)
+	ResolveRolePermissions(context.Context, *connect_go.Request[v1.ResolveRolePermissionsRequest]) (*connect_go.Response[v1.ResolveRolePermissionsResponse], error)
 }
 
 // NewRoleServiceClient constructs a client for the tkd.idm.v1.RoleService service. By default, it
@@ -107,18 +111,24 @@ func NewRoleServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+RoleServiceUnassignRoleFromUserProcedure,
 			opts...,
 		),
+		resolveRolePermissions: connect_go.NewClient[v1.ResolveRolePermissionsRequest, v1.ResolveRolePermissionsResponse](
+			httpClient,
+			baseURL+RoleServiceResolveRolePermissionsProcedure,
+			opts...,
+		),
 	}
 }
 
 // roleServiceClient implements RoleServiceClient.
 type roleServiceClient struct {
-	createRole           *connect_go.Client[v1.CreateRoleRequest, v1.CreateRoleResponse]
-	updateRole           *connect_go.Client[v1.UpdateRoleRequest, v1.UpdateRoleResponse]
-	deleteRole           *connect_go.Client[v1.DeleteRoleRequest, v1.DeleteRoleResponse]
-	listRoles            *connect_go.Client[v1.ListRolesRequest, v1.ListRolesResponse]
-	getRole              *connect_go.Client[v1.GetRoleRequest, v1.GetRoleResponse]
-	assignRoleToUser     *connect_go.Client[v1.AssignRoleToUserRequest, v1.AssignRoleToUserResponse]
-	unassignRoleFromUser *connect_go.Client[v1.UnassignRoleFromUserRequest, v1.UnassignRoleFromUserResponse]
+	createRole             *connect_go.Client[v1.CreateRoleRequest, v1.CreateRoleResponse]
+	updateRole             *connect_go.Client[v1.UpdateRoleRequest, v1.UpdateRoleResponse]
+	deleteRole             *connect_go.Client[v1.DeleteRoleRequest, v1.DeleteRoleResponse]
+	listRoles              *connect_go.Client[v1.ListRolesRequest, v1.ListRolesResponse]
+	getRole                *connect_go.Client[v1.GetRoleRequest, v1.GetRoleResponse]
+	assignRoleToUser       *connect_go.Client[v1.AssignRoleToUserRequest, v1.AssignRoleToUserResponse]
+	unassignRoleFromUser   *connect_go.Client[v1.UnassignRoleFromUserRequest, v1.UnassignRoleFromUserResponse]
+	resolveRolePermissions *connect_go.Client[v1.ResolveRolePermissionsRequest, v1.ResolveRolePermissionsResponse]
 }
 
 // CreateRole calls tkd.idm.v1.RoleService.CreateRole.
@@ -156,6 +166,11 @@ func (c *roleServiceClient) UnassignRoleFromUser(ctx context.Context, req *conne
 	return c.unassignRoleFromUser.CallUnary(ctx, req)
 }
 
+// ResolveRolePermissions calls tkd.idm.v1.RoleService.ResolveRolePermissions.
+func (c *roleServiceClient) ResolveRolePermissions(ctx context.Context, req *connect_go.Request[v1.ResolveRolePermissionsRequest]) (*connect_go.Response[v1.ResolveRolePermissionsResponse], error) {
+	return c.resolveRolePermissions.CallUnary(ctx, req)
+}
+
 // RoleServiceHandler is an implementation of the tkd.idm.v1.RoleService service.
 type RoleServiceHandler interface {
 	CreateRole(context.Context, *connect_go.Request[v1.CreateRoleRequest]) (*connect_go.Response[v1.CreateRoleResponse], error)
@@ -165,6 +180,7 @@ type RoleServiceHandler interface {
 	GetRole(context.Context, *connect_go.Request[v1.GetRoleRequest]) (*connect_go.Response[v1.GetRoleResponse], error)
 	AssignRoleToUser(context.Context, *connect_go.Request[v1.AssignRoleToUserRequest]) (*connect_go.Response[v1.AssignRoleToUserResponse], error)
 	UnassignRoleFromUser(context.Context, *connect_go.Request[v1.UnassignRoleFromUserRequest]) (*connect_go.Response[v1.UnassignRoleFromUserResponse], error)
+	ResolveRolePermissions(context.Context, *connect_go.Request[v1.ResolveRolePermissionsRequest]) (*connect_go.Response[v1.ResolveRolePermissionsResponse], error)
 }
 
 // NewRoleServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -208,6 +224,11 @@ func NewRoleServiceHandler(svc RoleServiceHandler, opts ...connect_go.HandlerOpt
 		svc.UnassignRoleFromUser,
 		opts...,
 	)
+	roleServiceResolveRolePermissionsHandler := connect_go.NewUnaryHandler(
+		RoleServiceResolveRolePermissionsProcedure,
+		svc.ResolveRolePermissions,
+		opts...,
+	)
 	return "/tkd.idm.v1.RoleService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case RoleServiceCreateRoleProcedure:
@@ -224,6 +245,8 @@ func NewRoleServiceHandler(svc RoleServiceHandler, opts ...connect_go.HandlerOpt
 			roleServiceAssignRoleToUserHandler.ServeHTTP(w, r)
 		case RoleServiceUnassignRoleFromUserProcedure:
 			roleServiceUnassignRoleFromUserHandler.ServeHTTP(w, r)
+		case RoleServiceResolveRolePermissionsProcedure:
+			roleServiceResolveRolePermissionsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -259,4 +282,8 @@ func (UnimplementedRoleServiceHandler) AssignRoleToUser(context.Context, *connec
 
 func (UnimplementedRoleServiceHandler) UnassignRoleFromUser(context.Context, *connect_go.Request[v1.UnassignRoleFromUserRequest]) (*connect_go.Response[v1.UnassignRoleFromUserResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.RoleService.UnassignRoleFromUser is not implemented"))
+}
+
+func (UnimplementedRoleServiceHandler) ResolveRolePermissions(context.Context, *connect_go.Request[v1.ResolveRolePermissionsRequest]) (*connect_go.Response[v1.ResolveRolePermissionsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.RoleService.ResolveRolePermissions is not implemented"))
 }

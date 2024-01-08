@@ -160,3 +160,23 @@ export const DeleteRoleResponse = proto3.makeMessageType(
   [],
 );
 
+/**
+ * @generated from message tkd.idm.v1.ResolveRolePermissionsRequest
+ */
+export const ResolveRolePermissionsRequest = proto3.makeMessageType(
+  "tkd.idm.v1.ResolveRolePermissionsRequest",
+  () => [
+    { no: 1, name: "role_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.ResolveRolePermissionsResponse
+ */
+export const ResolveRolePermissionsResponse = proto3.makeMessageType(
+  "tkd.idm.v1.ResolveRolePermissionsResponse",
+  () => [
+    { no: 1, name: "permissions", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
