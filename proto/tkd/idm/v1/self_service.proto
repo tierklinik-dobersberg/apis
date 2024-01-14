@@ -7,6 +7,7 @@ import "tkd/idm/v1/user.proto";
 import "tkd/common/v1/descriptor.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
 
 service SelfServiceService {
     rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse) {
@@ -107,6 +108,24 @@ service SelfServiceService {
         };
     }
     rpc GenerateRecoveryCodes(GenerateRecoveryCodesRequest) returns (GenerateRecoveryCodesResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc GenerateAPIToken(GenerateAPITokenRequest) returns (GenerateAPITokenResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc ListAPITokens(ListAPITokensRequest) returns (ListAPITokensResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc RemoveAPIToken(RemoveAPITokenRequest) returns (RemoveAPITokenResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
@@ -329,3 +348,44 @@ message RemovePasskeyRequest {
    string id = 1 [(buf.validate.field).required = true];
 }
 message RemovePasskeyResponse {}
+
+message GenerateAPITokenRequest {
+    // A list of roles that should be assigned to the token.
+    // Note that it is not possible to assign roles that the
+    // authenticated user doesn't have.
+    repeated string roles = 1;
+
+    // The timestamp at which the api token should expire.
+    google.protobuf.Timestamp expires = 2;
+
+    // A human readable description to identify the API token.
+    string description = 3 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message GenerateAPITokenResponse {
+    APIToken token = 1;
+}
+
+message ListAPITokensRequest {}
+
+message APIToken {
+    string id = 1;
+    string description = 2;
+    string redacted_token = 3;
+    google.protobuf.Timestamp expires = 4;
+    google.protobuf.Timestamp created_at = 5;
+}
+
+message ListAPITokensResponse {
+    repeated APIToken tokens = 1;
+}
+
+message RemoveAPITokenRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message RemoveAPITokenResponse {}

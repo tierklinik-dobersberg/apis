@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { FieldMask, proto3, Value } from "@bufbuild/protobuf";
+import { FieldMask, proto3, Timestamp, Value } from "@bufbuild/protobuf";
 import { Address, EMail, PhoneNumber, User } from "./user_pb.js";
 
 /**
@@ -421,6 +421,78 @@ export const RemovePasskeyRequest = proto3.makeMessageType(
  */
 export const RemovePasskeyResponse = proto3.makeMessageType(
   "tkd.idm.v1.RemovePasskeyResponse",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.GenerateAPITokenRequest
+ */
+export const GenerateAPITokenRequest = proto3.makeMessageType(
+  "tkd.idm.v1.GenerateAPITokenRequest",
+  () => [
+    { no: 1, name: "roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: "expires", kind: "message", T: Timestamp },
+    { no: 3, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.GenerateAPITokenResponse
+ */
+export const GenerateAPITokenResponse = proto3.makeMessageType(
+  "tkd.idm.v1.GenerateAPITokenResponse",
+  () => [
+    { no: 1, name: "token", kind: "message", T: APIToken },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.ListAPITokensRequest
+ */
+export const ListAPITokensRequest = proto3.makeMessageType(
+  "tkd.idm.v1.ListAPITokensRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.idm.v1.APIToken
+ */
+export const APIToken = proto3.makeMessageType(
+  "tkd.idm.v1.APIToken",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "redacted_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "expires", kind: "message", T: Timestamp },
+    { no: 5, name: "created_at", kind: "message", T: Timestamp },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.ListAPITokensResponse
+ */
+export const ListAPITokensResponse = proto3.makeMessageType(
+  "tkd.idm.v1.ListAPITokensResponse",
+  () => [
+    { no: 1, name: "tokens", kind: "message", T: APIToken, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.RemoveAPITokenRequest
+ */
+export const RemoveAPITokenRequest = proto3.makeMessageType(
+  "tkd.idm.v1.RemoveAPITokenRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.RemoveAPITokenResponse
+ */
+export const RemoveAPITokenResponse = proto3.makeMessageType(
+  "tkd.idm.v1.RemoveAPITokenResponse",
   [],
 );
 

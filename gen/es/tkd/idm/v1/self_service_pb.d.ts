@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Value } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp, Value } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Address, EMail, PhoneNumber, User } from "./user_pb.js";
 
@@ -1117,5 +1117,201 @@ export declare class RemovePasskeyResponse extends Message<RemovePasskeyResponse
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RemovePasskeyResponse;
 
   static equals(a: RemovePasskeyResponse | PlainMessage<RemovePasskeyResponse> | undefined, b: RemovePasskeyResponse | PlainMessage<RemovePasskeyResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.GenerateAPITokenRequest
+ */
+export declare class GenerateAPITokenRequest extends Message<GenerateAPITokenRequest> {
+  /**
+   * A list of roles that should be assigned to the token.
+   * Note that it is not possible to assign roles that the
+   * authenticated user doesn't have.
+   *
+   * @generated from field: repeated string roles = 1;
+   */
+  roles: string[];
+
+  /**
+   * The timestamp at which the api token should expire.
+   *
+   * @generated from field: google.protobuf.Timestamp expires = 2;
+   */
+  expires?: Timestamp;
+
+  /**
+   * A human readable description to identify the API token.
+   *
+   * @generated from field: string description = 3;
+   */
+  description: string;
+
+  constructor(data?: PartialMessage<GenerateAPITokenRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.GenerateAPITokenRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GenerateAPITokenRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GenerateAPITokenRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GenerateAPITokenRequest;
+
+  static equals(a: GenerateAPITokenRequest | PlainMessage<GenerateAPITokenRequest> | undefined, b: GenerateAPITokenRequest | PlainMessage<GenerateAPITokenRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.GenerateAPITokenResponse
+ */
+export declare class GenerateAPITokenResponse extends Message<GenerateAPITokenResponse> {
+  /**
+   * @generated from field: tkd.idm.v1.APIToken token = 1;
+   */
+  token?: APIToken;
+
+  constructor(data?: PartialMessage<GenerateAPITokenResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.GenerateAPITokenResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GenerateAPITokenResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GenerateAPITokenResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GenerateAPITokenResponse;
+
+  static equals(a: GenerateAPITokenResponse | PlainMessage<GenerateAPITokenResponse> | undefined, b: GenerateAPITokenResponse | PlainMessage<GenerateAPITokenResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.ListAPITokensRequest
+ */
+export declare class ListAPITokensRequest extends Message<ListAPITokensRequest> {
+  constructor(data?: PartialMessage<ListAPITokensRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ListAPITokensRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListAPITokensRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListAPITokensRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListAPITokensRequest;
+
+  static equals(a: ListAPITokensRequest | PlainMessage<ListAPITokensRequest> | undefined, b: ListAPITokensRequest | PlainMessage<ListAPITokensRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.APIToken
+ */
+export declare class APIToken extends Message<APIToken> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string description = 2;
+   */
+  description: string;
+
+  /**
+   * @generated from field: string redacted_token = 3;
+   */
+  redactedToken: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp expires = 4;
+   */
+  expires?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 5;
+   */
+  createdAt?: Timestamp;
+
+  constructor(data?: PartialMessage<APIToken>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.APIToken";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): APIToken;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): APIToken;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): APIToken;
+
+  static equals(a: APIToken | PlainMessage<APIToken> | undefined, b: APIToken | PlainMessage<APIToken> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.ListAPITokensResponse
+ */
+export declare class ListAPITokensResponse extends Message<ListAPITokensResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.APIToken tokens = 1;
+   */
+  tokens: APIToken[];
+
+  constructor(data?: PartialMessage<ListAPITokensResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.ListAPITokensResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListAPITokensResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListAPITokensResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListAPITokensResponse;
+
+  static equals(a: ListAPITokensResponse | PlainMessage<ListAPITokensResponse> | undefined, b: ListAPITokensResponse | PlainMessage<ListAPITokensResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.RemoveAPITokenRequest
+ */
+export declare class RemoveAPITokenRequest extends Message<RemoveAPITokenRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  constructor(data?: PartialMessage<RemoveAPITokenRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.RemoveAPITokenRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RemoveAPITokenRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RemoveAPITokenRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RemoveAPITokenRequest;
+
+  static equals(a: RemoveAPITokenRequest | PlainMessage<RemoveAPITokenRequest> | undefined, b: RemoveAPITokenRequest | PlainMessage<RemoveAPITokenRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.RemoveAPITokenResponse
+ */
+export declare class RemoveAPITokenResponse extends Message<RemoveAPITokenResponse> {
+  constructor(data?: PartialMessage<RemoveAPITokenResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.RemoveAPITokenResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RemoveAPITokenResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RemoveAPITokenResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RemoveAPITokenResponse;
+
+  static equals(a: RemoveAPITokenResponse | PlainMessage<RemoveAPITokenResponse> | undefined, b: RemoveAPITokenResponse | PlainMessage<RemoveAPITokenResponse> | undefined): boolean;
 }
 

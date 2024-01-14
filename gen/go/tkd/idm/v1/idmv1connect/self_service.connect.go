@@ -87,6 +87,15 @@ const (
 	// SelfServiceServiceGenerateRecoveryCodesProcedure is the fully-qualified name of the
 	// SelfServiceService's GenerateRecoveryCodes RPC.
 	SelfServiceServiceGenerateRecoveryCodesProcedure = "/tkd.idm.v1.SelfServiceService/GenerateRecoveryCodes"
+	// SelfServiceServiceGenerateAPITokenProcedure is the fully-qualified name of the
+	// SelfServiceService's GenerateAPIToken RPC.
+	SelfServiceServiceGenerateAPITokenProcedure = "/tkd.idm.v1.SelfServiceService/GenerateAPIToken"
+	// SelfServiceServiceListAPITokensProcedure is the fully-qualified name of the SelfServiceService's
+	// ListAPITokens RPC.
+	SelfServiceServiceListAPITokensProcedure = "/tkd.idm.v1.SelfServiceService/ListAPITokens"
+	// SelfServiceServiceRemoveAPITokenProcedure is the fully-qualified name of the SelfServiceService's
+	// RemoveAPIToken RPC.
+	SelfServiceServiceRemoveAPITokenProcedure = "/tkd.idm.v1.SelfServiceService/RemoveAPIToken"
 )
 
 // SelfServiceServiceClient is a client for the tkd.idm.v1.SelfServiceService service.
@@ -114,6 +123,9 @@ type SelfServiceServiceClient interface {
 	Enroll2FA(context.Context, *connect_go.Request[v1.Enroll2FARequest]) (*connect_go.Response[v1.Enroll2FAResponse], error)
 	Remove2FA(context.Context, *connect_go.Request[v1.Remove2FARequest]) (*connect_go.Response[v1.Remove2FAResponse], error)
 	GenerateRecoveryCodes(context.Context, *connect_go.Request[v1.GenerateRecoveryCodesRequest]) (*connect_go.Response[v1.GenerateRecoveryCodesResponse], error)
+	GenerateAPIToken(context.Context, *connect_go.Request[v1.GenerateAPITokenRequest]) (*connect_go.Response[v1.GenerateAPITokenResponse], error)
+	ListAPITokens(context.Context, *connect_go.Request[v1.ListAPITokensRequest]) (*connect_go.Response[v1.ListAPITokensResponse], error)
+	RemoveAPIToken(context.Context, *connect_go.Request[v1.RemoveAPITokenRequest]) (*connect_go.Response[v1.RemoveAPITokenResponse], error)
 }
 
 // NewSelfServiceServiceClient constructs a client for the tkd.idm.v1.SelfServiceService service. By
@@ -216,6 +228,21 @@ func NewSelfServiceServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 			baseURL+SelfServiceServiceGenerateRecoveryCodesProcedure,
 			opts...,
 		),
+		generateAPIToken: connect_go.NewClient[v1.GenerateAPITokenRequest, v1.GenerateAPITokenResponse](
+			httpClient,
+			baseURL+SelfServiceServiceGenerateAPITokenProcedure,
+			opts...,
+		),
+		listAPITokens: connect_go.NewClient[v1.ListAPITokensRequest, v1.ListAPITokensResponse](
+			httpClient,
+			baseURL+SelfServiceServiceListAPITokensProcedure,
+			opts...,
+		),
+		removeAPIToken: connect_go.NewClient[v1.RemoveAPITokenRequest, v1.RemoveAPITokenResponse](
+			httpClient,
+			baseURL+SelfServiceServiceRemoveAPITokenProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -239,6 +266,9 @@ type selfServiceServiceClient struct {
 	enroll2FA                *connect_go.Client[v1.Enroll2FARequest, v1.Enroll2FAResponse]
 	remove2FA                *connect_go.Client[v1.Remove2FARequest, v1.Remove2FAResponse]
 	generateRecoveryCodes    *connect_go.Client[v1.GenerateRecoveryCodesRequest, v1.GenerateRecoveryCodesResponse]
+	generateAPIToken         *connect_go.Client[v1.GenerateAPITokenRequest, v1.GenerateAPITokenResponse]
+	listAPITokens            *connect_go.Client[v1.ListAPITokensRequest, v1.ListAPITokensResponse]
+	removeAPIToken           *connect_go.Client[v1.RemoveAPITokenRequest, v1.RemoveAPITokenResponse]
 }
 
 // ChangePassword calls tkd.idm.v1.SelfServiceService.ChangePassword.
@@ -331,6 +361,21 @@ func (c *selfServiceServiceClient) GenerateRecoveryCodes(ctx context.Context, re
 	return c.generateRecoveryCodes.CallUnary(ctx, req)
 }
 
+// GenerateAPIToken calls tkd.idm.v1.SelfServiceService.GenerateAPIToken.
+func (c *selfServiceServiceClient) GenerateAPIToken(ctx context.Context, req *connect_go.Request[v1.GenerateAPITokenRequest]) (*connect_go.Response[v1.GenerateAPITokenResponse], error) {
+	return c.generateAPIToken.CallUnary(ctx, req)
+}
+
+// ListAPITokens calls tkd.idm.v1.SelfServiceService.ListAPITokens.
+func (c *selfServiceServiceClient) ListAPITokens(ctx context.Context, req *connect_go.Request[v1.ListAPITokensRequest]) (*connect_go.Response[v1.ListAPITokensResponse], error) {
+	return c.listAPITokens.CallUnary(ctx, req)
+}
+
+// RemoveAPIToken calls tkd.idm.v1.SelfServiceService.RemoveAPIToken.
+func (c *selfServiceServiceClient) RemoveAPIToken(ctx context.Context, req *connect_go.Request[v1.RemoveAPITokenRequest]) (*connect_go.Response[v1.RemoveAPITokenResponse], error) {
+	return c.removeAPIToken.CallUnary(ctx, req)
+}
+
 // SelfServiceServiceHandler is an implementation of the tkd.idm.v1.SelfServiceService service.
 type SelfServiceServiceHandler interface {
 	ChangePassword(context.Context, *connect_go.Request[v1.ChangePasswordRequest]) (*connect_go.Response[v1.ChangePasswordResponse], error)
@@ -356,6 +401,9 @@ type SelfServiceServiceHandler interface {
 	Enroll2FA(context.Context, *connect_go.Request[v1.Enroll2FARequest]) (*connect_go.Response[v1.Enroll2FAResponse], error)
 	Remove2FA(context.Context, *connect_go.Request[v1.Remove2FARequest]) (*connect_go.Response[v1.Remove2FAResponse], error)
 	GenerateRecoveryCodes(context.Context, *connect_go.Request[v1.GenerateRecoveryCodesRequest]) (*connect_go.Response[v1.GenerateRecoveryCodesResponse], error)
+	GenerateAPIToken(context.Context, *connect_go.Request[v1.GenerateAPITokenRequest]) (*connect_go.Response[v1.GenerateAPITokenResponse], error)
+	ListAPITokens(context.Context, *connect_go.Request[v1.ListAPITokensRequest]) (*connect_go.Response[v1.ListAPITokensResponse], error)
+	RemoveAPIToken(context.Context, *connect_go.Request[v1.RemoveAPITokenRequest]) (*connect_go.Response[v1.RemoveAPITokenResponse], error)
 }
 
 // NewSelfServiceServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -454,6 +502,21 @@ func NewSelfServiceServiceHandler(svc SelfServiceServiceHandler, opts ...connect
 		svc.GenerateRecoveryCodes,
 		opts...,
 	)
+	selfServiceServiceGenerateAPITokenHandler := connect_go.NewUnaryHandler(
+		SelfServiceServiceGenerateAPITokenProcedure,
+		svc.GenerateAPIToken,
+		opts...,
+	)
+	selfServiceServiceListAPITokensHandler := connect_go.NewUnaryHandler(
+		SelfServiceServiceListAPITokensProcedure,
+		svc.ListAPITokens,
+		opts...,
+	)
+	selfServiceServiceRemoveAPITokenHandler := connect_go.NewUnaryHandler(
+		SelfServiceServiceRemoveAPITokenProcedure,
+		svc.RemoveAPIToken,
+		opts...,
+	)
 	return "/tkd.idm.v1.SelfServiceService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case SelfServiceServiceChangePasswordProcedure:
@@ -492,6 +555,12 @@ func NewSelfServiceServiceHandler(svc SelfServiceServiceHandler, opts ...connect
 			selfServiceServiceRemove2FAHandler.ServeHTTP(w, r)
 		case SelfServiceServiceGenerateRecoveryCodesProcedure:
 			selfServiceServiceGenerateRecoveryCodesHandler.ServeHTTP(w, r)
+		case SelfServiceServiceGenerateAPITokenProcedure:
+			selfServiceServiceGenerateAPITokenHandler.ServeHTTP(w, r)
+		case SelfServiceServiceListAPITokensProcedure:
+			selfServiceServiceListAPITokensHandler.ServeHTTP(w, r)
+		case SelfServiceServiceRemoveAPITokenProcedure:
+			selfServiceServiceRemoveAPITokenHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -571,4 +640,16 @@ func (UnimplementedSelfServiceServiceHandler) Remove2FA(context.Context, *connec
 
 func (UnimplementedSelfServiceServiceHandler) GenerateRecoveryCodes(context.Context, *connect_go.Request[v1.GenerateRecoveryCodesRequest]) (*connect_go.Response[v1.GenerateRecoveryCodesResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.GenerateRecoveryCodes is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) GenerateAPIToken(context.Context, *connect_go.Request[v1.GenerateAPITokenRequest]) (*connect_go.Response[v1.GenerateAPITokenResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.GenerateAPIToken is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) ListAPITokens(context.Context, *connect_go.Request[v1.ListAPITokensRequest]) (*connect_go.Response[v1.ListAPITokensResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.ListAPITokens is not implemented"))
+}
+
+func (UnimplementedSelfServiceServiceHandler) RemoveAPIToken(context.Context, *connect_go.Request[v1.RemoveAPITokenRequest]) (*connect_go.Response[v1.RemoveAPITokenResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.idm.v1.SelfServiceService.RemoveAPIToken is not implemented"))
 }

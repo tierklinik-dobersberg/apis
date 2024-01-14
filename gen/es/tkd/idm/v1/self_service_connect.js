@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddAddressRequest, AddAddressResponse, AddEmailAddressRequest, AddEmailAddressResponse, AddPhoneNumberRequest, AddPhoneNumberResponse, ChangePasswordRequest, ChangePasswordResponse, DeleteAddressRequest, DeleteAddressResponse, DeleteEmailAddressRequest, DeleteEmailAddressResponse, DeletePhoneNumberRequest, DeletePhoneNumberResponse, Enroll2FARequest, Enroll2FAResponse, GenerateRecoveryCodesRequest, GenerateRecoveryCodesResponse, GetRegisteredPasskeysRequest, GetRegisteredPasskeysResponse, MarkEmailAsPrimaryRequest, MarkEmailAsPrimaryResponse, MarkPhoneNumberAsPrimaryRequest, MarkPhoneNumberAsPrimaryResponse, Remove2FARequest, Remove2FAResponse, RemovePasskeyRequest, RemovePasskeyResponse, UpdateAddressRequest, UpdateAddressResponse, UpdateProfileRequest, UpdateProfileResponse, ValidateEmailRequest, ValidateEmailResponse, ValidatePhoneNumberRequest, ValidatePhoneNumberResponse } from "./self_service_pb.js";
+import { AddAddressRequest, AddAddressResponse, AddEmailAddressRequest, AddEmailAddressResponse, AddPhoneNumberRequest, AddPhoneNumberResponse, ChangePasswordRequest, ChangePasswordResponse, DeleteAddressRequest, DeleteAddressResponse, DeleteEmailAddressRequest, DeleteEmailAddressResponse, DeletePhoneNumberRequest, DeletePhoneNumberResponse, Enroll2FARequest, Enroll2FAResponse, GenerateAPITokenRequest, GenerateAPITokenResponse, GenerateRecoveryCodesRequest, GenerateRecoveryCodesResponse, GetRegisteredPasskeysRequest, GetRegisteredPasskeysResponse, ListAPITokensRequest, ListAPITokensResponse, MarkEmailAsPrimaryRequest, MarkEmailAsPrimaryResponse, MarkPhoneNumberAsPrimaryRequest, MarkPhoneNumberAsPrimaryResponse, Remove2FARequest, Remove2FAResponse, RemoveAPITokenRequest, RemoveAPITokenResponse, RemovePasskeyRequest, RemovePasskeyResponse, UpdateAddressRequest, UpdateAddressResponse, UpdateProfileRequest, UpdateProfileResponse, ValidateEmailRequest, ValidateEmailResponse, ValidatePhoneNumberRequest, ValidatePhoneNumberResponse } from "./self_service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -182,6 +182,33 @@ export const SelfServiceService = {
       name: "GenerateRecoveryCodes",
       I: GenerateRecoveryCodesRequest,
       O: GenerateRecoveryCodesResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.SelfServiceService.GenerateAPIToken
+     */
+    generateAPIToken: {
+      name: "GenerateAPIToken",
+      I: GenerateAPITokenRequest,
+      O: GenerateAPITokenResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.SelfServiceService.ListAPITokens
+     */
+    listAPITokens: {
+      name: "ListAPITokens",
+      I: ListAPITokensRequest,
+      O: ListAPITokensResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.SelfServiceService.RemoveAPIToken
+     */
+    removeAPIToken: {
+      name: "RemoveAPIToken",
+      I: RemoveAPITokenRequest,
+      O: RemoveAPITokenResponse,
       kind: MethodKind.Unary,
     },
   }
