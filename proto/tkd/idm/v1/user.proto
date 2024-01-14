@@ -172,7 +172,7 @@ message Profile {
 
   option (tkd.common.v1.readable) = {
     field_mask: {
-      paths: ["user"]
+      paths: ["user", "roles"]
     },
     owner_field_name: "user.id",
     allowed_roles: ["idm_superuser", "idm_user_manager"]
