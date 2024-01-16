@@ -44,6 +44,7 @@ export const ConstraintViolation = proto3.makeMessageType(
     { no: 1, name: "hard", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "off_time", kind: "message", T: OffTimeViolation, oneof: "kind" },
     { no: 3, name: "evaluation", kind: "message", T: ConstraintEvaluationViolation, oneof: "kind" },
+    { no: 4, name: "NoWorkTime", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "kind" },
   ],
 );
 

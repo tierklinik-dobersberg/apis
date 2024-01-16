@@ -33,6 +33,7 @@ message ConstraintViolation {
     oneof kind {
         OffTimeViolation off_time = 2;
         ConstraintEvaluationViolation evaluation = 3;
+        bool NoWorkTime = 4;
     }
 }
 

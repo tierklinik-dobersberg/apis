@@ -99,6 +99,12 @@ export declare class ConstraintViolation extends Message<ConstraintViolation> {
      */
     value: ConstraintEvaluationViolation;
     case: "evaluation";
+  } | {
+    /**
+     * @generated from field: bool NoWorkTime = 4;
+     */
+    value: boolean;
+    case: "NoWorkTime";
   } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<ConstraintViolation>);
