@@ -160,7 +160,7 @@ service OffTimeService {
     
     rpc DeleteOffTimeCosts(DeleteOffTimeCostsRequest) returns (DeleteOffTimeCostsResponse){
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED,
+            require: AUTH_REQ_ADMIN,
         };
     }
 }

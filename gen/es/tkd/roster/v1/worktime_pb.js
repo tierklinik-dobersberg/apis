@@ -20,6 +20,8 @@ export const WorkTime = proto3.makeMessageType(
     { no: 4, name: "applicable_after", kind: "message", T: Timestamp },
     { no: 5, name: "vacation_weeks_per_year", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
     { no: 6, name: "overtime_allowance_per_month", kind: "message", T: Duration },
+    { no: 7, name: "exclude_from_time_tracking", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 8, name: "ends_with", kind: "message", T: Timestamp },
   ],
 );
 
@@ -163,5 +165,27 @@ export const DeleteWorkTimeRequest = proto3.makeMessageType(
 export const DeleteWorkTimeResponse = proto3.makeMessageType(
   "tkd.roster.v1.DeleteWorkTimeResponse",
   [],
+);
+
+/**
+ * @generated from message tkd.roster.v1.UpdateWorkTimeRequest
+ */
+export const UpdateWorkTimeRequest = proto3.makeMessageType(
+  "tkd.roster.v1.UpdateWorkTimeRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "exclude_from_time_tracking", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "ends_with", kind: "message", T: Timestamp },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.UpdateWorkTimeResponse
+ */
+export const UpdateWorkTimeResponse = proto3.makeMessageType(
+  "tkd.roster.v1.UpdateWorkTimeResponse",
+  () => [
+    { no: 1, name: "worktime", kind: "message", T: WorkTime },
+  ],
 );
 

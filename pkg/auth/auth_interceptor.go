@@ -205,7 +205,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 				switch methodOptions.Require {
 				case commonv1.AuthRequirement_AUTH_REQ_ADMIN:
 					if usr.ID == "" {
-						return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("not access token provided"))
+                        return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("no access token provided: missing ID"))
 					}
 
 					if !usr.Admin {
@@ -214,7 +214,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 
 				case commonv1.AuthRequirement_AUTH_REQ_REQUIRED:
 					if usr.ID == "" {
-						return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("not access token provided"))
+                        return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("no access token provided: missing ID"))
 					}
 
 					// make sure the user has at least one of the required roles assigned

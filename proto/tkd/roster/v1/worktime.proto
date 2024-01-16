@@ -41,6 +41,15 @@ message WorkTime {
 
     // Overtime Allowance per month.
     google.protobuf.Duration overtime_allowance_per_month = 6;
+
+    // Whether or not the user should be excluded from time-tracking.
+    bool exclude_from_time_tracking = 7;
+
+    // An optional timestamp at which this work-time entry ends.
+    google.protobuf.Timestamp ends_with = 8 [
+        (buf.validate.field).ignore_empty = true,
+        (buf.validate.field).timestamp.gt_now = true
+    ];
 }
 
 service WorkTimeService {
@@ -59,6 +68,12 @@ service WorkTimeService {
             require: AUTH_REQ_REQUIRED,
         };
     };
+
+    rpc UpdateWorkTime(UpdateWorkTimeRequest) returns (UpdateWorkTimeResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
 
     rpc GetVacationCreditsLeft(GetVacationCreditsLeftRequest) returns (GetVacationCreditsLeftResponse) {
         option (tkd.common.v1.auth) = {
@@ -155,3 +170,20 @@ message DeleteWorkTimeRequest {
 }
 
 message DeleteWorkTimeResponse {}
+
+message UpdateWorkTimeRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    bool exclude_from_time_tracking = 2;
+
+    google.protobuf.Timestamp ends_with = 3 [
+        (buf.validate.field).ignore_empty = true,
+        (buf.validate.field).timestamp.gt_now = true
+    ];
+}
+
+message UpdateWorkTimeResponse {
+    WorkTime worktime = 1;
+}

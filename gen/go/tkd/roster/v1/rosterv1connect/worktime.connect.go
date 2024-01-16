@@ -39,6 +39,9 @@ const (
 	// WorkTimeServiceGetWorkTimeProcedure is the fully-qualified name of the WorkTimeService's
 	// GetWorkTime RPC.
 	WorkTimeServiceGetWorkTimeProcedure = "/tkd.roster.v1.WorkTimeService/GetWorkTime"
+	// WorkTimeServiceUpdateWorkTimeProcedure is the fully-qualified name of the WorkTimeService's
+	// UpdateWorkTime RPC.
+	WorkTimeServiceUpdateWorkTimeProcedure = "/tkd.roster.v1.WorkTimeService/UpdateWorkTime"
 	// WorkTimeServiceGetVacationCreditsLeftProcedure is the fully-qualified name of the
 	// WorkTimeService's GetVacationCreditsLeft RPC.
 	WorkTimeServiceGetVacationCreditsLeftProcedure = "/tkd.roster.v1.WorkTimeService/GetVacationCreditsLeft"
@@ -51,6 +54,7 @@ const (
 type WorkTimeServiceClient interface {
 	SetWorkTime(context.Context, *connect_go.Request[v1.SetWorkTimeRequest]) (*connect_go.Response[v1.SetWorkTimeResponse], error)
 	GetWorkTime(context.Context, *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error)
+	UpdateWorkTime(context.Context, *connect_go.Request[v1.UpdateWorkTimeRequest]) (*connect_go.Response[v1.UpdateWorkTimeResponse], error)
 	GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error)
 	DeleteWorkTime(context.Context, *connect_go.Request[v1.DeleteWorkTimeRequest]) (*connect_go.Response[v1.DeleteWorkTimeResponse], error)
 }
@@ -75,6 +79,11 @@ func NewWorkTimeServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+WorkTimeServiceGetWorkTimeProcedure,
 			opts...,
 		),
+		updateWorkTime: connect_go.NewClient[v1.UpdateWorkTimeRequest, v1.UpdateWorkTimeResponse](
+			httpClient,
+			baseURL+WorkTimeServiceUpdateWorkTimeProcedure,
+			opts...,
+		),
 		getVacationCreditsLeft: connect_go.NewClient[v1.GetVacationCreditsLeftRequest, v1.GetVacationCreditsLeftResponse](
 			httpClient,
 			baseURL+WorkTimeServiceGetVacationCreditsLeftProcedure,
@@ -92,6 +101,7 @@ func NewWorkTimeServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 type workTimeServiceClient struct {
 	setWorkTime            *connect_go.Client[v1.SetWorkTimeRequest, v1.SetWorkTimeResponse]
 	getWorkTime            *connect_go.Client[v1.GetWorkTimeRequest, v1.GetWorkTimeResponse]
+	updateWorkTime         *connect_go.Client[v1.UpdateWorkTimeRequest, v1.UpdateWorkTimeResponse]
 	getVacationCreditsLeft *connect_go.Client[v1.GetVacationCreditsLeftRequest, v1.GetVacationCreditsLeftResponse]
 	deleteWorkTime         *connect_go.Client[v1.DeleteWorkTimeRequest, v1.DeleteWorkTimeResponse]
 }
@@ -104,6 +114,11 @@ func (c *workTimeServiceClient) SetWorkTime(ctx context.Context, req *connect_go
 // GetWorkTime calls tkd.roster.v1.WorkTimeService.GetWorkTime.
 func (c *workTimeServiceClient) GetWorkTime(ctx context.Context, req *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error) {
 	return c.getWorkTime.CallUnary(ctx, req)
+}
+
+// UpdateWorkTime calls tkd.roster.v1.WorkTimeService.UpdateWorkTime.
+func (c *workTimeServiceClient) UpdateWorkTime(ctx context.Context, req *connect_go.Request[v1.UpdateWorkTimeRequest]) (*connect_go.Response[v1.UpdateWorkTimeResponse], error) {
+	return c.updateWorkTime.CallUnary(ctx, req)
 }
 
 // GetVacationCreditsLeft calls tkd.roster.v1.WorkTimeService.GetVacationCreditsLeft.
@@ -120,6 +135,7 @@ func (c *workTimeServiceClient) DeleteWorkTime(ctx context.Context, req *connect
 type WorkTimeServiceHandler interface {
 	SetWorkTime(context.Context, *connect_go.Request[v1.SetWorkTimeRequest]) (*connect_go.Response[v1.SetWorkTimeResponse], error)
 	GetWorkTime(context.Context, *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error)
+	UpdateWorkTime(context.Context, *connect_go.Request[v1.UpdateWorkTimeRequest]) (*connect_go.Response[v1.UpdateWorkTimeResponse], error)
 	GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error)
 	DeleteWorkTime(context.Context, *connect_go.Request[v1.DeleteWorkTimeRequest]) (*connect_go.Response[v1.DeleteWorkTimeResponse], error)
 }
@@ -140,6 +156,11 @@ func NewWorkTimeServiceHandler(svc WorkTimeServiceHandler, opts ...connect_go.Ha
 		svc.GetWorkTime,
 		opts...,
 	)
+	workTimeServiceUpdateWorkTimeHandler := connect_go.NewUnaryHandler(
+		WorkTimeServiceUpdateWorkTimeProcedure,
+		svc.UpdateWorkTime,
+		opts...,
+	)
 	workTimeServiceGetVacationCreditsLeftHandler := connect_go.NewUnaryHandler(
 		WorkTimeServiceGetVacationCreditsLeftProcedure,
 		svc.GetVacationCreditsLeft,
@@ -156,6 +177,8 @@ func NewWorkTimeServiceHandler(svc WorkTimeServiceHandler, opts ...connect_go.Ha
 			workTimeServiceSetWorkTimeHandler.ServeHTTP(w, r)
 		case WorkTimeServiceGetWorkTimeProcedure:
 			workTimeServiceGetWorkTimeHandler.ServeHTTP(w, r)
+		case WorkTimeServiceUpdateWorkTimeProcedure:
+			workTimeServiceUpdateWorkTimeHandler.ServeHTTP(w, r)
 		case WorkTimeServiceGetVacationCreditsLeftProcedure:
 			workTimeServiceGetVacationCreditsLeftHandler.ServeHTTP(w, r)
 		case WorkTimeServiceDeleteWorkTimeProcedure:
@@ -175,6 +198,10 @@ func (UnimplementedWorkTimeServiceHandler) SetWorkTime(context.Context, *connect
 
 func (UnimplementedWorkTimeServiceHandler) GetWorkTime(context.Context, *connect_go.Request[v1.GetWorkTimeRequest]) (*connect_go.Response[v1.GetWorkTimeResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.WorkTimeService.GetWorkTime is not implemented"))
+}
+
+func (UnimplementedWorkTimeServiceHandler) UpdateWorkTime(context.Context, *connect_go.Request[v1.UpdateWorkTimeRequest]) (*connect_go.Response[v1.UpdateWorkTimeResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.WorkTimeService.UpdateWorkTime is not implemented"))
 }
 
 func (UnimplementedWorkTimeServiceHandler) GetVacationCreditsLeft(context.Context, *connect_go.Request[v1.GetVacationCreditsLeftRequest]) (*connect_go.Response[v1.GetVacationCreditsLeftResponse], error) {

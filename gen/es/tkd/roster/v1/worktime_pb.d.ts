@@ -57,6 +57,20 @@ export declare class WorkTime extends Message<WorkTime> {
    */
   overtimeAllowancePerMonth?: Duration;
 
+  /**
+   * Whether or not the user should be excluded from time-tracking.
+   *
+   * @generated from field: bool exclude_from_time_tracking = 7;
+   */
+  excludeFromTimeTracking: boolean;
+
+  /**
+   * An optional timestamp at which this work-time entry ends.
+   *
+   * @generated from field: google.protobuf.Timestamp ends_with = 8;
+   */
+  endsWith?: Timestamp;
+
   constructor(data?: PartialMessage<WorkTime>);
 
   static readonly runtime: typeof proto3;
@@ -465,5 +479,63 @@ export declare class DeleteWorkTimeResponse extends Message<DeleteWorkTimeRespon
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteWorkTimeResponse;
 
   static equals(a: DeleteWorkTimeResponse | PlainMessage<DeleteWorkTimeResponse> | undefined, b: DeleteWorkTimeResponse | PlainMessage<DeleteWorkTimeResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.UpdateWorkTimeRequest
+ */
+export declare class UpdateWorkTimeRequest extends Message<UpdateWorkTimeRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: bool exclude_from_time_tracking = 2;
+   */
+  excludeFromTimeTracking: boolean;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp ends_with = 3;
+   */
+  endsWith?: Timestamp;
+
+  constructor(data?: PartialMessage<UpdateWorkTimeRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.UpdateWorkTimeRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateWorkTimeRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateWorkTimeRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateWorkTimeRequest;
+
+  static equals(a: UpdateWorkTimeRequest | PlainMessage<UpdateWorkTimeRequest> | undefined, b: UpdateWorkTimeRequest | PlainMessage<UpdateWorkTimeRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.UpdateWorkTimeResponse
+ */
+export declare class UpdateWorkTimeResponse extends Message<UpdateWorkTimeResponse> {
+  /**
+   * @generated from field: tkd.roster.v1.WorkTime worktime = 1;
+   */
+  worktime?: WorkTime;
+
+  constructor(data?: PartialMessage<UpdateWorkTimeResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.UpdateWorkTimeResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateWorkTimeResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateWorkTimeResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateWorkTimeResponse;
+
+  static equals(a: UpdateWorkTimeResponse | PlainMessage<UpdateWorkTimeResponse> | undefined, b: UpdateWorkTimeResponse | PlainMessage<UpdateWorkTimeResponse> | undefined): boolean;
 }
 
