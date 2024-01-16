@@ -201,6 +201,7 @@ export const ApproveRosterRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "work_time_split", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: ApproveRosterWorkTimeSplit} },
+    { no: 3, name: "send_notification_to_users", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -311,6 +312,7 @@ export const SendRosterPreviewRequest = proto3.makeMessageType(
   "tkd.roster.v1.SendRosterPreviewRequest",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "send_notification_to_users", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

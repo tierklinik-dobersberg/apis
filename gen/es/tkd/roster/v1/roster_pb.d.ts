@@ -722,6 +722,11 @@ export declare class ApproveRosterRequest extends Message<ApproveRosterRequest> 
    */
   workTimeSplit: { [key: string]: ApproveRosterWorkTimeSplit };
 
+  /**
+   * @generated from field: repeated string send_notification_to_users = 3;
+   */
+  sendNotificationToUsers: string[];
+
   constructor(data?: PartialMessage<ApproveRosterRequest>);
 
   static readonly runtime: typeof proto3;
@@ -1049,6 +1054,11 @@ export declare class SendRosterPreviewRequest extends Message<SendRosterPreviewR
    * @generated from field: string id = 1;
    */
   id: string;
+
+  /**
+   * @generated from field: repeated string send_notification_to_users = 2;
+   */
+  sendNotificationToUsers: string[];
 
   constructor(data?: PartialMessage<SendRosterPreviewRequest>);
 

@@ -372,6 +372,7 @@ message ApproveRosterWorkTimeSplit {
 message ApproveRosterRequest {
     string id = 1;
     map<string, ApproveRosterWorkTimeSplit> work_time_split = 2;
+    repeated string send_notification_to_users = 3;
 }
 
 message ApproveRosterResponse {}
@@ -462,6 +463,8 @@ message SendRosterPreviewRequest {
     string id = 1 [
         (buf.validate.field).required = true
     ];
+
+    repeated string send_notification_to_users = 2;
 }
 
 message SendRosterPreviewResponse {
