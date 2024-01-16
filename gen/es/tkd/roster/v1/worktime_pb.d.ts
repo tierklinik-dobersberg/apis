@@ -500,6 +500,11 @@ export declare class UpdateWorkTimeRequest extends Message<UpdateWorkTimeRequest
    */
   endsWith?: Timestamp;
 
+  /**
+   * @generated from field: google.protobuf.FieldMask field_mask = 4;
+   */
+  fieldMask?: FieldMask;
+
   constructor(data?: PartialMessage<UpdateWorkTimeRequest>);
 
   static readonly runtime: typeof proto3;

@@ -505,6 +505,20 @@ export declare class WorkTimeAnalysis extends Message<WorkTimeAnalysis> {
    */
   overtime?: Duration;
 
+  /**
+   * Whether or not this user should be excluded from time-tracking.
+   *
+   * @generated from field: bool exclude_from_time_tracking = 6;
+   */
+  excludeFromTimeTracking: boolean;
+
+  /**
+   * An optional timestamp at which there's no work-time for the user.
+   *
+   * @generated from field: google.protobuf.Timestamp ends_with = 7;
+   */
+  endsWith?: Timestamp;
+
   constructor(data?: PartialMessage<WorkTimeAnalysis>);
 
   static readonly runtime: typeof proto3;

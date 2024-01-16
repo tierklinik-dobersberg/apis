@@ -132,6 +132,8 @@ export const WorkTimeAnalysis = proto3.makeMessageType(
     { no: 3, name: "expected_time", kind: "message", T: Duration },
     { no: 4, name: "steps", kind: "message", T: WorkTimeAnalysisStep, repeated: true },
     { no: 5, name: "overtime", kind: "message", T: Duration },
+    { no: 6, name: "exclude_from_time_tracking", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 7, name: "ends_with", kind: "message", T: Timestamp },
   ],
 );
 

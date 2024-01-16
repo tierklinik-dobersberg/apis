@@ -305,6 +305,12 @@ message WorkTimeAnalysis {
     // Overtime holds the overtime of the user taking overtime allowance per month
     // into consideration.
     google.protobuf.Duration overtime = 5;
+
+    // Whether or not this user should be excluded from time-tracking.
+    bool exclude_from_time_tracking = 6;
+
+    // An optional timestamp at which there's no work-time for the user.
+    google.protobuf.Timestamp ends_with = 7;
 }
 
 message SaveRosterResponse {

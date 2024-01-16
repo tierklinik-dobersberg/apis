@@ -176,6 +176,7 @@ export const UpdateWorkTimeRequest = proto3.makeMessageType(
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "exclude_from_time_tracking", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 3, name: "ends_with", kind: "message", T: Timestamp },
+    { no: 4, name: "field_mask", kind: "message", T: FieldMask },
   ],
 );
 
