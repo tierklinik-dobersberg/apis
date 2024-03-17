@@ -457,6 +457,24 @@ message GetRequiredShiftsResponse {
     // WorkShiftDefinitions (if requested by GetRequiredShiftsRequest.read_mask; default: yes)
     // is set to a list of WorkShift definitions that are referenced by GetRequiredShiftsResponse.required_shifts.work_shift_id;
     repeated WorkShift work_shift_definitions = 2;
+
+    // WorkDays is a list of days and wether they are counted as work days or not.
+    repeated Day days = 3;
+}
+
+enum DayType {
+    DAY_TYPE_UNSPECIFIED = 0;
+    DAY_TYPE_WORKDAY = 1;
+    DAY_TYPE_WEEKEND = 2;
+    DAY_TYPE_HOLIDAY = 3;
+}
+
+message Day {
+    // Date is the date of the day in format YYYY-MM-DD.
+    string date = 1;
+
+    // Type is the type of the day.
+    DayType type = 2;
 }
 
 message SendRosterPreviewRequest {
