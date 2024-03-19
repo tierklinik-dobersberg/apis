@@ -312,12 +312,12 @@ export declare class AnalyzeVacationSum extends Message<AnalyzeVacationSum> {
   endsAt?: Timestamp;
 
   /**
-   * @generated from field: float number_of_days = 3;
+   * @generated from field: double number_of_days = 3;
    */
   numberOfDays: number;
 
   /**
-   * @generated from field: float vacation_weeks_per_day = 4;
+   * @generated from field: double vacation_weeks_per_day = 4;
    */
   vacationWeeksPerDay: number;
 

@@ -105,11 +105,20 @@ export declare class TotpAuth extends Message<TotpAuth> {
  */
 export declare class LoginRequest extends Message<LoginRequest> {
   /**
+   * Deprecated: this field is ignored since the oneof below
+   * acutally provides the same.
+   *
    * @generated from field: tkd.idm.v1.AuthType auth_type = 1;
    */
   authType: AuthType;
 
   /**
+   * NoRefreshToken may be set to true if the user only want's to
+   * receive an access token.
+   * Note that without a refresh token, it's not possible to use the
+   * RefreshToken RPC, instead, the whole authentication flow of the
+   * Login RPC must be performed.
+   *
    * @generated from field: bool no_refresh_token = 2;
    */
   noRefreshToken: boolean;

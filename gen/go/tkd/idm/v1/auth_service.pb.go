@@ -235,8 +235,15 @@ type LoginRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	AuthType       AuthType `protobuf:"varint,1,opt,name=auth_type,json=authType,proto3,enum=tkd.idm.v1.AuthType" json:"auth_type,omitempty"`
-	NoRefreshToken bool     `protobuf:"varint,2,opt,name=no_refresh_token,json=noRefreshToken,proto3" json:"no_refresh_token,omitempty"`
+	// Deprecated: this field is ignored since the oneof below
+	// acutally provides the same.
+	AuthType AuthType `protobuf:"varint,1,opt,name=auth_type,json=authType,proto3,enum=tkd.idm.v1.AuthType" json:"auth_type,omitempty"`
+	// NoRefreshToken may be set to true if the user only want's to
+	// receive an access token.
+	// Note that without a refresh token, it's not possible to use the
+	// RefreshToken RPC, instead, the whole authentication flow of the
+	// Login RPC must be performed.
+	NoRefreshToken bool `protobuf:"varint,2,opt,name=no_refresh_token,json=noRefreshToken,proto3" json:"no_refresh_token,omitempty"`
 	// Types that are assignable to Auth:
 	//
 	//	*LoginRequest_Password

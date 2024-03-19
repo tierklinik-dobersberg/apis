@@ -14,7 +14,10 @@ message EMail {
   string id = 1;
 
   // The actual email address.
-  string address = 2 [(buf.validate.field).string.email = true];
+  string address = 2 [
+    (buf.validate.field).string.email = true,
+    (buf.validate.field).required = true
+  ];
 
   // Whether or not the email has been verified by the user.
   // This field may only be set by using the SelfServiceService
@@ -39,9 +42,19 @@ message EMail {
 }
 
 message PhoneNumber {
+  // The unique ID for this phone number entry.
   string id = 1;
-  string number = 2;
+
+  // The actual phone number
+  string number = 2 [
+    (buf.validate.field).required = true
+  ];
+
+  // Whether or not this phone number has been verified by the user.
   bool verified = 3;
+
+  // Primary is set to true if this phone number has been set as
+  // the user's primary phone number.
   bool primary = 4;
 
   // may be overwritting by the privacy_mask field of the user profile.

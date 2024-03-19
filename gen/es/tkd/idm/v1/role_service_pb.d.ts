@@ -466,3 +466,109 @@ export declare class ResolveRolePermissionsResponse extends Message<ResolveRoleP
   static equals(a: ResolveRolePermissionsResponse | PlainMessage<ResolveRolePermissionsResponse> | undefined, b: ResolveRolePermissionsResponse | PlainMessage<ResolveRolePermissionsResponse> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.idm.v1.AssignPermissionsToRoleRequest
+ */
+export declare class AssignPermissionsToRoleRequest extends Message<AssignPermissionsToRoleRequest> {
+  /**
+   * @generated from field: repeated string role_ids = 1;
+   */
+  roleIds: string[];
+
+  /**
+   * @generated from field: repeated string permissions = 2;
+   */
+  permissions: string[];
+
+  constructor(data?: PartialMessage<AssignPermissionsToRoleRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.AssignPermissionsToRoleRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AssignPermissionsToRoleRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AssignPermissionsToRoleRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AssignPermissionsToRoleRequest;
+
+  static equals(a: AssignPermissionsToRoleRequest | PlainMessage<AssignPermissionsToRoleRequest> | undefined, b: AssignPermissionsToRoleRequest | PlainMessage<AssignPermissionsToRoleRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.AssignPermissionsToRoleResponse
+ */
+export declare class AssignPermissionsToRoleResponse extends Message<AssignPermissionsToRoleResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.Role roles = 1;
+   */
+  roles: Role[];
+
+  constructor(data?: PartialMessage<AssignPermissionsToRoleResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.AssignPermissionsToRoleResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AssignPermissionsToRoleResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AssignPermissionsToRoleResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AssignPermissionsToRoleResponse;
+
+  static equals(a: AssignPermissionsToRoleResponse | PlainMessage<AssignPermissionsToRoleResponse> | undefined, b: AssignPermissionsToRoleResponse | PlainMessage<AssignPermissionsToRoleResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.UnassignPermissionsFromRoleRequest
+ */
+export declare class UnassignPermissionsFromRoleRequest extends Message<UnassignPermissionsFromRoleRequest> {
+  /**
+   * @generated from field: repeated string role_ids = 1;
+   */
+  roleIds: string[];
+
+  /**
+   * @generated from field: repeated string permissions = 2;
+   */
+  permissions: string[];
+
+  constructor(data?: PartialMessage<UnassignPermissionsFromRoleRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.UnassignPermissionsFromRoleRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UnassignPermissionsFromRoleRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UnassignPermissionsFromRoleRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UnassignPermissionsFromRoleRequest;
+
+  static equals(a: UnassignPermissionsFromRoleRequest | PlainMessage<UnassignPermissionsFromRoleRequest> | undefined, b: UnassignPermissionsFromRoleRequest | PlainMessage<UnassignPermissionsFromRoleRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.idm.v1.UnassignPermissionsFromRoleResponse
+ */
+export declare class UnassignPermissionsFromRoleResponse extends Message<UnassignPermissionsFromRoleResponse> {
+  /**
+   * @generated from field: repeated tkd.idm.v1.Role roles = 1;
+   */
+  roles: Role[];
+
+  constructor(data?: PartialMessage<UnassignPermissionsFromRoleResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.idm.v1.UnassignPermissionsFromRoleResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UnassignPermissionsFromRoleResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UnassignPermissionsFromRoleResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UnassignPermissionsFromRoleResponse;
+
+  static equals(a: UnassignPermissionsFromRoleResponse | PlainMessage<UnassignPermissionsFromRoleResponse> | undefined, b: UnassignPermissionsFromRoleResponse | PlainMessage<UnassignPermissionsFromRoleResponse> | undefined): boolean;
+}
+

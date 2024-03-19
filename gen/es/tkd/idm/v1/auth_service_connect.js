@@ -18,7 +18,7 @@ export const AuthService = {
     /**
      * Login requests authentication. The authentication type (flow) is
      * determined by the initial request and may require sub-sequent calls
-     * to full-fill the requirements of the choosen authentication flow.
+     * to full-fill the requirements of the choosen authentication flow (i.e. 2FA).
      *
      * Upon success, a LoginResponse with a AccessTokenResponse is returned to
      * the caller containing a short lived access token (typically about ~24h).
@@ -41,9 +41,8 @@ export const AuthService = {
       kind: MethodKind.Unary,
     },
     /**
-     * Logout invalidates the current access token that was used to call the 
-     * method. If a refresh token is appended in the logout request, it will be invalidated
-     * as well.
+     * Logout invalidates the current access and refresh tokens that was used to call the 
+     * method.
      *
      * @generated from rpc tkd.idm.v1.AuthService.Logout
      */
@@ -54,6 +53,9 @@ export const AuthService = {
       kind: MethodKind.Unary,
     },
     /**
+     * RequestPasswordReset requests a password-reset email to be sent. This mail will include
+     * a reset-link with an authentication-code that is valid for at least 24 hours.
+     *
      * @generated from rpc tkd.idm.v1.AuthService.RequestPasswordReset
      */
     requestPasswordReset: {
@@ -63,6 +65,9 @@ export const AuthService = {
       kind: MethodKind.Unary,
     },
     /**
+     * RefreshToken may be called to get a new access token as long as the provided refresh token
+     * is still valid and has not been rejected by calling Logout().
+     *
      * @generated from rpc tkd.idm.v1.AuthService.RefreshToken
      */
     refreshToken: {
@@ -72,6 +77,8 @@ export const AuthService = {
       kind: MethodKind.Unary,
     },
     /**
+     * Introspect returns the current user profile associated with the provided access token.
+     *
      * @generated from rpc tkd.idm.v1.AuthService.Introspect
      */
     introspect: {
@@ -81,6 +88,14 @@ export const AuthService = {
       kind: MethodKind.Unary,
     },
     /**
+     * GenerateRegistrationToken generates a new registration token that may be used by
+     * users to register a new account on the cisidm deployment.
+     *
+     * Registration tokens may have an expiration time and/or max-usage counter assigned.
+     * It's also possible to assign a list of roles to a token. In this case, the roles
+     * will be automatically assigned to each user that creates a cisidm account with this
+     * token.
+     *
      * @generated from rpc tkd.idm.v1.AuthService.GenerateRegistrationToken
      */
     generateRegistrationToken: {
@@ -90,6 +105,9 @@ export const AuthService = {
       kind: MethodKind.Unary,
     },
     /**
+     * ValidateRegistrationToken can be used to validate if a registration token is
+     * still valid.
+     *
      * Unauthenticated on purpose
      *
      * @generated from rpc tkd.idm.v1.AuthService.ValidateRegistrationToken
@@ -101,6 +119,10 @@ export const AuthService = {
       kind: MethodKind.Unary,
     },
     /**
+     * RegisterUser can be used to register a new user account on this cisidm deployment.
+     * Note depending on the configured registration mode it a valid registration token may
+     * be required.
+     *
      * Unauthenticated on purpose
      *
      * @generated from rpc tkd.idm.v1.AuthService.RegisterUser

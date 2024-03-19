@@ -18,7 +18,7 @@ service AuthService {
 
   // Login requests authentication. The authentication type (flow) is
   // determined by the initial request and may require sub-sequent calls
-  // to full-fill the requirements of the choosen authentication flow.
+  // to full-fill the requirements of the choosen authentication flow (i.e. 2FA).
   //
   // Upon success, a LoginResponse with a AccessTokenResponse is returned to
   // the caller containing a short lived access token (typically about ~24h).
@@ -33,34 +33,52 @@ service AuthService {
   // using the Login method.
   rpc Login(LoginRequest) returns (LoginResponse) {}
 
-  // Logout invalidates the current access token that was used to call the 
-  // method. If a refresh token is appended in the logout request, it will be invalidated
-  // as well.
+  // Logout invalidates the current access and refresh tokens that was used to call the 
+  // method.
   rpc Logout(LogoutRequest) returns (LogoutResponse) {
     option (tkd.common.v1.auth) = {
       require: AUTH_REQ_REQUIRED;
     };
   }
 
+  // RequestPasswordReset requests a password-reset email to be sent. This mail will include
+  // a reset-link with an authentication-code that is valid for at least 24 hours.
   rpc RequestPasswordReset(RequestPasswordResetRequest) returns (RequestPasswordResetResponse) {}
   
+  // RefreshToken may be called to get a new access token as long as the provided refresh token
+  // is still valid and has not been rejected by calling Logout().
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
 
+  // Introspect returns the current user profile associated with the provided access token.
   rpc Introspect(IntrospectRequest) returns (IntrospectResponse) {
     option (tkd.common.v1.auth) = {
       require: AUTH_REQ_REQUIRED
     };
   }
 
+  // GenerateRegistrationToken generates a new registration token that may be used by
+  // users to register a new account on the cisidm deployment.
+  //
+  // Registration tokens may have an expiration time and/or max-usage counter assigned.
+  // It's also possible to assign a list of roles to a token. In this case, the roles
+  // will be automatically assigned to each user that creates a cisidm account with this
+  // token.
   rpc GenerateRegistrationToken (GenerateRegistrationTokenRequest) returns (GenerateRegistrationTokenResponse) {
     option (tkd.common.v1.auth) = {
       require: AUTH_REQ_ADMIN,
     };
   }
 
+  // ValidateRegistrationToken can be used to validate if a registration token is
+  // still valid.
+  //
   // Unauthenticated on purpose
   rpc ValidateRegistrationToken (ValidateRegistrationTokenRequest) returns (ValidateRegistrationTokenResponse) {}
 
+  // RegisterUser can be used to register a new user account on this cisidm deployment.
+  // Note depending on the configured registration mode it a valid registration token may
+  // be required.
+  //
   // Unauthenticated on purpose
   rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {}
 }
@@ -82,7 +100,15 @@ message TotpAuth {
 }
 
 message LoginRequest {
+  // Deprecated: this field is ignored since the oneof below
+  // acutally provides the same.
   AuthType auth_type = 1;
+
+  // NoRefreshToken may be set to true if the user only want's to
+  // receive an access token.
+  // Note that without a refresh token, it's not possible to use the
+  // RefreshToken RPC, instead, the whole authentication flow of the
+  // Login RPC must be performed.
   bool no_refresh_token = 2;
 
   oneof auth {

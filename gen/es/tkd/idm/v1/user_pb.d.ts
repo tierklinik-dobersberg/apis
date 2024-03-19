@@ -65,21 +65,30 @@ export declare class EMail extends Message<EMail> {
  */
 export declare class PhoneNumber extends Message<PhoneNumber> {
   /**
+   * The unique ID for this phone number entry.
+   *
    * @generated from field: string id = 1;
    */
   id: string;
 
   /**
+   * The actual phone number
+   *
    * @generated from field: string number = 2;
    */
   number: string;
 
   /**
+   * Whether or not this phone number has been verified by the user.
+   *
    * @generated from field: bool verified = 3;
    */
   verified: boolean;
 
   /**
+   * Primary is set to true if this phone number has been set as
+   * the user's primary phone number.
+   *
    * @generated from field: bool primary = 4;
    */
   primary: boolean;

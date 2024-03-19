@@ -660,6 +660,14 @@ export declare class AnalyzeWorkTimeRequest extends Message<AnalyzeWorkTimeReque
    */
   to: string;
 
+  /**
+   * TimeTrackingOnly may be set to true to only incude work-times for which time-tracking is
+   * enabled.
+   *
+   * @generated from field: bool time_tracking_only = 5;
+   */
+  timeTrackingOnly: boolean;
+
   constructor(data?: PartialMessage<AnalyzeWorkTimeRequest>);
 
   static readonly runtime: typeof proto3;
@@ -859,6 +867,14 @@ export declare class GetRosterRequest extends Message<GetRosterRequest> {
    * @generated from field: google.protobuf.FieldMask read_mask = 4;
    */
   readMask?: FieldMask;
+
+  /**
+   * TimeTrackingOnly may be set to true to only incude work-times for which time-tracking is
+   * enabled.
+   *
+   * @generated from field: bool time_tracking_only = 5;
+   */
+  timeTrackingOnly: boolean;
 
   constructor(data?: PartialMessage<GetRosterRequest>);
 

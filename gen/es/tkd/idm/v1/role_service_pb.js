@@ -180,3 +180,45 @@ export const ResolveRolePermissionsResponse = /*@__PURE__*/ proto3.makeMessageTy
   ],
 );
 
+/**
+ * @generated from message tkd.idm.v1.AssignPermissionsToRoleRequest
+ */
+export const AssignPermissionsToRoleRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.idm.v1.AssignPermissionsToRoleRequest",
+  () => [
+    { no: 1, name: "role_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: "permissions", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.AssignPermissionsToRoleResponse
+ */
+export const AssignPermissionsToRoleResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.idm.v1.AssignPermissionsToRoleResponse",
+  () => [
+    { no: 1, name: "roles", kind: "message", T: Role, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.UnassignPermissionsFromRoleRequest
+ */
+export const UnassignPermissionsFromRoleRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.idm.v1.UnassignPermissionsFromRoleRequest",
+  () => [
+    { no: 1, name: "role_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: "permissions", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.idm.v1.UnassignPermissionsFromRoleResponse
+ */
+export const UnassignPermissionsFromRoleResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.idm.v1.UnassignPermissionsFromRoleResponse",
+  () => [
+    { no: 1, name: "roles", kind: "message", T: Role, repeated: true },
+  ],
+);
+

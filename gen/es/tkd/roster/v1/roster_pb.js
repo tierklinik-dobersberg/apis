@@ -181,6 +181,7 @@ export const AnalyzeWorkTimeRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 1, name: "users", kind: "message", T: UsersToAnalyze },
     { no: 3, name: "from", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "to", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "time_tracking_only", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
@@ -254,6 +255,7 @@ export const GetRosterRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 2, name: "date", kind: "message", T: Timestamp, oneof: "search" },
     { no: 3, name: "roster_type_names", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "read_mask", kind: "message", T: FieldMask },
+    { no: 5, name: "time_tracking_only", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 

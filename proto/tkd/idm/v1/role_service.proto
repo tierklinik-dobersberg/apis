@@ -61,6 +61,18 @@ service RoleService {
     };
   }
 
+  rpc AssignPermissionsToRole(AssignPermissionsToRoleRequest) returns (AssignPermissionsToRoleResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_ADMIN,
+    };
+  }
+
+  rpc UnassignPermissionsFromRole(UnassignPermissionsFromRoleRequest) returns (UnassignPermissionsFromRoleResponse) {
+    option (tkd.common.v1.auth) = {
+      require: AUTH_REQ_ADMIN,
+    };
+  }
+
   rpc ResolveRolePermissions(ResolveRolePermissionsRequest) returns (ResolveRolePermissionsResponse) {
     option (tkd.common.v1.auth) = {
       require: AUTH_REQ_ADMIN,
@@ -136,4 +148,32 @@ message ResolveRolePermissionsRequest {
 
 message ResolveRolePermissionsResponse {
   repeated string permissions = 1;
+}
+
+message AssignPermissionsToRoleRequest {
+  repeated string role_ids = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  repeated string permissions = 2 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message AssignPermissionsToRoleResponse {
+  repeated Role roles = 1;
+}
+
+message UnassignPermissionsFromRoleRequest {
+  repeated string role_ids = 1 [
+    (buf.validate.field).required = true
+  ];
+
+  repeated string permissions = 2 [
+    (buf.validate.field).required = true
+  ];
+}
+
+message UnassignPermissionsFromRoleResponse {
+  repeated Role roles = 1;
 }

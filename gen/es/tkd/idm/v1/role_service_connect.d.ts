@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AssignRoleToUserRequest, AssignRoleToUserResponse, CreateRoleRequest, CreateRoleResponse, DeleteRoleRequest, DeleteRoleResponse, GetRoleRequest, GetRoleResponse, ListRolesRequest, ListRolesResponse, ResolveRolePermissionsRequest, ResolveRolePermissionsResponse, UnassignRoleFromUserRequest, UnassignRoleFromUserResponse, UpdateRoleRequest, UpdateRoleResponse } from "./role_service_pb.js";
+import { AssignPermissionsToRoleRequest, AssignPermissionsToRoleResponse, AssignRoleToUserRequest, AssignRoleToUserResponse, CreateRoleRequest, CreateRoleResponse, DeleteRoleRequest, DeleteRoleResponse, GetRoleRequest, GetRoleResponse, ListRolesRequest, ListRolesResponse, ResolveRolePermissionsRequest, ResolveRolePermissionsResponse, UnassignPermissionsFromRoleRequest, UnassignPermissionsFromRoleResponse, UnassignRoleFromUserRequest, UnassignRoleFromUserResponse, UpdateRoleRequest, UpdateRoleResponse } from "./role_service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -73,6 +73,24 @@ export declare const RoleService: {
       readonly name: "UnassignRoleFromUser",
       readonly I: typeof UnassignRoleFromUserRequest,
       readonly O: typeof UnassignRoleFromUserResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.RoleService.AssignPermissionsToRole
+     */
+    readonly assignPermissionsToRole: {
+      readonly name: "AssignPermissionsToRole",
+      readonly I: typeof AssignPermissionsToRoleRequest,
+      readonly O: typeof AssignPermissionsToRoleResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.idm.v1.RoleService.UnassignPermissionsFromRole
+     */
+    readonly unassignPermissionsFromRole: {
+      readonly name: "UnassignPermissionsFromRole",
+      readonly I: typeof UnassignPermissionsFromRoleRequest,
+      readonly O: typeof UnassignPermissionsFromRoleResponse,
       readonly kind: MethodKind.Unary,
     },
     /**

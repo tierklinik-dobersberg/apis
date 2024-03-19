@@ -143,8 +143,8 @@ message GetVacationCreditsLeftRequest {
 message AnalyzeVacationSum {
     WorkTime work_time = 1;
     google.protobuf.Timestamp ends_at = 2;
-    float number_of_days = 3;
-    float vacation_weeks_per_day = 4;
+    double number_of_days = 3;
+    double vacation_weeks_per_day = 4;
     google.protobuf.Duration vacation_per_work_time = 5;
     repeated OffTimeCosts costs = 6;
     google.protobuf.Duration costs_sum = 7;
