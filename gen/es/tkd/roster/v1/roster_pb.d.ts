@@ -365,6 +365,14 @@ export declare class SaveRosterRequest extends Message<SaveRosterRequest> {
    */
   rosterTypeName: string;
 
+  /**
+   * TimeTrackingOnly can be set to true to include work time analysis only for
+   * work-time entries with time-tracking enabled.
+   *
+   * @generated from field: bool time_tracking_only = 9;
+   */
+  timeTrackingOnly: boolean;
+
   constructor(data?: PartialMessage<SaveRosterRequest>);
 
   static readonly runtime: typeof proto3;

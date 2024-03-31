@@ -264,6 +264,10 @@ message SaveRosterRequest {
     string roster_type_name = 8 [
         (buf.validate.field).required = true
     ];
+
+    // TimeTrackingOnly can be set to true to include work time analysis only for
+    // work-time entries with time-tracking enabled.
+    bool time_tracking_only = 9;
 }
 
 message WorkTimeAnalysisWeek {
