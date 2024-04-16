@@ -120,7 +120,7 @@ message ListUsersRequest {
 }
 
 message ListUsersResponse {
-  repeated Profile profiles = 1;
+  repeated Profile users = 1;
 }
 
 message CreateUserRequest {

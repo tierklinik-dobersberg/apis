@@ -68,7 +68,7 @@ export const ListUsersRequest = /*@__PURE__*/ proto3.makeMessageType(
 export const ListUsersResponse = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.idm.v1.ListUsersResponse",
   () => [
-    { no: 1, name: "profiles", kind: "message", T: Profile, repeated: true },
+    { no: 1, name: "users", kind: "message", T: Profile, repeated: true },
   ],
 );
 
