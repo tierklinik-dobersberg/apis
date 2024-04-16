@@ -170,9 +170,9 @@ export declare class ListUsersRequest extends Message<ListUsersRequest> {
  */
 export declare class ListUsersResponse extends Message<ListUsersResponse> {
   /**
-   * @generated from field: repeated tkd.idm.v1.Profile users = 1;
+   * @generated from field: repeated tkd.idm.v1.Profile profiles = 1;
    */
-  users: Profile[];
+  profiles: Profile[];
 
   constructor(data?: PartialMessage<ListUsersResponse>);
 
