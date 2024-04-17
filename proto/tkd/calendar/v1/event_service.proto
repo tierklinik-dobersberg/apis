@@ -10,25 +10,56 @@ import "tkd/common/v1/descriptor.proto";
 import "tkd/common/v1/time_range.proto";
 import "buf/validate/validate.proto";
 
+// CalendarService provides RPC methods for retrieving, creating and managing
+// events from one or more calendars. While the current implementation in
+// cis-cal only supports the Google Calendar as a storage backend, future
+// implementation might add support for different backends. For this reason, not
+// all features from the Google Calendar API are exposed here since it might not
+// be reasonable to re-implement those features with different calendar
+// backends.
 service CalendarService {
+    // ListCalendars returns a list of available calendars.
     rpc ListCalendars(ListCalendarsRequest) returns (ListCalendarsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
         };
     }
 
+    // ListEvents can search and return a list of calendar events for one or
+    // more calendar ids.
     rpc ListEvents(ListEventsRequest) returns (ListEventsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
         };
     }
 
+    // CreateEvent creates a new calendar event at a specified calendar id.
     rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
         };
     }
 
+    // UpdateEvent allows to partitially update a calendar event. If the event
+    // should be moved to a different calendar, use the MoveEvent RPC.
+    rpc UpdateEvent(UpdateEventRequest) returns (UpdateEventResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // MoveEvent allows to move an calendar event from one calendar to another
+    // one. The actual implementation might depend on the backend so callers
+    // should be prepared to receive a different event id after a successful
+    // move (i.e. the event might have to be deleted from the old calendar and
+    // re-created in the new one which might generate a new unique event id).
+    rpc MoveEvent(MoveEventRequest) returns (MoveEventResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // DeleteEvent deletes an event from a calendar.
     rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
@@ -36,55 +67,224 @@ service CalendarService {
     }
 }
 
+// ListCalendarsRequest is used by the ListCalendars RPC. There are now message
+// fields for now.
 message ListCalendarsRequest {}
+
+// ListCalendarsResponse is the response of the ListCalendars RPC and contains a
+// list of available calendars.
 message ListCalendarsResponse {
     repeated Calendar calendars = 1;
 }
 
+// EventSource is used to query different event sources during the ListEvents
+// RPC:
 message EventSource {
+    // CalendarIds is a list of calendar ids that should be searched for events.
     repeated string calendar_ids = 1;
+
+    // UserIds is a list of user IDs for which calendar event should be loaded.
+    // When specified, cis-cal will lookup the users calendar id from cis-idms
+    // additional user fields as specified in the configuration.
     repeated string user_ids = 2;
 }
 
+// ListEventsRequest is the request message for the ListEvents RPC and supports
+// querying calendar events over a list of sources.
 message ListEventsRequest {
+    // Source describes where cis-cal should look for calendar events. At least
+    // on of the oneof members must be set.
     oneof source {
+        // Sources can be used to specify a dedicated list of user and/or
+        // calendar ids.
         EventSource sources = 1;
+
+        // AllCalendars might be set to true to query all available calendars.
+        // To get a list of available calendars, user the ListCalendars RPC.
         bool all_calendars = 2;
+
+        // AllUsers might be set to true to query events from all user
+        // calendars.
         bool all_users = 3;
+
+        option (buf.validate.oneof).required = true;
     }
 
+    // SearchTime allows to specify a search time for calendar events. At least
+    // one of the oneof member fields must be set.
     oneof search_time {
+        // TimeRange might be set to a start and end time. Only events that
+        // start/end within the specified time range (inclusive) will be
+        // returned.
         tkd.common.v1.TimeRange time_range = 4;
-        string date = 5; // Format is YYYY/MM/DD
+
+        // Date might be set to a date in the format of YYYY-MM-DD  or
+        // YYYY/MM/DD. Only events that start OR end at the specified date will
+        // be returned.
+        string date = 5; 
+
+        option (buf.validate.oneof).required = true;
     }
 
+    // ReadMask can be used to limit the number of fields returned in the
+    // response.
     google.protobuf.FieldMask read_mask = 6;
 }
 
+
+// CalendarEventList holds a list of events along the calendar definition. Use
+// ReadMask from ListEventsRequest if not all fields are required in the
+// response.
 message CalendarEventList {
+    // Calendar holds the calendar definition.
     tkd.calendar.v1.Calendar calendar = 1;
+
+    // Events holds a list of calendar events that matched the search query for
+    // this calendar.
     repeated tkd.calendar.v1.CalendarEvent events = 2;
 }
 
+// ListEventsResponse is the response of the ListEvents RPC and contains a list
+// of CalendarEventList messages that contains the calendar definition as well
+// as the list of events that matched the search query.
 message ListEventsResponse {
+    // Results is a list of CalendarEventList containing events that matched the
+    // search query.
     repeated CalendarEventList results = 1;
 }
 
+// CreateEventRequest is used to create a new calendar event in the specified
+// calendar.
 message CreateEventRequest {
+    // CalendarId is the ID of the calendar where the new event should be
+    // created.
     string calendar_id = 1 [(buf.validate.field).required = true];
+
+    // Name is the name or summary of the calendar event. This field is
+    // required.
     string name = 2 [(buf.validate.field).required = true];
+
+    // Description may hold an optional description of the calendar event.
     string description = 3;
+
+    // Start holds the start-time of the calendar event (inclusive).
     google.protobuf.Timestamp start = 4 [(buf.validate.field).required = true];
+
+    // End holds the end-time of the calendar-event (inclusive).
     google.protobuf.Timestamp end = 5 [(buf.validate.field).required = true];
+
+    // ExtraData might be set to an abritrary protobuf message that should be
+    // attached to the calendar event.
     google.protobuf.Any extra_data = 6;
 }
 
+// CreateEventResponse is the response message of the CreateEvent RPC and
+// contains the created event.
 message CreateEventResponse {
+    // Event holds the newly created calendar event.
     tkd.calendar.v1.CalendarEvent event = 1;
 }
 
+// UpdateEventRequest is the request message for the UpdateEvent RPC and might
+// be used to partitially update a calendar event.
+message UpdateEventRequest {
+    // CalendarId is the id of the calendar that contains the event.
+    string calendar_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // EventId is the unique (per-calendar) id of the event to update.
+    string event_id = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // Name can be set to the new name/summary of the event.
+    string name = 3;
+
+    // Description can be set to a new description of the event.
+    string description = 4;
+
+    // Start can be set to the new start time of the event.
+    google.protobuf.Timestamp start = 5;
+
+    // End can be set to the new end-time of the event.
+    google.protobuf.Timestamp end = 6;
+
+    // ExtraData can be set to replace the extra-data associated with the event.
+    google.protobuf.Any extra_data = 7;
+
+    // UpdateMask specifies which fields of the original event should be
+    // updated. If left empty, all fields will be replaced with the values from
+    // the UpdateEventRequest message potentially clearing out fields if unset.
+    google.protobuf.FieldMask update_mask = 20;
+}
+
+// UpdateEventResponse is the response message of the UpdateEvent RPC and
+// contains the updated event definition.
+message UpdateEventResponse {
+    // Event holds the updated calendar event.
+    tkd.calendar.v1.CalendarEvent event = 1;
+}
+
+// MoveEventRequest is the request message of the MoveEvent RPC and allows to
+// move a calendar event from one calendar to another one. Note that the ID of
+// the event might change after a successfull move!
+message MoveEventRequest {
+    // Source describes the source of the event.
+    oneof source {
+        // SourceCalendarId is the origin calendar that contains the event to be
+        // moved.
+        string source_calendar_id = 1;
+
+        // SourceUserId is the id of the user which owns the event. cis-cal will
+        // lookup the associated calendar id from cis-idm's additional user
+        // fields.
+        string source_user_id = 2;
+
+        option (buf.validate.oneof).required = true;
+    };
+
+    // EventId is the unique (per-calendar) id of the event to move to a new
+    // calendar.
+    string event_id = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    // Target describes the target calendar where the event should be moved to.
+    oneof target {
+        // TargetCalendarId is the target calendar that should contain the
+        // event.
+        string target_calendar_id = 4;
+
+        // TargetUserId is the id of the user to which the event should be
+        // moved. cis-cal will lookup the associated calendar id from cis-idm's
+        // additional user fields.
+        string target_user_id = 5;
+
+        option (buf.validate.oneof).required = true;
+    };
+}
+
+// MoveEventResponse is the response message of the MoveEvent RPC and contains
+// the moved event definition. Note that after a successful move, the ID of the
+// event might have changed!
+message MoveEventResponse {
+    // Event holds the moved event definition.
+    tkd.calendar.v1.CalendarEvent event = 1;
+}
+
+// DeleteEventRequest is the request message for the DeleteEvent RPC and allows
+// to remove a calendar event.
 message DeleteEventRequest {
+    // CalendarId is the ID of the origin calendar that contains the event.
     string calendar_id = 1 [(buf.validate.field).required = true];
+
+    // EventId is the ID of the event that should be removed from the calendar
+    // specified by calendar_id.
     string event_id = 2 [(buf.validate.field).required = true];
 }
+
+// DeleteEventResponse is the response message of the DeleteEvent RPC. This
+// message does not contain any fields for now.
 message DeleteEventResponse {}
+

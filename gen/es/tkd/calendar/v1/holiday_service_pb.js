@@ -6,6 +6,8 @@
 import { proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
+ * HolidayType specifies the type of a public holiday.
+ *
  * @generated from enum tkd.calendar.v1.HolidayType
  */
 export const HolidayType = /*@__PURE__*/ proto3.makeEnum(
@@ -22,6 +24,8 @@ export const HolidayType = /*@__PURE__*/ proto3.makeEnum(
 );
 
 /**
+ * PublicHoliday describes a public holiday at a specified country.
+ *
  * @generated from message tkd.calendar.v1.PublicHoliday
  */
 export const PublicHoliday = /*@__PURE__*/ proto3.makeMessageType(
@@ -38,6 +42,8 @@ export const PublicHoliday = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * GetHolidayRequest is the request message for the GetHoliday RPC.
+ *
  * @generated from message tkd.calendar.v1.GetHolidayRequest
  */
 export const GetHolidayRequest = /*@__PURE__*/ proto3.makeMessageType(
@@ -45,10 +51,14 @@ export const GetHolidayRequest = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "year", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 2, name: "month", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 3, name: "country_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
 /**
+ * GetHolidayResponse is the response message of the GetHoliday RPC and contains
+ * a list of public holidays.
+ *
  * @generated from message tkd.calendar.v1.GetHolidayResponse
  */
 export const GetHolidayResponse = /*@__PURE__*/ proto3.makeMessageType(
@@ -59,6 +69,8 @@ export const GetHolidayResponse = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * NumberOfWorkDaysRequest is the request message for the NumberOfWorkDays RPC.
+ *
  * @generated from message tkd.calendar.v1.NumberOfWorkDaysRequest
  */
 export const NumberOfWorkDaysRequest = /*@__PURE__*/ proto3.makeMessageType(
@@ -71,6 +83,8 @@ export const NumberOfWorkDaysRequest = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * NumberOfWorkDaysResponse is the response message of the NumberOfWorkDays RPC.
+ *
  * @generated from message tkd.calendar.v1.NumberOfWorkDaysResponse
  */
 export const NumberOfWorkDaysResponse = /*@__PURE__*/ proto3.makeMessageType(

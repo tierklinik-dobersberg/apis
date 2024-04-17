@@ -42,6 +42,12 @@ const (
 	// CalendarServiceCreateEventProcedure is the fully-qualified name of the CalendarService's
 	// CreateEvent RPC.
 	CalendarServiceCreateEventProcedure = "/tkd.calendar.v1.CalendarService/CreateEvent"
+	// CalendarServiceUpdateEventProcedure is the fully-qualified name of the CalendarService's
+	// UpdateEvent RPC.
+	CalendarServiceUpdateEventProcedure = "/tkd.calendar.v1.CalendarService/UpdateEvent"
+	// CalendarServiceMoveEventProcedure is the fully-qualified name of the CalendarService's MoveEvent
+	// RPC.
+	CalendarServiceMoveEventProcedure = "/tkd.calendar.v1.CalendarService/MoveEvent"
 	// CalendarServiceDeleteEventProcedure is the fully-qualified name of the CalendarService's
 	// DeleteEvent RPC.
 	CalendarServiceDeleteEventProcedure = "/tkd.calendar.v1.CalendarService/DeleteEvent"
@@ -49,9 +55,23 @@ const (
 
 // CalendarServiceClient is a client for the tkd.calendar.v1.CalendarService service.
 type CalendarServiceClient interface {
+	// ListCalendars returns a list of available calendars.
 	ListCalendars(context.Context, *connect_go.Request[v1.ListCalendarsRequest]) (*connect_go.Response[v1.ListCalendarsResponse], error)
+	// ListEvents can search and return a list of calendar events for one or
+	// more calendar ids.
 	ListEvents(context.Context, *connect_go.Request[v1.ListEventsRequest]) (*connect_go.Response[v1.ListEventsResponse], error)
+	// CreateEvent creates a new calendar event at a specified calendar id.
 	CreateEvent(context.Context, *connect_go.Request[v1.CreateEventRequest]) (*connect_go.Response[v1.CreateEventResponse], error)
+	// UpdateEvent allows to partitially update a calendar event. If the event
+	// should be moved to a different calendar, use the MoveEvent RPC.
+	UpdateEvent(context.Context, *connect_go.Request[v1.UpdateEventRequest]) (*connect_go.Response[v1.UpdateEventResponse], error)
+	// MoveEvent allows to move an calendar event from one calendar to another
+	// one. The actual implementation might depend on the backend so callers
+	// should be prepared to receive a different event id after a successful
+	// move (i.e. the event might have to be deleted from the old calendar and
+	// re-created in the new one which might generate a new unique event id).
+	MoveEvent(context.Context, *connect_go.Request[v1.MoveEventRequest]) (*connect_go.Response[v1.MoveEventResponse], error)
+	// DeleteEvent deletes an event from a calendar.
 	DeleteEvent(context.Context, *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[v1.DeleteEventResponse], error)
 }
 
@@ -80,6 +100,16 @@ func NewCalendarServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+CalendarServiceCreateEventProcedure,
 			opts...,
 		),
+		updateEvent: connect_go.NewClient[v1.UpdateEventRequest, v1.UpdateEventResponse](
+			httpClient,
+			baseURL+CalendarServiceUpdateEventProcedure,
+			opts...,
+		),
+		moveEvent: connect_go.NewClient[v1.MoveEventRequest, v1.MoveEventResponse](
+			httpClient,
+			baseURL+CalendarServiceMoveEventProcedure,
+			opts...,
+		),
 		deleteEvent: connect_go.NewClient[v1.DeleteEventRequest, v1.DeleteEventResponse](
 			httpClient,
 			baseURL+CalendarServiceDeleteEventProcedure,
@@ -93,6 +123,8 @@ type calendarServiceClient struct {
 	listCalendars *connect_go.Client[v1.ListCalendarsRequest, v1.ListCalendarsResponse]
 	listEvents    *connect_go.Client[v1.ListEventsRequest, v1.ListEventsResponse]
 	createEvent   *connect_go.Client[v1.CreateEventRequest, v1.CreateEventResponse]
+	updateEvent   *connect_go.Client[v1.UpdateEventRequest, v1.UpdateEventResponse]
+	moveEvent     *connect_go.Client[v1.MoveEventRequest, v1.MoveEventResponse]
 	deleteEvent   *connect_go.Client[v1.DeleteEventRequest, v1.DeleteEventResponse]
 }
 
@@ -111,6 +143,16 @@ func (c *calendarServiceClient) CreateEvent(ctx context.Context, req *connect_go
 	return c.createEvent.CallUnary(ctx, req)
 }
 
+// UpdateEvent calls tkd.calendar.v1.CalendarService.UpdateEvent.
+func (c *calendarServiceClient) UpdateEvent(ctx context.Context, req *connect_go.Request[v1.UpdateEventRequest]) (*connect_go.Response[v1.UpdateEventResponse], error) {
+	return c.updateEvent.CallUnary(ctx, req)
+}
+
+// MoveEvent calls tkd.calendar.v1.CalendarService.MoveEvent.
+func (c *calendarServiceClient) MoveEvent(ctx context.Context, req *connect_go.Request[v1.MoveEventRequest]) (*connect_go.Response[v1.MoveEventResponse], error) {
+	return c.moveEvent.CallUnary(ctx, req)
+}
+
 // DeleteEvent calls tkd.calendar.v1.CalendarService.DeleteEvent.
 func (c *calendarServiceClient) DeleteEvent(ctx context.Context, req *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[v1.DeleteEventResponse], error) {
 	return c.deleteEvent.CallUnary(ctx, req)
@@ -118,9 +160,23 @@ func (c *calendarServiceClient) DeleteEvent(ctx context.Context, req *connect_go
 
 // CalendarServiceHandler is an implementation of the tkd.calendar.v1.CalendarService service.
 type CalendarServiceHandler interface {
+	// ListCalendars returns a list of available calendars.
 	ListCalendars(context.Context, *connect_go.Request[v1.ListCalendarsRequest]) (*connect_go.Response[v1.ListCalendarsResponse], error)
+	// ListEvents can search and return a list of calendar events for one or
+	// more calendar ids.
 	ListEvents(context.Context, *connect_go.Request[v1.ListEventsRequest]) (*connect_go.Response[v1.ListEventsResponse], error)
+	// CreateEvent creates a new calendar event at a specified calendar id.
 	CreateEvent(context.Context, *connect_go.Request[v1.CreateEventRequest]) (*connect_go.Response[v1.CreateEventResponse], error)
+	// UpdateEvent allows to partitially update a calendar event. If the event
+	// should be moved to a different calendar, use the MoveEvent RPC.
+	UpdateEvent(context.Context, *connect_go.Request[v1.UpdateEventRequest]) (*connect_go.Response[v1.UpdateEventResponse], error)
+	// MoveEvent allows to move an calendar event from one calendar to another
+	// one. The actual implementation might depend on the backend so callers
+	// should be prepared to receive a different event id after a successful
+	// move (i.e. the event might have to be deleted from the old calendar and
+	// re-created in the new one which might generate a new unique event id).
+	MoveEvent(context.Context, *connect_go.Request[v1.MoveEventRequest]) (*connect_go.Response[v1.MoveEventResponse], error)
+	// DeleteEvent deletes an event from a calendar.
 	DeleteEvent(context.Context, *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[v1.DeleteEventResponse], error)
 }
 
@@ -145,6 +201,16 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect_go.Ha
 		svc.CreateEvent,
 		opts...,
 	)
+	calendarServiceUpdateEventHandler := connect_go.NewUnaryHandler(
+		CalendarServiceUpdateEventProcedure,
+		svc.UpdateEvent,
+		opts...,
+	)
+	calendarServiceMoveEventHandler := connect_go.NewUnaryHandler(
+		CalendarServiceMoveEventProcedure,
+		svc.MoveEvent,
+		opts...,
+	)
 	calendarServiceDeleteEventHandler := connect_go.NewUnaryHandler(
 		CalendarServiceDeleteEventProcedure,
 		svc.DeleteEvent,
@@ -158,6 +224,10 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect_go.Ha
 			calendarServiceListEventsHandler.ServeHTTP(w, r)
 		case CalendarServiceCreateEventProcedure:
 			calendarServiceCreateEventHandler.ServeHTTP(w, r)
+		case CalendarServiceUpdateEventProcedure:
+			calendarServiceUpdateEventHandler.ServeHTTP(w, r)
+		case CalendarServiceMoveEventProcedure:
+			calendarServiceMoveEventHandler.ServeHTTP(w, r)
 		case CalendarServiceDeleteEventProcedure:
 			calendarServiceDeleteEventHandler.ServeHTTP(w, r)
 		default:
@@ -179,6 +249,14 @@ func (UnimplementedCalendarServiceHandler) ListEvents(context.Context, *connect_
 
 func (UnimplementedCalendarServiceHandler) CreateEvent(context.Context, *connect_go.Request[v1.CreateEventRequest]) (*connect_go.Response[v1.CreateEventResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.CreateEvent is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) UpdateEvent(context.Context, *connect_go.Request[v1.UpdateEventRequest]) (*connect_go.Response[v1.UpdateEventResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.UpdateEvent is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) MoveEvent(context.Context, *connect_go.Request[v1.MoveEventRequest]) (*connect_go.Response[v1.MoveEventResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.MoveEvent is not implemented"))
 }
 
 func (UnimplementedCalendarServiceHandler) DeleteEvent(context.Context, *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[v1.DeleteEventResponse], error) {

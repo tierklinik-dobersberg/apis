@@ -28,13 +28,13 @@ type Calendar struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// ID is a unique ID for the calendar. The format of the ID may depend
-	// on the application and the actual calendar backend.
+	// ID is a unique ID for the calendar. The format of the ID may depend on
+	// the application and the actual calendar backend.
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// Name is a human friendly name of the calendar.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	// Timezone holds the timezone information for the calendar.
-	// In the format of Europe/Vienna.
+	// Timezone holds the timezone information for the calendar. In the format
+	// of Europe/Vienna.
 	Timezone string `protobuf:"bytes,3,opt,name=timezone,proto3" json:"timezone,omitempty"`
 	// Color holds the calendar color.
 	Color string `protobuf:"bytes,4,opt,name=color,proto3" json:"color,omitempty"`
@@ -107,22 +107,21 @@ type CalendarEvent struct {
 
 	// ID is a unique ID for the calendar event.
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// CalendarId is the unique ID of the calendar this event
-	// belongs to.
+	// CalendarId is the unique ID of the calendar this event belongs to.
 	CalendarId string `protobuf:"bytes,2,opt,name=calendar_id,json=calendarId,proto3" json:"calendar_id,omitempty"`
 	// StartTime holds the time the event begins.
 	StartTime *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// EndTime optionally holds the time the event ends.
 	EndTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
-	// FullDay may be set to true for events the last the whole day.
-	// In this case, the time part (HH:MM:SS) of StartTime is not important!
+	// FullDay may be set to true for events the last the whole day. In this
+	// case, the time part (HH:MM:SS) of StartTime is not important!
 	FullDay bool `protobuf:"varint,5,opt,name=full_day,json=fullDay,proto3" json:"full_day,omitempty"`
 	// Summary of the calendar event.
 	Summary string `protobuf:"bytes,6,opt,name=summary,proto3" json:"summary,omitempty"`
 	// Description of the calendar event.
 	Description string `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
-	// ExtraData may holds additional information about the calendar entry.
-	// In most cases, this should be CustomerAnnotation
+	// ExtraData may holds additional information about the calendar entry. In
+	// most cases, this should be CustomerAnnotation
 	ExtraData *anypb.Any `protobuf:"bytes,8,opt,name=extra_data,json=extraData,proto3" json:"extra_data,omitempty"`
 }
 
@@ -223,8 +222,8 @@ type CustomerAnnotation struct {
 	CustomerSource string `protobuf:"bytes,1,opt,name=customer_source,json=customerSource,proto3" json:"customer_source,omitempty"`
 	// CustomerId is the ID of the customer within the specified source.
 	CustomerId string `protobuf:"bytes,2,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
-	// AnimalIds is a list of animals that are expected to show up during
-	// the event and need treatment.
+	// AnimalIds is a list of animals that are expected to show up during the
+	// event and need treatment.
 	AnimalIds []string `protobuf:"bytes,3,rep,name=animal_ids,json=animalIds,proto3" json:"animal_ids,omitempty"`
 	// CreatedByUserId holds the ID of the user that created the event.
 	CreatedByUserId string `protobuf:"bytes,4,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`

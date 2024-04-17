@@ -8,6 +8,9 @@ import { Calendar, CalendarEvent } from "./event_pb.js";
 import { TimeRange } from "../../common/v1/time_range_pb.js";
 
 /**
+ * ListCalendarsRequest is used by the ListCalendars RPC. There are now message
+ * fields for now.
+ *
  * @generated from message tkd.calendar.v1.ListCalendarsRequest
  */
 export const ListCalendarsRequest = /*@__PURE__*/ proto3.makeMessageType(
@@ -16,6 +19,9 @@ export const ListCalendarsRequest = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * ListCalendarsResponse is the response of the ListCalendars RPC and contains a
+ * list of available calendars.
+ *
  * @generated from message tkd.calendar.v1.ListCalendarsResponse
  */
 export const ListCalendarsResponse = /*@__PURE__*/ proto3.makeMessageType(
@@ -26,6 +32,9 @@ export const ListCalendarsResponse = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * EventSource is used to query different event sources during the ListEvents
+ * RPC:
+ *
  * @generated from message tkd.calendar.v1.EventSource
  */
 export const EventSource = /*@__PURE__*/ proto3.makeMessageType(
@@ -37,6 +46,9 @@ export const EventSource = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * ListEventsRequest is the request message for the ListEvents RPC and supports
+ * querying calendar events over a list of sources.
+ *
  * @generated from message tkd.calendar.v1.ListEventsRequest
  */
 export const ListEventsRequest = /*@__PURE__*/ proto3.makeMessageType(
@@ -52,6 +64,10 @@ export const ListEventsRequest = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * CalendarEventList holds a list of events along the calendar definition. Use
+ * ReadMask from ListEventsRequest if not all fields are required in the
+ * response.
+ *
  * @generated from message tkd.calendar.v1.CalendarEventList
  */
 export const CalendarEventList = /*@__PURE__*/ proto3.makeMessageType(
@@ -63,6 +79,10 @@ export const CalendarEventList = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * ListEventsResponse is the response of the ListEvents RPC and contains a list
+ * of CalendarEventList messages that contains the calendar definition as well
+ * as the list of events that matched the search query.
+ *
  * @generated from message tkd.calendar.v1.ListEventsResponse
  */
 export const ListEventsResponse = /*@__PURE__*/ proto3.makeMessageType(
@@ -73,6 +93,9 @@ export const ListEventsResponse = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * CreateEventRequest is used to create a new calendar event in the specified
+ * calendar.
+ *
  * @generated from message tkd.calendar.v1.CreateEventRequest
  */
 export const CreateEventRequest = /*@__PURE__*/ proto3.makeMessageType(
@@ -88,6 +111,9 @@ export const CreateEventRequest = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * CreateEventResponse is the response message of the CreateEvent RPC and
+ * contains the created event.
+ *
  * @generated from message tkd.calendar.v1.CreateEventResponse
  */
 export const CreateEventResponse = /*@__PURE__*/ proto3.makeMessageType(
@@ -98,6 +124,74 @@ export const CreateEventResponse = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * UpdateEventRequest is the request message for the UpdateEvent RPC and might
+ * be used to partitially update a calendar event.
+ *
+ * @generated from message tkd.calendar.v1.UpdateEventRequest
+ */
+export const UpdateEventRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.UpdateEventRequest",
+  () => [
+    { no: 1, name: "calendar_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "event_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "start", kind: "message", T: Timestamp },
+    { no: 6, name: "end", kind: "message", T: Timestamp },
+    { no: 7, name: "extra_data", kind: "message", T: Any },
+    { no: 20, name: "update_mask", kind: "message", T: FieldMask },
+  ],
+);
+
+/**
+ * UpdateEventResponse is the response message of the UpdateEvent RPC and
+ * contains the updated event definition.
+ *
+ * @generated from message tkd.calendar.v1.UpdateEventResponse
+ */
+export const UpdateEventResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.UpdateEventResponse",
+  () => [
+    { no: 1, name: "event", kind: "message", T: CalendarEvent },
+  ],
+);
+
+/**
+ * MoveEventRequest is the request message of the MoveEvent RPC and allows to
+ * move a calendar event from one calendar to another one. Note that the ID of
+ * the event might change after a successfull move!
+ *
+ * @generated from message tkd.calendar.v1.MoveEventRequest
+ */
+export const MoveEventRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.MoveEventRequest",
+  () => [
+    { no: 1, name: "source_calendar_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "source" },
+    { no: 2, name: "source_user_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "source" },
+    { no: 3, name: "event_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "target_calendar_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "target" },
+    { no: 5, name: "target_user_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "target" },
+  ],
+);
+
+/**
+ * MoveEventResponse is the response message of the MoveEvent RPC and contains
+ * the moved event definition. Note that after a successful move, the ID of the
+ * event might have changed!
+ *
+ * @generated from message tkd.calendar.v1.MoveEventResponse
+ */
+export const MoveEventResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.MoveEventResponse",
+  () => [
+    { no: 1, name: "event", kind: "message", T: CalendarEvent },
+  ],
+);
+
+/**
+ * DeleteEventRequest is the request message for the DeleteEvent RPC and allows
+ * to remove a calendar event.
+ *
  * @generated from message tkd.calendar.v1.DeleteEventRequest
  */
 export const DeleteEventRequest = /*@__PURE__*/ proto3.makeMessageType(
@@ -109,6 +203,9 @@ export const DeleteEventRequest = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * DeleteEventResponse is the response message of the DeleteEvent RPC. This
+ * message does not contain any fields for now.
+ *
  * @generated from message tkd.calendar.v1.DeleteEventResponse
  */
 export const DeleteEventResponse = /*@__PURE__*/ proto3.makeMessageType(

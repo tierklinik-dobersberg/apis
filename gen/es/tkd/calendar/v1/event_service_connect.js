@@ -3,16 +3,26 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateEventRequest, CreateEventResponse, DeleteEventRequest, DeleteEventResponse, ListCalendarsRequest, ListCalendarsResponse, ListEventsRequest, ListEventsResponse } from "./event_service_pb.js";
+import { CreateEventRequest, CreateEventResponse, DeleteEventRequest, DeleteEventResponse, ListCalendarsRequest, ListCalendarsResponse, ListEventsRequest, ListEventsResponse, MoveEventRequest, MoveEventResponse, UpdateEventRequest, UpdateEventResponse } from "./event_service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
+ * CalendarService provides RPC methods for retrieving, creating and managing
+ * events from one or more calendars. While the current implementation in
+ * cis-cal only supports the Google Calendar as a storage backend, future
+ * implementation might add support for different backends. For this reason, not
+ * all features from the Google Calendar API are exposed here since it might not
+ * be reasonable to re-implement those features with different calendar
+ * backends.
+ *
  * @generated from service tkd.calendar.v1.CalendarService
  */
 export const CalendarService = {
   typeName: "tkd.calendar.v1.CalendarService",
   methods: {
     /**
+     * ListCalendars returns a list of available calendars.
+     *
      * @generated from rpc tkd.calendar.v1.CalendarService.ListCalendars
      */
     listCalendars: {
@@ -22,6 +32,9 @@ export const CalendarService = {
       kind: MethodKind.Unary,
     },
     /**
+     * ListEvents can search and return a list of calendar events for one or
+     * more calendar ids.
+     *
      * @generated from rpc tkd.calendar.v1.CalendarService.ListEvents
      */
     listEvents: {
@@ -31,6 +44,8 @@ export const CalendarService = {
       kind: MethodKind.Unary,
     },
     /**
+     * CreateEvent creates a new calendar event at a specified calendar id.
+     *
      * @generated from rpc tkd.calendar.v1.CalendarService.CreateEvent
      */
     createEvent: {
@@ -40,6 +55,35 @@ export const CalendarService = {
       kind: MethodKind.Unary,
     },
     /**
+     * UpdateEvent allows to partitially update a calendar event. If the event
+     * should be moved to a different calendar, use the MoveEvent RPC.
+     *
+     * @generated from rpc tkd.calendar.v1.CalendarService.UpdateEvent
+     */
+    updateEvent: {
+      name: "UpdateEvent",
+      I: UpdateEventRequest,
+      O: UpdateEventResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * MoveEvent allows to move an calendar event from one calendar to another
+     * one. The actual implementation might depend on the backend so callers
+     * should be prepared to receive a different event id after a successful
+     * move (i.e. the event might have to be deleted from the old calendar and
+     * re-created in the new one which might generate a new unique event id).
+     *
+     * @generated from rpc tkd.calendar.v1.CalendarService.MoveEvent
+     */
+    moveEvent: {
+      name: "MoveEvent",
+      I: MoveEventRequest,
+      O: MoveEventResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * DeleteEvent deletes an event from a calendar.
+     *
      * @generated from rpc tkd.calendar.v1.CalendarService.DeleteEvent
      */
     deleteEvent: {

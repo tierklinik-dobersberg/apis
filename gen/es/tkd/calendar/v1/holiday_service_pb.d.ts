@@ -7,6 +7,8 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
+ * HolidayType specifies the type of a public holiday.
+ *
  * @generated from enum tkd.calendar.v1.HolidayType
  */
 export declare enum HolidayType {
@@ -47,10 +49,14 @@ export declare enum HolidayType {
 }
 
 /**
+ * PublicHoliday describes a public holiday at a specified country.
+ *
  * @generated from message tkd.calendar.v1.PublicHoliday
  */
 export declare class PublicHoliday extends Message<PublicHoliday> {
   /**
+   * Date is the date of the public holidy in the format of YYYY-MM-DD.
+   *
    * YYYY-MM-DD
    *
    * @generated from field: string date = 1;
@@ -58,31 +64,45 @@ export declare class PublicHoliday extends Message<PublicHoliday> {
   date: string;
 
   /**
+   * LocalName is the localized name of the public holiday in the offical
+   * language of the specified country.
+   *
    * @generated from field: string local_name = 2;
    */
   localName: string;
 
   /**
+   * Name is the international, english name of the public holiday.
+   *
    * @generated from field: string name = 3;
    */
   name: string;
 
   /**
+   * CountryCode holds the ISO 2-Letter country code.
+   *
    * @generated from field: string country_code = 4;
    */
   countryCode: string;
 
   /**
+   * Fixed is set to true if this public holiday is always at the same date
+   * like the National Public Holiday.
+   *
    * @generated from field: bool fixed = 5;
    */
   fixed: boolean;
 
   /**
+   * Global is set to true if the public holiday is globally accepted.
+   *
    * @generated from field: bool global = 6;
    */
   global: boolean;
 
   /**
+   * Type holds the type of the public holiday.
+   *
    * @generated from field: tkd.calendar.v1.HolidayType type = 7;
    */
   type: HolidayType;
@@ -103,18 +123,34 @@ export declare class PublicHoliday extends Message<PublicHoliday> {
 }
 
 /**
+ * GetHolidayRequest is the request message for the GetHoliday RPC.
+ *
  * @generated from message tkd.calendar.v1.GetHolidayRequest
  */
 export declare class GetHolidayRequest extends Message<GetHolidayRequest> {
   /**
+   * Year holds the year for which holidays should be queried.
+   *
    * @generated from field: uint64 year = 1;
    */
   year: bigint;
 
   /**
+   * Month may be set to a month (1 to 12). If set, only holidays for that
+   * month will be returned.
+   *
    * @generated from field: uint64 month = 2;
    */
   month: bigint;
+
+  /**
+   * CountryCode might be set to the country code for which holidays should be
+   * queried. If left empty, the default country code from cis-cal
+   * configuration is used.
+   *
+   * @generated from field: string country_code = 3;
+   */
+  countryCode: string;
 
   constructor(data?: PartialMessage<GetHolidayRequest>);
 
@@ -132,10 +168,15 @@ export declare class GetHolidayRequest extends Message<GetHolidayRequest> {
 }
 
 /**
+ * GetHolidayResponse is the response message of the GetHoliday RPC and contains
+ * a list of public holidays.
+ *
  * @generated from message tkd.calendar.v1.GetHolidayResponse
  */
 export declare class GetHolidayResponse extends Message<GetHolidayResponse> {
   /**
+   * Holidays is the list of public holidays that matched the search query.
+   *
    * @generated from field: repeated tkd.calendar.v1.PublicHoliday holidays = 1;
    */
   holidays: PublicHoliday[];
@@ -156,20 +197,30 @@ export declare class GetHolidayResponse extends Message<GetHolidayResponse> {
 }
 
 /**
+ * NumberOfWorkDaysRequest is the request message for the NumberOfWorkDays RPC.
+ *
  * @generated from message tkd.calendar.v1.NumberOfWorkDaysRequest
  */
 export declare class NumberOfWorkDaysRequest extends Message<NumberOfWorkDaysRequest> {
   /**
+   * Country specified the country for which the number of working days should
+   * be calculated. If left empty, the default country from the cis-cal
+   * configuration will be used.
+   *
    * @generated from field: string country = 1;
    */
   country: string;
 
   /**
+   * From defines the start time (inclusive).
+   *
    * @generated from field: google.protobuf.Timestamp from = 2;
    */
   from?: Timestamp;
 
   /**
+   * To defines the end time (inclusive).
+   *
    * @generated from field: google.protobuf.Timestamp to = 3;
    */
   to?: Timestamp;
@@ -190,20 +241,33 @@ export declare class NumberOfWorkDaysRequest extends Message<NumberOfWorkDaysReq
 }
 
 /**
+ * NumberOfWorkDaysResponse is the response message of the NumberOfWorkDays RPC.
+ *
  * @generated from message tkd.calendar.v1.NumberOfWorkDaysResponse
  */
 export declare class NumberOfWorkDaysResponse extends Message<NumberOfWorkDaysResponse> {
   /**
+   * NumberOfWorkDays is the number of working days in the specified time
+   * range.
+   *
    * @generated from field: uint32 number_of_work_days = 1;
    */
   numberOfWorkDays: number;
 
   /**
+   * NumberOfWeekendDays is the number of weekend days in the specified time
+   * range. Note that holidays on weekends are counted for both,
+   * number_of_weekend_days and number_of_holidays.
+   *
    * @generated from field: uint32 number_of_weekend_days = 2;
    */
   numberOfWeekendDays: number;
 
   /**
+   * NumberOfHolidays is the number of holidays in the specified time-range.
+   * Note that holidays on weekends are counted for both,
+   * number_of_weekend_days and number_of_holidays.
+   *
    * @generated from field: uint32 number_of_holidays = 3;
    */
   numberOfHolidays: number;

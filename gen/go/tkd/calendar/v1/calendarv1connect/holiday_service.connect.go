@@ -43,7 +43,10 @@ const (
 
 // HolidayServiceClient is a client for the tkd.calendar.v1.HolidayService service.
 type HolidayServiceClient interface {
+	// GetHoliday returns a list of public holidays at a specifed year.
 	GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error)
+	// NumberOfWorkDays calculates the number of working days within a specified
+	// time range taking weekends and public-holidays into account.
 	NumberOfWorkDays(context.Context, *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error)
 }
 
@@ -88,7 +91,10 @@ func (c *holidayServiceClient) NumberOfWorkDays(ctx context.Context, req *connec
 
 // HolidayServiceHandler is an implementation of the tkd.calendar.v1.HolidayService service.
 type HolidayServiceHandler interface {
+	// GetHoliday returns a list of public holidays at a specifed year.
 	GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error)
+	// NumberOfWorkDays calculates the number of working days within a specified
+	// time range taking weekends and public-holidays into account.
 	NumberOfWorkDays(context.Context, *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error)
 }
 

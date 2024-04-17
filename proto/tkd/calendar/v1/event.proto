@@ -7,15 +7,15 @@ import "google/protobuf/any.proto";
 
 // Calendar describes a event calendar.
 message Calendar {
-    // ID is a unique ID for the calendar. The format of the ID may depend
-    // on the application and the actual calendar backend.
+    // ID is a unique ID for the calendar. The format of the ID may depend on
+    // the application and the actual calendar backend.
     string id = 1;
 
     // Name is a human friendly name of the calendar.
     string name = 2;
 
-    // Timezone holds the timezone information for the calendar.
-    // In the format of Europe/Vienna.
+    // Timezone holds the timezone information for the calendar. In the format
+    // of Europe/Vienna.
     string timezone = 3;
 
     // Color holds the calendar color.
@@ -26,8 +26,7 @@ message CalendarEvent {
     // ID is a unique ID for the calendar event.
     string id = 1;
 
-    // CalendarId is the unique ID of the calendar this event
-    // belongs to.
+    // CalendarId is the unique ID of the calendar this event belongs to.
     string calendar_id = 2;
 
     // StartTime holds the time the event begins.
@@ -36,8 +35,8 @@ message CalendarEvent {
     // EndTime optionally holds the time the event ends.
     google.protobuf.Timestamp end_time = 4;
 
-    // FullDay may be set to true for events the last the whole day.
-    // In this case, the time part (HH:MM:SS) of StartTime is not important!
+    // FullDay may be set to true for events the last the whole day. In this
+    // case, the time part (HH:MM:SS) of StartTime is not important!
     bool full_day = 5;
 
     // Summary of the calendar event.
@@ -46,8 +45,8 @@ message CalendarEvent {
     // Description of the calendar event.
     string description = 7;
 
-    // ExtraData may holds additional information about the calendar entry.
-    // In most cases, this should be CustomerAnnotation
+    // ExtraData may holds additional information about the calendar entry. In
+    // most cases, this should be CustomerAnnotation
     google.protobuf.Any extra_data = 8;
 }
 
@@ -58,8 +57,8 @@ message CustomerAnnotation {
     // CustomerId is the ID of the customer within the specified source.
     string customer_id = 2;
 
-    // AnimalIds is a list of animals that are expected to show up during
-    // the event and need treatment.
+    // AnimalIds is a list of animals that are expected to show up during the
+    // event and need treatment.
     repeated string animal_ids = 3;
 
     // CreatedByUserId holds the ID of the user that created the event.

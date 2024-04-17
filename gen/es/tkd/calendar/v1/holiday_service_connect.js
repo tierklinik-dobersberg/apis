@@ -7,12 +7,16 @@ import { GetHolidayRequest, GetHolidayResponse, NumberOfWorkDaysRequest, NumberO
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
+ * HolidayService allows to query a list of public holidays.
+ *
  * @generated from service tkd.calendar.v1.HolidayService
  */
 export const HolidayService = {
   typeName: "tkd.calendar.v1.HolidayService",
   methods: {
     /**
+     * GetHoliday returns a list of public holidays at a specifed year.
+     *
      * @generated from rpc tkd.calendar.v1.HolidayService.GetHoliday
      */
     getHoliday: {
@@ -22,6 +26,9 @@ export const HolidayService = {
       kind: MethodKind.Unary,
     },
     /**
+     * NumberOfWorkDays calculates the number of working days within a specified
+     * time range taking weekends and public-holidays into account.
+     *
      * @generated from rpc tkd.calendar.v1.HolidayService.NumberOfWorkDays
      */
     numberOfWorkDays: {

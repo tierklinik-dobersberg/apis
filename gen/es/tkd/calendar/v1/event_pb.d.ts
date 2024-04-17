@@ -13,8 +13,8 @@ import { Message, proto3 } from "@bufbuild/protobuf";
  */
 export declare class Calendar extends Message<Calendar> {
   /**
-   * ID is a unique ID for the calendar. The format of the ID may depend
-   * on the application and the actual calendar backend.
+   * ID is a unique ID for the calendar. The format of the ID may depend on
+   * the application and the actual calendar backend.
    *
    * @generated from field: string id = 1;
    */
@@ -28,8 +28,8 @@ export declare class Calendar extends Message<Calendar> {
   name: string;
 
   /**
-   * Timezone holds the timezone information for the calendar.
-   * In the format of Europe/Vienna.
+   * Timezone holds the timezone information for the calendar. In the format
+   * of Europe/Vienna.
    *
    * @generated from field: string timezone = 3;
    */
@@ -69,8 +69,7 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
   id: string;
 
   /**
-   * CalendarId is the unique ID of the calendar this event
-   * belongs to.
+   * CalendarId is the unique ID of the calendar this event belongs to.
    *
    * @generated from field: string calendar_id = 2;
    */
@@ -91,8 +90,8 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
   endTime?: Timestamp;
 
   /**
-   * FullDay may be set to true for events the last the whole day.
-   * In this case, the time part (HH:MM:SS) of StartTime is not important!
+   * FullDay may be set to true for events the last the whole day. In this
+   * case, the time part (HH:MM:SS) of StartTime is not important!
    *
    * @generated from field: bool full_day = 5;
    */
@@ -113,8 +112,8 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
   description: string;
 
   /**
-   * ExtraData may holds additional information about the calendar entry.
-   * In most cases, this should be CustomerAnnotation
+   * ExtraData may holds additional information about the calendar entry. In
+   * most cases, this should be CustomerAnnotation
    *
    * @generated from field: google.protobuf.Any extra_data = 8;
    */
@@ -154,8 +153,8 @@ export declare class CustomerAnnotation extends Message<CustomerAnnotation> {
   customerId: string;
 
   /**
-   * AnimalIds is a list of animals that are expected to show up during
-   * the event and need treatment.
+   * AnimalIds is a list of animals that are expected to show up during the
+   * event and need treatment.
    *
    * @generated from field: repeated string animal_ids = 3;
    */

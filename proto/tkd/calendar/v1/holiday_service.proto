@@ -5,6 +5,7 @@ package tkd.calendar.v1;
 import "google/protobuf/timestamp.proto";
 import "buf/validate/validate.proto";
 
+// HolidayType specifies the type of a public holiday.
 enum HolidayType {
     HOLIDAY_TYPE_UNSPECIFIED = 0;
     PUBLIC = 1;
@@ -15,48 +16,101 @@ enum HolidayType {
     OBSERVANCE = 6;
 }
 
+// PublicHoliday describes a public holiday at a specified country.
 message PublicHoliday {
+    // Date is the date of the public holidy in the format of YYYY-MM-DD.
     string date = 1; // YYYY-MM-DD
+
+    // LocalName is the localized name of the public holiday in the offical
+    // language of the specified country.
     string local_name = 2;
+
+    // Name is the international, english name of the public holiday.
     string name = 3;
+
+    // CountryCode holds the ISO 2-Letter country code.
     string country_code = 4;
+
+    // Fixed is set to true if this public holiday is always at the same date
+    // like the National Public Holiday.
     bool fixed = 5;
+
+    // Global is set to true if the public holiday is globally accepted.
     bool global = 6;
+
+    // Type holds the type of the public holiday.
     HolidayType type = 7;
 }
 
+// HolidayService allows to query a list of public holidays.
 service HolidayService {
+    // GetHoliday returns a list of public holidays at a specifed year.
     rpc GetHoliday(GetHolidayRequest) returns (GetHolidayResponse) {}
+
+    // NumberOfWorkDays calculates the number of working days within a specified
+    // time range taking weekends and public-holidays into account.
     rpc NumberOfWorkDays(NumberOfWorkDaysRequest) returns (NumberOfWorkDaysResponse) {} 
 }
 
+// GetHolidayRequest is the request message for the GetHoliday RPC.
 message GetHolidayRequest {
+    // Year holds the year for which holidays should be queried.
     uint64 year = 1 [
         (buf.validate.field).required = true
     ];
+
+    // Month may be set to a month (1 to 12). If set, only holidays for that
+    // month will be returned.
     uint64 month = 2 [
         (buf.validate.field).ignore_empty = true,
         (buf.validate.field).uint64.lte = 12,
         (buf.validate.field).uint64.gte = 1
     ];
+
+    // CountryCode might be set to the country code for which holidays should be
+    // queried. If left empty, the default country code from cis-cal
+    // configuration is used.
+    string country_code = 3;
 }
 
+// GetHolidayResponse is the response message of the GetHoliday RPC and contains
+// a list of public holidays.
 message GetHolidayResponse {
+    // Holidays is the list of public holidays that matched the search query.
     repeated PublicHoliday holidays = 1;
 }
 
+// NumberOfWorkDaysRequest is the request message for the NumberOfWorkDays RPC.
 message NumberOfWorkDaysRequest {
+    // Country specified the country for which the number of working days should
+    // be calculated. If left empty, the default country from the cis-cal
+    // configuration will be used.
     string country = 1;
 
+    // From defines the start time (inclusive).
     google.protobuf.Timestamp from = 2 [
         (buf.validate.field).required = true
     ];
+
+    // To defines the end time (inclusive).
     google.protobuf.Timestamp to = 3 [
         (buf.validate.field).required = true
     ];
 }
+
+// NumberOfWorkDaysResponse is the response message of the NumberOfWorkDays RPC.
 message NumberOfWorkDaysResponse {
+    // NumberOfWorkDays is the number of working days in the specified time
+    // range.
     uint32 number_of_work_days = 1;
+
+    // NumberOfWeekendDays is the number of weekend days in the specified time
+    // range. Note that holidays on weekends are counted for both,
+    // number_of_weekend_days and number_of_holidays.
     uint32 number_of_weekend_days = 2;
+
+    // NumberOfHolidays is the number of holidays in the specified time-range.
+    // Note that holidays on weekends are counted for both,
+    // number_of_weekend_days and number_of_holidays.
     uint32 number_of_holidays = 3;
 }
