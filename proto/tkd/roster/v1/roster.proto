@@ -532,6 +532,10 @@ message GetUserShiftsRequest {
     tkd.common.v1.TimeRange timerange = 1 [
         (buf.validate.field).required = true
     ];
+
+    // if empty, only the working shifts for the authenticated
+    // user are returned
+    UsersToAnalyze users = 2;
 }
 
 message GetUserShiftsResponse {
