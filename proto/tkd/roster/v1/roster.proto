@@ -119,6 +119,9 @@ message Roster {
 
     // RosterTypeName is the unique name of the roster type.
     string roster_type_name = 11;
+
+    // CASIndex is used to ensure atomic updates to rosters.
+    uint64 cas_index = 12;
 }
 
 service RosterService {
@@ -268,6 +271,10 @@ message SaveRosterRequest {
     // TimeTrackingOnly can be set to true to include work time analysis only for
     // work-time entries with time-tracking enabled.
     bool time_tracking_only = 9;
+
+    // CASIndex can be set to the CASIndex returned by GetRoster to ensure
+    // there have been no changes.
+    uint64 cas_index = 10;
 }
 
 message WorkTimeAnalysisWeek {

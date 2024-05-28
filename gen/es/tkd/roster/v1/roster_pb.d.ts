@@ -288,6 +288,13 @@ export declare class Roster extends Message<Roster> {
    */
   rosterTypeName: string;
 
+  /**
+   * CASIndex is used to ensure atomic updates to rosters.
+   *
+   * @generated from field: uint64 cas_index = 12;
+   */
+  casIndex: bigint;
+
   constructor(data?: PartialMessage<Roster>);
 
   static readonly runtime: typeof proto3;
@@ -372,6 +379,14 @@ export declare class SaveRosterRequest extends Message<SaveRosterRequest> {
    * @generated from field: bool time_tracking_only = 9;
    */
   timeTrackingOnly: boolean;
+
+  /**
+   * CASIndex can be set to the CASIndex returned by GetRoster to ensure
+   * there have been no changes.
+   *
+   * @generated from field: uint64 cas_index = 10;
+   */
+  casIndex: bigint;
 
   constructor(data?: PartialMessage<SaveRosterRequest>);
 

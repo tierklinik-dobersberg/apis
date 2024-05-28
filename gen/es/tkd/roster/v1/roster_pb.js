@@ -84,6 +84,7 @@ export const Roster = /*@__PURE__*/ proto3.makeMessageType(
     { no: 9, name: "created_at", kind: "message", T: Timestamp },
     { no: 10, name: "updated_at", kind: "message", T: Timestamp },
     { no: 11, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 12, name: "cas_index", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
   ],
 );
 
@@ -101,6 +102,7 @@ export const SaveRosterRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 7, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 8, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 9, name: "time_tracking_only", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 10, name: "cas_index", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
   ],
 );
 
