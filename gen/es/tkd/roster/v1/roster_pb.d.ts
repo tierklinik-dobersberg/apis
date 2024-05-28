@@ -91,6 +91,13 @@ export declare class RequiredShift extends Message<RequiredShift> {
    */
   violationsPerUserId: { [key: string]: ConstraintViolationList };
 
+  /**
+   * A unique ID to match PlannedShifts against RequiredShifts
+   *
+   * @generated from field: string unique_id = 8;
+   */
+  uniqueId: string;
+
   constructor(data?: PartialMessage<RequiredShift>);
 
   static readonly runtime: typeof proto3;
@@ -140,6 +147,13 @@ export declare class PlannedShift extends Message<PlannedShift> {
    * @generated from field: string work_shift_id = 4;
    */
   workShiftId: string;
+
+  /**
+   * A unique ID to match PlannedShifts against RequiredShifts.
+   *
+   * @generated from field: string unique_id = 5;
+   */
+  uniqueId: string;
 
   constructor(data?: PartialMessage<PlannedShift>);
 
@@ -875,10 +889,20 @@ export declare class GetRosterRequest extends Message<GetRosterRequest> {
     case: "id";
   } | {
     /**
+     * Deprecated: use date_string instead
+     *
      * @generated from field: google.protobuf.Timestamp date = 2;
      */
     value: Timestamp;
     case: "date";
+  } | {
+    /**
+     * Format: YYYY-MM-DD
+     *
+     * @generated from field: string date_string = 6;
+     */
+    value: string;
+    case: "dateString";
   } | { case: undefined; value?: undefined };
 
   /**

@@ -35,6 +35,7 @@ export const RequiredShift = /*@__PURE__*/ proto3.makeMessageType(
     { no: 5, name: "on_holiday", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 6, name: "on_weekend", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 7, name: "violations_per_user_id", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: ConstraintViolationList} },
+    { no: 8, name: "unique_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -50,6 +51,7 @@ export const PlannedShift = /*@__PURE__*/ proto3.makeMessageType(
     { no: 2, name: "to", kind: "message", T: Timestamp },
     { no: 3, name: "assigned_user_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "work_shift_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "unique_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -256,6 +258,7 @@ export const GetRosterRequest = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search" },
     { no: 2, name: "date", kind: "message", T: Timestamp, oneof: "search" },
+    { no: 6, name: "date_string", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search" },
     { no: 3, name: "roster_type_names", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "read_mask", kind: "message", T: FieldMask },
     { no: 5, name: "time_tracking_only", kind: "scalar", T: 8 /* ScalarType.BOOL */ },

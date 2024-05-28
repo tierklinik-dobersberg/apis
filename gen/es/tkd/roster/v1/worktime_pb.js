@@ -17,11 +17,11 @@ export const WorkTime = /*@__PURE__*/ proto3.makeMessageType(
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "time_per_week", kind: "message", T: Duration },
-    { no: 4, name: "applicable_after", kind: "message", T: Timestamp },
+    { no: 4, name: "applicable_after", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "vacation_weeks_per_year", kind: "scalar", T: 2 /* ScalarType.FLOAT */ },
     { no: 6, name: "overtime_allowance_per_month", kind: "message", T: Duration },
     { no: 7, name: "exclude_from_time_tracking", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 8, name: "ends_with", kind: "message", T: Timestamp },
+    { no: 8, name: "ends_with", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -175,7 +175,7 @@ export const UpdateWorkTimeRequest = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "exclude_from_time_tracking", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 3, name: "ends_with", kind: "message", T: Timestamp },
+    { no: 3, name: "ends_with", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "field_mask", kind: "message", T: FieldMask },
   ],
 );

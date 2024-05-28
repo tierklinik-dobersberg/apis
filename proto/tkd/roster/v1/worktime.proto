@@ -26,10 +26,9 @@ message WorkTime {
 
     // ApplicableAfter defines the date at which this work-time entry
     // is considered active.
-    google.protobuf.Timestamp applicable_after = 4 [
-        (buf.validate.field).ignore_empty = true,
-        (buf.validate.field).timestamp.gt_now = true
-    ];
+    //
+    // Format: YYYY-MM-DD
+    string applicable_after = 4;
 
     // VacationWeeksPerYear defines how many weeks of vacation should
     // be granted to UserId in a full-year of work time.
@@ -46,10 +45,9 @@ message WorkTime {
     bool exclude_from_time_tracking = 7;
 
     // An optional timestamp at which this work-time entry ends.
-    google.protobuf.Timestamp ends_with = 8 [
-        (buf.validate.field).ignore_empty = true,
-        (buf.validate.field).timestamp.gt_now = true
-    ];
+    //
+    // Format: YYYY-MM-DD
+    string ends_with = 8;
 }
 
 service WorkTimeService {
@@ -178,10 +176,8 @@ message UpdateWorkTimeRequest {
 
     bool exclude_from_time_tracking = 2;
 
-    google.protobuf.Timestamp ends_with = 3 [
-        (buf.validate.field).ignore_empty = true,
-        (buf.validate.field).timestamp.gt_now = true
-    ];
+    // Format: YYYY-MM-DD
+    string ends_with = 3;
 
     google.protobuf.FieldMask field_mask = 4;
 }

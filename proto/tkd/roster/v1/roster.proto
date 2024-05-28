@@ -37,6 +37,9 @@ message RequiredShift {
     // violations and resoning of why a user is not part of RequiredShift.eligible_user_ids
     // even if the user would be eligible by WorkShift.eligible_roles.
     map<string, ConstraintViolationList> violations_per_user_id = 7;
+
+    // A unique ID to match PlannedShifts against RequiredShifts
+    string unique_id = 8;
 }
 
 // PlannedShift is a planned work-shift in a roster.
@@ -61,6 +64,9 @@ message PlannedShift {
     string work_shift_id = 4 [
         (buf.validate.field).required = true
     ];
+
+    // A unique ID to match PlannedShifts against RequiredShifts.
+    string unique_id = 5;
 }
 
 message RosterType {
@@ -403,7 +409,12 @@ message DeleteRosterResponse {}
 message GetRosterRequest {
     oneof search {
         string id = 1;
+
+        // Deprecated: use date_string instead
         google.protobuf.Timestamp date = 2;
+
+        // Format: YYYY-MM-DD
+        string date_string = 6;
 
         option (buf.validate.oneof).required = true;
     };

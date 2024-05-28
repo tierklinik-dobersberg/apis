@@ -38,9 +38,11 @@ export declare class WorkTime extends Message<WorkTime> {
    * ApplicableAfter defines the date at which this work-time entry
    * is considered active.
    *
-   * @generated from field: google.protobuf.Timestamp applicable_after = 4;
+   * Format: YYYY-MM-DD
+   *
+   * @generated from field: string applicable_after = 4;
    */
-  applicableAfter?: Timestamp;
+  applicableAfter: string;
 
   /**
    * VacationWeeksPerYear defines how many weeks of vacation should
@@ -67,9 +69,11 @@ export declare class WorkTime extends Message<WorkTime> {
   /**
    * An optional timestamp at which this work-time entry ends.
    *
-   * @generated from field: google.protobuf.Timestamp ends_with = 8;
+   * Format: YYYY-MM-DD
+   *
+   * @generated from field: string ends_with = 8;
    */
-  endsWith?: Timestamp;
+  endsWith: string;
 
   constructor(data?: PartialMessage<WorkTime>);
 
@@ -496,9 +500,11 @@ export declare class UpdateWorkTimeRequest extends Message<UpdateWorkTimeRequest
   excludeFromTimeTracking: boolean;
 
   /**
-   * @generated from field: google.protobuf.Timestamp ends_with = 3;
+   * Format: YYYY-MM-DD
+   *
+   * @generated from field: string ends_with = 3;
    */
-  endsWith?: Timestamp;
+  endsWith: string;
 
   /**
    * @generated from field: google.protobuf.FieldMask field_mask = 4;
