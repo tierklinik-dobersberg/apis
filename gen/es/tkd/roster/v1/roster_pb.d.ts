@@ -53,6 +53,11 @@ export declare enum ExportRosterType {
    * @generated from enum value: EXPORT_ROSTER_TYPE_ICAL = 2;
    */
   ICAL = 2,
+
+  /**
+   * @generated from enum value: EXPORT_ROSTER_TYPE_HTML = 3;
+   */
+  HTML = 3,
 }
 
 /**

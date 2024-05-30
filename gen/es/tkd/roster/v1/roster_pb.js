@@ -31,6 +31,7 @@ export const ExportRosterType = /*@__PURE__*/ proto3.makeEnum(
     {no: 0, name: "EXPORT_ROSTER_TYPE_UNSPECIFIED", localName: "UNSPECIFIED"},
     {no: 1, name: "EXPORT_ROSTER_TYPE_PDF", localName: "PDF"},
     {no: 2, name: "EXPORT_ROSTER_TYPE_ICAL", localName: "ICAL"},
+    {no: 3, name: "EXPORT_ROSTER_TYPE_HTML", localName: "HTML"},
   ],
 );
 
