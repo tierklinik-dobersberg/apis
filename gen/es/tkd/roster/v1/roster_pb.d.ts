@@ -36,6 +36,26 @@ export declare enum DayType {
 }
 
 /**
+ * @generated from enum tkd.roster.v1.ExportRosterType
+ */
+export declare enum ExportRosterType {
+  /**
+   * @generated from enum value: EXPORT_ROSTER_TYPE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: EXPORT_ROSTER_TYPE_PDF = 1;
+   */
+  PDF = 1,
+
+  /**
+   * @generated from enum value: EXPORT_ROSTER_TYPE_ICAL = 2;
+   */
+  ICAL = 2,
+}
+
+/**
  * @generated from message tkd.roster.v1.RequiredShift
  */
 export declare class RequiredShift extends Message<RequiredShift> {
@@ -575,11 +595,12 @@ export declare class WorkTimeAnalysis extends Message<WorkTimeAnalysis> {
   excludeFromTimeTracking: boolean;
 
   /**
-   * An optional timestamp at which there's no work-time for the user.
+   * An date after which there's no work-time for the user.
+   * Format: YYYY-MM-DD
    *
-   * @generated from field: google.protobuf.Timestamp ends_with = 7;
+   * @generated from field: string ends_with = 7;
    */
-  endsWith?: Timestamp;
+  endsWith: string;
 
   constructor(data?: PartialMessage<WorkTimeAnalysis>);
 
@@ -1463,5 +1484,73 @@ export declare class GetUserShiftsResponse extends Message<GetUserShiftsResponse
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetUserShiftsResponse;
 
   static equals(a: GetUserShiftsResponse | PlainMessage<GetUserShiftsResponse> | undefined, b: GetUserShiftsResponse | PlainMessage<GetUserShiftsResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.ExportRosterRequest
+ */
+export declare class ExportRosterRequest extends Message<ExportRosterRequest> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: tkd.roster.v1.ExportRosterType type = 2;
+   */
+  type: ExportRosterType;
+
+  /**
+   * @generated from field: repeated string include_shift_tags = 3;
+   */
+  includeShiftTags: string[];
+
+  constructor(data?: PartialMessage<ExportRosterRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ExportRosterRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ExportRosterRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ExportRosterRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ExportRosterRequest;
+
+  static equals(a: ExportRosterRequest | PlainMessage<ExportRosterRequest> | undefined, b: ExportRosterRequest | PlainMessage<ExportRosterRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.ExportRosterResponse
+ */
+export declare class ExportRosterResponse extends Message<ExportRosterResponse> {
+  /**
+   * @generated from field: string content_type = 2;
+   */
+  contentType: string;
+
+  /**
+   * @generated from field: string file_name = 1;
+   */
+  fileName: string;
+
+  /**
+   * @generated from field: bytes payload = 3;
+   */
+  payload: Uint8Array;
+
+  constructor(data?: PartialMessage<ExportRosterResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ExportRosterResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ExportRosterResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ExportRosterResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ExportRosterResponse;
+
+  static equals(a: ExportRosterResponse | PlainMessage<ExportRosterResponse> | undefined, b: ExportRosterResponse | PlainMessage<ExportRosterResponse> | undefined): boolean;
 }
 

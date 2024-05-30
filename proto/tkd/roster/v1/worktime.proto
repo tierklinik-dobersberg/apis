@@ -44,7 +44,7 @@ message WorkTime {
     // Whether or not the user should be excluded from time-tracking.
     bool exclude_from_time_tracking = 7;
 
-    // An optional timestamp at which this work-time entry ends.
+    // An optional timestamp _AFTER_ which this work-time entry ends.
     //
     // Format: YYYY-MM-DD
     string ends_with = 8;

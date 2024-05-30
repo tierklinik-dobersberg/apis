@@ -23,6 +23,18 @@ export const DayType = /*@__PURE__*/ proto3.makeEnum(
 );
 
 /**
+ * @generated from enum tkd.roster.v1.ExportRosterType
+ */
+export const ExportRosterType = /*@__PURE__*/ proto3.makeEnum(
+  "tkd.roster.v1.ExportRosterType",
+  [
+    {no: 0, name: "EXPORT_ROSTER_TYPE_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "EXPORT_ROSTER_TYPE_PDF", localName: "PDF"},
+    {no: 2, name: "EXPORT_ROSTER_TYPE_ICAL", localName: "ICAL"},
+  ],
+);
+
+/**
  * @generated from message tkd.roster.v1.RequiredShift
  */
 export const RequiredShift = /*@__PURE__*/ proto3.makeMessageType(
@@ -151,7 +163,7 @@ export const WorkTimeAnalysis = /*@__PURE__*/ proto3.makeMessageType(
     { no: 4, name: "steps", kind: "message", T: WorkTimeAnalysisStep, repeated: true },
     { no: 5, name: "overtime", kind: "message", T: Duration },
     { no: 6, name: "exclude_from_time_tracking", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 7, name: "ends_with", kind: "message", T: Timestamp },
+    { no: 7, name: "ends_with", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -452,6 +464,30 @@ export const GetUserShiftsResponse = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "shifts", kind: "message", T: PlannedShift, repeated: true },
     { no: 2, name: "definitions", kind: "message", T: WorkShift, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.ExportRosterRequest
+ */
+export const ExportRosterRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.roster.v1.ExportRosterRequest",
+  () => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "type", kind: "enum", T: proto3.getEnumType(ExportRosterType) },
+    { no: 3, name: "include_shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.ExportRosterResponse
+ */
+export const ExportRosterResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.roster.v1.ExportRosterResponse",
+  () => [
+    { no: 2, name: "content_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "file_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "payload", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
   ],
 );
 

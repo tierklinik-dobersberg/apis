@@ -67,7 +67,7 @@ export declare class WorkTime extends Message<WorkTime> {
   excludeFromTimeTracking: boolean;
 
   /**
-   * An optional timestamp at which this work-time entry ends.
+   * An optional timestamp _AFTER_ which this work-time entry ends.
    *
    * Format: YYYY-MM-DD
    *

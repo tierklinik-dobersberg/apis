@@ -49,7 +49,7 @@ type WorkTime struct {
 	OvertimeAllowancePerMonth *durationpb.Duration `protobuf:"bytes,6,opt,name=overtime_allowance_per_month,json=overtimeAllowancePerMonth,proto3" json:"overtime_allowance_per_month,omitempty"`
 	// Whether or not the user should be excluded from time-tracking.
 	ExcludeFromTimeTracking bool `protobuf:"varint,7,opt,name=exclude_from_time_tracking,json=excludeFromTimeTracking,proto3" json:"exclude_from_time_tracking,omitempty"`
-	// An optional timestamp at which this work-time entry ends.
+	// An optional timestamp _AFTER_ which this work-time entry ends.
 	//
 	// Format: YYYY-MM-DD
 	EndsWith string `protobuf:"bytes,8,opt,name=ends_with,json=endsWith,proto3" json:"ends_with,omitempty"`

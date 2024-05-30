@@ -167,6 +167,12 @@ service RosterService {
         };
     }
 
+    rpc ExportRoster(ExportRosterRequest) returns (ExportRosterResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
     // DeleteRoster deletes a roster from the internal storage. This operation
     // cannot be undone!
     rpc DeleteRoster(DeleteRosterRequest) returns (DeleteRosterResponse) {
@@ -326,8 +332,9 @@ message WorkTimeAnalysis {
     // Whether or not this user should be excluded from time-tracking.
     bool exclude_from_time_tracking = 6;
 
-    // An optional timestamp at which there's no work-time for the user.
-    google.protobuf.Timestamp ends_with = 7;
+    // An date after which there's no work-time for the user.
+    // Format: YYYY-MM-DD
+    string ends_with = 7;
 }
 
 message SaveRosterResponse {
@@ -559,4 +566,28 @@ message GetUserShiftsRequest {
 message GetUserShiftsResponse {
     repeated PlannedShift shifts = 1;
     repeated WorkShift definitions = 2;
+}
+
+enum ExportRosterType {
+    EXPORT_ROSTER_TYPE_UNSPECIFIED = 0;
+    EXPORT_ROSTER_TYPE_PDF = 1;
+    EXPORT_ROSTER_TYPE_ICAL = 2;
+}
+
+message ExportRosterRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    ExportRosterType type = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    repeated string include_shift_tags = 3;    
+}
+
+message ExportRosterResponse {
+    string content_type = 2;
+    string file_name = 1;
+    bytes payload = 3;
 }
