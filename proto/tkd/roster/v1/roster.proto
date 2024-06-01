@@ -169,7 +169,7 @@ service RosterService {
 
     rpc ExportRoster(ExportRosterRequest) returns (ExportRosterResponse) {
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_ADMIN,
+            require: AUTH_REQ_REQUIRED,
         };
     }
 
