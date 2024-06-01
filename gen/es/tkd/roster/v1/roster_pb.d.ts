@@ -1506,9 +1506,21 @@ export declare class ExportRosterRequest extends Message<ExportRosterRequest> {
   type: ExportRosterType;
 
   /**
-   * @generated from field: repeated string include_shift_tags = 3;
+   * @generated from oneof tkd.roster.v1.ExportRosterRequest.filter
    */
-  includeShiftTags: string[];
+  filter: {
+    /**
+     * @generated from field: tkd.roster.v1.StringList shift_tags = 3;
+     */
+    value: StringList;
+    case: "shiftTags";
+  } | {
+    /**
+     * @generated from field: tkd.roster.v1.StringList shift_ids = 4;
+     */
+    value: StringList;
+    case: "shiftIds";
+  } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<ExportRosterRequest>);
 
@@ -1557,5 +1569,31 @@ export declare class ExportRosterResponse extends Message<ExportRosterResponse> 
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ExportRosterResponse;
 
   static equals(a: ExportRosterResponse | PlainMessage<ExportRosterResponse> | undefined, b: ExportRosterResponse | PlainMessage<ExportRosterResponse> | undefined): boolean;
+}
+
+/**
+ * TODO(ppacher): move to common?
+ *
+ * @generated from message tkd.roster.v1.StringList
+ */
+export declare class StringList extends Message<StringList> {
+  /**
+   * @generated from field: repeated string values = 1;
+   */
+  values: string[];
+
+  constructor(data?: PartialMessage<StringList>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.StringList";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): StringList;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): StringList;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): StringList;
+
+  static equals(a: StringList | PlainMessage<StringList> | undefined, b: StringList | PlainMessage<StringList> | undefined): boolean;
 }
 

@@ -584,11 +584,19 @@ message ExportRosterRequest {
         (buf.validate.field).required = true
     ];
 
-    repeated string include_shift_tags = 3;    
+    oneof filter {
+        StringList shift_tags = 3;    
+        StringList shift_ids = 4;    
+    };
 }
 
 message ExportRosterResponse {
     string content_type = 2;
     string file_name = 1;
     bytes payload = 3;
+}
+
+// TODO(ppacher): move to common?
+message StringList {
+    repeated string values = 1;
 }

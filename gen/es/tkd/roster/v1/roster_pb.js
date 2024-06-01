@@ -476,7 +476,8 @@ export const ExportRosterRequest = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "type", kind: "enum", T: proto3.getEnumType(ExportRosterType) },
-    { no: 3, name: "include_shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 3, name: "shift_tags", kind: "message", T: StringList, oneof: "filter" },
+    { no: 4, name: "shift_ids", kind: "message", T: StringList, oneof: "filter" },
   ],
 );
 
@@ -489,6 +490,18 @@ export const ExportRosterResponse = /*@__PURE__*/ proto3.makeMessageType(
     { no: 2, name: "content_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 1, name: "file_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "payload", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+  ],
+);
+
+/**
+ * TODO(ppacher): move to common?
+ *
+ * @generated from message tkd.roster.v1.StringList
+ */
+export const StringList = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.roster.v1.StringList",
+  () => [
+    { no: 1, name: "values", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
