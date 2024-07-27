@@ -65,6 +65,9 @@ const (
 	// RosterServiceGetWorkingStaffProcedure is the fully-qualified name of the RosterService's
 	// GetWorkingStaff RPC.
 	RosterServiceGetWorkingStaffProcedure = "/tkd.roster.v1.RosterService/GetWorkingStaff"
+	// RosterServiceGetWorkingStaff2Procedure is the fully-qualified name of the RosterService's
+	// GetWorkingStaff2 RPC.
+	RosterServiceGetWorkingStaff2Procedure = "/tkd.roster.v1.RosterService/GetWorkingStaff2"
 	// RosterServiceGetRequiredShiftsProcedure is the fully-qualified name of the RosterService's
 	// GetRequiredShifts RPC.
 	RosterServiceGetRequiredShiftsProcedure = "/tkd.roster.v1.RosterService/GetRequiredShifts"
@@ -100,6 +103,10 @@ type RosterServiceClient interface {
 	// date specified in GetWorkingStaffRequest. If date is unset, it defaults
 	// to NOW.
 	GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
+	// GetWorkingStaff2 returns a list of user_ids that are working at the
+	// date specified in GetWorkingStaffRequest. If date is unset, it defaults
+	// to NOW.
+	GetWorkingStaff2(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest2]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
 	// GetRequiredShifts returns a list of work-shifts that are required for the requested
 	// time frame.
 	GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error)
@@ -176,6 +183,11 @@ func NewRosterServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+RosterServiceGetWorkingStaffProcedure,
 			opts...,
 		),
+		getWorkingStaff2: connect_go.NewClient[v1.GetWorkingStaffRequest2, v1.GetWorkingStaffResponse](
+			httpClient,
+			baseURL+RosterServiceGetWorkingStaff2Procedure,
+			opts...,
+		),
 		getRequiredShifts: connect_go.NewClient[v1.GetRequiredShiftsRequest, v1.GetRequiredShiftsResponse](
 			httpClient,
 			baseURL+RosterServiceGetRequiredShiftsProcedure,
@@ -207,6 +219,7 @@ type rosterServiceClient struct {
 	approveRoster     *connect_go.Client[v1.ApproveRosterRequest, v1.ApproveRosterResponse]
 	getRoster         *connect_go.Client[v1.GetRosterRequest, v1.GetRosterResponse]
 	getWorkingStaff   *connect_go.Client[v1.GetWorkingStaffRequest, v1.GetWorkingStaffResponse]
+	getWorkingStaff2  *connect_go.Client[v1.GetWorkingStaffRequest2, v1.GetWorkingStaffResponse]
 	getRequiredShifts *connect_go.Client[v1.GetRequiredShiftsRequest, v1.GetRequiredShiftsResponse]
 	sendRosterPreview *connect_go.Client[v1.SendRosterPreviewRequest, v1.SendRosterPreviewResponse]
 	getUserShifts     *connect_go.Client[v1.GetUserShiftsRequest, v1.GetUserShiftsResponse]
@@ -267,6 +280,11 @@ func (c *rosterServiceClient) GetWorkingStaff(ctx context.Context, req *connect_
 	return c.getWorkingStaff.CallUnary(ctx, req)
 }
 
+// GetWorkingStaff2 calls tkd.roster.v1.RosterService.GetWorkingStaff2.
+func (c *rosterServiceClient) GetWorkingStaff2(ctx context.Context, req *connect_go.Request[v1.GetWorkingStaffRequest2]) (*connect_go.Response[v1.GetWorkingStaffResponse], error) {
+	return c.getWorkingStaff2.CallUnary(ctx, req)
+}
+
 // GetRequiredShifts calls tkd.roster.v1.RosterService.GetRequiredShifts.
 func (c *rosterServiceClient) GetRequiredShifts(ctx context.Context, req *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error) {
 	return c.getRequiredShifts.CallUnary(ctx, req)
@@ -306,6 +324,10 @@ type RosterServiceHandler interface {
 	// date specified in GetWorkingStaffRequest. If date is unset, it defaults
 	// to NOW.
 	GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
+	// GetWorkingStaff2 returns a list of user_ids that are working at the
+	// date specified in GetWorkingStaffRequest. If date is unset, it defaults
+	// to NOW.
+	GetWorkingStaff2(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest2]) (*connect_go.Response[v1.GetWorkingStaffResponse], error)
 	// GetRequiredShifts returns a list of work-shifts that are required for the requested
 	// time frame.
 	GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error)
@@ -378,6 +400,11 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 		svc.GetWorkingStaff,
 		opts...,
 	)
+	rosterServiceGetWorkingStaff2Handler := connect_go.NewUnaryHandler(
+		RosterServiceGetWorkingStaff2Procedure,
+		svc.GetWorkingStaff2,
+		opts...,
+	)
 	rosterServiceGetRequiredShiftsHandler := connect_go.NewUnaryHandler(
 		RosterServiceGetRequiredShiftsProcedure,
 		svc.GetRequiredShifts,
@@ -417,6 +444,8 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 			rosterServiceGetRosterHandler.ServeHTTP(w, r)
 		case RosterServiceGetWorkingStaffProcedure:
 			rosterServiceGetWorkingStaffHandler.ServeHTTP(w, r)
+		case RosterServiceGetWorkingStaff2Procedure:
+			rosterServiceGetWorkingStaff2Handler.ServeHTTP(w, r)
 		case RosterServiceGetRequiredShiftsProcedure:
 			rosterServiceGetRequiredShiftsHandler.ServeHTTP(w, r)
 		case RosterServiceSendRosterPreviewProcedure:
@@ -474,6 +503,10 @@ func (UnimplementedRosterServiceHandler) GetRoster(context.Context, *connect_go.
 
 func (UnimplementedRosterServiceHandler) GetWorkingStaff(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest]) (*connect_go.Response[v1.GetWorkingStaffResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.GetWorkingStaff is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) GetWorkingStaff2(context.Context, *connect_go.Request[v1.GetWorkingStaffRequest2]) (*connect_go.Response[v1.GetWorkingStaffResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.GetWorkingStaff2 is not implemented"))
 }
 
 func (UnimplementedRosterServiceHandler) GetRequiredShifts(context.Context, *connect_go.Request[v1.GetRequiredShiftsRequest]) (*connect_go.Response[v1.GetRequiredShiftsResponse], error) {

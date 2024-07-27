@@ -212,6 +212,16 @@ service RosterService {
         };
     }
 
+    // GetWorkingStaff2 returns a list of user_ids that are working at the
+    // date specified in GetWorkingStaffRequest. If date is unset, it defaults
+    // to NOW.
+    rpc GetWorkingStaff2(GetWorkingStaffRequest2) returns (GetWorkingStaffResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+
     // GetRequiredShifts returns a list of work-shifts that are required for the requested
     // time frame.
     rpc GetRequiredShifts(GetRequiredShiftsRequest) returns (GetRequiredShiftsResponse) {
@@ -454,6 +464,26 @@ message GetWorkingStaffRequest {
     // OnCall may be set to true to limit the response to only include
     // working staff IDs assigned to on-call shifts. 
     bool on_call  = 4;
+}
+
+message GetWorkingStaffRequest2 {
+    oneof query {
+        google.protobuf.Timestamp time = 1;
+
+        tkd.common.v1.TimeRange time_range = 2;
+
+        option (buf.validate.oneof).required = true;
+    }
+
+    google.protobuf.FieldMask read_maks = 5;
+
+    // RosterTypeName may be set to the name of the roster type
+    // to limit which working-shifts are considered for the response.
+    string roster_type_name = 6;
+
+    // OnCall may be set to true to limit the response to only include
+    // working staff IDs assigned to on-call shifts. 
+    bool on_call  = 7;
 }
 
 message GetWorkingStaffResponse {

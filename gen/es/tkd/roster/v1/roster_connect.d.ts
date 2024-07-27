@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, CreateRosterTypeRequest, CreateRosterTypeResponse, DeleteRosterRequest, DeleteRosterResponse, DeleteRosterTypeRequest, DeleteRosterTypeResponse, ExportRosterRequest, ExportRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetUserShiftsRequest, GetUserShiftsResponse, GetWorkingStaffRequest, GetWorkingStaffResponse, ListRosterTypesRequest, ListRosterTypesResponse, ListShiftTagsRequest, ListShiftTagsResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
+import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, CreateRosterTypeRequest, CreateRosterTypeResponse, DeleteRosterRequest, DeleteRosterResponse, DeleteRosterTypeRequest, DeleteRosterTypeResponse, ExportRosterRequest, ExportRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetUserShiftsRequest, GetUserShiftsResponse, GetWorkingStaffRequest, GetWorkingStaffRequest2, GetWorkingStaffResponse, ListRosterTypesRequest, ListRosterTypesResponse, ListShiftTagsRequest, ListShiftTagsResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -125,6 +125,19 @@ export declare const RosterService: {
     readonly getWorkingStaff: {
       readonly name: "GetWorkingStaff",
       readonly I: typeof GetWorkingStaffRequest,
+      readonly O: typeof GetWorkingStaffResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * GetWorkingStaff2 returns a list of user_ids that are working at the
+     * date specified in GetWorkingStaffRequest. If date is unset, it defaults
+     * to NOW.
+     *
+     * @generated from rpc tkd.roster.v1.RosterService.GetWorkingStaff2
+     */
+    readonly getWorkingStaff2: {
+      readonly name: "GetWorkingStaff2",
+      readonly I: typeof GetWorkingStaffRequest2,
       readonly O: typeof GetWorkingStaffResponse,
       readonly kind: MethodKind.Unary,
     },
