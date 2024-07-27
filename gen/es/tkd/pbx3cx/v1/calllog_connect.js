@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateOverwriteKindRequest, CreateOverwriteKindResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteOverwriteKindRequest, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListOverwriteKindRequest, ListOverwriteKindResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateOverwriteKindRequest, UpdateOverwriteKindResponse } from "./calllog_pb.js";
+import { CreateInboundNumberRequest, CreateInboundNumberResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteInboundNumberRequest, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListInboundNumberRequest, ListInboundNumberResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateInboundNumberRequest, UpdateInboundNumberResponse } from "./calllog_pb.js";
 import { Empty, MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -36,39 +36,39 @@ export const CallService = {
       idempotency: MethodIdempotency.NoSideEffects,
     },
     /**
-     * @generated from rpc tkd.pbx3cx.v1.CallService.CreateOverwriteKind
+     * @generated from rpc tkd.pbx3cx.v1.CallService.CreateInboundNumber
      */
-    createOverwriteKind: {
-      name: "CreateOverwriteKind",
-      I: CreateOverwriteKindRequest,
-      O: CreateOverwriteKindResponse,
+    createInboundNumber: {
+      name: "CreateInboundNumber",
+      I: CreateInboundNumberRequest,
+      O: CreateInboundNumberResponse,
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc tkd.pbx3cx.v1.CallService.UpdateOverwriteKind
+     * @generated from rpc tkd.pbx3cx.v1.CallService.UpdateInboundNumber
      */
-    updateOverwriteKind: {
-      name: "UpdateOverwriteKind",
-      I: UpdateOverwriteKindRequest,
-      O: UpdateOverwriteKindResponse,
+    updateInboundNumber: {
+      name: "UpdateInboundNumber",
+      I: UpdateInboundNumberRequest,
+      O: UpdateInboundNumberResponse,
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc tkd.pbx3cx.v1.CallService.DeleteOverwriteKind
+     * @generated from rpc tkd.pbx3cx.v1.CallService.DeleteInboundNumber
      */
-    deleteOverwriteKind: {
-      name: "DeleteOverwriteKind",
-      I: DeleteOverwriteKindRequest,
-      O: ListOverwriteKindResponse,
+    deleteInboundNumber: {
+      name: "DeleteInboundNumber",
+      I: DeleteInboundNumberRequest,
+      O: ListInboundNumberResponse,
       kind: MethodKind.Unary,
     },
     /**
-     * @generated from rpc tkd.pbx3cx.v1.CallService.ListOverwriteKind
+     * @generated from rpc tkd.pbx3cx.v1.CallService.ListInboundNumber
      */
-    listOverwriteKind: {
-      name: "ListOverwriteKind",
-      I: ListOverwriteKindRequest,
-      O: ListOverwriteKindResponse,
+    listInboundNumber: {
+      name: "ListInboundNumber",
+      I: ListInboundNumberRequest,
+      O: ListInboundNumberResponse,
       kind: MethodKind.Unary,
     },
     /**

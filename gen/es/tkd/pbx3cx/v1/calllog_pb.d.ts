@@ -198,9 +198,9 @@ export declare class Overwrite extends Message<Overwrite> {
   createdByUserId: string;
 
   /**
-   * @generated from field: tkd.pbx3cx.v1.OverwriteKind kind = 8;
+   * @generated from field: tkd.pbx3cx.v1.InboundNumber inbound_number = 8;
    */
-  kind?: OverwriteKind;
+  inboundNumber?: InboundNumber;
 
   constructor(data?: PartialMessage<Overwrite>);
 
@@ -218,32 +218,32 @@ export declare class Overwrite extends Message<Overwrite> {
 }
 
 /**
- * @generated from message tkd.pbx3cx.v1.OverwriteKind
+ * @generated from message tkd.pbx3cx.v1.InboundNumber
  */
-export declare class OverwriteKind extends Message<OverwriteKind> {
+export declare class InboundNumber extends Message<InboundNumber> {
   /**
-   * @generated from field: string unique_id = 1;
+   * @generated from field: string number = 1;
    */
-  uniqueId: string;
+  number: string;
 
   /**
    * @generated from field: string display_name = 2;
    */
   displayName: string;
 
-  constructor(data?: PartialMessage<OverwriteKind>);
+  constructor(data?: PartialMessage<InboundNumber>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.OverwriteKind";
+  static readonly typeName = "tkd.pbx3cx.v1.InboundNumber";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OverwriteKind;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): InboundNumber;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OverwriteKind;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): InboundNumber;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OverwriteKind;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): InboundNumber;
 
-  static equals(a: OverwriteKind | PlainMessage<OverwriteKind> | undefined, b: OverwriteKind | PlainMessage<OverwriteKind> | undefined): boolean;
+  static equals(a: InboundNumber | PlainMessage<InboundNumber> | undefined, b: InboundNumber | PlainMessage<InboundNumber> | undefined): boolean;
 }
 
 /**
@@ -480,9 +480,9 @@ export declare class GetOnCallRequest extends Message<GetOnCallRequest> {
   ignoreOverwrites: boolean;
 
   /**
-   * @generated from field: string kind = 3;
+   * @generated from field: string inbound_number = 3;
    */
-  kind: string;
+  inboundNumber: string;
 
   constructor(data?: PartialMessage<GetOnCallRequest>);
 
@@ -698,9 +698,9 @@ export declare class GetOverwriteRequest extends Message<GetOverwriteRequest> {
   } | { case: undefined; value?: undefined };
 
   /**
-   * @generated from field: tkd.pbx3cx.v1.KindList kinds = 4;
+   * @generated from field: tkd.pbx3cx.v1.InboundNumberList inbound_numbers = 4;
    */
-  kinds?: KindList;
+  inboundNumbers?: InboundNumberList;
 
   constructor(data?: PartialMessage<GetOverwriteRequest>);
 
@@ -718,27 +718,27 @@ export declare class GetOverwriteRequest extends Message<GetOverwriteRequest> {
 }
 
 /**
- * @generated from message tkd.pbx3cx.v1.KindList
+ * @generated from message tkd.pbx3cx.v1.InboundNumberList
  */
-export declare class KindList extends Message<KindList> {
+export declare class InboundNumberList extends Message<InboundNumberList> {
   /**
-   * @generated from field: repeated string kinds = 1;
+   * @generated from field: repeated string numbers = 1;
    */
-  kinds: string[];
+  numbers: string[];
 
-  constructor(data?: PartialMessage<KindList>);
+  constructor(data?: PartialMessage<InboundNumberList>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.KindList";
+  static readonly typeName = "tkd.pbx3cx.v1.InboundNumberList";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): KindList;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): InboundNumberList;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): KindList;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): InboundNumberList;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): KindList;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): InboundNumberList;
 
-  static equals(a: KindList | PlainMessage<KindList> | undefined, b: KindList | PlainMessage<KindList> | undefined): boolean;
+  static equals(a: InboundNumberList | PlainMessage<InboundNumberList> | undefined, b: InboundNumberList | PlainMessage<InboundNumberList> | undefined): boolean;
 }
 
 /**
@@ -766,189 +766,194 @@ export declare class GetOverwriteResponse extends Message<GetOverwriteResponse> 
 }
 
 /**
- * @generated from message tkd.pbx3cx.v1.CreateOverwriteKindRequest
+ * @generated from message tkd.pbx3cx.v1.CreateInboundNumberRequest
  */
-export declare class CreateOverwriteKindRequest extends Message<CreateOverwriteKindRequest> {
+export declare class CreateInboundNumberRequest extends Message<CreateInboundNumberRequest> {
   /**
-   * @generated from field: tkd.pbx3cx.v1.OverwriteKind kind = 1;
+   * @generated from field: string number = 1;
    */
-  kind?: OverwriteKind;
+  number: string;
 
-  constructor(data?: PartialMessage<CreateOverwriteKindRequest>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.CreateOverwriteKindRequest";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateOverwriteKindRequest;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateOverwriteKindRequest;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateOverwriteKindRequest;
-
-  static equals(a: CreateOverwriteKindRequest | PlainMessage<CreateOverwriteKindRequest> | undefined, b: CreateOverwriteKindRequest | PlainMessage<CreateOverwriteKindRequest> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.pbx3cx.v1.CreateOverwriteKindResponse
- */
-export declare class CreateOverwriteKindResponse extends Message<CreateOverwriteKindResponse> {
   /**
-   * @generated from field: tkd.pbx3cx.v1.OverwriteKind kind = 1;
+   * @generated from field: string display_name = 2;
    */
-  kind?: OverwriteKind;
+  displayName: string;
 
-  constructor(data?: PartialMessage<CreateOverwriteKindResponse>);
+  constructor(data?: PartialMessage<CreateInboundNumberRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.CreateOverwriteKindResponse";
+  static readonly typeName = "tkd.pbx3cx.v1.CreateInboundNumberRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateOverwriteKindResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateInboundNumberRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateOverwriteKindResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateInboundNumberRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateOverwriteKindResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateInboundNumberRequest;
 
-  static equals(a: CreateOverwriteKindResponse | PlainMessage<CreateOverwriteKindResponse> | undefined, b: CreateOverwriteKindResponse | PlainMessage<CreateOverwriteKindResponse> | undefined): boolean;
+  static equals(a: CreateInboundNumberRequest | PlainMessage<CreateInboundNumberRequest> | undefined, b: CreateInboundNumberRequest | PlainMessage<CreateInboundNumberRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.pbx3cx.v1.DeleteOverwriteKindRequest
+ * @generated from message tkd.pbx3cx.v1.CreateInboundNumberResponse
  */
-export declare class DeleteOverwriteKindRequest extends Message<DeleteOverwriteKindRequest> {
+export declare class CreateInboundNumberResponse extends Message<CreateInboundNumberResponse> {
   /**
-   * @generated from field: string unique_id = 1;
+   * @generated from field: tkd.pbx3cx.v1.InboundNumber inbound_number = 1;
    */
-  uniqueId: string;
+  inboundNumber?: InboundNumber;
 
-  constructor(data?: PartialMessage<DeleteOverwriteKindRequest>);
+  constructor(data?: PartialMessage<CreateInboundNumberResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.DeleteOverwriteKindRequest";
+  static readonly typeName = "tkd.pbx3cx.v1.CreateInboundNumberResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteOverwriteKindRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateInboundNumberResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteOverwriteKindRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreateInboundNumberResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteOverwriteKindRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreateInboundNumberResponse;
 
-  static equals(a: DeleteOverwriteKindRequest | PlainMessage<DeleteOverwriteKindRequest> | undefined, b: DeleteOverwriteKindRequest | PlainMessage<DeleteOverwriteKindRequest> | undefined): boolean;
+  static equals(a: CreateInboundNumberResponse | PlainMessage<CreateInboundNumberResponse> | undefined, b: CreateInboundNumberResponse | PlainMessage<CreateInboundNumberResponse> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.pbx3cx.v1.DeleteOverwriteKindResponse
+ * @generated from message tkd.pbx3cx.v1.DeleteInboundNumberRequest
  */
-export declare class DeleteOverwriteKindResponse extends Message<DeleteOverwriteKindResponse> {
-  constructor(data?: PartialMessage<DeleteOverwriteKindResponse>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.DeleteOverwriteKindResponse";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteOverwriteKindResponse;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteOverwriteKindResponse;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteOverwriteKindResponse;
-
-  static equals(a: DeleteOverwriteKindResponse | PlainMessage<DeleteOverwriteKindResponse> | undefined, b: DeleteOverwriteKindResponse | PlainMessage<DeleteOverwriteKindResponse> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.pbx3cx.v1.ListOverwriteKindRequest
- */
-export declare class ListOverwriteKindRequest extends Message<ListOverwriteKindRequest> {
-  constructor(data?: PartialMessage<ListOverwriteKindRequest>);
-
-  static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.ListOverwriteKindRequest";
-  static readonly fields: FieldList;
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListOverwriteKindRequest;
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListOverwriteKindRequest;
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListOverwriteKindRequest;
-
-  static equals(a: ListOverwriteKindRequest | PlainMessage<ListOverwriteKindRequest> | undefined, b: ListOverwriteKindRequest | PlainMessage<ListOverwriteKindRequest> | undefined): boolean;
-}
-
-/**
- * @generated from message tkd.pbx3cx.v1.ListOverwriteKindResponse
- */
-export declare class ListOverwriteKindResponse extends Message<ListOverwriteKindResponse> {
+export declare class DeleteInboundNumberRequest extends Message<DeleteInboundNumberRequest> {
   /**
-   * @generated from field: repeated tkd.pbx3cx.v1.OverwriteKind kinds = 1;
+   * @generated from field: string number = 1;
    */
-  kinds: OverwriteKind[];
+  number: string;
 
-  constructor(data?: PartialMessage<ListOverwriteKindResponse>);
+  constructor(data?: PartialMessage<DeleteInboundNumberRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.ListOverwriteKindResponse";
+  static readonly typeName = "tkd.pbx3cx.v1.DeleteInboundNumberRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListOverwriteKindResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteInboundNumberRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListOverwriteKindResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteInboundNumberRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListOverwriteKindResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteInboundNumberRequest;
 
-  static equals(a: ListOverwriteKindResponse | PlainMessage<ListOverwriteKindResponse> | undefined, b: ListOverwriteKindResponse | PlainMessage<ListOverwriteKindResponse> | undefined): boolean;
+  static equals(a: DeleteInboundNumberRequest | PlainMessage<DeleteInboundNumberRequest> | undefined, b: DeleteInboundNumberRequest | PlainMessage<DeleteInboundNumberRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.pbx3cx.v1.UpdateOverwriteKindRequest
+ * @generated from message tkd.pbx3cx.v1.DeleteInboundNumberResponse
  */
-export declare class UpdateOverwriteKindRequest extends Message<UpdateOverwriteKindRequest> {
+export declare class DeleteInboundNumberResponse extends Message<DeleteInboundNumberResponse> {
+  constructor(data?: PartialMessage<DeleteInboundNumberResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.DeleteInboundNumberResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteInboundNumberResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteInboundNumberResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteInboundNumberResponse;
+
+  static equals(a: DeleteInboundNumberResponse | PlainMessage<DeleteInboundNumberResponse> | undefined, b: DeleteInboundNumberResponse | PlainMessage<DeleteInboundNumberResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.pbx3cx.v1.ListInboundNumberRequest
+ */
+export declare class ListInboundNumberRequest extends Message<ListInboundNumberRequest> {
+  constructor(data?: PartialMessage<ListInboundNumberRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.ListInboundNumberRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListInboundNumberRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListInboundNumberRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListInboundNumberRequest;
+
+  static equals(a: ListInboundNumberRequest | PlainMessage<ListInboundNumberRequest> | undefined, b: ListInboundNumberRequest | PlainMessage<ListInboundNumberRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.pbx3cx.v1.ListInboundNumberResponse
+ */
+export declare class ListInboundNumberResponse extends Message<ListInboundNumberResponse> {
   /**
-   * @generated from field: string unique_id = 1;
+   * @generated from field: repeated tkd.pbx3cx.v1.InboundNumber inbound_numbers = 1;
    */
-  uniqueId: string;
+  inboundNumbers: InboundNumber[];
+
+  constructor(data?: PartialMessage<ListInboundNumberResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.ListInboundNumberResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListInboundNumberResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListInboundNumberResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListInboundNumberResponse;
+
+  static equals(a: ListInboundNumberResponse | PlainMessage<ListInboundNumberResponse> | undefined, b: ListInboundNumberResponse | PlainMessage<ListInboundNumberResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.pbx3cx.v1.UpdateInboundNumberRequest
+ */
+export declare class UpdateInboundNumberRequest extends Message<UpdateInboundNumberRequest> {
+  /**
+   * @generated from field: string number = 1;
+   */
+  number: string;
 
   /**
    * @generated from field: string new_display_name = 2;
    */
   newDisplayName: string;
 
-  constructor(data?: PartialMessage<UpdateOverwriteKindRequest>);
+  constructor(data?: PartialMessage<UpdateInboundNumberRequest>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.UpdateOverwriteKindRequest";
+  static readonly typeName = "tkd.pbx3cx.v1.UpdateInboundNumberRequest";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateOverwriteKindRequest;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateInboundNumberRequest;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateOverwriteKindRequest;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateInboundNumberRequest;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateOverwriteKindRequest;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateInboundNumberRequest;
 
-  static equals(a: UpdateOverwriteKindRequest | PlainMessage<UpdateOverwriteKindRequest> | undefined, b: UpdateOverwriteKindRequest | PlainMessage<UpdateOverwriteKindRequest> | undefined): boolean;
+  static equals(a: UpdateInboundNumberRequest | PlainMessage<UpdateInboundNumberRequest> | undefined, b: UpdateInboundNumberRequest | PlainMessage<UpdateInboundNumberRequest> | undefined): boolean;
 }
 
 /**
- * @generated from message tkd.pbx3cx.v1.UpdateOverwriteKindResponse
+ * @generated from message tkd.pbx3cx.v1.UpdateInboundNumberResponse
  */
-export declare class UpdateOverwriteKindResponse extends Message<UpdateOverwriteKindResponse> {
+export declare class UpdateInboundNumberResponse extends Message<UpdateInboundNumberResponse> {
   /**
-   * @generated from field: tkd.pbx3cx.v1.Overwrite kind = 1;
+   * @generated from field: tkd.pbx3cx.v1.InboundNumber inbound_number = 1;
    */
-  kind?: Overwrite;
+  inboundNumber?: InboundNumber;
 
-  constructor(data?: PartialMessage<UpdateOverwriteKindResponse>);
+  constructor(data?: PartialMessage<UpdateInboundNumberResponse>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "tkd.pbx3cx.v1.UpdateOverwriteKindResponse";
+  static readonly typeName = "tkd.pbx3cx.v1.UpdateInboundNumberResponse";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateOverwriteKindResponse;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateInboundNumberResponse;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateOverwriteKindResponse;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateInboundNumberResponse;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateOverwriteKindResponse;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateInboundNumberResponse;
 
-  static equals(a: UpdateOverwriteKindResponse | PlainMessage<UpdateOverwriteKindResponse> | undefined, b: UpdateOverwriteKindResponse | PlainMessage<UpdateOverwriteKindResponse> | undefined): boolean;
+  static equals(a: UpdateInboundNumberResponse | PlainMessage<UpdateInboundNumberResponse> | undefined, b: UpdateInboundNumberResponse | PlainMessage<UpdateInboundNumberResponse> | undefined): boolean;
 }
 

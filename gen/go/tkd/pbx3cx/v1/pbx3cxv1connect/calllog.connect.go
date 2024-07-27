@@ -38,18 +38,18 @@ const (
 	CallServiceRecordCallProcedure = "/tkd.pbx3cx.v1.CallService/RecordCall"
 	// CallServiceGetOnCallProcedure is the fully-qualified name of the CallService's GetOnCall RPC.
 	CallServiceGetOnCallProcedure = "/tkd.pbx3cx.v1.CallService/GetOnCall"
-	// CallServiceCreateOverwriteKindProcedure is the fully-qualified name of the CallService's
-	// CreateOverwriteKind RPC.
-	CallServiceCreateOverwriteKindProcedure = "/tkd.pbx3cx.v1.CallService/CreateOverwriteKind"
-	// CallServiceUpdateOverwriteKindProcedure is the fully-qualified name of the CallService's
-	// UpdateOverwriteKind RPC.
-	CallServiceUpdateOverwriteKindProcedure = "/tkd.pbx3cx.v1.CallService/UpdateOverwriteKind"
-	// CallServiceDeleteOverwriteKindProcedure is the fully-qualified name of the CallService's
-	// DeleteOverwriteKind RPC.
-	CallServiceDeleteOverwriteKindProcedure = "/tkd.pbx3cx.v1.CallService/DeleteOverwriteKind"
-	// CallServiceListOverwriteKindProcedure is the fully-qualified name of the CallService's
-	// ListOverwriteKind RPC.
-	CallServiceListOverwriteKindProcedure = "/tkd.pbx3cx.v1.CallService/ListOverwriteKind"
+	// CallServiceCreateInboundNumberProcedure is the fully-qualified name of the CallService's
+	// CreateInboundNumber RPC.
+	CallServiceCreateInboundNumberProcedure = "/tkd.pbx3cx.v1.CallService/CreateInboundNumber"
+	// CallServiceUpdateInboundNumberProcedure is the fully-qualified name of the CallService's
+	// UpdateInboundNumber RPC.
+	CallServiceUpdateInboundNumberProcedure = "/tkd.pbx3cx.v1.CallService/UpdateInboundNumber"
+	// CallServiceDeleteInboundNumberProcedure is the fully-qualified name of the CallService's
+	// DeleteInboundNumber RPC.
+	CallServiceDeleteInboundNumberProcedure = "/tkd.pbx3cx.v1.CallService/DeleteInboundNumber"
+	// CallServiceListInboundNumberProcedure is the fully-qualified name of the CallService's
+	// ListInboundNumber RPC.
+	CallServiceListInboundNumberProcedure = "/tkd.pbx3cx.v1.CallService/ListInboundNumber"
 	// CallServiceCreateOverwriteProcedure is the fully-qualified name of the CallService's
 	// CreateOverwrite RPC.
 	CallServiceCreateOverwriteProcedure = "/tkd.pbx3cx.v1.CallService/CreateOverwrite"
@@ -76,10 +76,10 @@ type CallServiceClient interface {
 	RecordCall(context.Context, *connect_go.Request[v1.RecordCallRequest]) (*connect_go.Response[emptypb.Empty], error)
 	// On-Duty/Call APIs
 	GetOnCall(context.Context, *connect_go.Request[v1.GetOnCallRequest]) (*connect_go.Response[v1.GetOnCallResponse], error)
-	CreateOverwriteKind(context.Context, *connect_go.Request[v1.CreateOverwriteKindRequest]) (*connect_go.Response[v1.CreateOverwriteKindResponse], error)
-	UpdateOverwriteKind(context.Context, *connect_go.Request[v1.UpdateOverwriteKindRequest]) (*connect_go.Response[v1.UpdateOverwriteKindResponse], error)
-	DeleteOverwriteKind(context.Context, *connect_go.Request[v1.DeleteOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error)
-	ListOverwriteKind(context.Context, *connect_go.Request[v1.ListOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error)
+	CreateInboundNumber(context.Context, *connect_go.Request[v1.CreateInboundNumberRequest]) (*connect_go.Response[v1.CreateInboundNumberResponse], error)
+	UpdateInboundNumber(context.Context, *connect_go.Request[v1.UpdateInboundNumberRequest]) (*connect_go.Response[v1.UpdateInboundNumberResponse], error)
+	DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
+	ListInboundNumber(context.Context, *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
 	// Overwrite APIS
 	CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error)
 	DeleteOverwrite(context.Context, *connect_go.Request[v1.DeleteOverwriteRequest]) (*connect_go.Response[v1.DeleteOverwriteResponse], error)
@@ -111,24 +111,24 @@ func NewCallServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			connect_go.WithIdempotency(connect_go.IdempotencyNoSideEffects),
 			connect_go.WithClientOptions(opts...),
 		),
-		createOverwriteKind: connect_go.NewClient[v1.CreateOverwriteKindRequest, v1.CreateOverwriteKindResponse](
+		createInboundNumber: connect_go.NewClient[v1.CreateInboundNumberRequest, v1.CreateInboundNumberResponse](
 			httpClient,
-			baseURL+CallServiceCreateOverwriteKindProcedure,
+			baseURL+CallServiceCreateInboundNumberProcedure,
 			opts...,
 		),
-		updateOverwriteKind: connect_go.NewClient[v1.UpdateOverwriteKindRequest, v1.UpdateOverwriteKindResponse](
+		updateInboundNumber: connect_go.NewClient[v1.UpdateInboundNumberRequest, v1.UpdateInboundNumberResponse](
 			httpClient,
-			baseURL+CallServiceUpdateOverwriteKindProcedure,
+			baseURL+CallServiceUpdateInboundNumberProcedure,
 			opts...,
 		),
-		deleteOverwriteKind: connect_go.NewClient[v1.DeleteOverwriteKindRequest, v1.ListOverwriteKindResponse](
+		deleteInboundNumber: connect_go.NewClient[v1.DeleteInboundNumberRequest, v1.ListInboundNumberResponse](
 			httpClient,
-			baseURL+CallServiceDeleteOverwriteKindProcedure,
+			baseURL+CallServiceDeleteInboundNumberProcedure,
 			opts...,
 		),
-		listOverwriteKind: connect_go.NewClient[v1.ListOverwriteKindRequest, v1.ListOverwriteKindResponse](
+		listInboundNumber: connect_go.NewClient[v1.ListInboundNumberRequest, v1.ListInboundNumberResponse](
 			httpClient,
-			baseURL+CallServiceListOverwriteKindProcedure,
+			baseURL+CallServiceListInboundNumberProcedure,
 			opts...,
 		),
 		createOverwrite: connect_go.NewClient[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse](
@@ -168,10 +168,10 @@ func NewCallServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 type callServiceClient struct {
 	recordCall          *connect_go.Client[v1.RecordCallRequest, emptypb.Empty]
 	getOnCall           *connect_go.Client[v1.GetOnCallRequest, v1.GetOnCallResponse]
-	createOverwriteKind *connect_go.Client[v1.CreateOverwriteKindRequest, v1.CreateOverwriteKindResponse]
-	updateOverwriteKind *connect_go.Client[v1.UpdateOverwriteKindRequest, v1.UpdateOverwriteKindResponse]
-	deleteOverwriteKind *connect_go.Client[v1.DeleteOverwriteKindRequest, v1.ListOverwriteKindResponse]
-	listOverwriteKind   *connect_go.Client[v1.ListOverwriteKindRequest, v1.ListOverwriteKindResponse]
+	createInboundNumber *connect_go.Client[v1.CreateInboundNumberRequest, v1.CreateInboundNumberResponse]
+	updateInboundNumber *connect_go.Client[v1.UpdateInboundNumberRequest, v1.UpdateInboundNumberResponse]
+	deleteInboundNumber *connect_go.Client[v1.DeleteInboundNumberRequest, v1.ListInboundNumberResponse]
+	listInboundNumber   *connect_go.Client[v1.ListInboundNumberRequest, v1.ListInboundNumberResponse]
 	createOverwrite     *connect_go.Client[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse]
 	deleteOverwrite     *connect_go.Client[v1.DeleteOverwriteRequest, v1.DeleteOverwriteResponse]
 	getOverwrite        *connect_go.Client[v1.GetOverwriteRequest, v1.GetOverwriteResponse]
@@ -190,24 +190,24 @@ func (c *callServiceClient) GetOnCall(ctx context.Context, req *connect_go.Reque
 	return c.getOnCall.CallUnary(ctx, req)
 }
 
-// CreateOverwriteKind calls tkd.pbx3cx.v1.CallService.CreateOverwriteKind.
-func (c *callServiceClient) CreateOverwriteKind(ctx context.Context, req *connect_go.Request[v1.CreateOverwriteKindRequest]) (*connect_go.Response[v1.CreateOverwriteKindResponse], error) {
-	return c.createOverwriteKind.CallUnary(ctx, req)
+// CreateInboundNumber calls tkd.pbx3cx.v1.CallService.CreateInboundNumber.
+func (c *callServiceClient) CreateInboundNumber(ctx context.Context, req *connect_go.Request[v1.CreateInboundNumberRequest]) (*connect_go.Response[v1.CreateInboundNumberResponse], error) {
+	return c.createInboundNumber.CallUnary(ctx, req)
 }
 
-// UpdateOverwriteKind calls tkd.pbx3cx.v1.CallService.UpdateOverwriteKind.
-func (c *callServiceClient) UpdateOverwriteKind(ctx context.Context, req *connect_go.Request[v1.UpdateOverwriteKindRequest]) (*connect_go.Response[v1.UpdateOverwriteKindResponse], error) {
-	return c.updateOverwriteKind.CallUnary(ctx, req)
+// UpdateInboundNumber calls tkd.pbx3cx.v1.CallService.UpdateInboundNumber.
+func (c *callServiceClient) UpdateInboundNumber(ctx context.Context, req *connect_go.Request[v1.UpdateInboundNumberRequest]) (*connect_go.Response[v1.UpdateInboundNumberResponse], error) {
+	return c.updateInboundNumber.CallUnary(ctx, req)
 }
 
-// DeleteOverwriteKind calls tkd.pbx3cx.v1.CallService.DeleteOverwriteKind.
-func (c *callServiceClient) DeleteOverwriteKind(ctx context.Context, req *connect_go.Request[v1.DeleteOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error) {
-	return c.deleteOverwriteKind.CallUnary(ctx, req)
+// DeleteInboundNumber calls tkd.pbx3cx.v1.CallService.DeleteInboundNumber.
+func (c *callServiceClient) DeleteInboundNumber(ctx context.Context, req *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error) {
+	return c.deleteInboundNumber.CallUnary(ctx, req)
 }
 
-// ListOverwriteKind calls tkd.pbx3cx.v1.CallService.ListOverwriteKind.
-func (c *callServiceClient) ListOverwriteKind(ctx context.Context, req *connect_go.Request[v1.ListOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error) {
-	return c.listOverwriteKind.CallUnary(ctx, req)
+// ListInboundNumber calls tkd.pbx3cx.v1.CallService.ListInboundNumber.
+func (c *callServiceClient) ListInboundNumber(ctx context.Context, req *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error) {
+	return c.listInboundNumber.CallUnary(ctx, req)
 }
 
 // CreateOverwrite calls tkd.pbx3cx.v1.CallService.CreateOverwrite.
@@ -246,10 +246,10 @@ type CallServiceHandler interface {
 	RecordCall(context.Context, *connect_go.Request[v1.RecordCallRequest]) (*connect_go.Response[emptypb.Empty], error)
 	// On-Duty/Call APIs
 	GetOnCall(context.Context, *connect_go.Request[v1.GetOnCallRequest]) (*connect_go.Response[v1.GetOnCallResponse], error)
-	CreateOverwriteKind(context.Context, *connect_go.Request[v1.CreateOverwriteKindRequest]) (*connect_go.Response[v1.CreateOverwriteKindResponse], error)
-	UpdateOverwriteKind(context.Context, *connect_go.Request[v1.UpdateOverwriteKindRequest]) (*connect_go.Response[v1.UpdateOverwriteKindResponse], error)
-	DeleteOverwriteKind(context.Context, *connect_go.Request[v1.DeleteOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error)
-	ListOverwriteKind(context.Context, *connect_go.Request[v1.ListOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error)
+	CreateInboundNumber(context.Context, *connect_go.Request[v1.CreateInboundNumberRequest]) (*connect_go.Response[v1.CreateInboundNumberResponse], error)
+	UpdateInboundNumber(context.Context, *connect_go.Request[v1.UpdateInboundNumberRequest]) (*connect_go.Response[v1.UpdateInboundNumberResponse], error)
+	DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
+	ListInboundNumber(context.Context, *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
 	// Overwrite APIS
 	CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error)
 	DeleteOverwrite(context.Context, *connect_go.Request[v1.DeleteOverwriteRequest]) (*connect_go.Response[v1.DeleteOverwriteResponse], error)
@@ -277,24 +277,24 @@ func NewCallServiceHandler(svc CallServiceHandler, opts ...connect_go.HandlerOpt
 		connect_go.WithIdempotency(connect_go.IdempotencyNoSideEffects),
 		connect_go.WithHandlerOptions(opts...),
 	)
-	callServiceCreateOverwriteKindHandler := connect_go.NewUnaryHandler(
-		CallServiceCreateOverwriteKindProcedure,
-		svc.CreateOverwriteKind,
+	callServiceCreateInboundNumberHandler := connect_go.NewUnaryHandler(
+		CallServiceCreateInboundNumberProcedure,
+		svc.CreateInboundNumber,
 		opts...,
 	)
-	callServiceUpdateOverwriteKindHandler := connect_go.NewUnaryHandler(
-		CallServiceUpdateOverwriteKindProcedure,
-		svc.UpdateOverwriteKind,
+	callServiceUpdateInboundNumberHandler := connect_go.NewUnaryHandler(
+		CallServiceUpdateInboundNumberProcedure,
+		svc.UpdateInboundNumber,
 		opts...,
 	)
-	callServiceDeleteOverwriteKindHandler := connect_go.NewUnaryHandler(
-		CallServiceDeleteOverwriteKindProcedure,
-		svc.DeleteOverwriteKind,
+	callServiceDeleteInboundNumberHandler := connect_go.NewUnaryHandler(
+		CallServiceDeleteInboundNumberProcedure,
+		svc.DeleteInboundNumber,
 		opts...,
 	)
-	callServiceListOverwriteKindHandler := connect_go.NewUnaryHandler(
-		CallServiceListOverwriteKindProcedure,
-		svc.ListOverwriteKind,
+	callServiceListInboundNumberHandler := connect_go.NewUnaryHandler(
+		CallServiceListInboundNumberProcedure,
+		svc.ListInboundNumber,
 		opts...,
 	)
 	callServiceCreateOverwriteHandler := connect_go.NewUnaryHandler(
@@ -333,14 +333,14 @@ func NewCallServiceHandler(svc CallServiceHandler, opts ...connect_go.HandlerOpt
 			callServiceRecordCallHandler.ServeHTTP(w, r)
 		case CallServiceGetOnCallProcedure:
 			callServiceGetOnCallHandler.ServeHTTP(w, r)
-		case CallServiceCreateOverwriteKindProcedure:
-			callServiceCreateOverwriteKindHandler.ServeHTTP(w, r)
-		case CallServiceUpdateOverwriteKindProcedure:
-			callServiceUpdateOverwriteKindHandler.ServeHTTP(w, r)
-		case CallServiceDeleteOverwriteKindProcedure:
-			callServiceDeleteOverwriteKindHandler.ServeHTTP(w, r)
-		case CallServiceListOverwriteKindProcedure:
-			callServiceListOverwriteKindHandler.ServeHTTP(w, r)
+		case CallServiceCreateInboundNumberProcedure:
+			callServiceCreateInboundNumberHandler.ServeHTTP(w, r)
+		case CallServiceUpdateInboundNumberProcedure:
+			callServiceUpdateInboundNumberHandler.ServeHTTP(w, r)
+		case CallServiceDeleteInboundNumberProcedure:
+			callServiceDeleteInboundNumberHandler.ServeHTTP(w, r)
+		case CallServiceListInboundNumberProcedure:
+			callServiceListInboundNumberHandler.ServeHTTP(w, r)
 		case CallServiceCreateOverwriteProcedure:
 			callServiceCreateOverwriteHandler.ServeHTTP(w, r)
 		case CallServiceDeleteOverwriteProcedure:
@@ -370,20 +370,20 @@ func (UnimplementedCallServiceHandler) GetOnCall(context.Context, *connect_go.Re
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.GetOnCall is not implemented"))
 }
 
-func (UnimplementedCallServiceHandler) CreateOverwriteKind(context.Context, *connect_go.Request[v1.CreateOverwriteKindRequest]) (*connect_go.Response[v1.CreateOverwriteKindResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.CreateOverwriteKind is not implemented"))
+func (UnimplementedCallServiceHandler) CreateInboundNumber(context.Context, *connect_go.Request[v1.CreateInboundNumberRequest]) (*connect_go.Response[v1.CreateInboundNumberResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.CreateInboundNumber is not implemented"))
 }
 
-func (UnimplementedCallServiceHandler) UpdateOverwriteKind(context.Context, *connect_go.Request[v1.UpdateOverwriteKindRequest]) (*connect_go.Response[v1.UpdateOverwriteKindResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.UpdateOverwriteKind is not implemented"))
+func (UnimplementedCallServiceHandler) UpdateInboundNumber(context.Context, *connect_go.Request[v1.UpdateInboundNumberRequest]) (*connect_go.Response[v1.UpdateInboundNumberResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.UpdateInboundNumber is not implemented"))
 }
 
-func (UnimplementedCallServiceHandler) DeleteOverwriteKind(context.Context, *connect_go.Request[v1.DeleteOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.DeleteOverwriteKind is not implemented"))
+func (UnimplementedCallServiceHandler) DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.DeleteInboundNumber is not implemented"))
 }
 
-func (UnimplementedCallServiceHandler) ListOverwriteKind(context.Context, *connect_go.Request[v1.ListOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.ListOverwriteKind is not implemented"))
+func (UnimplementedCallServiceHandler) ListInboundNumber(context.Context, *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.ListInboundNumber is not implemented"))
 }
 
 func (UnimplementedCallServiceHandler) CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error) {

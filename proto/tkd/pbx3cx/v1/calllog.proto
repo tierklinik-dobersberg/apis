@@ -51,11 +51,11 @@ message Overwrite {
     google.protobuf.Timestamp created_at = 6;
     string created_by_user_id = 7;
 
-    OverwriteKind kind = 8;
+    InboundNumber inbound_number = 8;
 }
 
-message OverwriteKind {
-    string unique_id = 1;
+message InboundNumber {
+    string number = 1;
     string display_name = 2;
 }
 
@@ -82,25 +82,25 @@ service CallService {
         option idempotency_level = NO_SIDE_EFFECTS;
     }
 
-    rpc CreateOverwriteKind(CreateOverwriteKindRequest) returns (CreateOverwriteKindResponse) {
+    rpc CreateInboundNumber(CreateInboundNumberRequest) returns (CreateInboundNumberResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_ADMIN
         };
     }
 
-    rpc UpdateOverwriteKind(UpdateOverwriteKindRequest) returns (UpdateOverwriteKindResponse) {
+    rpc UpdateInboundNumber(UpdateInboundNumberRequest) returns (UpdateInboundNumberResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_ADMIN
         };
     }
 
-    rpc DeleteOverwriteKind(DeleteOverwriteKindRequest) returns (ListOverwriteKindResponse) {
+    rpc DeleteInboundNumber(DeleteInboundNumberRequest) returns (ListInboundNumberResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_ADMIN
         };
     }
 
-    rpc ListOverwriteKind(ListOverwriteKindRequest) returns (ListOverwriteKindResponse) {
+    rpc ListInboundNumber(ListInboundNumberRequest) returns (ListInboundNumberResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_ADMIN
         };
@@ -185,7 +185,7 @@ message SearchCallLogsResponse {
 message GetOnCallRequest {
     string date = 1; // YYYY-MM-DD
     bool ignore_overwrites = 2;
-    string kind = 3;
+    string inbound_number = 3;
 }
 
 message GetOnCallResponse {
@@ -237,43 +237,44 @@ message GetOverwriteRequest {
         option (buf.validate.oneof).required = true;
     }
 
-    KindList kinds = 4;
+    InboundNumberList inbound_numbers = 4;
 }
 
-message KindList {
-    repeated string kinds = 1;
+message InboundNumberList {
+    repeated string numbers = 1;
 }
 
 message GetOverwriteResponse {
     repeated Overwrite overwrites = 1;
 }
 
-message CreateOverwriteKindRequest {
-    OverwriteKind kind = 1;
+message CreateInboundNumberRequest {
+    string number = 1;
+    string display_name = 2;
 }
 
-message CreateOverwriteKindResponse {
-    OverwriteKind kind = 1;
+message CreateInboundNumberResponse {
+    InboundNumber inbound_number = 1;
 }
 
-message DeleteOverwriteKindRequest {
-    string unique_id = 1;
+message DeleteInboundNumberRequest {
+    string number = 1;
 }
 
-message DeleteOverwriteKindResponse {}
+message DeleteInboundNumberResponse {}
 
-message ListOverwriteKindRequest {}
+message ListInboundNumberRequest {}
 
-message ListOverwriteKindResponse {
-    repeated OverwriteKind kinds = 1;
+message ListInboundNumberResponse {
+    repeated InboundNumber inbound_numbers = 1;
 }
 
 
-message UpdateOverwriteKindRequest {
-    string unique_id = 1;
+message UpdateInboundNumberRequest {
+    string number = 1;
     string new_display_name = 2;
 }
 
-message UpdateOverwriteKindResponse {
-    Overwrite kind = 1;
+message UpdateInboundNumberResponse {
+    InboundNumber inbound_number = 1;
 }

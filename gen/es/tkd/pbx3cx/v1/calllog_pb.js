@@ -65,17 +65,17 @@ export const Overwrite = /*@__PURE__*/ proto3.makeMessageType(
     { no: 5, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "target" },
     { no: 6, name: "created_at", kind: "message", T: Timestamp },
     { no: 7, name: "created_by_user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 8, name: "kind", kind: "message", T: OverwriteKind },
+    { no: 8, name: "inbound_number", kind: "message", T: InboundNumber },
   ],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.OverwriteKind
+ * @generated from message tkd.pbx3cx.v1.InboundNumber
  */
-export const OverwriteKind = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.OverwriteKind",
+export const InboundNumber = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.InboundNumber",
   () => [
-    { no: 1, name: "unique_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
@@ -167,7 +167,7 @@ export const GetOnCallRequest = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "ignore_overwrites", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
-    { no: 3, name: "kind", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "inbound_number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -236,17 +236,17 @@ export const GetOverwriteRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 1, name: "overwrite_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "selector" },
     { no: 2, name: "active_at", kind: "message", T: Timestamp, oneof: "selector" },
     { no: 3, name: "time_range", kind: "message", T: TimeRange, oneof: "selector" },
-    { no: 4, name: "kinds", kind: "message", T: KindList },
+    { no: 4, name: "inbound_numbers", kind: "message", T: InboundNumberList },
   ],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.KindList
+ * @generated from message tkd.pbx3cx.v1.InboundNumberList
  */
-export const KindList = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.KindList",
+export const InboundNumberList = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.InboundNumberList",
   () => [
-    { no: 1, name: "kinds", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "numbers", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -261,79 +261,80 @@ export const GetOverwriteResponse = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.CreateOverwriteKindRequest
+ * @generated from message tkd.pbx3cx.v1.CreateInboundNumberRequest
  */
-export const CreateOverwriteKindRequest = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.CreateOverwriteKindRequest",
+export const CreateInboundNumberRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.CreateInboundNumberRequest",
   () => [
-    { no: 1, name: "kind", kind: "message", T: OverwriteKind },
+    { no: 1, name: "number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.CreateOverwriteKindResponse
+ * @generated from message tkd.pbx3cx.v1.CreateInboundNumberResponse
  */
-export const CreateOverwriteKindResponse = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.CreateOverwriteKindResponse",
+export const CreateInboundNumberResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.CreateInboundNumberResponse",
   () => [
-    { no: 1, name: "kind", kind: "message", T: OverwriteKind },
+    { no: 1, name: "inbound_number", kind: "message", T: InboundNumber },
   ],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.DeleteOverwriteKindRequest
+ * @generated from message tkd.pbx3cx.v1.DeleteInboundNumberRequest
  */
-export const DeleteOverwriteKindRequest = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.DeleteOverwriteKindRequest",
+export const DeleteInboundNumberRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.DeleteInboundNumberRequest",
   () => [
-    { no: 1, name: "unique_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.DeleteOverwriteKindResponse
+ * @generated from message tkd.pbx3cx.v1.DeleteInboundNumberResponse
  */
-export const DeleteOverwriteKindResponse = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.DeleteOverwriteKindResponse",
+export const DeleteInboundNumberResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.DeleteInboundNumberResponse",
   [],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.ListOverwriteKindRequest
+ * @generated from message tkd.pbx3cx.v1.ListInboundNumberRequest
  */
-export const ListOverwriteKindRequest = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.ListOverwriteKindRequest",
+export const ListInboundNumberRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.ListInboundNumberRequest",
   [],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.ListOverwriteKindResponse
+ * @generated from message tkd.pbx3cx.v1.ListInboundNumberResponse
  */
-export const ListOverwriteKindResponse = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.ListOverwriteKindResponse",
+export const ListInboundNumberResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.ListInboundNumberResponse",
   () => [
-    { no: 1, name: "kinds", kind: "message", T: OverwriteKind, repeated: true },
+    { no: 1, name: "inbound_numbers", kind: "message", T: InboundNumber, repeated: true },
   ],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.UpdateOverwriteKindRequest
+ * @generated from message tkd.pbx3cx.v1.UpdateInboundNumberRequest
  */
-export const UpdateOverwriteKindRequest = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.UpdateOverwriteKindRequest",
+export const UpdateInboundNumberRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.UpdateInboundNumberRequest",
   () => [
-    { no: 1, name: "unique_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "new_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
 /**
- * @generated from message tkd.pbx3cx.v1.UpdateOverwriteKindResponse
+ * @generated from message tkd.pbx3cx.v1.UpdateInboundNumberResponse
  */
-export const UpdateOverwriteKindResponse = /*@__PURE__*/ proto3.makeMessageType(
-  "tkd.pbx3cx.v1.UpdateOverwriteKindResponse",
+export const UpdateInboundNumberResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.UpdateInboundNumberResponse",
   () => [
-    { no: 1, name: "kind", kind: "message", T: Overwrite },
+    { no: 1, name: "inbound_number", kind: "message", T: InboundNumber },
   ],
 );
 
