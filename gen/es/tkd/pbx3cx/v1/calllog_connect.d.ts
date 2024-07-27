@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateOverwriteRequest, CreateOverwriteResponse, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse } from "./calllog_pb.js";
+import { CreateOverwriteKindRequest, CreateOverwriteKindResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteOverwriteKindRequest, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListOverwriteKindRequest, ListOverwriteKindResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateOverwriteKindRequest, UpdateOverwriteKindResponse } from "./calllog_pb.js";
 import { Empty, MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -34,6 +34,42 @@ export declare const CallService: {
       readonly O: typeof GetOnCallResponse,
       readonly kind: MethodKind.Unary,
       readonly idempotency: MethodIdempotency.NoSideEffects,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.CreateOverwriteKind
+     */
+    readonly createOverwriteKind: {
+      readonly name: "CreateOverwriteKind",
+      readonly I: typeof CreateOverwriteKindRequest,
+      readonly O: typeof CreateOverwriteKindResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.UpdateOverwriteKind
+     */
+    readonly updateOverwriteKind: {
+      readonly name: "UpdateOverwriteKind",
+      readonly I: typeof UpdateOverwriteKindRequest,
+      readonly O: typeof UpdateOverwriteKindResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.DeleteOverwriteKind
+     */
+    readonly deleteOverwriteKind: {
+      readonly name: "DeleteOverwriteKind",
+      readonly I: typeof DeleteOverwriteKindRequest,
+      readonly O: typeof ListOverwriteKindResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.ListOverwriteKind
+     */
+    readonly listOverwriteKind: {
+      readonly name: "ListOverwriteKind",
+      readonly I: typeof ListOverwriteKindRequest,
+      readonly O: typeof ListOverwriteKindResponse,
+      readonly kind: MethodKind.Unary,
     },
     /**
      * Overwrite APIS

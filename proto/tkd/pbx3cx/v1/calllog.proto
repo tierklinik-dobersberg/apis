@@ -50,9 +50,20 @@ message Overwrite {
 
     google.protobuf.Timestamp created_at = 6;
     string created_by_user_id = 7;
+
+    OverwriteKind kind = 8;
+}
+
+message OverwriteKind {
+    string unique_id = 1;
+    string display_name = 2;
 }
 
 service CallService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["idm_superuser"]
+    };
+
     option (tkd.common.v1.default_host) = "3cx.dobersberg.vet";
 
     // Recording APIS 
@@ -69,6 +80,30 @@ service CallService {
         };
 
         option idempotency_level = NO_SIDE_EFFECTS;
+    }
+
+    rpc CreateOverwriteKind(CreateOverwriteKindRequest) returns (CreateOverwriteKindResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN
+        };
+    }
+
+    rpc UpdateOverwriteKind(UpdateOverwriteKindRequest) returns (UpdateOverwriteKindResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN
+        };
+    }
+
+    rpc DeleteOverwriteKind(DeleteOverwriteKindRequest) returns (ListOverwriteKindResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN
+        };
+    }
+
+    rpc ListOverwriteKind(ListOverwriteKindRequest) returns (ListOverwriteKindResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN
+        };
     }
 
     // Overwrite APIS
@@ -150,6 +185,7 @@ message SearchCallLogsResponse {
 message GetOnCallRequest {
     string date = 1; // YYYY-MM-DD
     bool ignore_overwrites = 2;
+    string kind = 3;
 }
 
 message GetOnCallResponse {
@@ -174,6 +210,8 @@ message CreateOverwriteRequest {
     google.protobuf.Timestamp to = 4 [
         (buf.validate.field).required = true
     ];
+
+    string kind = 5;
 }
 
 message CreateOverwriteResponse {
@@ -198,8 +236,44 @@ message GetOverwriteRequest {
 
         option (buf.validate.oneof).required = true;
     }
+
+    KindList kinds = 4;
+}
+
+message KindList {
+    repeated string kinds = 1;
 }
 
 message GetOverwriteResponse {
     repeated Overwrite overwrites = 1;
+}
+
+message CreateOverwriteKindRequest {
+    OverwriteKind kind = 1;
+}
+
+message CreateOverwriteKindResponse {
+    OverwriteKind kind = 1;
+}
+
+message DeleteOverwriteKindRequest {
+    string unique_id = 1;
+}
+
+message DeleteOverwriteKindResponse {}
+
+message ListOverwriteKindRequest {}
+
+message ListOverwriteKindResponse {
+    repeated OverwriteKind kinds = 1;
+}
+
+
+message UpdateOverwriteKindRequest {
+    string unique_id = 1;
+    string new_display_name = 2;
+}
+
+message UpdateOverwriteKindResponse {
+    Overwrite kind = 1;
 }

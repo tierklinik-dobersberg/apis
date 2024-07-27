@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateOverwriteRequest, CreateOverwriteResponse, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse } from "./calllog_pb.js";
+import { CreateOverwriteKindRequest, CreateOverwriteKindResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteOverwriteKindRequest, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListOverwriteKindRequest, ListOverwriteKindResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateOverwriteKindRequest, UpdateOverwriteKindResponse } from "./calllog_pb.js";
 import { Empty, MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -34,6 +34,42 @@ export const CallService = {
       O: GetOnCallResponse,
       kind: MethodKind.Unary,
       idempotency: MethodIdempotency.NoSideEffects,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.CreateOverwriteKind
+     */
+    createOverwriteKind: {
+      name: "CreateOverwriteKind",
+      I: CreateOverwriteKindRequest,
+      O: CreateOverwriteKindResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.UpdateOverwriteKind
+     */
+    updateOverwriteKind: {
+      name: "UpdateOverwriteKind",
+      I: UpdateOverwriteKindRequest,
+      O: UpdateOverwriteKindResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.DeleteOverwriteKind
+     */
+    deleteOverwriteKind: {
+      name: "DeleteOverwriteKind",
+      I: DeleteOverwriteKindRequest,
+      O: ListOverwriteKindResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.ListOverwriteKind
+     */
+    listOverwriteKind: {
+      name: "ListOverwriteKind",
+      I: ListOverwriteKindRequest,
+      O: ListOverwriteKindResponse,
+      kind: MethodKind.Unary,
     },
     /**
      * Overwrite APIS

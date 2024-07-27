@@ -38,6 +38,18 @@ const (
 	CallServiceRecordCallProcedure = "/tkd.pbx3cx.v1.CallService/RecordCall"
 	// CallServiceGetOnCallProcedure is the fully-qualified name of the CallService's GetOnCall RPC.
 	CallServiceGetOnCallProcedure = "/tkd.pbx3cx.v1.CallService/GetOnCall"
+	// CallServiceCreateOverwriteKindProcedure is the fully-qualified name of the CallService's
+	// CreateOverwriteKind RPC.
+	CallServiceCreateOverwriteKindProcedure = "/tkd.pbx3cx.v1.CallService/CreateOverwriteKind"
+	// CallServiceUpdateOverwriteKindProcedure is the fully-qualified name of the CallService's
+	// UpdateOverwriteKind RPC.
+	CallServiceUpdateOverwriteKindProcedure = "/tkd.pbx3cx.v1.CallService/UpdateOverwriteKind"
+	// CallServiceDeleteOverwriteKindProcedure is the fully-qualified name of the CallService's
+	// DeleteOverwriteKind RPC.
+	CallServiceDeleteOverwriteKindProcedure = "/tkd.pbx3cx.v1.CallService/DeleteOverwriteKind"
+	// CallServiceListOverwriteKindProcedure is the fully-qualified name of the CallService's
+	// ListOverwriteKind RPC.
+	CallServiceListOverwriteKindProcedure = "/tkd.pbx3cx.v1.CallService/ListOverwriteKind"
 	// CallServiceCreateOverwriteProcedure is the fully-qualified name of the CallService's
 	// CreateOverwrite RPC.
 	CallServiceCreateOverwriteProcedure = "/tkd.pbx3cx.v1.CallService/CreateOverwrite"
@@ -64,6 +76,10 @@ type CallServiceClient interface {
 	RecordCall(context.Context, *connect_go.Request[v1.RecordCallRequest]) (*connect_go.Response[emptypb.Empty], error)
 	// On-Duty/Call APIs
 	GetOnCall(context.Context, *connect_go.Request[v1.GetOnCallRequest]) (*connect_go.Response[v1.GetOnCallResponse], error)
+	CreateOverwriteKind(context.Context, *connect_go.Request[v1.CreateOverwriteKindRequest]) (*connect_go.Response[v1.CreateOverwriteKindResponse], error)
+	UpdateOverwriteKind(context.Context, *connect_go.Request[v1.UpdateOverwriteKindRequest]) (*connect_go.Response[v1.UpdateOverwriteKindResponse], error)
+	DeleteOverwriteKind(context.Context, *connect_go.Request[v1.DeleteOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error)
+	ListOverwriteKind(context.Context, *connect_go.Request[v1.ListOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error)
 	// Overwrite APIS
 	CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error)
 	DeleteOverwrite(context.Context, *connect_go.Request[v1.DeleteOverwriteRequest]) (*connect_go.Response[v1.DeleteOverwriteResponse], error)
@@ -94,6 +110,26 @@ func NewCallServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+CallServiceGetOnCallProcedure,
 			connect_go.WithIdempotency(connect_go.IdempotencyNoSideEffects),
 			connect_go.WithClientOptions(opts...),
+		),
+		createOverwriteKind: connect_go.NewClient[v1.CreateOverwriteKindRequest, v1.CreateOverwriteKindResponse](
+			httpClient,
+			baseURL+CallServiceCreateOverwriteKindProcedure,
+			opts...,
+		),
+		updateOverwriteKind: connect_go.NewClient[v1.UpdateOverwriteKindRequest, v1.UpdateOverwriteKindResponse](
+			httpClient,
+			baseURL+CallServiceUpdateOverwriteKindProcedure,
+			opts...,
+		),
+		deleteOverwriteKind: connect_go.NewClient[v1.DeleteOverwriteKindRequest, v1.ListOverwriteKindResponse](
+			httpClient,
+			baseURL+CallServiceDeleteOverwriteKindProcedure,
+			opts...,
+		),
+		listOverwriteKind: connect_go.NewClient[v1.ListOverwriteKindRequest, v1.ListOverwriteKindResponse](
+			httpClient,
+			baseURL+CallServiceListOverwriteKindProcedure,
+			opts...,
 		),
 		createOverwrite: connect_go.NewClient[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse](
 			httpClient,
@@ -130,14 +166,18 @@ func NewCallServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 
 // callServiceClient implements CallServiceClient.
 type callServiceClient struct {
-	recordCall         *connect_go.Client[v1.RecordCallRequest, emptypb.Empty]
-	getOnCall          *connect_go.Client[v1.GetOnCallRequest, v1.GetOnCallResponse]
-	createOverwrite    *connect_go.Client[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse]
-	deleteOverwrite    *connect_go.Client[v1.DeleteOverwriteRequest, v1.DeleteOverwriteResponse]
-	getOverwrite       *connect_go.Client[v1.GetOverwriteRequest, v1.GetOverwriteResponse]
-	getLogsForDate     *connect_go.Client[v1.GetLogsForDateRequest, v1.GetLogsForDateResponse]
-	searchCallLogs     *connect_go.Client[v1.SearchCallLogsRequest, v1.SearchCallLogsResponse]
-	getLogsForCustomer *connect_go.Client[v1.GetLogsForCustomerRequest, v1.GetLogsForCustomerResponse]
+	recordCall          *connect_go.Client[v1.RecordCallRequest, emptypb.Empty]
+	getOnCall           *connect_go.Client[v1.GetOnCallRequest, v1.GetOnCallResponse]
+	createOverwriteKind *connect_go.Client[v1.CreateOverwriteKindRequest, v1.CreateOverwriteKindResponse]
+	updateOverwriteKind *connect_go.Client[v1.UpdateOverwriteKindRequest, v1.UpdateOverwriteKindResponse]
+	deleteOverwriteKind *connect_go.Client[v1.DeleteOverwriteKindRequest, v1.ListOverwriteKindResponse]
+	listOverwriteKind   *connect_go.Client[v1.ListOverwriteKindRequest, v1.ListOverwriteKindResponse]
+	createOverwrite     *connect_go.Client[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse]
+	deleteOverwrite     *connect_go.Client[v1.DeleteOverwriteRequest, v1.DeleteOverwriteResponse]
+	getOverwrite        *connect_go.Client[v1.GetOverwriteRequest, v1.GetOverwriteResponse]
+	getLogsForDate      *connect_go.Client[v1.GetLogsForDateRequest, v1.GetLogsForDateResponse]
+	searchCallLogs      *connect_go.Client[v1.SearchCallLogsRequest, v1.SearchCallLogsResponse]
+	getLogsForCustomer  *connect_go.Client[v1.GetLogsForCustomerRequest, v1.GetLogsForCustomerResponse]
 }
 
 // RecordCall calls tkd.pbx3cx.v1.CallService.RecordCall.
@@ -148,6 +188,26 @@ func (c *callServiceClient) RecordCall(ctx context.Context, req *connect_go.Requ
 // GetOnCall calls tkd.pbx3cx.v1.CallService.GetOnCall.
 func (c *callServiceClient) GetOnCall(ctx context.Context, req *connect_go.Request[v1.GetOnCallRequest]) (*connect_go.Response[v1.GetOnCallResponse], error) {
 	return c.getOnCall.CallUnary(ctx, req)
+}
+
+// CreateOverwriteKind calls tkd.pbx3cx.v1.CallService.CreateOverwriteKind.
+func (c *callServiceClient) CreateOverwriteKind(ctx context.Context, req *connect_go.Request[v1.CreateOverwriteKindRequest]) (*connect_go.Response[v1.CreateOverwriteKindResponse], error) {
+	return c.createOverwriteKind.CallUnary(ctx, req)
+}
+
+// UpdateOverwriteKind calls tkd.pbx3cx.v1.CallService.UpdateOverwriteKind.
+func (c *callServiceClient) UpdateOverwriteKind(ctx context.Context, req *connect_go.Request[v1.UpdateOverwriteKindRequest]) (*connect_go.Response[v1.UpdateOverwriteKindResponse], error) {
+	return c.updateOverwriteKind.CallUnary(ctx, req)
+}
+
+// DeleteOverwriteKind calls tkd.pbx3cx.v1.CallService.DeleteOverwriteKind.
+func (c *callServiceClient) DeleteOverwriteKind(ctx context.Context, req *connect_go.Request[v1.DeleteOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error) {
+	return c.deleteOverwriteKind.CallUnary(ctx, req)
+}
+
+// ListOverwriteKind calls tkd.pbx3cx.v1.CallService.ListOverwriteKind.
+func (c *callServiceClient) ListOverwriteKind(ctx context.Context, req *connect_go.Request[v1.ListOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error) {
+	return c.listOverwriteKind.CallUnary(ctx, req)
 }
 
 // CreateOverwrite calls tkd.pbx3cx.v1.CallService.CreateOverwrite.
@@ -186,6 +246,10 @@ type CallServiceHandler interface {
 	RecordCall(context.Context, *connect_go.Request[v1.RecordCallRequest]) (*connect_go.Response[emptypb.Empty], error)
 	// On-Duty/Call APIs
 	GetOnCall(context.Context, *connect_go.Request[v1.GetOnCallRequest]) (*connect_go.Response[v1.GetOnCallResponse], error)
+	CreateOverwriteKind(context.Context, *connect_go.Request[v1.CreateOverwriteKindRequest]) (*connect_go.Response[v1.CreateOverwriteKindResponse], error)
+	UpdateOverwriteKind(context.Context, *connect_go.Request[v1.UpdateOverwriteKindRequest]) (*connect_go.Response[v1.UpdateOverwriteKindResponse], error)
+	DeleteOverwriteKind(context.Context, *connect_go.Request[v1.DeleteOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error)
+	ListOverwriteKind(context.Context, *connect_go.Request[v1.ListOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error)
 	// Overwrite APIS
 	CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error)
 	DeleteOverwrite(context.Context, *connect_go.Request[v1.DeleteOverwriteRequest]) (*connect_go.Response[v1.DeleteOverwriteResponse], error)
@@ -212,6 +276,26 @@ func NewCallServiceHandler(svc CallServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetOnCall,
 		connect_go.WithIdempotency(connect_go.IdempotencyNoSideEffects),
 		connect_go.WithHandlerOptions(opts...),
+	)
+	callServiceCreateOverwriteKindHandler := connect_go.NewUnaryHandler(
+		CallServiceCreateOverwriteKindProcedure,
+		svc.CreateOverwriteKind,
+		opts...,
+	)
+	callServiceUpdateOverwriteKindHandler := connect_go.NewUnaryHandler(
+		CallServiceUpdateOverwriteKindProcedure,
+		svc.UpdateOverwriteKind,
+		opts...,
+	)
+	callServiceDeleteOverwriteKindHandler := connect_go.NewUnaryHandler(
+		CallServiceDeleteOverwriteKindProcedure,
+		svc.DeleteOverwriteKind,
+		opts...,
+	)
+	callServiceListOverwriteKindHandler := connect_go.NewUnaryHandler(
+		CallServiceListOverwriteKindProcedure,
+		svc.ListOverwriteKind,
+		opts...,
 	)
 	callServiceCreateOverwriteHandler := connect_go.NewUnaryHandler(
 		CallServiceCreateOverwriteProcedure,
@@ -249,6 +333,14 @@ func NewCallServiceHandler(svc CallServiceHandler, opts ...connect_go.HandlerOpt
 			callServiceRecordCallHandler.ServeHTTP(w, r)
 		case CallServiceGetOnCallProcedure:
 			callServiceGetOnCallHandler.ServeHTTP(w, r)
+		case CallServiceCreateOverwriteKindProcedure:
+			callServiceCreateOverwriteKindHandler.ServeHTTP(w, r)
+		case CallServiceUpdateOverwriteKindProcedure:
+			callServiceUpdateOverwriteKindHandler.ServeHTTP(w, r)
+		case CallServiceDeleteOverwriteKindProcedure:
+			callServiceDeleteOverwriteKindHandler.ServeHTTP(w, r)
+		case CallServiceListOverwriteKindProcedure:
+			callServiceListOverwriteKindHandler.ServeHTTP(w, r)
 		case CallServiceCreateOverwriteProcedure:
 			callServiceCreateOverwriteHandler.ServeHTTP(w, r)
 		case CallServiceDeleteOverwriteProcedure:
@@ -276,6 +368,22 @@ func (UnimplementedCallServiceHandler) RecordCall(context.Context, *connect_go.R
 
 func (UnimplementedCallServiceHandler) GetOnCall(context.Context, *connect_go.Request[v1.GetOnCallRequest]) (*connect_go.Response[v1.GetOnCallResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.GetOnCall is not implemented"))
+}
+
+func (UnimplementedCallServiceHandler) CreateOverwriteKind(context.Context, *connect_go.Request[v1.CreateOverwriteKindRequest]) (*connect_go.Response[v1.CreateOverwriteKindResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.CreateOverwriteKind is not implemented"))
+}
+
+func (UnimplementedCallServiceHandler) UpdateOverwriteKind(context.Context, *connect_go.Request[v1.UpdateOverwriteKindRequest]) (*connect_go.Response[v1.UpdateOverwriteKindResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.UpdateOverwriteKind is not implemented"))
+}
+
+func (UnimplementedCallServiceHandler) DeleteOverwriteKind(context.Context, *connect_go.Request[v1.DeleteOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.DeleteOverwriteKind is not implemented"))
+}
+
+func (UnimplementedCallServiceHandler) ListOverwriteKind(context.Context, *connect_go.Request[v1.ListOverwriteKindRequest]) (*connect_go.Response[v1.ListOverwriteKindResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.ListOverwriteKind is not implemented"))
 }
 
 func (UnimplementedCallServiceHandler) CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error) {
