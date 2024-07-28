@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Duration, proto3, Timestamp } from "@bufbuild/protobuf";
+import { Duration, FieldMask, proto3, Timestamp } from "@bufbuild/protobuf";
 import { Profile } from "../../idm/v1/user_pb.js";
 import { TimeRange } from "../../common/v1/time_range_pb.js";
 import { CustomerRef } from "../../customer/v1/customer_pb.js";
@@ -77,6 +77,8 @@ export const InboundNumber = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "roster_shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -269,6 +271,8 @@ export const CreateInboundNumberRequest = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "roster_shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -326,6 +330,9 @@ export const UpdateInboundNumberRequest = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "new_display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "roster_shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 10, name: "update_mask", kind: "message", T: FieldMask },
   ],
 );
 

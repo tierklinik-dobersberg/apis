@@ -313,6 +313,7 @@ export const GetWorkingStaffRequest2 = /*@__PURE__*/ proto3.makeMessageType(
     { no: 5, name: "read_maks", kind: "message", T: FieldMask },
     { no: 6, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 7, name: "on_call", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 8, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, Duration, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, Duration, FieldList, FieldMask, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Profile } from "../../idm/v1/user_pb.js";
 import type { TimeRange } from "../../common/v1/time_range_pb.js";
@@ -222,14 +222,37 @@ export declare class Overwrite extends Message<Overwrite> {
  */
 export declare class InboundNumber extends Message<InboundNumber> {
   /**
+   * Number is the inbound number.
+   *
    * @generated from field: string number = 1;
    */
   number: string;
 
   /**
+   * DisplayName is an optional display-name or description for
+   * the inbound number.
+   *
    * @generated from field: string display_name = 2;
    */
   displayName: string;
+
+  /**
+   * RosterShiftTags is a list of roster shift tags that should
+   * be queried when resolving the employees that are currently on-duty.
+   *
+   * @generated from field: repeated string roster_shift_tags = 3;
+   */
+  rosterShiftTags: string[];
+
+  /**
+   * An optional roster type name to query when resolving the employees
+   * that are currently on duty.
+   * If unset, CallService will use the default RosterTypeName from it's
+   * configuration.
+   *
+   * @generated from field: string roster_type_name = 4;
+   */
+  rosterTypeName: string;
 
   constructor(data?: PartialMessage<InboundNumber>);
 
@@ -784,6 +807,24 @@ export declare class CreateInboundNumberRequest extends Message<CreateInboundNum
    */
   displayName: string;
 
+  /**
+   * RosterShiftTags is a list of roster shift tags that should
+   * be queried when resolving the employees that are currently on-duty.
+   *
+   * @generated from field: repeated string roster_shift_tags = 3;
+   */
+  rosterShiftTags: string[];
+
+  /**
+   * An optional roster type name to query when resolving the employees
+   * that are currently on duty.
+   * If unset, CallService will use the default RosterTypeName from it's
+   * configuration.
+   *
+   * @generated from field: string roster_type_name = 4;
+   */
+  rosterTypeName: string;
+
   constructor(data?: PartialMessage<CreateInboundNumberRequest>);
 
   static readonly runtime: typeof proto3;
@@ -914,14 +955,43 @@ export declare class ListInboundNumberResponse extends Message<ListInboundNumber
  */
 export declare class UpdateInboundNumberRequest extends Message<UpdateInboundNumberRequest> {
   /**
+   * Number is the number to update.
+   *
    * @generated from field: string number = 1;
    */
   number: string;
 
   /**
+   * NewDisplayName is the new display name for the number.
+   *
    * @generated from field: string new_display_name = 2;
    */
   newDisplayName: string;
+
+  /**
+   * RosterShiftTags is a list of roster shift tags that should
+   * be queried when resolving the employees that are currently on-duty.
+   *
+   * @generated from field: repeated string roster_shift_tags = 3;
+   */
+  rosterShiftTags: string[];
+
+  /**
+   * An optional roster type name to query when resolving the employees
+   * that are currently on duty.
+   * If unset, CallService will use the default RosterTypeName from it's
+   * configuration.
+   *
+   * @generated from field: string roster_type_name = 4;
+   */
+  rosterTypeName: string;
+
+  /**
+   * UpdateMask specifies which fields of the InboundNumber should be updated.
+   *
+   * @generated from field: google.protobuf.FieldMask update_mask = 10;
+   */
+  updateMask?: FieldMask;
 
   constructor(data?: PartialMessage<UpdateInboundNumberRequest>);
 

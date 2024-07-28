@@ -5,6 +5,7 @@ package tkd.pbx3cx.v1;
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
 import "tkd/common/v1/descriptor.proto";
 import "tkd/common/v1/time_range.proto";
 import "tkd/customer/v1/customer.proto";
@@ -55,8 +56,22 @@ message Overwrite {
 }
 
 message InboundNumber {
+    // Number is the inbound number.
     string number = 1;
+
+    // DisplayName is an optional display-name or description for
+    // the inbound number.
     string display_name = 2;
+
+    // RosterShiftTags is a list of roster shift tags that should
+    // be queried when resolving the employees that are currently on-duty.
+    repeated string roster_shift_tags = 3;
+
+    // An optional roster type name to query when resolving the employees
+    // that are currently on duty.
+    // If unset, CallService will use the default RosterTypeName from it's
+    // configuration.
+    string roster_type_name = 4;
 }
 
 service CallService {
@@ -251,8 +266,21 @@ message GetOverwriteResponse {
 }
 
 message CreateInboundNumberRequest {
-    string number = 1;
+    string number = 1 [
+        (buf.validate.field).required = true
+    ];
+
     string display_name = 2;
+
+    // RosterShiftTags is a list of roster shift tags that should
+    // be queried when resolving the employees that are currently on-duty.
+    repeated string roster_shift_tags = 3;
+
+    // An optional roster type name to query when resolving the employees
+    // that are currently on duty.
+    // If unset, CallService will use the default RosterTypeName from it's
+    // configuration.
+    string roster_type_name = 4;
 }
 
 message CreateInboundNumberResponse {
@@ -260,7 +288,9 @@ message CreateInboundNumberResponse {
 }
 
 message DeleteInboundNumberRequest {
-    string number = 1;
+    string number = 1 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message DeleteInboundNumberResponse {}
@@ -273,8 +303,26 @@ message ListInboundNumberResponse {
 
 
 message UpdateInboundNumberRequest {
-    string number = 1;
+    // Number is the number to update.
+    string number = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // NewDisplayName is the new display name for the number.
     string new_display_name = 2;
+
+    // RosterShiftTags is a list of roster shift tags that should
+    // be queried when resolving the employees that are currently on-duty.
+    repeated string roster_shift_tags = 3;
+
+    // An optional roster type name to query when resolving the employees
+    // that are currently on duty.
+    // If unset, CallService will use the default RosterTypeName from it's
+    // configuration.
+    string roster_type_name = 4;
+
+    // UpdateMask specifies which fields of the InboundNumber should be updated.
+    google.protobuf.FieldMask update_mask = 10;
 }
 
 message UpdateInboundNumberResponse {

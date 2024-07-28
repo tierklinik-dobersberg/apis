@@ -484,6 +484,9 @@ message GetWorkingStaffRequest2 {
     // OnCall may be set to true to limit the response to only include
     // working staff IDs assigned to on-call shifts. 
     bool on_call  = 7;
+
+    // ShiftTags is a list of shift-tags that should be considered.
+    repeated string shift_tags = 8;
 }
 
 message GetWorkingStaffResponse {

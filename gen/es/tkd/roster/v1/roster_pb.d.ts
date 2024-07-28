@@ -1080,6 +1080,13 @@ export declare class GetWorkingStaffRequest2 extends Message<GetWorkingStaffRequ
    */
   onCall: boolean;
 
+  /**
+   * ShiftTags is a list of shift-tags that should be considered.
+   *
+   * @generated from field: repeated string shift_tags = 8;
+   */
+  shiftTags: string[];
+
   constructor(data?: PartialMessage<GetWorkingStaffRequest2>);
 
   static readonly runtime: typeof proto3;
