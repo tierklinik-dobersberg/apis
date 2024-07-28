@@ -194,7 +194,7 @@ export const CreateOverwriteRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 2, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "transfer_target" },
     { no: 3, name: "from", kind: "message", T: Timestamp },
     { no: 4, name: "to", kind: "message", T: Timestamp },
-    { no: 5, name: "kind", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "inbound_number", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -216,6 +216,7 @@ export const DeleteOverwriteRequest = /*@__PURE__*/ proto3.makeMessageType(
   () => [
     { no: 1, name: "overwrite_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "selector" },
     { no: 2, name: "active_at", kind: "message", T: Timestamp, oneof: "selector" },
+    { no: 3, name: "inbound_numbers", kind: "message", T: InboundNumberList },
   ],
 );
 

@@ -572,9 +572,9 @@ export declare class CreateOverwriteRequest extends Message<CreateOverwriteReque
   to?: Timestamp;
 
   /**
-   * @generated from field: string kind = 5;
+   * @generated from field: string inbound_number = 5;
    */
-  kind: string;
+  inboundNumber: string;
 
   constructor(data?: PartialMessage<CreateOverwriteRequest>);
 
@@ -635,6 +635,11 @@ export declare class DeleteOverwriteRequest extends Message<DeleteOverwriteReque
     value: Timestamp;
     case: "activeAt";
   } | { case: undefined; value?: undefined };
+
+  /**
+   * @generated from field: tkd.pbx3cx.v1.InboundNumberList inbound_numbers = 3;
+   */
+  inboundNumbers?: InboundNumberList;
 
   constructor(data?: PartialMessage<DeleteOverwriteRequest>);
 

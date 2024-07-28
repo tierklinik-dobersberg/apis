@@ -211,7 +211,7 @@ message CreateOverwriteRequest {
         (buf.validate.field).required = true
     ];
 
-    string kind = 5;
+    string inbound_number = 5;
 }
 
 message CreateOverwriteResponse {
@@ -225,6 +225,8 @@ message DeleteOverwriteRequest {
 
         option (buf.validate.oneof).required = true;
     }
+
+    InboundNumberList inbound_numbers = 3;
 }
 message DeleteOverwriteResponse {}
 
