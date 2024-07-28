@@ -94,7 +94,7 @@ service CallService {
         };
     }
 
-    rpc DeleteInboundNumber(DeleteInboundNumberRequest) returns (ListInboundNumberResponse) {
+    rpc DeleteInboundNumber(DeleteInboundNumberRequest) returns (DeleteInboundNumberResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_ADMIN
         };

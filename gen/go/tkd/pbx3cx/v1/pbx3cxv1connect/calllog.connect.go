@@ -78,7 +78,7 @@ type CallServiceClient interface {
 	GetOnCall(context.Context, *connect_go.Request[v1.GetOnCallRequest]) (*connect_go.Response[v1.GetOnCallResponse], error)
 	CreateInboundNumber(context.Context, *connect_go.Request[v1.CreateInboundNumberRequest]) (*connect_go.Response[v1.CreateInboundNumberResponse], error)
 	UpdateInboundNumber(context.Context, *connect_go.Request[v1.UpdateInboundNumberRequest]) (*connect_go.Response[v1.UpdateInboundNumberResponse], error)
-	DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
+	DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.DeleteInboundNumberResponse], error)
 	ListInboundNumber(context.Context, *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
 	// Overwrite APIS
 	CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error)
@@ -121,7 +121,7 @@ func NewCallServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+CallServiceUpdateInboundNumberProcedure,
 			opts...,
 		),
-		deleteInboundNumber: connect_go.NewClient[v1.DeleteInboundNumberRequest, v1.ListInboundNumberResponse](
+		deleteInboundNumber: connect_go.NewClient[v1.DeleteInboundNumberRequest, v1.DeleteInboundNumberResponse](
 			httpClient,
 			baseURL+CallServiceDeleteInboundNumberProcedure,
 			opts...,
@@ -170,7 +170,7 @@ type callServiceClient struct {
 	getOnCall           *connect_go.Client[v1.GetOnCallRequest, v1.GetOnCallResponse]
 	createInboundNumber *connect_go.Client[v1.CreateInboundNumberRequest, v1.CreateInboundNumberResponse]
 	updateInboundNumber *connect_go.Client[v1.UpdateInboundNumberRequest, v1.UpdateInboundNumberResponse]
-	deleteInboundNumber *connect_go.Client[v1.DeleteInboundNumberRequest, v1.ListInboundNumberResponse]
+	deleteInboundNumber *connect_go.Client[v1.DeleteInboundNumberRequest, v1.DeleteInboundNumberResponse]
 	listInboundNumber   *connect_go.Client[v1.ListInboundNumberRequest, v1.ListInboundNumberResponse]
 	createOverwrite     *connect_go.Client[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse]
 	deleteOverwrite     *connect_go.Client[v1.DeleteOverwriteRequest, v1.DeleteOverwriteResponse]
@@ -201,7 +201,7 @@ func (c *callServiceClient) UpdateInboundNumber(ctx context.Context, req *connec
 }
 
 // DeleteInboundNumber calls tkd.pbx3cx.v1.CallService.DeleteInboundNumber.
-func (c *callServiceClient) DeleteInboundNumber(ctx context.Context, req *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error) {
+func (c *callServiceClient) DeleteInboundNumber(ctx context.Context, req *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.DeleteInboundNumberResponse], error) {
 	return c.deleteInboundNumber.CallUnary(ctx, req)
 }
 
@@ -248,7 +248,7 @@ type CallServiceHandler interface {
 	GetOnCall(context.Context, *connect_go.Request[v1.GetOnCallRequest]) (*connect_go.Response[v1.GetOnCallResponse], error)
 	CreateInboundNumber(context.Context, *connect_go.Request[v1.CreateInboundNumberRequest]) (*connect_go.Response[v1.CreateInboundNumberResponse], error)
 	UpdateInboundNumber(context.Context, *connect_go.Request[v1.UpdateInboundNumberRequest]) (*connect_go.Response[v1.UpdateInboundNumberResponse], error)
-	DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
+	DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.DeleteInboundNumberResponse], error)
 	ListInboundNumber(context.Context, *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
 	// Overwrite APIS
 	CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error)
@@ -378,7 +378,7 @@ func (UnimplementedCallServiceHandler) UpdateInboundNumber(context.Context, *con
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.UpdateInboundNumber is not implemented"))
 }
 
-func (UnimplementedCallServiceHandler) DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error) {
+func (UnimplementedCallServiceHandler) DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.DeleteInboundNumberResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.DeleteInboundNumber is not implemented"))
 }
 

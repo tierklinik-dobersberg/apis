@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateInboundNumberRequest, CreateInboundNumberResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteInboundNumberRequest, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListInboundNumberRequest, ListInboundNumberResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateInboundNumberRequest, UpdateInboundNumberResponse } from "./calllog_pb.js";
+import { CreateInboundNumberRequest, CreateInboundNumberResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteInboundNumberRequest, DeleteInboundNumberResponse, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListInboundNumberRequest, ListInboundNumberResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateInboundNumberRequest, UpdateInboundNumberResponse } from "./calllog_pb.js";
 import { Empty, MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -59,7 +59,7 @@ export declare const CallService: {
     readonly deleteInboundNumber: {
       readonly name: "DeleteInboundNumber",
       readonly I: typeof DeleteInboundNumberRequest,
-      readonly O: typeof ListInboundNumberResponse,
+      readonly O: typeof DeleteInboundNumberResponse,
       readonly kind: MethodKind.Unary,
     },
     /**
