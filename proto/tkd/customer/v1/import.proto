@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package tkd.customer.v1;
+
+import "tkd/customer/v1/customer.proto";
+import "google/protobuf/struct.proto";
+
+
+
+
+
+service CustomerImportService {
+    rpc ImportSession(stream ImportSessionRequest) returns (stream ImportSessionResponse);
+}
+
+message StartSessionRequest {
+    string importer = 1;
+}
+
+message StartSessionResponse {}
+
+message LookupCustomerRequest {
+    CustomerQuery query = 1;
+}
+
+message ImportedCustomer {
+    Customer customer = 1;
+    ImportState state = 2;
+}
+
+message LookupCustomerResponse {
+    repeated ImportedCustomer matched_customers = 1;
+}
+
+message UpsertCustomerRequest {
+    string id = 1;
+    repeated AttributeUpdate updates = 2;
+
+    string internal_reference = 3;
+    google.protobuf.Struct extra_data = 4;
+}
+
+message UpsertCustomerSuccess {
+    string id = 1;
+}
+
+message AttributeUpdateError {
+    AttributeKind kind = 1;
+    AttributeUpdateOperation operation = 2;
+    string error = 3;
+}
+
+message UpsertCustomerError {
+    repeated AttributeUpdateError errors = 1;
+}
+
+message ImportSessionComplete {}
+
+message ImportSessionRequest {
+    oneof message {
+        // StartSessionRequest must be the very first message sent
+        // for a ImportSession RPC. It must not be sent more than once.
+        StartSessionRequest start_session = 1;
+        LookupCustomerRequest lookup_customer = 2;
+        UpsertCustomerRequest upsert_customer = 3;
+        ImportSessionComplete complete = 10;
+    };
+
+    string correlation_id = 99;
+}
+
+message ImportSessionResponse {
+    oneof message {
+        StartSessionResponse start_session = 1;
+        LookupCustomerResponse lookup_customer = 2;
+        UpsertCustomerSuccess upsert_success = 3;
+        UpsertCustomerError upsert_error = 4;
+    }
+
+    string correlation_id = 99;
+}
+

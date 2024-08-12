@@ -2,7 +2,145 @@ syntax = "proto3";
 
 package tkd.customer.v1;
 
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
 message CustomerRef {
     string source = 1;
     string id = 2;
+}
+
+enum AttributeKind {
+    ATTRIBUTE_KIND_UNSPECIFIED = 0;
+    ATTRIBUTE_KIND_FIRST_NAME = 1;
+    ATTRIBUTE_KIND_LAST_NAME = 2; 
+    ATTRIBUTE_KIND_PHONE_NUMBER = 3;
+    ATTRIBUTE_KIND_EMAIL_ADDRESS = 4;
+    ATTRIBUTE_KIND_ADDRESS = 5;
+}
+
+enum AttributeUpdateOperation {
+    ATTRIBUTE_UPDATE_OPERATION_UNSPECIFIED = 0;
+    ATTRIBUTE_UPDATE_OPERATION_SET = 1;
+    ATTRIBUTE_UPDATE_OPERATION_ADD = 2;
+    ATTRIBUTE_UPDATE_OPERATION_DELETE = 3;
+}
+
+message AttributeUpdate {
+    AttributeKind kind = 1;
+    AttributeUpdateOperation operation = 2;
+
+    oneof value {
+        string string_value = 3;
+        Address address = 4;
+    }
+}
+
+message OwnedAttribute {
+    // Kind describes the attribute kind.
+    AttributeKind kind = 1;
+
+    // Value holds the value of the attribute.
+    google.protobuf.Value value = 2; 
+
+    // Ingore might be set to true if updates to this
+    // attribute should be ignored.
+    bool ignore = 3;
+}
+
+message ImportState {
+    // Importer is a unique name of the importer that created or updated the
+    // customer or patient record.
+    string importer = 1;
+
+    // LastSeen holds the timestamp the importer has seen the customer record the
+    // last time.
+    google.protobuf.Timestamp last_seen = 2;
+
+    // ExtraData may hold additional data for the importer.
+    google.protobuf.Struct extra_data = 3;
+
+    // InternalReference may hold an internal customer reference from
+    // the importer.
+    string internal_reference = 4;
+
+    repeated OwnedAttribute owned_attributes = 5;
+}
+
+message Address {
+    string postal_code = 1;
+    string city = 2;
+    string street = 3;
+    string extra = 4;
+}
+
+message Customer {
+    // ID is a unique, randomly generated ID for this customer.
+    string id = 1;
+
+    // FirstName is the first name of the customer.
+    string first_name = 2;
+
+    // LastName is the last name of the customer
+    string last_name = 3;
+
+    // Addresses is a list of addresses.
+    repeated Address addresses = 4;
+
+    // PhoneNumbers is a list of phone numbers
+    repeated string phone_numbers = 5;
+
+    // EmailAddresses is a list of email addresses.
+    repeated string email_addresses = 6;
+
+    // RecordCreatedAt is the timestamp at which the customer record has been created.
+    google.protobuf.Timestamp record_created_at = 7;
+}
+
+service CustomerService {
+    rpc SearchCustomer(SearchCustomerRequest) returns (SearchCustomerResponse);
+
+    rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse);
+}
+
+message CustomerResponse {
+    Customer customer = 1;
+    repeated ImportState states = 2;
+}
+
+message InternalReferenceQuery {
+    string importer = 1;
+    string ref = 2;
+}
+
+message NameQuery {
+    string first_name = 1;
+    string last_name = 2;
+}
+
+message CustomerQuery {
+    oneof query {
+        string id = 1;
+        InternalReferenceQuery internal_reference = 2; 
+        NameQuery name = 3;
+        string phone_number = 4;
+        string email_address = 5;
+    }
+}
+
+message SearchCustomerRequest {
+    repeated CustomerQuery queries = 1;
+}
+
+message SearchCustomerResponse {
+    repeated CustomerResponse results = 1;
+}
+
+message UpdateCustomerRequest {
+    string id = 1;
+    repeated AttributeUpdate updates = 2;
+}
+
+message UpdateCustomerResponse {
+    CustomerResponse response = 1;
 }
