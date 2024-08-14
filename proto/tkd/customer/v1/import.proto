@@ -44,14 +44,8 @@ message UpsertCustomerSuccess {
     string id = 1;
 }
 
-message AttributeUpdateError {
-    AttributeKind kind = 1;
-    AttributeUpdateOperation operation = 2;
-    string error = 3;
-}
-
-message UpsertCustomerError {
-    repeated AttributeUpdateError errors = 1;
+message Error {
+    repeated string error = 1;
 }
 
 message ImportSessionComplete {}
@@ -74,7 +68,7 @@ message ImportSessionResponse {
         StartSessionResponse start_session = 1;
         LookupCustomerResponse lookup_customer = 2;
         UpsertCustomerSuccess upsert_success = 3;
-        UpsertCustomerError upsert_error = 4;
+        Error error = 4;
     }
 
     string correlation_id = 99;
