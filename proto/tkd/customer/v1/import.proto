@@ -4,17 +4,16 @@ package tkd.customer.v1;
 
 import "tkd/customer/v1/customer.proto";
 import "google/protobuf/struct.proto";
-
-
-
-
+import "buf/validate/validate.proto";
 
 service CustomerImportService {
     rpc ImportSession(stream ImportSessionRequest) returns (stream ImportSessionResponse);
 }
 
 message StartSessionRequest {
-    string importer = 1;
+    string importer = 1 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message StartSessionResponse {}
@@ -33,11 +32,15 @@ message LookupCustomerResponse {
 }
 
 message UpsertCustomerRequest {
-    string id = 1;
-    repeated AttributeUpdate updates = 2;
+    string internal_reference = 1 [
+        (buf.validate.field).required = true
+    ];
 
-    string internal_reference = 3;
-    google.protobuf.Struct extra_data = 4;
+    google.protobuf.Struct extra_data = 2;
+
+    Customer customer = 3 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message UpsertCustomerSuccess {
@@ -58,6 +61,8 @@ message ImportSessionRequest {
         LookupCustomerRequest lookup_customer = 2;
         UpsertCustomerRequest upsert_customer = 3;
         ImportSessionComplete complete = 10;
+
+        option (buf.validate.oneof).required = true;
     };
 
     string correlation_id = 99;

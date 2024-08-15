@@ -2,9 +2,9 @@
 // @generated from file tkd/customer/v1/customer.proto (package tkd.customer.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import type { JsonObject, Message } from "@bufbuild/protobuf";
-import type { Timestamp, Value } from "@bufbuild/protobuf/wkt";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 
 /**
  * Describes the file tkd/customer/v1/customer.proto.
@@ -33,68 +33,43 @@ export declare type CustomerRef = Message<"tkd.customer.v1.CustomerRef"> & {
 export declare const CustomerRefSchema: GenMessage<CustomerRef>;
 
 /**
- * @generated from message tkd.customer.v1.AttributeUpdate
- */
-export declare type AttributeUpdate = Message<"tkd.customer.v1.AttributeUpdate"> & {
-  /**
-   * @generated from field: tkd.customer.v1.AttributeKind kind = 1;
-   */
-  kind: AttributeKind;
-
-  /**
-   * @generated from field: tkd.customer.v1.AttributeUpdateOperation operation = 2;
-   */
-  operation: AttributeUpdateOperation;
-
-  /**
-   * @generated from oneof tkd.customer.v1.AttributeUpdate.value
-   */
-  value: {
-    /**
-     * @generated from field: string string_value = 3;
-     */
-    value: string;
-    case: "stringValue";
-  } | {
-    /**
-     * @generated from field: tkd.customer.v1.Address address = 4;
-     */
-    value: Address;
-    case: "address";
-  } | { case: undefined; value?: undefined };
-};
-
-/**
- * Describes the message tkd.customer.v1.AttributeUpdate.
- * Use `create(AttributeUpdateSchema)` to create a new message.
- */
-export declare const AttributeUpdateSchema: GenMessage<AttributeUpdate>;
-
-/**
  * @generated from message tkd.customer.v1.OwnedAttribute
  */
 export declare type OwnedAttribute = Message<"tkd.customer.v1.OwnedAttribute"> & {
   /**
-   * Kind describes the attribute kind.
-   *
-   * @generated from field: tkd.customer.v1.AttributeKind kind = 1;
+   * @generated from oneof tkd.customer.v1.OwnedAttribute.kind
    */
-  kind: AttributeKind;
-
-  /**
-   * Value holds the value of the attribute.
-   *
-   * @generated from field: google.protobuf.Value value = 2;
-   */
-  value?: Value;
-
-  /**
-   * Ingore might be set to true if updates to this
-   * attribute should be ignored.
-   *
-   * @generated from field: bool ignore = 3;
-   */
-  ignore: boolean;
+  kind: {
+    /**
+     * @generated from field: string first_name = 1;
+     */
+    value: string;
+    case: "firstName";
+  } | {
+    /**
+     * @generated from field: string last_name = 2;
+     */
+    value: string;
+    case: "lastName";
+  } | {
+    /**
+     * @generated from field: string phone_number = 3;
+     */
+    value: string;
+    case: "phoneNumber";
+  } | {
+    /**
+     * @generated from field: string email_address = 4;
+     */
+    value: string;
+    case: "emailAddress";
+  } | {
+    /**
+     * @generated from field: tkd.customer.v1.Address address = 5;
+     */
+    value: Address;
+    case: "address";
+  } | { case: undefined; value?: undefined };
 };
 
 /**
@@ -387,14 +362,9 @@ export declare const SearchCustomerResponseSchema: GenMessage<SearchCustomerResp
  */
 export declare type UpdateCustomerRequest = Message<"tkd.customer.v1.UpdateCustomerRequest"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: tkd.customer.v1.Customer customer = 1;
    */
-  id: string;
-
-  /**
-   * @generated from field: repeated tkd.customer.v1.AttributeUpdate updates = 2;
-   */
-  updates: AttributeUpdate[];
+  customer?: Customer;
 };
 
 /**
@@ -418,76 +388,6 @@ export declare type UpdateCustomerResponse = Message<"tkd.customer.v1.UpdateCust
  * Use `create(UpdateCustomerResponseSchema)` to create a new message.
  */
 export declare const UpdateCustomerResponseSchema: GenMessage<UpdateCustomerResponse>;
-
-/**
- * @generated from enum tkd.customer.v1.AttributeKind
- */
-export enum AttributeKind {
-  /**
-   * @generated from enum value: ATTRIBUTE_KIND_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: ATTRIBUTE_KIND_FIRST_NAME = 1;
-   */
-  FIRST_NAME = 1,
-
-  /**
-   * @generated from enum value: ATTRIBUTE_KIND_LAST_NAME = 2;
-   */
-  LAST_NAME = 2,
-
-  /**
-   * @generated from enum value: ATTRIBUTE_KIND_PHONE_NUMBER = 3;
-   */
-  PHONE_NUMBER = 3,
-
-  /**
-   * @generated from enum value: ATTRIBUTE_KIND_EMAIL_ADDRESS = 4;
-   */
-  EMAIL_ADDRESS = 4,
-
-  /**
-   * @generated from enum value: ATTRIBUTE_KIND_ADDRESS = 5;
-   */
-  ADDRESS = 5,
-}
-
-/**
- * Describes the enum tkd.customer.v1.AttributeKind.
- */
-export declare const AttributeKindSchema: GenEnum<AttributeKind>;
-
-/**
- * @generated from enum tkd.customer.v1.AttributeUpdateOperation
- */
-export enum AttributeUpdateOperation {
-  /**
-   * @generated from enum value: ATTRIBUTE_UPDATE_OPERATION_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: ATTRIBUTE_UPDATE_OPERATION_SET = 1;
-   */
-  SET = 1,
-
-  /**
-   * @generated from enum value: ATTRIBUTE_UPDATE_OPERATION_ADD = 2;
-   */
-  ADD = 2,
-
-  /**
-   * @generated from enum value: ATTRIBUTE_UPDATE_OPERATION_DELETE = 3;
-   */
-  DELETE = 3,
-}
-
-/**
- * Describes the enum tkd.customer.v1.AttributeUpdateOperation.
- */
-export declare const AttributeUpdateOperationSchema: GenEnum<AttributeUpdateOperation>;
 
 /**
  * @generated from service tkd.customer.v1.CustomerService

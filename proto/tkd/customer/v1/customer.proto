@@ -4,48 +4,23 @@ package tkd.customer.v1;
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
+import "buf/validate/validate.proto";
 
 message CustomerRef {
     string source = 1;
     string id = 2;
 }
 
-enum AttributeKind {
-    ATTRIBUTE_KIND_UNSPECIFIED = 0;
-    ATTRIBUTE_KIND_FIRST_NAME = 1;
-    ATTRIBUTE_KIND_LAST_NAME = 2; 
-    ATTRIBUTE_KIND_PHONE_NUMBER = 3;
-    ATTRIBUTE_KIND_EMAIL_ADDRESS = 4;
-    ATTRIBUTE_KIND_ADDRESS = 5;
-}
-
-enum AttributeUpdateOperation {
-    ATTRIBUTE_UPDATE_OPERATION_UNSPECIFIED = 0;
-    ATTRIBUTE_UPDATE_OPERATION_SET = 1;
-    ATTRIBUTE_UPDATE_OPERATION_ADD = 2;
-    ATTRIBUTE_UPDATE_OPERATION_DELETE = 3;
-}
-
-message AttributeUpdate {
-    AttributeKind kind = 1;
-    AttributeUpdateOperation operation = 2;
-
-    oneof value {
-        string string_value = 3;
-        Address address = 4;
-    }
-}
-
 message OwnedAttribute {
-    // Kind describes the attribute kind.
-    AttributeKind kind = 1;
+    oneof kind {
+        string first_name = 1;
+        string last_name = 2;
+        string phone_number = 3;
+        string email_address = 4;
+        Address address = 5;
 
-    // Value holds the value of the attribute.
-    google.protobuf.Value value = 2; 
-
-    // Ingore might be set to true if updates to this
-    // attribute should be ignored.
-    bool ignore = 3;
+        option (buf.validate.oneof).required = true;
+    }
 }
 
 message ImportState {
@@ -68,8 +43,14 @@ message ImportState {
 }
 
 message Address {
-    string postal_code = 1;
-    string city = 2;
+    string postal_code = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string city = 2 [
+        (buf.validate.field).required = true
+    ];
+
     string street = 3;
     string extra = 4;
 }
@@ -137,8 +118,9 @@ message SearchCustomerResponse {
 }
 
 message UpdateCustomerRequest {
-    string id = 1;
-    repeated AttributeUpdate updates = 2;
+    Customer customer = 1 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message UpdateCustomerResponse {
