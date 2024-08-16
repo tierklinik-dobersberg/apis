@@ -10,6 +10,8 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 )
 
 type OutputFunc func(res any)
@@ -39,23 +41,42 @@ func (root *Root) defaultPrintFunc(res any) {
 		return
 	}
 
-	var buf = new(bytes.Buffer)
-	enc := json.NewEncoder(buf)
-	enc.SetIndent("", "  ")
+	var buf []byte
 
-	if err := enc.Encode(res); err != nil {
-		logrus.Fatal(err)
+	if msg, ok := res.(proto.Message); ok {
+		var err error
+		opts := protojson.MarshalOptions{
+			Multiline: true,
+			Indent:    "  ",
+		}
+
+		buf, err = opts.Marshal(msg)
+		if err != nil {
+			logrus.Fatal(err.Error())
+		}
+	} else {
+		var b = new(bytes.Buffer)
+
+		enc := json.NewEncoder(b)
+		enc.SetIndent("", "  ")
+
+		if err := enc.Encode(res); err != nil {
+			logrus.Fatal(err)
+		}
+
+		buf = b.Bytes()
 	}
+
 	var blob []byte
 
 	if root.Config().OutputYAML {
 		var err error
-		blob, err = yaml.JSONToYAML(buf.Bytes())
+		blob, err = yaml.JSONToYAML(buf)
 		if err != nil {
 			logrus.Fatal(err)
 		}
 	} else {
-		blob = buf.Bytes()
+		blob = buf
 	}
 
 	if _, err := io.Copy(os.Stdout, bytes.NewReader(blob)); err != nil {

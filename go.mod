@@ -7,10 +7,10 @@ toolchain go1.22.5
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.34.2-20240717164558-a6c49f84cc0f.2
 	github.com/bufbuild/connect-go v1.10.0
-	github.com/bufbuild/protovalidate-go v0.6.3
+	github.com/bufbuild/protovalidate-go v0.6.4
 	github.com/ghodss/yaml v1.0.0
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/mennanov/fmutils v0.2.1
+	github.com/mennanov/fmutils v0.3.0
 	github.com/mitchellh/go-server-timing v1.0.1
 	github.com/rs/cors v1.11.0
 	github.com/sebest/xff v0.0.0-20210106013422-671bd2870b3a
@@ -39,8 +39,8 @@ require (
 	golang.org/x/sys v0.24.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	google.golang.org/genproto v0.0.0-20240116215550-a9fa1716bcac // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240808171019-573a1156607a // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240808171019-573a1156607a // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240814211410-ddb44dafa142 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240814211410-ddb44dafa142 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

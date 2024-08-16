@@ -3,6 +3,7 @@ package cli
 import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1/calendarv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/comment/v1/commentv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/customer/v1/customerv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1/idmv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1/pbx3cxv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
@@ -54,4 +55,12 @@ func (root *Root) CallService() pbx3cxv1connect.CallServiceClient {
 
 func (root *Root) Comments() commentv1connect.CommentServiceClient {
 	return commentv1connect.NewCommentServiceClient(root.HttpClient, root.Config().BaseURLS.CommentService)
+}
+
+func (root *Root) Customer() customerv1connect.CustomerServiceClient {
+	return customerv1connect.NewCustomerServiceClient(root.HttpClient, root.Config().BaseURLS.CustomerService)
+}
+
+func (root *Root) CustomerImport() customerv1connect.CustomerImportServiceClient {
+	return customerv1connect.NewCustomerImportServiceClient(root.HttpClient, root.Config().BaseURLS.CustomerService)
 }
