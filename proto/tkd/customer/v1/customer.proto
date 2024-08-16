@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package tkd.customer.v1;
 
+import "tkd/common/v1/descriptor.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "buf/validate/validate.proto";
@@ -79,9 +80,27 @@ message Customer {
 }
 
 service CustomerService {
-    rpc SearchCustomer(SearchCustomerRequest) returns (SearchCustomerResponse);
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["idm_superuser", "customer_manager"]
+    };
 
-    rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse);
+    rpc SearchCustomer(SearchCustomerRequest) returns (SearchCustomerResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc SearchCustomerStream(stream SearchCustomerRequest) returns (stream SearchCustomerResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message CustomerResponse {

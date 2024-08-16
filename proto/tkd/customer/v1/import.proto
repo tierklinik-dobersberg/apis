@@ -3,11 +3,20 @@ syntax = "proto3";
 package tkd.customer.v1;
 
 import "tkd/customer/v1/customer.proto";
+import "tkd/common/v1/descriptor.proto";
 import "google/protobuf/struct.proto";
 import "buf/validate/validate.proto";
 
 service CustomerImportService {
-    rpc ImportSession(stream ImportSessionRequest) returns (stream ImportSessionResponse);
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["idm_superuser", "customer_manager"]
+    };
+
+    rpc ImportSession(stream ImportSessionRequest) returns (stream ImportSessionResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
 }
 
 message StartSessionRequest {

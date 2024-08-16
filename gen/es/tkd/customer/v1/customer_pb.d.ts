@@ -402,6 +402,14 @@ export declare const CustomerService: GenService<{
     output: typeof SearchCustomerResponseSchema;
   },
   /**
+   * @generated from rpc tkd.customer.v1.CustomerService.SearchCustomerStream
+   */
+  searchCustomerStream: {
+    methodKind: "bidi_streaming";
+    input: typeof SearchCustomerRequestSchema;
+    output: typeof SearchCustomerResponseSchema;
+  },
+  /**
    * @generated from rpc tkd.customer.v1.CustomerService.UpdateCustomer
    */
   updateCustomer: {

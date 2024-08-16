@@ -36,6 +36,9 @@ const (
 	// CustomerServiceSearchCustomerProcedure is the fully-qualified name of the CustomerService's
 	// SearchCustomer RPC.
 	CustomerServiceSearchCustomerProcedure = "/tkd.customer.v1.CustomerService/SearchCustomer"
+	// CustomerServiceSearchCustomerStreamProcedure is the fully-qualified name of the CustomerService's
+	// SearchCustomerStream RPC.
+	CustomerServiceSearchCustomerStreamProcedure = "/tkd.customer.v1.CustomerService/SearchCustomerStream"
 	// CustomerServiceUpdateCustomerProcedure is the fully-qualified name of the CustomerService's
 	// UpdateCustomer RPC.
 	CustomerServiceUpdateCustomerProcedure = "/tkd.customer.v1.CustomerService/UpdateCustomer"
@@ -44,6 +47,7 @@ const (
 // CustomerServiceClient is a client for the tkd.customer.v1.CustomerService service.
 type CustomerServiceClient interface {
 	SearchCustomer(context.Context, *connect_go.Request[v1.SearchCustomerRequest]) (*connect_go.Response[v1.SearchCustomerResponse], error)
+	SearchCustomerStream(context.Context) *connect_go.BidiStreamForClient[v1.SearchCustomerRequest, v1.SearchCustomerResponse]
 	UpdateCustomer(context.Context, *connect_go.Request[v1.UpdateCustomerRequest]) (*connect_go.Response[v1.UpdateCustomerResponse], error)
 }
 
@@ -62,6 +66,11 @@ func NewCustomerServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+CustomerServiceSearchCustomerProcedure,
 			opts...,
 		),
+		searchCustomerStream: connect_go.NewClient[v1.SearchCustomerRequest, v1.SearchCustomerResponse](
+			httpClient,
+			baseURL+CustomerServiceSearchCustomerStreamProcedure,
+			opts...,
+		),
 		updateCustomer: connect_go.NewClient[v1.UpdateCustomerRequest, v1.UpdateCustomerResponse](
 			httpClient,
 			baseURL+CustomerServiceUpdateCustomerProcedure,
@@ -72,13 +81,19 @@ func NewCustomerServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 
 // customerServiceClient implements CustomerServiceClient.
 type customerServiceClient struct {
-	searchCustomer *connect_go.Client[v1.SearchCustomerRequest, v1.SearchCustomerResponse]
-	updateCustomer *connect_go.Client[v1.UpdateCustomerRequest, v1.UpdateCustomerResponse]
+	searchCustomer       *connect_go.Client[v1.SearchCustomerRequest, v1.SearchCustomerResponse]
+	searchCustomerStream *connect_go.Client[v1.SearchCustomerRequest, v1.SearchCustomerResponse]
+	updateCustomer       *connect_go.Client[v1.UpdateCustomerRequest, v1.UpdateCustomerResponse]
 }
 
 // SearchCustomer calls tkd.customer.v1.CustomerService.SearchCustomer.
 func (c *customerServiceClient) SearchCustomer(ctx context.Context, req *connect_go.Request[v1.SearchCustomerRequest]) (*connect_go.Response[v1.SearchCustomerResponse], error) {
 	return c.searchCustomer.CallUnary(ctx, req)
+}
+
+// SearchCustomerStream calls tkd.customer.v1.CustomerService.SearchCustomerStream.
+func (c *customerServiceClient) SearchCustomerStream(ctx context.Context) *connect_go.BidiStreamForClient[v1.SearchCustomerRequest, v1.SearchCustomerResponse] {
+	return c.searchCustomerStream.CallBidiStream(ctx)
 }
 
 // UpdateCustomer calls tkd.customer.v1.CustomerService.UpdateCustomer.
@@ -89,6 +104,7 @@ func (c *customerServiceClient) UpdateCustomer(ctx context.Context, req *connect
 // CustomerServiceHandler is an implementation of the tkd.customer.v1.CustomerService service.
 type CustomerServiceHandler interface {
 	SearchCustomer(context.Context, *connect_go.Request[v1.SearchCustomerRequest]) (*connect_go.Response[v1.SearchCustomerResponse], error)
+	SearchCustomerStream(context.Context, *connect_go.BidiStream[v1.SearchCustomerRequest, v1.SearchCustomerResponse]) error
 	UpdateCustomer(context.Context, *connect_go.Request[v1.UpdateCustomerRequest]) (*connect_go.Response[v1.UpdateCustomerResponse], error)
 }
 
@@ -103,6 +119,11 @@ func NewCustomerServiceHandler(svc CustomerServiceHandler, opts ...connect_go.Ha
 		svc.SearchCustomer,
 		opts...,
 	)
+	customerServiceSearchCustomerStreamHandler := connect_go.NewBidiStreamHandler(
+		CustomerServiceSearchCustomerStreamProcedure,
+		svc.SearchCustomerStream,
+		opts...,
+	)
 	customerServiceUpdateCustomerHandler := connect_go.NewUnaryHandler(
 		CustomerServiceUpdateCustomerProcedure,
 		svc.UpdateCustomer,
@@ -112,6 +133,8 @@ func NewCustomerServiceHandler(svc CustomerServiceHandler, opts ...connect_go.Ha
 		switch r.URL.Path {
 		case CustomerServiceSearchCustomerProcedure:
 			customerServiceSearchCustomerHandler.ServeHTTP(w, r)
+		case CustomerServiceSearchCustomerStreamProcedure:
+			customerServiceSearchCustomerStreamHandler.ServeHTTP(w, r)
 		case CustomerServiceUpdateCustomerProcedure:
 			customerServiceUpdateCustomerHandler.ServeHTTP(w, r)
 		default:
@@ -125,6 +148,10 @@ type UnimplementedCustomerServiceHandler struct{}
 
 func (UnimplementedCustomerServiceHandler) SearchCustomer(context.Context, *connect_go.Request[v1.SearchCustomerRequest]) (*connect_go.Response[v1.SearchCustomerResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.customer.v1.CustomerService.SearchCustomer is not implemented"))
+}
+
+func (UnimplementedCustomerServiceHandler) SearchCustomerStream(context.Context, *connect_go.BidiStream[v1.SearchCustomerRequest, v1.SearchCustomerResponse]) error {
+	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.customer.v1.CustomerService.SearchCustomerStream is not implemented"))
 }
 
 func (UnimplementedCustomerServiceHandler) UpdateCustomer(context.Context, *connect_go.Request[v1.UpdateCustomerRequest]) (*connect_go.Response[v1.UpdateCustomerResponse], error) {

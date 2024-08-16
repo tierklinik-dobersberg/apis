@@ -22,10 +22,16 @@ message CallEntry {
     string call_type = 6;
     string agent_user_id = 7;
     string customer_id = 8;
+
+    // CustomerSource is unused.
+    // Deprecated: CustomerSource is not used anymore.
     string customer_source = 9;
+
     bool error = 10;
     string transfer_target = 11;
     string accepted_agent = 12;
+
+    tkd.customer.v1.Customer customer = 13;
 }
 
 message OnCall {
@@ -167,11 +173,15 @@ message RecordCallRequest {
     string call_type = 4;
     string date_time = 5;
     string customer_id = 6;
+    
+    // CustomerSource used to hold the source of the customer.
+    // Deprecated: this field is only set for old records
     string customer_source = 7;
 }
 
 message GetLogsForCustomerRequest {
-    string source = 1 [(buf.validate.field).required = true];
+    // Deprecated
+    string source = 1;
     string id = 2 [(buf.validate.field).required = true];
 }
 
