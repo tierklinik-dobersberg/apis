@@ -5,9 +5,9 @@
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import type { Message } from "@bufbuild/protobuf";
 import type { Duration, EmptySchema, FieldMask, Timestamp } from "@bufbuild/protobuf/wkt";
-import type { Customer, CustomerRef } from "../../customer/v1/customer_pb";
 import type { Profile } from "../../idm/v1/user_pb";
 import type { TimeRange } from "../../common/v1/time_range_pb";
+import type { Customer, CustomerRef } from "../../customer/v1/customer_pb";
 
 /**
  * Describes the file tkd/pbx3cx/v1/calllog.proto.
@@ -80,11 +80,6 @@ export declare type CallEntry = Message<"tkd.pbx3cx.v1.CallEntry"> & {
    * @generated from field: string accepted_agent = 12;
    */
   acceptedAgent: string;
-
-  /**
-   * @generated from field: tkd.customer.v1.Customer customer = 13;
-   */
-  customer?: Customer;
 };
 
 /**
@@ -400,6 +395,11 @@ export declare type SearchCallLogsResponse = Message<"tkd.pbx3cx.v1.SearchCallLo
    * @generated from field: repeated tkd.pbx3cx.v1.CallEntry results = 1;
    */
   results: CallEntry[];
+
+  /**
+   * @generated from field: repeated tkd.customer.v1.Customer customers = 2;
+   */
+  customers: Customer[];
 };
 
 /**

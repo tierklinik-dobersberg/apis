@@ -30,8 +30,6 @@ message CallEntry {
     bool error = 10;
     string transfer_target = 11;
     string accepted_agent = 12;
-
-    tkd.customer.v1.Customer customer = 13;
 }
 
 message OnCall {
@@ -205,6 +203,7 @@ message SearchCallLogsRequest {
 
 message SearchCallLogsResponse {
     repeated CallEntry results = 1;
+    repeated tkd.customer.v1.Customer customers = 2;
 }
 
 message GetOnCallRequest {
