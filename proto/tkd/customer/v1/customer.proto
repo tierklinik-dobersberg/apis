@@ -130,10 +130,16 @@ message CustomerQuery {
 
 message SearchCustomerRequest {
     repeated CustomerQuery queries = 1;
+
+    // Only used in SearchCustomerStream
+    string correlation_id = 99;
 }
 
 message SearchCustomerResponse {
     repeated CustomerResponse results = 1;
+
+    // Only used in SearchCustomerStream
+    string correlation_id = 99;
 }
 
 message UpdateCustomerRequest {

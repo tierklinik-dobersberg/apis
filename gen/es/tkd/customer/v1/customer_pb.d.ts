@@ -333,6 +333,13 @@ export declare type SearchCustomerRequest = Message<"tkd.customer.v1.SearchCusto
    * @generated from field: repeated tkd.customer.v1.CustomerQuery queries = 1;
    */
   queries: CustomerQuery[];
+
+  /**
+   * Only used in SearchCustomerStream
+   *
+   * @generated from field: string correlation_id = 99;
+   */
+  correlationId: string;
 };
 
 /**
@@ -349,6 +356,13 @@ export declare type SearchCustomerResponse = Message<"tkd.customer.v1.SearchCust
    * @generated from field: repeated tkd.customer.v1.CustomerResponse results = 1;
    */
   results: CustomerResponse[];
+
+  /**
+   * Only used in SearchCustomerStream
+   *
+   * @generated from field: string correlation_id = 99;
+   */
+  correlationId: string;
 };
 
 /**
