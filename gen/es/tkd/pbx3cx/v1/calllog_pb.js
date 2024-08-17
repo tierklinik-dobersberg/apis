@@ -94,6 +94,8 @@ export const RecordCallRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 4, name: "call_type", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "date_time", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 6, name: "customer_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 8, name: "queue_extension", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 9, name: "direction", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 7, name: "customer_source", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );

@@ -171,6 +171,8 @@ message RecordCallRequest {
     string call_type = 4;
     string date_time = 5;
     string customer_id = 6;
+    string queue_extension = 8;
+    string direction = 9;
     
     // CustomerSource used to hold the source of the customer.
     // Deprecated: this field is only set for old records

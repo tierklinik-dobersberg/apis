@@ -307,6 +307,16 @@ export declare class RecordCallRequest extends Message<RecordCallRequest> {
   customerId: string;
 
   /**
+   * @generated from field: string queue_extension = 8;
+   */
+  queueExtension: string;
+
+  /**
+   * @generated from field: string direction = 9;
+   */
+  direction: string;
+
+  /**
    * CustomerSource used to hold the source of the customer.
    * Deprecated: this field is only set for old records
    *
