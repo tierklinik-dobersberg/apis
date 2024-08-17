@@ -9,6 +9,32 @@ import { TimeRange } from "../../common/v1/time_range_pb.js";
 import { Customer, CustomerRef } from "../../customer/v1/customer_pb.js";
 
 /**
+ * @generated from enum tkd.pbx3cx.v1.CallDirection
+ */
+export const CallDirection = /*@__PURE__*/ proto3.makeEnum(
+  "tkd.pbx3cx.v1.CallDirection",
+  [
+    {no: 0, name: "CALL_DIRECTION_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "CALL_DIRECTION_INBOUND", localName: "INBOUND"},
+    {no: 2, name: "CALL_DIRECTION_OUTBOUND", localName: "OUTBOUND"},
+  ],
+);
+
+/**
+ * @generated from enum tkd.pbx3cx.v1.CallStatus
+ */
+export const CallStatus = /*@__PURE__*/ proto3.makeEnum(
+  "tkd.pbx3cx.v1.CallStatus",
+  [
+    {no: 0, name: "CALL_STATUS_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "CALL_STATUS_INBOUND", localName: "INBOUND"},
+    {no: 2, name: "CALL_STATUS_OUTBOUND", localName: "OUTBOUND"},
+    {no: 3, name: "CALL_STATUS_MISSED", localName: "MISSED"},
+    {no: 4, name: "CALL_STATUS_NOTANSWERED", localName: "NOTANSWERED"},
+  ],
+);
+
+/**
  * @generated from message tkd.pbx3cx.v1.CallEntry
  */
 export const CallEntry = /*@__PURE__*/ proto3.makeMessageType(
@@ -26,6 +52,9 @@ export const CallEntry = /*@__PURE__*/ proto3.makeMessageType(
     { no: 10, name: "error", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 11, name: "transfer_target", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 12, name: "accepted_agent", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 13, name: "direction", kind: "enum", T: proto3.getEnumType(CallDirection) },
+    { no: 14, name: "queue_extension", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 15, name: "status", kind: "enum", T: proto3.getEnumType(CallStatus) },
   ],
 );
 

@@ -10,6 +10,56 @@ import type { TimeRange } from "../../common/v1/time_range_pb.js";
 import type { Customer, CustomerRef } from "../../customer/v1/customer_pb.js";
 
 /**
+ * @generated from enum tkd.pbx3cx.v1.CallDirection
+ */
+export declare enum CallDirection {
+  /**
+   * @generated from enum value: CALL_DIRECTION_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: CALL_DIRECTION_INBOUND = 1;
+   */
+  INBOUND = 1,
+
+  /**
+   * @generated from enum value: CALL_DIRECTION_OUTBOUND = 2;
+   */
+  OUTBOUND = 2,
+}
+
+/**
+ * @generated from enum tkd.pbx3cx.v1.CallStatus
+ */
+export declare enum CallStatus {
+  /**
+   * @generated from enum value: CALL_STATUS_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: CALL_STATUS_INBOUND = 1;
+   */
+  INBOUND = 1,
+
+  /**
+   * @generated from enum value: CALL_STATUS_OUTBOUND = 2;
+   */
+  OUTBOUND = 2,
+
+  /**
+   * @generated from enum value: CALL_STATUS_MISSED = 3;
+   */
+  MISSED = 3,
+
+  /**
+   * @generated from enum value: CALL_STATUS_NOTANSWERED = 4;
+   */
+  NOTANSWERED = 4,
+}
+
+/**
  * @generated from message tkd.pbx3cx.v1.CallEntry
  */
 export declare class CallEntry extends Message<CallEntry> {
@@ -75,6 +125,21 @@ export declare class CallEntry extends Message<CallEntry> {
    * @generated from field: string accepted_agent = 12;
    */
   acceptedAgent: string;
+
+  /**
+   * @generated from field: tkd.pbx3cx.v1.CallDirection direction = 13;
+   */
+  direction: CallDirection;
+
+  /**
+   * @generated from field: string queue_extension = 14;
+   */
+  queueExtension: string;
+
+  /**
+   * @generated from field: tkd.pbx3cx.v1.CallStatus status = 15;
+   */
+  status: CallStatus;
 
   constructor(data?: PartialMessage<CallEntry>);
 

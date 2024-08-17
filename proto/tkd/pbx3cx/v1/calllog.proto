@@ -13,6 +13,20 @@ import "tkd/idm/v1/user.proto";
 import "google/protobuf/empty.proto";
 import "buf/validate/validate.proto";
 
+enum CallDirection {
+    CALL_DIRECTION_UNSPECIFIED = 0;
+    CALL_DIRECTION_INBOUND = 1;
+    CALL_DIRECTION_OUTBOUND = 2;
+}
+
+enum CallStatus {
+    CALL_STATUS_UNSPECIFIED = 0;
+    CALL_STATUS_INBOUND = 1;
+    CALL_STATUS_OUTBOUND = 2;
+    CALL_STATUS_MISSED = 3;
+    CALL_STATUS_NOTANSWERED = 4;
+}
+
 message CallEntry {
     string id = 1;
     string caller = 2;
@@ -30,6 +44,9 @@ message CallEntry {
     bool error = 10;
     string transfer_target = 11;
     string accepted_agent = 12;
+    CallDirection direction = 13;
+    string queue_extension = 14;
+    CallStatus status = 15;
 }
 
 message OnCall {
