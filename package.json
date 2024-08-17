@@ -1,6 +1,6 @@
 {
   "name": "@tierklinik-dobersberg/apis",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "Connect-ES API definitions for Tierklinik Dobersberg services",
   "types": "./index.d.ts",
   "main": "./index.js",
@@ -23,6 +23,9 @@
   },
   "homepage": "https://github.com/tierklinik-dobersberg/apis#readme",
   "devDependencies": {
+    "@bufbuild/buf": "^1.37.0",
+    "@bufbuild/protoc-gen-es": "^1",
+    "@connectrpc/protoc-gen-connect-es": "^1",
     "tsc": "^2.0.4",
     "typescript": "^5.1.3"
   },
