@@ -12,11 +12,14 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/mennanov/fmutils v0.3.0
 	github.com/mitchellh/go-server-timing v1.0.1
+	github.com/mxk/go-imap v0.0.0-20150429134902-531c36c3f12d
 	github.com/rs/cors v1.11.0
 	github.com/sebest/xff v0.0.0-20210106013422-671bd2870b3a
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
+	github.com/tierklinik-dobersberg/mailbox v0.0.4
+	go.mongodb.org/mongo-driver v1.16.1
 	golang.org/x/exp v0.0.0-20240808152545-0cdaa3abc0fa
 	golang.org/x/net v0.28.0
 	golang.org/x/sync v0.8.0
@@ -32,10 +35,14 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
+	github.com/paulrosania/go-charset v0.0.0-20190326053356-55c9d7a5834c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/ppacher/system-conf v0.7.4 // indirect
 	github.com/rogpeppe/go-internal v1.10.0 // indirect
+	github.com/sloonz/go-qprintable v0.0.0-20160203160305-775b3a4592d5 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
+	github.com/tierklinik-dobersberg/logger v0.2.0 // indirect
 	golang.org/x/sys v0.24.0 // indirect
 	golang.org/x/text v0.17.0 // indirect
 	google.golang.org/genproto v0.0.0-20240116215550-a9fa1716bcac // indirect
