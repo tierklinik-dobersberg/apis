@@ -1,0 +1,176 @@
+syntax = "proto3";
+
+package tkd.pbx3cx.v1;
+
+import "tkd/customer/v1/customer.proto";
+import "tkd/common/v1/daytime.proto";
+import "tkd/common/v1/time_range.proto";
+import "tkd/common/v1/descriptor.proto";
+import "tkd/common/v1/list_wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "buf/validate/validate.proto";
+
+message VoiceMail {
+    string id = 1;
+    google.protobuf.Timestamp received_at = 2;
+
+    oneof caller {
+        string number = 3;
+        tkd.customer.v1.Customer customer = 4;
+    }
+
+    string subject = 5;
+    string message = 6;
+}
+
+message IMAPConfig {
+    // Host is the IMAP host to connect to
+   	string host = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // TLS enables or disables TLS support.
+	bool tls = 2;
+
+    // InsecureSkipVerify disables certificate validation when TLS is used.
+	bool insecure_skip_verify =3;
+
+    // User is the username to authenticate.
+	string user = 4;
+
+    // Password is the password to authenticate.
+	string password = 5;
+
+    // Folder is the IMAP folder to watch. Defaults to INBOX
+	string folder = 6;
+
+    // ReadOnly can be set to true to open the mailbox in read-only mode.
+	bool read_only = 7;
+}
+
+enum NotificationType {
+    NOTIFICATION_TYPE_UNSPECIFIED = 0;
+    NOTIFICATION_TYPE_SMS = 1;
+    NOTIFICATION_TYPE_MAIL = 2;
+    NOTIFICATION_TYPE_WEBPUSH = 3;
+}
+
+message NotificationSettings {
+    string template = 1;
+
+    oneof recipients {
+        tkd.common.v1.StringList roles = 2;
+        tkd.common.v1.StringList user_ids = 3;
+    }
+
+    repeated tkd.common.v1.DayTime times = 4; 
+
+    repeated NotificationType types = 5;
+}
+
+message Mailbox {
+    // ID is a unique identifier of the mailbox.
+    string id = 1;
+
+    // DisplayName is the display-name of the mailbox.
+    string display_name = 2;
+
+    // PollInterval specifies the interval at which the mailbox
+    // should be polled for updates.
+    google.protobuf.Duration poll_interval = 3;
+
+    // Config holds the IMAP configuration for the mailbox.
+    IMAPConfig config = 4;
+
+    // NotificationSettings holds settings for notifications about new
+    // voice-mails 
+    repeated NotificationSettings notification_settings = 5;
+}
+
+service VoiceMailService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["idm_superuser"]
+    };
+
+    rpc CreateMailbox(CreateMailboxRequest) returns (CreateMailboxResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
+    rpc ListMailboxes(ListMailboxesRequest) returns (ListMailboxesResponse) { 
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
+    rpc DeleteMailbox(DeleteMailboxRequest) returns (DeleteMailboxResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
+    rpc SearchVoiceMails(SearchVoiceMailsRequest) returns (SearchVoiceMailsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc MarkVoiceMails(MarkVoiceMailsRequest) returns (MarkVoiceMailsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+}
+
+message CreateMailboxRequest {
+    Mailbox mailbox = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+message CreateMailboxResponse {
+}
+
+message ListMailboxesRequest {}
+message ListMailboxesResponse {
+    repeated Mailbox results = 1;
+}
+
+message DeleteMailboxRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message DeleteMailboxResponse {}
+
+message SearchVoiceMailsRequest {
+    string mailbox = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    tkd.common.v1.TimeRange time_range = 2;    
+
+    bool unseen = 3;
+
+    oneof caller {
+        string number = 4;
+        string customer_id = 5;
+    }
+}
+
+message SearchVoiceMailsResponse {
+    repeated VoiceMail results = 1;
+}
+
+message MarkVoiceMailsRequest {
+    repeated string ids = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    bool seen = 2;
+}
+
+message MarkVoiceMailsResponse {}
+

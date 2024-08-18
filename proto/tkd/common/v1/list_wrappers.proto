@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package tkd.common.v1;
+
+message StringList {
+    repeated string values = 1;
+}

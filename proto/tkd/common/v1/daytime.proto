@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package tkd.common.v1;
+
+message DayTime {
+    int32 hour = 1;
+    int32 minute = 2;
+    int32 second = 3;
+}

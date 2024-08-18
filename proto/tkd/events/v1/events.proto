@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package tkd.events.v1;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/empty.proto";
+
+message Event {
+    google.protobuf.Any event = 1;
+}
+
+service EventService {
+    rpc Subscribe(stream SubscribeRequest) returns (stream Event);
+
+    rpc Publish(Event) returns (google.protobuf.Empty);
+
+    rpc PublishStream(stream Event) returns (google.protobuf.Empty);
+}
+
+message SubscribeRequest {
+    oneof kind {
+        string subscribe = 1;
+        string unsubscribe = 2;
+    }
+}
+
+
