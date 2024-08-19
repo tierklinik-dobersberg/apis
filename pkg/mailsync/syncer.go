@@ -128,7 +128,7 @@ func (sync *Syncer) poll() {
 		slog.InfoContext(ctx, "mailbox UID validity changed", slog.Any("old", sync.state.UIDValidity), slog.Any("new", cli.IMAP.Mailbox.UIDValidity))
 		// If UIDValidity changed we cannot continue to sync using the last retrieved
 		// UID as it might be invalid now. We MUST start from scratch and re-sync all mails.
-		sync.state.LastUIDFetched = 0
+		sync.state.LastUIDFetched = 1
 		sync.state.UIDValidity = cli.IMAP.Mailbox.UIDValidity
 
 		// TODO(ppacher): we should somehow notify the MessageHandler about
