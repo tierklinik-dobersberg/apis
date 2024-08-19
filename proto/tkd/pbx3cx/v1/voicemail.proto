@@ -13,6 +13,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 import "buf/validate/validate.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
 
 message VoiceMail {
     string id = 1;
@@ -39,18 +40,30 @@ enum NotificationType {
 }
 
 message NotificationSettings {
+    string name = 7 [
+        (buf.validate.field).required = true
+    ];
+
+    string description = 8;
+
     string subject_template = 1;
 
-    string message_template = 2;
+    string message_template = 2 [
+        (buf.validate.field).required = true
+    ];
 
     oneof recipients {
         tkd.common.v1.StringList role_ids = 3;
         tkd.common.v1.StringList user_ids = 4;
+
+        option (buf.validate.oneof).required = true;
     }
 
-    repeated tkd.common.v1.DayTime send_times = 5; 
+    repeated tkd.common.v1.DayTime send_times = 5;
 
-    repeated NotificationType types = 6;
+    repeated NotificationType types = 6 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message Mailbox {
@@ -119,7 +132,10 @@ message CreateMailboxRequest {
 message CreateMailboxResponse {
 }
 
-message ListMailboxesRequest {}
+message ListMailboxesRequest {
+    google.protobuf.FieldMask view = 1;
+}
+
 message ListMailboxesResponse {
     repeated Mailbox mailboxes = 1;
 }
@@ -147,10 +163,13 @@ message ListVoiceMailsRequest {
     ];
 
     VoiceMailFilter filter = 2;
+
+    google.protobuf.FieldMask view = 3;
 }
 
 message ListVoiceMailsResponse {
     repeated VoiceMail voicemails = 1;
+    repeated tkd.customer.v1.Customer customers = 2;
 }
 
 message MarkVoiceMailsRequest {
