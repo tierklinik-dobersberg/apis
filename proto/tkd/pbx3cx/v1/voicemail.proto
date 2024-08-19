@@ -7,46 +7,28 @@ import "tkd/common/v1/daytime.proto";
 import "tkd/common/v1/time_range.proto";
 import "tkd/common/v1/descriptor.proto";
 import "tkd/common/v1/list_wrappers.proto";
+import "tkd/common/v1/imap.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
 import "buf/validate/validate.proto";
+import "google/protobuf/empty.proto";
 
 message VoiceMail {
     string id = 1;
-    google.protobuf.Timestamp received_at = 2;
+    string mailbox = 2;
+    google.protobuf.Timestamp receive_time = 3;
 
     oneof caller {
-        string number = 3;
-        tkd.customer.v1.Customer customer = 4;
+        string number = 4;
+        tkd.customer.v1.Customer customer = 5;
     }
 
-    string subject = 5;
-    string message = 6;
-}
-
-message IMAPConfig {
-    // Host is the IMAP host to connect to
-   	string host = 1 [
-        (buf.validate.field).required = true
-    ];
-
-    // TLS enables or disables TLS support.
-	bool tls = 2;
-
-    // InsecureSkipVerify disables certificate validation when TLS is used.
-	bool insecure_skip_verify =3;
-
-    // User is the username to authenticate.
-	string user = 4;
-
-    // Password is the password to authenticate.
-	string password = 5;
-
-    // Folder is the IMAP folder to watch. Defaults to INBOX
-	string folder = 6;
-
-    // ReadOnly can be set to true to open the mailbox in read-only mode.
-	bool read_only = 7;
+    string subject = 6;
+    string message = 7;
+    string inbound_number = 8;
+    string file_name = 9;
+    google.protobuf.Timestamp seen_time = 10;
 }
 
 enum NotificationType {
@@ -57,16 +39,18 @@ enum NotificationType {
 }
 
 message NotificationSettings {
-    string template = 1;
+    string subject_template = 1;
+
+    string message_template = 2;
 
     oneof recipients {
-        tkd.common.v1.StringList roles = 2;
-        tkd.common.v1.StringList user_ids = 3;
+        tkd.common.v1.StringList role_ids = 3;
+        tkd.common.v1.StringList user_ids = 4;
     }
 
-    repeated tkd.common.v1.DayTime times = 4; 
+    repeated tkd.common.v1.DayTime send_times = 5; 
 
-    repeated NotificationType types = 5;
+    repeated NotificationType types = 6;
 }
 
 message Mailbox {
@@ -81,11 +65,14 @@ message Mailbox {
     google.protobuf.Duration poll_interval = 3;
 
     // Config holds the IMAP configuration for the mailbox.
-    IMAPConfig config = 4;
+    tkd.common.v1.IMAPConfig config = 4;
 
     // NotificationSettings holds settings for notifications about new
     // voice-mails 
     repeated NotificationSettings notification_settings = 5;
+
+    string extract_caller_regexp = 6;
+    string extract_target_regexp = 7;
 }
 
 service VoiceMailService {
@@ -105,13 +92,13 @@ service VoiceMailService {
         };
     }
 
-    rpc DeleteMailbox(DeleteMailboxRequest) returns (DeleteMailboxResponse) {
+    rpc DeleteMailbox(DeleteMailboxRequest) returns (google.protobuf.Empty) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_ADMIN,
         };
     }
 
-    rpc SearchVoiceMails(SearchVoiceMailsRequest) returns (SearchVoiceMailsResponse) {
+    rpc ListVoiceMails(ListVoiceMailsRequest) returns (ListVoiceMailsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
         };
@@ -134,7 +121,7 @@ message CreateMailboxResponse {
 
 message ListMailboxesRequest {}
 message ListMailboxesResponse {
-    repeated Mailbox results = 1;
+    repeated Mailbox mailboxes = 1;
 }
 
 message DeleteMailboxRequest {
@@ -143,29 +130,31 @@ message DeleteMailboxRequest {
     ];
 }
 
-message DeleteMailboxResponse {}
+message VoiceMailFilter {
+    tkd.common.v1.TimeRange time_range = 1;
 
-message SearchVoiceMailsRequest {
+    google.protobuf.BoolValue unseen = 2;
+
+    oneof caller {
+        string number = 3;
+        string customer_id = 4;
+    }
+}
+
+message ListVoiceMailsRequest {
     string mailbox = 1 [
         (buf.validate.field).required = true
     ];
 
-    tkd.common.v1.TimeRange time_range = 2;    
-
-    bool unseen = 3;
-
-    oneof caller {
-        string number = 4;
-        string customer_id = 5;
-    }
+    VoiceMailFilter filter = 2;
 }
 
-message SearchVoiceMailsResponse {
-    repeated VoiceMail results = 1;
+message ListVoiceMailsResponse {
+    repeated VoiceMail voicemails = 1;
 }
 
 message MarkVoiceMailsRequest {
-    repeated string ids = 1 [
+    repeated string voicemail_ids = 1 [
         (buf.validate.field).required = true
     ];
 

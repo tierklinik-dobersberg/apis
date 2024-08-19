@@ -9,6 +9,7 @@ import (
 	errors "errors"
 	connect_go "github.com/bufbuild/connect-go"
 	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -42,9 +43,9 @@ const (
 	// VoiceMailServiceDeleteMailboxProcedure is the fully-qualified name of the VoiceMailService's
 	// DeleteMailbox RPC.
 	VoiceMailServiceDeleteMailboxProcedure = "/tkd.pbx3cx.v1.VoiceMailService/DeleteMailbox"
-	// VoiceMailServiceSearchVoiceMailsProcedure is the fully-qualified name of the VoiceMailService's
-	// SearchVoiceMails RPC.
-	VoiceMailServiceSearchVoiceMailsProcedure = "/tkd.pbx3cx.v1.VoiceMailService/SearchVoiceMails"
+	// VoiceMailServiceListVoiceMailsProcedure is the fully-qualified name of the VoiceMailService's
+	// ListVoiceMails RPC.
+	VoiceMailServiceListVoiceMailsProcedure = "/tkd.pbx3cx.v1.VoiceMailService/ListVoiceMails"
 	// VoiceMailServiceMarkVoiceMailsProcedure is the fully-qualified name of the VoiceMailService's
 	// MarkVoiceMails RPC.
 	VoiceMailServiceMarkVoiceMailsProcedure = "/tkd.pbx3cx.v1.VoiceMailService/MarkVoiceMails"
@@ -54,8 +55,8 @@ const (
 type VoiceMailServiceClient interface {
 	CreateMailbox(context.Context, *connect_go.Request[v1.CreateMailboxRequest]) (*connect_go.Response[v1.CreateMailboxResponse], error)
 	ListMailboxes(context.Context, *connect_go.Request[v1.ListMailboxesRequest]) (*connect_go.Response[v1.ListMailboxesResponse], error)
-	DeleteMailbox(context.Context, *connect_go.Request[v1.DeleteMailboxRequest]) (*connect_go.Response[v1.DeleteMailboxResponse], error)
-	SearchVoiceMails(context.Context, *connect_go.Request[v1.SearchVoiceMailsRequest]) (*connect_go.Response[v1.SearchVoiceMailsResponse], error)
+	DeleteMailbox(context.Context, *connect_go.Request[v1.DeleteMailboxRequest]) (*connect_go.Response[emptypb.Empty], error)
+	ListVoiceMails(context.Context, *connect_go.Request[v1.ListVoiceMailsRequest]) (*connect_go.Response[v1.ListVoiceMailsResponse], error)
 	MarkVoiceMails(context.Context, *connect_go.Request[v1.MarkVoiceMailsRequest]) (*connect_go.Response[v1.MarkVoiceMailsResponse], error)
 }
 
@@ -79,14 +80,14 @@ func NewVoiceMailServiceClient(httpClient connect_go.HTTPClient, baseURL string,
 			baseURL+VoiceMailServiceListMailboxesProcedure,
 			opts...,
 		),
-		deleteMailbox: connect_go.NewClient[v1.DeleteMailboxRequest, v1.DeleteMailboxResponse](
+		deleteMailbox: connect_go.NewClient[v1.DeleteMailboxRequest, emptypb.Empty](
 			httpClient,
 			baseURL+VoiceMailServiceDeleteMailboxProcedure,
 			opts...,
 		),
-		searchVoiceMails: connect_go.NewClient[v1.SearchVoiceMailsRequest, v1.SearchVoiceMailsResponse](
+		listVoiceMails: connect_go.NewClient[v1.ListVoiceMailsRequest, v1.ListVoiceMailsResponse](
 			httpClient,
-			baseURL+VoiceMailServiceSearchVoiceMailsProcedure,
+			baseURL+VoiceMailServiceListVoiceMailsProcedure,
 			opts...,
 		),
 		markVoiceMails: connect_go.NewClient[v1.MarkVoiceMailsRequest, v1.MarkVoiceMailsResponse](
@@ -99,11 +100,11 @@ func NewVoiceMailServiceClient(httpClient connect_go.HTTPClient, baseURL string,
 
 // voiceMailServiceClient implements VoiceMailServiceClient.
 type voiceMailServiceClient struct {
-	createMailbox    *connect_go.Client[v1.CreateMailboxRequest, v1.CreateMailboxResponse]
-	listMailboxes    *connect_go.Client[v1.ListMailboxesRequest, v1.ListMailboxesResponse]
-	deleteMailbox    *connect_go.Client[v1.DeleteMailboxRequest, v1.DeleteMailboxResponse]
-	searchVoiceMails *connect_go.Client[v1.SearchVoiceMailsRequest, v1.SearchVoiceMailsResponse]
-	markVoiceMails   *connect_go.Client[v1.MarkVoiceMailsRequest, v1.MarkVoiceMailsResponse]
+	createMailbox  *connect_go.Client[v1.CreateMailboxRequest, v1.CreateMailboxResponse]
+	listMailboxes  *connect_go.Client[v1.ListMailboxesRequest, v1.ListMailboxesResponse]
+	deleteMailbox  *connect_go.Client[v1.DeleteMailboxRequest, emptypb.Empty]
+	listVoiceMails *connect_go.Client[v1.ListVoiceMailsRequest, v1.ListVoiceMailsResponse]
+	markVoiceMails *connect_go.Client[v1.MarkVoiceMailsRequest, v1.MarkVoiceMailsResponse]
 }
 
 // CreateMailbox calls tkd.pbx3cx.v1.VoiceMailService.CreateMailbox.
@@ -117,13 +118,13 @@ func (c *voiceMailServiceClient) ListMailboxes(ctx context.Context, req *connect
 }
 
 // DeleteMailbox calls tkd.pbx3cx.v1.VoiceMailService.DeleteMailbox.
-func (c *voiceMailServiceClient) DeleteMailbox(ctx context.Context, req *connect_go.Request[v1.DeleteMailboxRequest]) (*connect_go.Response[v1.DeleteMailboxResponse], error) {
+func (c *voiceMailServiceClient) DeleteMailbox(ctx context.Context, req *connect_go.Request[v1.DeleteMailboxRequest]) (*connect_go.Response[emptypb.Empty], error) {
 	return c.deleteMailbox.CallUnary(ctx, req)
 }
 
-// SearchVoiceMails calls tkd.pbx3cx.v1.VoiceMailService.SearchVoiceMails.
-func (c *voiceMailServiceClient) SearchVoiceMails(ctx context.Context, req *connect_go.Request[v1.SearchVoiceMailsRequest]) (*connect_go.Response[v1.SearchVoiceMailsResponse], error) {
-	return c.searchVoiceMails.CallUnary(ctx, req)
+// ListVoiceMails calls tkd.pbx3cx.v1.VoiceMailService.ListVoiceMails.
+func (c *voiceMailServiceClient) ListVoiceMails(ctx context.Context, req *connect_go.Request[v1.ListVoiceMailsRequest]) (*connect_go.Response[v1.ListVoiceMailsResponse], error) {
+	return c.listVoiceMails.CallUnary(ctx, req)
 }
 
 // MarkVoiceMails calls tkd.pbx3cx.v1.VoiceMailService.MarkVoiceMails.
@@ -135,8 +136,8 @@ func (c *voiceMailServiceClient) MarkVoiceMails(ctx context.Context, req *connec
 type VoiceMailServiceHandler interface {
 	CreateMailbox(context.Context, *connect_go.Request[v1.CreateMailboxRequest]) (*connect_go.Response[v1.CreateMailboxResponse], error)
 	ListMailboxes(context.Context, *connect_go.Request[v1.ListMailboxesRequest]) (*connect_go.Response[v1.ListMailboxesResponse], error)
-	DeleteMailbox(context.Context, *connect_go.Request[v1.DeleteMailboxRequest]) (*connect_go.Response[v1.DeleteMailboxResponse], error)
-	SearchVoiceMails(context.Context, *connect_go.Request[v1.SearchVoiceMailsRequest]) (*connect_go.Response[v1.SearchVoiceMailsResponse], error)
+	DeleteMailbox(context.Context, *connect_go.Request[v1.DeleteMailboxRequest]) (*connect_go.Response[emptypb.Empty], error)
+	ListVoiceMails(context.Context, *connect_go.Request[v1.ListVoiceMailsRequest]) (*connect_go.Response[v1.ListVoiceMailsResponse], error)
 	MarkVoiceMails(context.Context, *connect_go.Request[v1.MarkVoiceMailsRequest]) (*connect_go.Response[v1.MarkVoiceMailsResponse], error)
 }
 
@@ -161,9 +162,9 @@ func NewVoiceMailServiceHandler(svc VoiceMailServiceHandler, opts ...connect_go.
 		svc.DeleteMailbox,
 		opts...,
 	)
-	voiceMailServiceSearchVoiceMailsHandler := connect_go.NewUnaryHandler(
-		VoiceMailServiceSearchVoiceMailsProcedure,
-		svc.SearchVoiceMails,
+	voiceMailServiceListVoiceMailsHandler := connect_go.NewUnaryHandler(
+		VoiceMailServiceListVoiceMailsProcedure,
+		svc.ListVoiceMails,
 		opts...,
 	)
 	voiceMailServiceMarkVoiceMailsHandler := connect_go.NewUnaryHandler(
@@ -179,8 +180,8 @@ func NewVoiceMailServiceHandler(svc VoiceMailServiceHandler, opts ...connect_go.
 			voiceMailServiceListMailboxesHandler.ServeHTTP(w, r)
 		case VoiceMailServiceDeleteMailboxProcedure:
 			voiceMailServiceDeleteMailboxHandler.ServeHTTP(w, r)
-		case VoiceMailServiceSearchVoiceMailsProcedure:
-			voiceMailServiceSearchVoiceMailsHandler.ServeHTTP(w, r)
+		case VoiceMailServiceListVoiceMailsProcedure:
+			voiceMailServiceListVoiceMailsHandler.ServeHTTP(w, r)
 		case VoiceMailServiceMarkVoiceMailsProcedure:
 			voiceMailServiceMarkVoiceMailsHandler.ServeHTTP(w, r)
 		default:
@@ -200,12 +201,12 @@ func (UnimplementedVoiceMailServiceHandler) ListMailboxes(context.Context, *conn
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.VoiceMailService.ListMailboxes is not implemented"))
 }
 
-func (UnimplementedVoiceMailServiceHandler) DeleteMailbox(context.Context, *connect_go.Request[v1.DeleteMailboxRequest]) (*connect_go.Response[v1.DeleteMailboxResponse], error) {
+func (UnimplementedVoiceMailServiceHandler) DeleteMailbox(context.Context, *connect_go.Request[v1.DeleteMailboxRequest]) (*connect_go.Response[emptypb.Empty], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.VoiceMailService.DeleteMailbox is not implemented"))
 }
 
-func (UnimplementedVoiceMailServiceHandler) SearchVoiceMails(context.Context, *connect_go.Request[v1.SearchVoiceMailsRequest]) (*connect_go.Response[v1.SearchVoiceMailsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.VoiceMailService.SearchVoiceMails is not implemented"))
+func (UnimplementedVoiceMailServiceHandler) ListVoiceMails(context.Context, *connect_go.Request[v1.ListVoiceMailsRequest]) (*connect_go.Response[v1.ListVoiceMailsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.VoiceMailService.ListVoiceMails is not implemented"))
 }
 
 func (UnimplementedVoiceMailServiceHandler) MarkVoiceMails(context.Context, *connect_go.Request[v1.MarkVoiceMailsRequest]) (*connect_go.Response[v1.MarkVoiceMailsResponse], error) {

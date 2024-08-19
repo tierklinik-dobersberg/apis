@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package tkd.common.v1;
+
+import "buf/validate/validate.proto";
+import "tkd/common/v1/descriptor.proto";
+
+message IMAPConfig {
+    // Host is the IMAP host to connect to
+   	string host = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // TLS enables or disables TLS support.
+	bool tls = 2;
+
+    // InsecureSkipVerify disables certificate validation when TLS is used.
+	bool insecure_skip_verify =3;
+
+    // User is the username to authenticate.
+	string user = 4;
+
+    // Password is the password to authenticate.
+	string password = 5;
+
+    // Folder is the IMAP folder to watch. Defaults to INBOX
+	string folder = 6;
+
+    // ReadOnly can be set to true to open the mailbox in read-only mode.
+	bool read_only = 7;
+
+    option (tkd.common.v1.readable) = {
+        field_mask: {
+            paths: [
+                "host",
+                "tls",
+                "read_only",
+                "user",
+                "insecure_skip_verify",
+                "folder"
+            ],
+        },
+        owner_field_name: "id",
+        allowed_roles: [
+            "idm_superuser"
+        ]
+    };
+}
