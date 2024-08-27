@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package tkd.common.v1;
+
+import "google/protobuf/field_mask.proto";
+
+message View {
+    google.protobuf.FieldMask field_mask = 1;
+    bool prune = 2;
+}

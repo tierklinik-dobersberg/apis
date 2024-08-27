@@ -8,12 +8,12 @@ import "tkd/common/v1/time_range.proto";
 import "tkd/common/v1/descriptor.proto";
 import "tkd/common/v1/list_wrappers.proto";
 import "tkd/common/v1/imap.proto";
+import "tkd/common/v1/view.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 import "buf/validate/validate.proto";
 import "google/protobuf/empty.proto";
-import "google/protobuf/field_mask.proto";
 
 message VoiceMail {
     string id = 1;
@@ -117,6 +117,12 @@ service VoiceMailService {
         };
     }
 
+    rpc GetVoiceMail(GetVoiceMailRequest) returns (GetVoiceMailResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
     rpc MarkVoiceMails(MarkVoiceMailsRequest) returns (MarkVoiceMailsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
@@ -133,7 +139,7 @@ message CreateMailboxResponse {
 }
 
 message ListMailboxesRequest {
-    google.protobuf.FieldMask view = 1;
+    tkd.common.v1.View view = 1;
 }
 
 message ListMailboxesResponse {
@@ -164,7 +170,7 @@ message ListVoiceMailsRequest {
 
     VoiceMailFilter filter = 2;
 
-    google.protobuf.FieldMask view = 3;
+    tkd.common.v1.View view = 3;
 }
 
 message ListVoiceMailsResponse {
@@ -182,3 +188,15 @@ message MarkVoiceMailsRequest {
 
 message MarkVoiceMailsResponse {}
 
+
+message GetVoiceMailRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    tkd.common.v1.View view = 2;
+}
+
+message GetVoiceMailResponse {
+    VoiceMail voicemail = 1;
+}
