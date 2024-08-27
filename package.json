@@ -1,6 +1,6 @@
 {
   "name": "@tierklinik-dobersberg/apis",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "Connect-ES API definitions for Tierklinik Dobersberg services",
   "types": "./index.d.ts",
   "main": "./index.js",
@@ -34,5 +34,46 @@
     "@connectrpc/connect": "^1.4.0",
     "@connectrpc/connect-web": "^1.4.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    "./calendar/v1": {
+      "types": "./gen/es/tkd/calendar/v1/index.d.ts",
+      "default": "./gen/es/tkd/calendar/v1/index.js"
+    },
+    "./comment/v1": {
+      "types": "./gen/es/tkd/comment/v1/index.d.ts",
+      "default": "./gen/es/tkd/comment/v1/index.js"
+    },
+    "./common/v1": {
+      "types": "./gen/es/tkd/common/v1/index.d.ts",
+      "default": "./gen/es/tkd/common/v1/index.js"
+    },
+    "./customer/v1": {
+      "types": "./gen/es/tkd/customer/v1/index.d.ts",
+      "default": "./gen/es/tkd/customer/v1/index.js"
+    },
+    "./events/v1": {
+      "types": "./gen/es/tkd/events/v1/index.d.ts",
+      "default": "./gen/es/tkd/events/v1/index.js"
+    },
+    "./idm/v1": {
+      "types": "./gen/es/tkd/idm/v1/index.d.ts",
+      "default": "./gen/es/tkd/idm/v1/index.js"
+    },
+    "./orthanc_bridge/v1": {
+      "types": "./gen/es/tkd/orthanc_bridge/v1/index.d.ts",
+      "default": "./gen/es/tkd/orthanc_bridge/v1/index.js"
+    },
+    "./pbx3cx/v1": {
+      "types": "./gen/es/tkd/pbx3cx/v1/index.d.ts",
+      "default": "./gen/es/tkd/pbx3cx/v1/index.js"
+    },
+    "./roster/v1": {
+      "types": "./gen/es/tkd/roster/v1/index.d.ts",
+      "default": "./gen/es/tkd/roster/v1/index.js"
+    }
+  }
 }
