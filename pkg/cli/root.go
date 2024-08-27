@@ -37,6 +37,7 @@ type Config struct {
 	TokenPath          string `json:"tokenPath"`
 	InsecureSkipVerify bool   `json:"insecure"`
 	OutputYAML         bool   `json:"outputYaml"`
+	ProtoFieldNames    bool   `json:"useProtoFieldNames"`
 	Format             string `json:"-"`
 }
 
@@ -70,13 +71,14 @@ func (root *Root) Config() *Config {
 	return c
 }
 
-func (root *Root) Debug() bool          { return root.Config().Debug }
-func (root *Root) Verbose() bool        { return root.Config().Verbose }
-func (root *Root) TokenPath() string    { return root.Config().TokenPath }
-func (root *Root) OutputYAML() bool     { return root.Config().OutputYAML }
-func (root *Root) Insecure() bool       { return root.Config().InsecureSkipVerify }
-func (root *Root) ActiveConfig() string { return root.activeConfig }
-func (root *Root) Tokens() TokenFile    { return root.tokens }
+func (root *Root) Debug() bool              { return root.Config().Debug }
+func (root *Root) Verbose() bool            { return root.Config().Verbose }
+func (root *Root) TokenPath() string        { return root.Config().TokenPath }
+func (root *Root) OutputYAML() bool         { return root.Config().OutputYAML }
+func (root *Root) UseProtoFieldNames() bool { return root.Config().ProtoFieldNames }
+func (root *Root) Insecure() bool           { return root.Config().InsecureSkipVerify }
+func (root *Root) ActiveConfig() string     { return root.activeConfig }
+func (root *Root) Tokens() TokenFile        { return root.tokens }
 
 func (root *Root) RoundTrip(req *http.Request) (*http.Response, error) {
 	token := root.tokens.AccessToken
@@ -182,6 +184,10 @@ func New(name string) *Root {
 			if cmd.Flag("yaml").Changed {
 				cfg.OutputYAML = flagConfig.OutputYAML
 			}
+			if cmd.Flag("proto-field-names").Changed {
+				cfg.ProtoFieldNames = flagConfig.ProtoFieldNames
+			}
+
 			if cmd.Flag("format").Changed {
 				cfg.Format = flagConfig.Format
 			}
@@ -261,6 +267,7 @@ func New(name string) *Root {
 		flags.BoolVar(&flagConfig.Verbose, "verbose", false, "Enable verbose output mode")
 		flags.StringVarP(&root.activeConfig, "configuration", "c", "default", "Which configuration to use.")
 		flags.StringVar(&flagConfig.Format, "format", "", "Use go text/template for output formatting")
+		flags.BoolVar(&flagConfig.ProtoFieldNames, "proto-field-names", false, "Use protobuf field names instead of camelCase field names")
 	}
 
 	return root

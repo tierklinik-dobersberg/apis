@@ -46,8 +46,9 @@ func (root *Root) defaultPrintFunc(res any) {
 	if msg, ok := res.(proto.Message); ok {
 		var err error
 		opts := protojson.MarshalOptions{
-			Multiline: true,
-			Indent:    "  ",
+			Multiline:     true,
+			Indent:        "  ",
+			UseProtoNames: root.UseProtoFieldNames(),
 		}
 
 		buf, err = opts.Marshal(msg)
