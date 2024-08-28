@@ -53,6 +53,7 @@ type Syncer struct {
 	handler      MessageHandler
 	pollInterval time.Duration
 	wg           sync.WaitGroup
+	triggerChan  chan chan struct{}
 }
 
 // OnMessage configures the message handler.
@@ -85,17 +86,44 @@ func (sync *Syncer) Start() error {
 			sync.close = nil
 		}()
 
+		var response chan struct{}
 		for {
 			sync.poll()
+
+			if response != nil {
+				close(response)
+				response = nil
+			}
 
 			select {
 			case <-closeCh:
 				return
 			case <-time.After(sync.pollInterval):
 				slog.Info("starting update")
+
+			case response = <-sync.triggerChan:
 			}
 		}
 	}()
+
+	return nil
+}
+
+func (sync *Syncer) TriggerSync(ctx context.Context) error {
+	response := make(chan struct{})
+
+	select {
+	case sync.triggerChan <- response:
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+
+	// wait for the sync to finish
+	select {
+	case <-response:
+	case <-ctx.Done():
+		return ctx.Err()
+	}
 
 	return nil
 }

@@ -41,6 +41,7 @@ func (mng *Manager) NewSyncer(ctx context.Context, name string, interval time.Du
 		syncState:    mng.syncState,
 		cfg:          cfg,
 		pollInterval: interval,
+		triggerChan:  make(chan chan struct{}),
 	}
 
 	return syncer, nil
