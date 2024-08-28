@@ -101,11 +101,17 @@ service VoiceMailService {
 
     rpc ListMailboxes(ListMailboxesRequest) returns (ListMailboxesResponse) { 
         option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_ADMIN,
+            require: AUTH_REQ_REQUIRED,
         };
     }
 
     rpc DeleteMailbox(DeleteMailboxRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
+    rpc UpdateMailbox(UpdateMailboxRequest) returns (UpdateMailboxResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_ADMIN,
         };
@@ -199,4 +205,18 @@ message GetVoiceMailRequest {
 
 message GetVoiceMailResponse {
     VoiceMail voicemail = 1;
+}
+
+message UpdateMailboxRequest {
+    string mailbox_id = 1;
+
+    oneof update {
+        Mailbox mailbox = 2;
+        NotificationSettings add_notification_setting = 3;
+        string delete_notification_setting = 4;
+    }
+}
+
+message UpdateMailboxResponse {
+    Mailbox mailbox = 1;
 }
