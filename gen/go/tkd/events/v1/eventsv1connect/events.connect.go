@@ -36,6 +36,9 @@ const (
 const (
 	// EventServiceSubscribeProcedure is the fully-qualified name of the EventService's Subscribe RPC.
 	EventServiceSubscribeProcedure = "/tkd.events.v1.EventService/Subscribe"
+	// EventServiceSubscribeOnceProcedure is the fully-qualified name of the EventService's
+	// SubscribeOnce RPC.
+	EventServiceSubscribeOnceProcedure = "/tkd.events.v1.EventService/SubscribeOnce"
 	// EventServicePublishProcedure is the fully-qualified name of the EventService's Publish RPC.
 	EventServicePublishProcedure = "/tkd.events.v1.EventService/Publish"
 	// EventServicePublishStreamProcedure is the fully-qualified name of the EventService's
@@ -46,6 +49,7 @@ const (
 // EventServiceClient is a client for the tkd.events.v1.EventService service.
 type EventServiceClient interface {
 	Subscribe(context.Context) *connect_go.BidiStreamForClient[v1.SubscribeRequest, v1.Event]
+	SubscribeOnce(context.Context, *connect_go.Request[v1.SubscribeOnceRequest]) (*connect_go.ServerStreamForClient[v1.Event], error)
 	Publish(context.Context, *connect_go.Request[v1.Event]) (*connect_go.Response[emptypb.Empty], error)
 	PublishStream(context.Context) *connect_go.ClientStreamForClient[v1.Event, emptypb.Empty]
 }
@@ -65,6 +69,11 @@ func NewEventServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+EventServiceSubscribeProcedure,
 			opts...,
 		),
+		subscribeOnce: connect_go.NewClient[v1.SubscribeOnceRequest, v1.Event](
+			httpClient,
+			baseURL+EventServiceSubscribeOnceProcedure,
+			opts...,
+		),
 		publish: connect_go.NewClient[v1.Event, emptypb.Empty](
 			httpClient,
 			baseURL+EventServicePublishProcedure,
@@ -81,6 +90,7 @@ func NewEventServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 // eventServiceClient implements EventServiceClient.
 type eventServiceClient struct {
 	subscribe     *connect_go.Client[v1.SubscribeRequest, v1.Event]
+	subscribeOnce *connect_go.Client[v1.SubscribeOnceRequest, v1.Event]
 	publish       *connect_go.Client[v1.Event, emptypb.Empty]
 	publishStream *connect_go.Client[v1.Event, emptypb.Empty]
 }
@@ -88,6 +98,11 @@ type eventServiceClient struct {
 // Subscribe calls tkd.events.v1.EventService.Subscribe.
 func (c *eventServiceClient) Subscribe(ctx context.Context) *connect_go.BidiStreamForClient[v1.SubscribeRequest, v1.Event] {
 	return c.subscribe.CallBidiStream(ctx)
+}
+
+// SubscribeOnce calls tkd.events.v1.EventService.SubscribeOnce.
+func (c *eventServiceClient) SubscribeOnce(ctx context.Context, req *connect_go.Request[v1.SubscribeOnceRequest]) (*connect_go.ServerStreamForClient[v1.Event], error) {
+	return c.subscribeOnce.CallServerStream(ctx, req)
 }
 
 // Publish calls tkd.events.v1.EventService.Publish.
@@ -103,6 +118,7 @@ func (c *eventServiceClient) PublishStream(ctx context.Context) *connect_go.Clie
 // EventServiceHandler is an implementation of the tkd.events.v1.EventService service.
 type EventServiceHandler interface {
 	Subscribe(context.Context, *connect_go.BidiStream[v1.SubscribeRequest, v1.Event]) error
+	SubscribeOnce(context.Context, *connect_go.Request[v1.SubscribeOnceRequest], *connect_go.ServerStream[v1.Event]) error
 	Publish(context.Context, *connect_go.Request[v1.Event]) (*connect_go.Response[emptypb.Empty], error)
 	PublishStream(context.Context, *connect_go.ClientStream[v1.Event]) (*connect_go.Response[emptypb.Empty], error)
 }
@@ -116,6 +132,11 @@ func NewEventServiceHandler(svc EventServiceHandler, opts ...connect_go.HandlerO
 	eventServiceSubscribeHandler := connect_go.NewBidiStreamHandler(
 		EventServiceSubscribeProcedure,
 		svc.Subscribe,
+		opts...,
+	)
+	eventServiceSubscribeOnceHandler := connect_go.NewServerStreamHandler(
+		EventServiceSubscribeOnceProcedure,
+		svc.SubscribeOnce,
 		opts...,
 	)
 	eventServicePublishHandler := connect_go.NewUnaryHandler(
@@ -132,6 +153,8 @@ func NewEventServiceHandler(svc EventServiceHandler, opts ...connect_go.HandlerO
 		switch r.URL.Path {
 		case EventServiceSubscribeProcedure:
 			eventServiceSubscribeHandler.ServeHTTP(w, r)
+		case EventServiceSubscribeOnceProcedure:
+			eventServiceSubscribeOnceHandler.ServeHTTP(w, r)
 		case EventServicePublishProcedure:
 			eventServicePublishHandler.ServeHTTP(w, r)
 		case EventServicePublishStreamProcedure:
@@ -147,6 +170,10 @@ type UnimplementedEventServiceHandler struct{}
 
 func (UnimplementedEventServiceHandler) Subscribe(context.Context, *connect_go.BidiStream[v1.SubscribeRequest, v1.Event]) error {
 	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.events.v1.EventService.Subscribe is not implemented"))
+}
+
+func (UnimplementedEventServiceHandler) SubscribeOnce(context.Context, *connect_go.Request[v1.SubscribeOnceRequest], *connect_go.ServerStream[v1.Event]) error {
+	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.events.v1.EventService.SubscribeOnce is not implemented"))
 }
 
 func (UnimplementedEventServiceHandler) Publish(context.Context, *connect_go.Request[v1.Event]) (*connect_go.Response[emptypb.Empty], error) {

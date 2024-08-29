@@ -12,6 +12,8 @@ message Event {
 service EventService {
     rpc Subscribe(stream SubscribeRequest) returns (stream Event);
 
+    rpc SubscribeOnce(SubscribeOnceRequest) returns (stream Event);
+
     rpc Publish(Event) returns (google.protobuf.Empty);
 
     rpc PublishStream(stream Event) returns (google.protobuf.Empty);
@@ -24,4 +26,6 @@ message SubscribeRequest {
     }
 }
 
-
+message SubscribeOnceRequest {
+    repeated string type_urls = 1;
+}
