@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io"
 	"log/slog"
+	"strings"
 	"sync"
 	"time"
 
@@ -165,12 +166,14 @@ func (cli *Client) handleMessages(ctx context.Context) {
 
 		case msg := <-cli.incoming:
 
+			typeUrl := trimTypeUrl(msg.Event.TypeUrl)
+
 			cli.lock.Lock()
-			subscribers := cli.events[protoreflect.FullName(msg.Event.TypeUrl)]
+			subscribers := cli.events[typeUrl]
 			cli.lock.Unlock()
 
 			if len(subscribers) == 0 {
-				slog.Warn("no subscribers found for incoming message", slog.Any("typeUrl", msg.Event.TypeUrl))
+				slog.Warn("no subscribers found for incoming message", slog.Any("typeUrl", typeUrl))
 			}
 
 			for _, ch := range subscribers {
@@ -181,4 +184,8 @@ func (cli *Client) handleMessages(ctx context.Context) {
 			return
 		}
 	}
+}
+
+func trimTypeUrl(url string) protoreflect.FullName {
+	return protoreflect.FullName(strings.TrimPrefix(url, "type.googleapis.com/"))
 }
