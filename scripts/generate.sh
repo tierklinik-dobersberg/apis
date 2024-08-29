@@ -5,6 +5,8 @@ buf generate proto
 
 pkgjson=$(cat package.json | jq '.exports = {"./package.json": {"default": "./package.json"}}')
 
+echo -e "package proto\n" > ./proto/all.go
+
 echo "Creating es+d.ts barrel files"
 for pkg in ./gen/es/tkd/**/*; do 
     # remove old barrel files
@@ -15,6 +17,9 @@ for pkg in ./gen/es/tkd/**/*; do
     pkgjson=$(echo "$pkgjson" | jq ".exports += { \"${entrypoint}\": { \"types\": \"${pkg}/index.d.ts\", \"default\": \"${pkg}/index.js\", \"esm\": \"${pkg}/index.js\", \"esm2022\": \"${pkg}/index.js\" } }" )
 
     echo "${pkg}" 
+
+    echo "import _ \"github.com/tierklinik-dobersberg/apis${pkg/.\/gen\/es/\/gen\/go}\"" >> ./proto/all.go
+
     # generate new index.js
     for file in $pkg/*.js ; do 
         echo "export * from './$(basename $file)'" >> $pkg/index.js
