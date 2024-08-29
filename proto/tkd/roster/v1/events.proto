@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package tkd.roster.v1;
+
+import "tkd/roster/v1/roster.proto";
+
+message RosterChangedEvent {
+    Roster roster = 1;
+    string user_id = 2;
+}

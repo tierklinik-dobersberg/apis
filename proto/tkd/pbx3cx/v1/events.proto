@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package tkd.pbx3cx.v1;
+
+import "tkd/pbx3cx/v1/calllog.proto";
+import "tkd/pbx3cx/v1/voicemail.proto";
+
+message OverwriteCreatedEvent {
+    Overwrite overwrite = 1;
+}
+
+message VoiceMailReceivedEvent {
+    VoiceMail voicemail = 1;
+}
+
+message OnCallChangeEvent {
+    repeated OnCall on_call = 1;
+    string roster_date = 2; // YYYY-MM-DD
+    bool is_overwrite = 3;
+    string primary_transfer_target = 4;
+    string inbound_number = 5;
+}
