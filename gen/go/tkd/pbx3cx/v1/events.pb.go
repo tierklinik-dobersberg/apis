@@ -67,6 +67,100 @@ func (x *OverwriteCreatedEvent) GetOverwrite() *Overwrite {
 	return nil
 }
 
+type OverwriteDeletedEvent struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Overwrite *Overwrite `protobuf:"bytes,1,opt,name=overwrite,proto3" json:"overwrite,omitempty"`
+}
+
+func (x *OverwriteDeletedEvent) Reset() {
+	*x = OverwriteDeletedEvent{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OverwriteDeletedEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OverwriteDeletedEvent) ProtoMessage() {}
+
+func (x *OverwriteDeletedEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OverwriteDeletedEvent.ProtoReflect.Descriptor instead.
+func (*OverwriteDeletedEvent) Descriptor() ([]byte, []int) {
+	return file_tkd_pbx3cx_v1_events_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *OverwriteDeletedEvent) GetOverwrite() *Overwrite {
+	if x != nil {
+		return x.Overwrite
+	}
+	return nil
+}
+
+type CallRecordReceived struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	CallEntry *CallEntry `protobuf:"bytes,1,opt,name=call_entry,json=callEntry,proto3" json:"call_entry,omitempty"`
+}
+
+func (x *CallRecordReceived) Reset() {
+	*x = CallRecordReceived{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CallRecordReceived) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CallRecordReceived) ProtoMessage() {}
+
+func (x *CallRecordReceived) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CallRecordReceived.ProtoReflect.Descriptor instead.
+func (*CallRecordReceived) Descriptor() ([]byte, []int) {
+	return file_tkd_pbx3cx_v1_events_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *CallRecordReceived) GetCallEntry() *CallEntry {
+	if x != nil {
+		return x.CallEntry
+	}
+	return nil
+}
+
 type VoiceMailReceivedEvent struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -78,7 +172,7 @@ type VoiceMailReceivedEvent struct {
 func (x *VoiceMailReceivedEvent) Reset() {
 	*x = VoiceMailReceivedEvent{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[1]
+		mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -91,7 +185,7 @@ func (x *VoiceMailReceivedEvent) String() string {
 func (*VoiceMailReceivedEvent) ProtoMessage() {}
 
 func (x *VoiceMailReceivedEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[1]
+	mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -104,7 +198,7 @@ func (x *VoiceMailReceivedEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VoiceMailReceivedEvent.ProtoReflect.Descriptor instead.
 func (*VoiceMailReceivedEvent) Descriptor() ([]byte, []int) {
-	return file_tkd_pbx3cx_v1_events_proto_rawDescGZIP(), []int{1}
+	return file_tkd_pbx3cx_v1_events_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *VoiceMailReceivedEvent) GetVoicemail() *VoiceMail {
@@ -129,7 +223,7 @@ type OnCallChangeEvent struct {
 func (x *OnCallChangeEvent) Reset() {
 	*x = OnCallChangeEvent{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[2]
+		mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -142,7 +236,7 @@ func (x *OnCallChangeEvent) String() string {
 func (*OnCallChangeEvent) ProtoMessage() {}
 
 func (x *OnCallChangeEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[2]
+	mi := &file_tkd_pbx3cx_v1_events_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -155,7 +249,7 @@ func (x *OnCallChangeEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OnCallChangeEvent.ProtoReflect.Descriptor instead.
 func (*OnCallChangeEvent) Descriptor() ([]byte, []int) {
-	return file_tkd_pbx3cx_v1_events_proto_rawDescGZIP(), []int{2}
+	return file_tkd_pbx3cx_v1_events_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *OnCallChangeEvent) GetOnCall() []*OnCall {
@@ -207,7 +301,17 @@ var file_tkd_pbx3cx_v1_events_proto_rawDesc = []byte{
 	0x12, 0x36, 0x0a, 0x09, 0x6f, 0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x74, 0x6b, 0x64, 0x2e, 0x70, 0x62, 0x78, 0x33, 0x63, 0x78,
 	0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x52, 0x09, 0x6f,
-	0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x22, 0x50, 0x0a, 0x16, 0x56, 0x6f, 0x69, 0x63,
+	0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x22, 0x4f, 0x0a, 0x15, 0x4f, 0x76, 0x65, 0x72,
+	0x77, 0x72, 0x69, 0x74, 0x65, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x45, 0x76, 0x65, 0x6e,
+	0x74, 0x12, 0x36, 0x0a, 0x09, 0x6f, 0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x74, 0x6b, 0x64, 0x2e, 0x70, 0x62, 0x78, 0x33, 0x63,
+	0x78, 0x2e, 0x76, 0x31, 0x2e, 0x4f, 0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x52, 0x09,
+	0x6f, 0x76, 0x65, 0x72, 0x77, 0x72, 0x69, 0x74, 0x65, 0x22, 0x4d, 0x0a, 0x12, 0x43, 0x61, 0x6c,
+	0x6c, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x12,
+	0x37, 0x0a, 0x0a, 0x63, 0x61, 0x6c, 0x6c, 0x5f, 0x65, 0x6e, 0x74, 0x72, 0x79, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x74, 0x6b, 0x64, 0x2e, 0x70, 0x62, 0x78, 0x33, 0x63, 0x78,
+	0x2e, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x09, 0x63,
+	0x61, 0x6c, 0x6c, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x22, 0x50, 0x0a, 0x16, 0x56, 0x6f, 0x69, 0x63,
 	0x65, 0x4d, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x63, 0x65, 0x69, 0x76, 0x65, 0x64, 0x45, 0x76, 0x65,
 	0x6e, 0x74, 0x12, 0x36, 0x0a, 0x09, 0x76, 0x6f, 0x69, 0x63, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x74, 0x6b, 0x64, 0x2e, 0x70, 0x62, 0x78, 0x33,
@@ -254,24 +358,29 @@ func file_tkd_pbx3cx_v1_events_proto_rawDescGZIP() []byte {
 	return file_tkd_pbx3cx_v1_events_proto_rawDescData
 }
 
-var file_tkd_pbx3cx_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_tkd_pbx3cx_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_tkd_pbx3cx_v1_events_proto_goTypes = []any{
 	(*OverwriteCreatedEvent)(nil),  // 0: tkd.pbx3cx.v1.OverwriteCreatedEvent
-	(*VoiceMailReceivedEvent)(nil), // 1: tkd.pbx3cx.v1.VoiceMailReceivedEvent
-	(*OnCallChangeEvent)(nil),      // 2: tkd.pbx3cx.v1.OnCallChangeEvent
-	(*Overwrite)(nil),              // 3: tkd.pbx3cx.v1.Overwrite
-	(*VoiceMail)(nil),              // 4: tkd.pbx3cx.v1.VoiceMail
-	(*OnCall)(nil),                 // 5: tkd.pbx3cx.v1.OnCall
+	(*OverwriteDeletedEvent)(nil),  // 1: tkd.pbx3cx.v1.OverwriteDeletedEvent
+	(*CallRecordReceived)(nil),     // 2: tkd.pbx3cx.v1.CallRecordReceived
+	(*VoiceMailReceivedEvent)(nil), // 3: tkd.pbx3cx.v1.VoiceMailReceivedEvent
+	(*OnCallChangeEvent)(nil),      // 4: tkd.pbx3cx.v1.OnCallChangeEvent
+	(*Overwrite)(nil),              // 5: tkd.pbx3cx.v1.Overwrite
+	(*CallEntry)(nil),              // 6: tkd.pbx3cx.v1.CallEntry
+	(*VoiceMail)(nil),              // 7: tkd.pbx3cx.v1.VoiceMail
+	(*OnCall)(nil),                 // 8: tkd.pbx3cx.v1.OnCall
 }
 var file_tkd_pbx3cx_v1_events_proto_depIdxs = []int32{
-	3, // 0: tkd.pbx3cx.v1.OverwriteCreatedEvent.overwrite:type_name -> tkd.pbx3cx.v1.Overwrite
-	4, // 1: tkd.pbx3cx.v1.VoiceMailReceivedEvent.voicemail:type_name -> tkd.pbx3cx.v1.VoiceMail
-	5, // 2: tkd.pbx3cx.v1.OnCallChangeEvent.on_call:type_name -> tkd.pbx3cx.v1.OnCall
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	5, // 0: tkd.pbx3cx.v1.OverwriteCreatedEvent.overwrite:type_name -> tkd.pbx3cx.v1.Overwrite
+	5, // 1: tkd.pbx3cx.v1.OverwriteDeletedEvent.overwrite:type_name -> tkd.pbx3cx.v1.Overwrite
+	6, // 2: tkd.pbx3cx.v1.CallRecordReceived.call_entry:type_name -> tkd.pbx3cx.v1.CallEntry
+	7, // 3: tkd.pbx3cx.v1.VoiceMailReceivedEvent.voicemail:type_name -> tkd.pbx3cx.v1.VoiceMail
+	8, // 4: tkd.pbx3cx.v1.OnCallChangeEvent.on_call:type_name -> tkd.pbx3cx.v1.OnCall
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_tkd_pbx3cx_v1_events_proto_init() }
@@ -295,7 +404,7 @@ func file_tkd_pbx3cx_v1_events_proto_init() {
 			}
 		}
 		file_tkd_pbx3cx_v1_events_proto_msgTypes[1].Exporter = func(v any, i int) any {
-			switch v := v.(*VoiceMailReceivedEvent); i {
+			switch v := v.(*OverwriteDeletedEvent); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -307,6 +416,30 @@ func file_tkd_pbx3cx_v1_events_proto_init() {
 			}
 		}
 		file_tkd_pbx3cx_v1_events_proto_msgTypes[2].Exporter = func(v any, i int) any {
+			switch v := v.(*CallRecordReceived); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tkd_pbx3cx_v1_events_proto_msgTypes[3].Exporter = func(v any, i int) any {
+			switch v := v.(*VoiceMailReceivedEvent); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_tkd_pbx3cx_v1_events_proto_msgTypes[4].Exporter = func(v any, i int) any {
 			switch v := v.(*OnCallChangeEvent); i {
 			case 0:
 				return &v.state
@@ -325,7 +458,7 @@ func file_tkd_pbx3cx_v1_events_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_tkd_pbx3cx_v1_events_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

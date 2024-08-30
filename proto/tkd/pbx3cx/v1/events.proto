@@ -9,6 +9,14 @@ message OverwriteCreatedEvent {
     Overwrite overwrite = 1;
 }
 
+message OverwriteDeletedEvent {
+    Overwrite overwrite = 1;
+}
+
+message CallRecordReceived {
+    CallEntry call_entry = 1;
+}
+
 message VoiceMailReceivedEvent {
     VoiceMail voicemail = 1;
 }

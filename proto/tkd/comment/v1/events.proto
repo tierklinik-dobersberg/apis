@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package tkd.comment.v1;
+
+import "tkd/comment/v1/comment.proto";
+
+message CommentCreatedEvent {
+    Comment comment = 1;
+}

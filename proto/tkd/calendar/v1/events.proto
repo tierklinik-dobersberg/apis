@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package tkd.calendar.v1;
+
+import "tkd/calendar/v1/event.proto";
+
+message CalendarChangeEvent {
+    string calendar = 1;
+
+    oneof kind {
+        CalendarEvent event_change = 2;
+        string deleted_event_id = 3;
+    }
+}

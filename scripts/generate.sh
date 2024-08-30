@@ -31,6 +31,20 @@ for pkg in ./gen/es/tkd/**/*; do
     done
 done
 
+if [[ "$1" != "" ]]; then
+    echo "Setting new version: $1"
+    pkgjson=$(echo "$pkgjson" | jq ".version = \"$1\"")
+fi
+
 echo "Creating package.json exports"
 
 echo "$pkgjson" > ./package.json
+
+if [[ "$1" != "" && "$2" != "" ]]; then
+    echo "Releasing  ...."
+    git add .
+    git commit -m "$2" --no-gpg
+    git tag "v$1"
+    git push && git push --tags
+    npm publish
+fi
