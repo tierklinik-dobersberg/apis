@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package tdk.common.v1;
+
+enum SortDirection {
+    SORT_DIRECTION_UNSPECIFIED = 0;
+    SORT_DIRECTION_ASC = 1;
+    SORT_DIRECTION_DESC = 2;
+}
+
+message Sort {
+    string field_name = 1;
+    SortDirection direction = 2;
+}
+
+message Pagination {
+    oneof kind {
+        // Page is the page number to retrieve.
+        // Page numbers start at 0!
+        int32 page = 1;
+
+        // Not yet supported!
+        string next_page_token = 2;
+    }
+
+    // PageSize is the size of a page. If it is 0, the complete list
+    // will be returned. Not that server implementation might enforce a
+    // maximum page size!
+    int32 page_size = 3;
+
+    repeated Sort sort_by = 4;
+}

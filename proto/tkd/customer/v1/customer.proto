@@ -3,6 +3,7 @@ syntax = "proto3";
 package tkd.customer.v1;
 
 import "tkd/common/v1/descriptor.proto";
+import "tkd/common/v1/pagination.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "buf/validate/validate.proto";
@@ -131,12 +132,22 @@ message CustomerQuery {
 message SearchCustomerRequest {
     repeated CustomerQuery queries = 1;
 
+    // Pagination can be used to apply pagination to the response
+    // list.
+    // This field is only valid for SearchCustomer but is ignored
+    // in SearchCustomerStream.
+    tkd.common.v1.Pagination pagination = 2;
+
     // Only used in SearchCustomerStream
     string correlation_id = 99;
 }
 
 message SearchCustomerResponse {
     repeated CustomerResponse results = 1;
+
+    // TotalResults holds the number of results for the given query.
+    // If no pagination is specified, TotalResults is the same as len(results);
+    int total_results = 2;
 
     // Only used in SearchCustomerStream
     string correlation_id = 99;
