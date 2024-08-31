@@ -93,6 +93,10 @@ message InboundNumber {
     // If unset, CallService will use the default RosterTypeName from it's
     // configuration.
     string roster_type_name = 4;
+
+    // ResultLimit may be set to a value greater than zero to limit the number
+    // of on-call users returned.
+    int32 result_limit = 5;
 }
 
 service CallService {
