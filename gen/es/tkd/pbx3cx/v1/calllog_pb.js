@@ -306,6 +306,7 @@ export const CreateInboundNumberRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "roster_shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "roster_type_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "result_limit", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 

@@ -921,6 +921,14 @@ export declare class CreateInboundNumberRequest extends Message<CreateInboundNum
    */
   rosterTypeName: string;
 
+  /**
+   * ResultLimit may be set to a value greater than zero to limit the number
+   * of on-call users returned.
+   *
+   * @generated from field: int32 result_limit = 5;
+   */
+  resultLimit: number;
+
   constructor(data?: PartialMessage<CreateInboundNumberRequest>);
 
   static readonly runtime: typeof proto3;
