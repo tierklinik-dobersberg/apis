@@ -4,6 +4,7 @@
 // @ts-nocheck
 
 import { proto3, Struct, Timestamp } from "@bufbuild/protobuf";
+import { Pagination } from "../../common/v1/pagination_pb.js";
 
 /**
  * @generated from message tkd.customer.v1.CustomerRef
@@ -127,6 +128,7 @@ export const SearchCustomerRequest = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.customer.v1.SearchCustomerRequest",
   () => [
     { no: 1, name: "queries", kind: "message", T: CustomerQuery, repeated: true },
+    { no: 2, name: "pagination", kind: "message", T: Pagination },
     { no: 99, name: "correlation_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
@@ -138,6 +140,7 @@ export const SearchCustomerResponse = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.customer.v1.SearchCustomerResponse",
   () => [
     { no: 1, name: "results", kind: "message", T: CustomerResponse, repeated: true },
+    { no: 2, name: "total_results", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 99, name: "correlation_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );

@@ -147,7 +147,7 @@ message SearchCustomerResponse {
 
     // TotalResults holds the number of results for the given query.
     // If no pagination is specified, TotalResults is the same as len(results);
-    int total_results = 2;
+    int64 total_results = 2;
 
     // Only used in SearchCustomerStream
     string correlation_id = 99;

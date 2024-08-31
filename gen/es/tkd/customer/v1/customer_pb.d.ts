@@ -5,6 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
+import type { Pagination } from "../../common/v1/pagination_pb.js";
 
 /**
  * @generated from message tkd.customer.v1.CustomerRef
@@ -402,6 +403,16 @@ export declare class SearchCustomerRequest extends Message<SearchCustomerRequest
   queries: CustomerQuery[];
 
   /**
+   * Pagination can be used to apply pagination to the response
+   * list.
+   * This field is only valid for SearchCustomer but is ignored
+   * in SearchCustomerStream.
+   *
+   * @generated from field: tkd.common.v1.Pagination pagination = 2;
+   */
+  pagination?: Pagination;
+
+  /**
    * Only used in SearchCustomerStream
    *
    * @generated from field: string correlation_id = 99;
@@ -431,6 +442,14 @@ export declare class SearchCustomerResponse extends Message<SearchCustomerRespon
    * @generated from field: repeated tkd.customer.v1.CustomerResponse results = 1;
    */
   results: CustomerResponse[];
+
+  /**
+   * TotalResults holds the number of results for the given query.
+   * If no pagination is specified, TotalResults is the same as len(results);
+   *
+   * @generated from field: int64 total_results = 2;
+   */
+  totalResults: bigint;
 
   /**
    * Only used in SearchCustomerStream

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package tdk.common.v1;
+package tkd.common.v1;
 
 enum SortDirection {
     SORT_DIRECTION_UNSPECIFIED = 0;
