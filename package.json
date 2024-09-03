@@ -1,6 +1,6 @@
 {
   "name": "@tierklinik-dobersberg/apis",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "Connect-ES API definitions for Tierklinik Dobersberg services",
   "type": "module",
   "files": [
