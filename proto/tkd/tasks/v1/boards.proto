@@ -65,13 +65,41 @@ message Board {
 
 // BoardService allows for managing task boards.
 service BoardService {
-    rpc CreateBoard(CreateBoardRequest) returns (CreateBoardResponse) {}
-    rpc ListBoards(ListBoardsRequest) returns (ListBoardsResponse) {}
-    rpc DeleteBoard(DeleteBoardRequest) returns (google.protobuf.Empty) {}
-    rpc GetBoard(GetBoardRequest) returns (GetBoardResponse) {}
+    rpc CreateBoard(CreateBoardRequest) returns (CreateBoardResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 
-    rpc SaveNotification(SaveNotificationRequest) returns (SaveNotificationResponse) {}
-    rpc DeleteNotification(DeleteNotificationRequest) returns (DeleteNotificationResponse) {}
+    rpc ListBoards(ListBoardsRequest) returns (ListBoardsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc DeleteBoard(DeleteBoardRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc GetBoard(GetBoardRequest) returns (GetBoardResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc SaveNotification(SaveNotificationRequest) returns (SaveNotificationResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc DeleteNotification(DeleteNotificationRequest) returns (DeleteNotificationResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 }
 
 message CreateBoardRequest {

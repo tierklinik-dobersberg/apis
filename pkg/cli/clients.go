@@ -7,6 +7,7 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1/idmv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1/pbx3cxv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1/tasksv1connect"
 )
 
 func (root *Root) OffTime() rosterv1connect.OffTimeServiceClient {
@@ -63,4 +64,8 @@ func (root *Root) Customer() customerv1connect.CustomerServiceClient {
 
 func (root *Root) CustomerImport() customerv1connect.CustomerImportServiceClient {
 	return customerv1connect.NewCustomerImportServiceClient(root.HttpClient, root.Config().BaseURLS.CustomerService)
+}
+
+func (root *Root) Boards() tasksv1connect.BoardServiceClient {
+	return tasksv1connect.NewBoardServiceClient(root.HttpClient, root.Config().BaseURLS.TaskService)
 }

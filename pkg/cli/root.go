@@ -27,6 +27,7 @@ type BaseURLS struct {
 	CallService     string `json:"callService"`
 	CommentService  string `json:"commentService"`
 	CustomerService string `json:"customerService"`
+	TaskService     string `json:"taskService"`
 }
 
 type Config struct {
