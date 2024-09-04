@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package tkd.tasks.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "buf/validate/validate.proto";
+import "tkd/common/v1/geolocation.proto";
+import "tkd/customer/v1/customer.proto";
+
+message Attachment {
+    // Name is a task-unique name for the attachment.
+    string name = 1;
+
+    // ContentType is the MIME content type of the attachment.
+    string content_type = 2;
+}
+
+message Task {
+    // ID is a unique, opaque, backend-generated ID for this todo-entry.
+    // It's not guaranteed that the ID is unique accross different boards.
+    string id = 1;
+
+    // BoardId is the id of the board that this task belongs to.
+    string board_id = 2;
+
+    // Title is the title of the task. This one must be set.
+    string title = 3;
+
+    // Description is an optional task description in markdown format.
+    string description = 4;
+
+    // CreatorId is the id of the user that created the task
+    string creator_id = 5;
+
+    // AssigneeId is the id of the user that is currently assigned to the task.
+    string assignee_id = 6;
+
+    // Location optionally holds the geo-location associated with the task.
+    oneof location {
+        tkd.common.v1.GeoLocation geo_location = 7;
+        tkd.customer.v1.Address address = 8;
+    }
+
+    // Tags is a list of opaque string tags.
+    repeated string tags = 9;
+
+    // Status may hold an additional task status. Note that status values
+    // are opaque to the TaskService.
+    string status = 10;
+
+    // AssignedBy holds the id of the user that assigned to task
+    // to AssigneeId.
+    string assigned_by = 11;
+
+    // Attachments may hold additional attachments for this task.
+    repeated Attachment attachments = 12;
+
+    // TravelTime holds the travel time to the task location.
+    // This field is only set if a task location is available and
+    // the request to retrieve this task specified a reference location.
+    // See TaskService for more information.
+    google.protobuf.Duration travel_time = 13;
+
+    // DueTime holds the time at which the task is expected to be
+    // completed.
+    google.protobuf.Timestamp due_time = 14;
+
+    // CreateTime is the time at which the task has been created.
+    google.protobuf.Timestamp create_time = 90;
+
+    // UpdateTime is the time at which the task has been modified last.
+    google.protobuf.Timestamp update_time = 91;
+
+    // CompleteTime is the time at which the task has been marked as completed.
+    google.protobuf.Timestamp complete_time = 92;
+
+    // AssignTime is the time at which this task has been assigned to AssigneeId.
+    google.protobuf.Timestamp assign_time = 93;
+}

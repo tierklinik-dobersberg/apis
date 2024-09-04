@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package tkd.common.v1;
+
+message GeoLocation {
+    double latitude = 1;
+    double longitude = 2;
+}

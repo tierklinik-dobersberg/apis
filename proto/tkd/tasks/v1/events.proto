@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package tkd.tasks.v1;
+
+import "tkd/tasks/v1/tasks.proto";
+import "tkd/tasks/v1/boards.proto";
+
+message TaskEvent {
+    Task task = 1;
+    EventType event_type = 2;
+}

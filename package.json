@@ -89,6 +89,12 @@
       "default": "./gen/es/tkd/roster/v1/index.js",
       "esm": "./gen/es/tkd/roster/v1/index.js",
       "esm2022": "./gen/es/tkd/roster/v1/index.js"
+    },
+    "./tasks/v1": {
+      "types": "./gen/es/tkd/tasks/v1/index.d.ts",
+      "default": "./gen/es/tkd/tasks/v1/index.js",
+      "esm": "./gen/es/tkd/tasks/v1/index.js",
+      "esm2022": "./gen/es/tkd/tasks/v1/index.js"
     }
   }
 }

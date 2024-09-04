@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package tkd.tasks.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "buf/validate/validate.proto";
+import "tkd/common/v1/descriptor.proto";
+import "tkd/common/v1/daytime.proto";
+
+message ListBoard {}
+
+message BoardPermission {
+    repeated string allow_roles = 1;
+    repeated string allow_users = 2;
+    repeated string deny_roles = 3;
+    repeated string deny_users = 4;
+}
+
+enum NotificationType {
+    NOTIFICATION_TYPE_UNSPECIFIED = 0;
+    NOTIFICATION_TYPE_SMS = 1;
+    NOTIFICATION_TYPE_MAIL = 2;
+    NOTIFICATION_TYPE_WEBPUSH = 3;
+}
+
+enum EventType {
+    // UNSPECIFIED is equal to ALL
+    EVENT_TYPE_UNSPECIFIED = 0;
+
+    EVENT_TYPE_CREATED = 1;
+    EVENT_TYPE_UPDATED = 2;
+    EVENT_TYPE_CHANGED = 3;
+    EVENT_TYPE_COMPLETED = 4;
+    EVENT_TYPE_ASSIGNEE_CHANGED = 5;
+}
+
+message BoardNotification {
+    string name = 1;
+    string subject_template = 2;
+    string message_template = 3;
+    repeated string recipient_user_ids = 4;
+    repeated string recipient_role_ids = 5;
+
+    NotificationType notification_type = 6;
+
+    repeated tkd.common.v1.DayTime send_times = 7;
+    repeated EventType event_types = 8;
+}
+
+message Board {
+    string id = 1;
+    string display_name = 2;
+    string description = 3;
+
+    oneof kind {
+        ListBoard list = 4;
+    }
+
+    BoardPermission read_permission = 10;
+    BoardPermission write_permission = 11;
+    repeated BoardNotification notifications = 12;
+    string owner_id = 13;
+}
+
+// BoardService allows for managing task boards.
+service BoardService {
+    rpc CreateBoard(CreateBoardRequest) returns (CreateBoardResponse) {}
+    rpc ListBoards(ListBoardsRequest) returns (ListBoardsResponse) {}
+    rpc DeleteBoard(DeleteBoardRequest) returns (google.protobuf.Empty) {}
+    rpc GetBoard(GetBoardRequest) returns (GetBoardResponse) {}
+
+    rpc SaveNotification(SaveNotificationRequest) returns (SaveNotificationResponse) {}
+    rpc DeleteNotification(DeleteNotificationRequest) returns (DeleteNotificationResponse) {}
+}
+
+message CreateBoardRequest {
+    string display_name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string description = 2;
+
+    oneof kind {
+        ListBoard list = 3;
+
+        option (buf.validate.oneof).required = true;
+    }
+
+    BoardPermission read_permission = 10;
+    BoardPermission write_permission = 11;
+    repeated BoardNotification notifications = 12;
+}
+
+message CreateBoardResponse {
+    Board board = 1;
+}
+
+message DeleteBoardRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message ListBoardsRequest {
+
+}
+message ListBoardsResponse {
+    repeated Board boards = 1;
+}
+
+message GetBoardRequest {
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message GetBoardResponse {
+    Board board = 1;
+}
+
+message SaveNotificationRequest {
+    string board_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    BoardNotification notification = 2;
+}
+
+message SaveNotificationResponse {
+    Board board = 1;
+}
+
+message DeleteNotificationRequest {
+    string board_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string notification_name = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message DeleteNotificationResponse {
+    Board board = 1;
+}
