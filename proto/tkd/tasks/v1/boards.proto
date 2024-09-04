@@ -36,16 +36,33 @@ enum EventType {
 }
 
 message BoardNotification {
-    string name = 1;
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
     string subject_template = 2;
-    string message_template = 3;
+    string message_template = 3 [
+        (buf.validate.field).required = true
+    ];
     repeated string recipient_user_ids = 4;
     repeated string recipient_role_ids = 5;
 
     NotificationType notification_type = 6;
 
-    repeated tkd.common.v1.DayTime send_times = 7;
-    repeated EventType event_types = 8;
+    repeated tkd.common.v1.DayTime send_times = 7 [
+        (buf.validate.field).required = true
+    ];
+
+    repeated EventType event_types = 8 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message TaskStatus {
+    string status = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string description = 2;
 }
 
 message Board {
@@ -56,6 +73,8 @@ message Board {
     oneof kind {
         ListBoard list = 4;
     }
+
+    repeated TaskStatus allowed_task_status = 5;
 
     BoardPermission read_permission = 10;
     BoardPermission write_permission = 11;
@@ -114,6 +133,8 @@ message CreateBoardRequest {
 
         option (buf.validate.oneof).required = true;
     }
+
+    repeated TaskStatus allowed_task_status = 4;
 
     BoardPermission read_permission = 10;
     BoardPermission write_permission = 11;

@@ -4,8 +4,13 @@ package tkd.tasks.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/empty.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/geolocation.proto";
+import "tkd/common/v1/pagination.proto";
+import "tkd/common/v1/view.proto";
+import "tkd/common/v1/descriptor.proto";
 import "tkd/customer/v1/customer.proto";
 
 message Attachment {
@@ -77,4 +82,168 @@ message Task {
 
     // AssignTime is the time at which this task has been assigned to AssigneeId.
     google.protobuf.Timestamp assign_time = 93;
+}
+
+service TaskService {
+    rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc AssignTask(AssignTaskRequest) returns (AssignTaskResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc CompleteTask(CompleteTaskRequest) returns (CompleteTaskResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc DeleteTask(DeleteTaskRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc GetTask(GetTaskRequest) returns (GetTaskResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+}
+
+message CreateTaskRequest {
+    // BoardId is the id of the board that this task belongs to.
+    string board_id = 1;
+
+    // Title is the title of the task. This one must be set.
+    string title = 2;
+
+    // Description is an optional task description in markdown format.
+    string description = 3;
+
+    // AssigneeId is the id of the user that is currently assigned to the task.
+    string assignee_id = 4;
+
+    // Location optionally holds the geo-location associated with the task.
+    oneof location {
+        tkd.common.v1.GeoLocation geo_location = 5;
+        tkd.customer.v1.Address address = 6;
+    }
+
+    // Tags is a list of opaque string tags.
+    repeated string tags = 7;
+
+    // Status may hold an additional task status. Note that status values
+    // are opaque to the TaskService.
+    string status = 8;
+
+    // Attachments may hold additional attachments for this task.
+    repeated Attachment attachments = 9;
+
+    // DueTime holds the time at which the task is expected to be
+    // completed.
+    google.protobuf.Timestamp due_time = 10;
+}
+
+message CreateTaskResponse {
+    Task task = 1;
+}
+
+message UpdateTaskRequest {
+    // TaskId is the id of the task to update
+    string task_id = 1;
+
+    // Title is the title of the task. This one must be set.
+    string title = 2;
+
+    // Description is an optional task description in markdown format.
+    string description = 3;
+
+    // AssigneeId is the id of the user that is currently assigned to the task.
+    string assignee_id = 4;
+
+    // Location optionally holds the geo-location associated with the task.
+    oneof location {
+        tkd.common.v1.GeoLocation geo_location = 5;
+        tkd.customer.v1.Address address = 6;
+    }
+
+    // Tags is a list of opaque string tags.
+    repeated string add_tags = 7;
+
+    repeated string delete_tags = 9;
+
+    // Status may hold an additional task status. Note that status values
+    // are opaque to the TaskService.
+    string status = 10;
+
+    // DueTime holds the time at which the task is expected to be
+    // completed.
+    google.protobuf.Timestamp due_time = 11;
+
+    google.protobuf.FieldMask update_mask = 99;
+}
+
+message UpdateTaskResponse {
+    Task task = 1;
+}
+
+message AssignTaskRequest {
+    string task_id = 1;
+    string assignee_id = 2;
+}
+
+message AssignTaskResponse {
+    Task task = 1;
+}
+
+message CompleteTaskRequest {
+    string task_id = 1;
+}
+
+message CompleteTaskResponse {
+    Task task = 1;
+}
+
+message DeleteTaskRequest {
+    string task_id = 1;
+}
+
+message GetTaskRequest {
+    string task_id = 1;
+}
+
+message GetTaskResponse {
+    Task task = 1;
+}
+
+message TaskQuery {
+    repeated string board_id = 1;
+    repeated string statuses = 2;
+    repeated string tags = 3;
+    repeated string assigned_to = 4;
+    repeated string created_by = 5;
+    google.protobuf.Timestamp due_before = 6;
+}
+
+message ListTasksRequest {
+    repeated TaskQuery queries = 1;
+
+    tkd.common.v1.View view = 91;
+    tkd.common.v1.Pagination pagination = 90;
+}
+
+message ListTasksResponse {
+    repeated Task tasks = 1;
 }
