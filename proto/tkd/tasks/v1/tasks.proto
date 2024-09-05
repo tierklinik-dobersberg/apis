@@ -6,6 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/geolocation.proto";
 import "tkd/common/v1/pagination.proto";
@@ -71,6 +72,9 @@ message Task {
     // completed.
     google.protobuf.Timestamp due_time = 14;
 
+    // Properties may hold application specific properties.
+    map<string, google.protobuf.Any> properties = 15;
+
     // CreateTime is the time at which the task has been created.
     google.protobuf.Timestamp create_time = 90;
 
@@ -120,6 +124,11 @@ service TaskService {
             require: AUTH_REQ_REQUIRED
         };
     }
+    rpc AddTaskAttachment(AddTaskAttachmentRequest) returns (AddTaskAttachmentResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 }
 
 message CreateTaskRequest {
@@ -154,6 +163,9 @@ message CreateTaskRequest {
     // DueTime holds the time at which the task is expected to be
     // completed.
     google.protobuf.Timestamp due_time = 10;
+
+    // Properties may hold application specific properties.
+    map<string, google.protobuf.Any> properties = 11;
 }
 
 message CreateTaskResponse {
@@ -192,7 +204,18 @@ message UpdateTaskRequest {
     // completed.
     google.protobuf.Timestamp due_time = 11;
 
+    repeated AddProperty add_properties = 12;
+    repeated string delete_properties = 13;
+
     google.protobuf.FieldMask update_mask = 99;
+}
+
+message AddProperty {
+    string key = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Any value = 2;
 }
 
 message UpdateTaskResponse {
@@ -235,6 +258,7 @@ message TaskQuery {
     repeated string assigned_to = 4;
     repeated string created_by = 5;
     google.protobuf.Timestamp due_before = 6;
+    bool completed = 7;
 }
 
 message ListTasksRequest {
@@ -246,4 +270,26 @@ message ListTasksRequest {
 
 message ListTasksResponse {
     repeated Task tasks = 1;
+}
+
+message AddTaskAttachmentRequest {
+    string task_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string name = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    string content_type = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    bytes content = 4 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message AddTaskAttachmentResponse {
+    Task task = 1;
 }

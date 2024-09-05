@@ -49,6 +49,9 @@ const (
 	TaskServiceListTasksProcedure = "/tkd.tasks.v1.TaskService/ListTasks"
 	// TaskServiceGetTaskProcedure is the fully-qualified name of the TaskService's GetTask RPC.
 	TaskServiceGetTaskProcedure = "/tkd.tasks.v1.TaskService/GetTask"
+	// TaskServiceAddTaskAttachmentProcedure is the fully-qualified name of the TaskService's
+	// AddTaskAttachment RPC.
+	TaskServiceAddTaskAttachmentProcedure = "/tkd.tasks.v1.TaskService/AddTaskAttachment"
 )
 
 // TaskServiceClient is a client for the tkd.tasks.v1.TaskService service.
@@ -60,6 +63,7 @@ type TaskServiceClient interface {
 	DeleteTask(context.Context, *connect_go.Request[v1.DeleteTaskRequest]) (*connect_go.Response[emptypb.Empty], error)
 	ListTasks(context.Context, *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
 	GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error)
+	AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error)
 }
 
 // NewTaskServiceClient constructs a client for the tkd.tasks.v1.TaskService service. By default, it
@@ -107,18 +111,24 @@ func NewTaskServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+TaskServiceGetTaskProcedure,
 			opts...,
 		),
+		addTaskAttachment: connect_go.NewClient[v1.AddTaskAttachmentRequest, v1.AddTaskAttachmentResponse](
+			httpClient,
+			baseURL+TaskServiceAddTaskAttachmentProcedure,
+			opts...,
+		),
 	}
 }
 
 // taskServiceClient implements TaskServiceClient.
 type taskServiceClient struct {
-	createTask   *connect_go.Client[v1.CreateTaskRequest, v1.CreateTaskResponse]
-	updateTask   *connect_go.Client[v1.UpdateTaskRequest, v1.UpdateTaskResponse]
-	assignTask   *connect_go.Client[v1.AssignTaskRequest, v1.AssignTaskResponse]
-	completeTask *connect_go.Client[v1.CompleteTaskRequest, v1.CompleteTaskResponse]
-	deleteTask   *connect_go.Client[v1.DeleteTaskRequest, emptypb.Empty]
-	listTasks    *connect_go.Client[v1.ListTasksRequest, v1.ListTasksResponse]
-	getTask      *connect_go.Client[v1.GetTaskRequest, v1.GetTaskResponse]
+	createTask        *connect_go.Client[v1.CreateTaskRequest, v1.CreateTaskResponse]
+	updateTask        *connect_go.Client[v1.UpdateTaskRequest, v1.UpdateTaskResponse]
+	assignTask        *connect_go.Client[v1.AssignTaskRequest, v1.AssignTaskResponse]
+	completeTask      *connect_go.Client[v1.CompleteTaskRequest, v1.CompleteTaskResponse]
+	deleteTask        *connect_go.Client[v1.DeleteTaskRequest, emptypb.Empty]
+	listTasks         *connect_go.Client[v1.ListTasksRequest, v1.ListTasksResponse]
+	getTask           *connect_go.Client[v1.GetTaskRequest, v1.GetTaskResponse]
+	addTaskAttachment *connect_go.Client[v1.AddTaskAttachmentRequest, v1.AddTaskAttachmentResponse]
 }
 
 // CreateTask calls tkd.tasks.v1.TaskService.CreateTask.
@@ -156,6 +166,11 @@ func (c *taskServiceClient) GetTask(ctx context.Context, req *connect_go.Request
 	return c.getTask.CallUnary(ctx, req)
 }
 
+// AddTaskAttachment calls tkd.tasks.v1.TaskService.AddTaskAttachment.
+func (c *taskServiceClient) AddTaskAttachment(ctx context.Context, req *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error) {
+	return c.addTaskAttachment.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tkd.tasks.v1.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect_go.Request[v1.CreateTaskRequest]) (*connect_go.Response[v1.CreateTaskResponse], error)
@@ -165,6 +180,7 @@ type TaskServiceHandler interface {
 	DeleteTask(context.Context, *connect_go.Request[v1.DeleteTaskRequest]) (*connect_go.Response[emptypb.Empty], error)
 	ListTasks(context.Context, *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
 	GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error)
+	AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -208,6 +224,11 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetTask,
 		opts...,
 	)
+	taskServiceAddTaskAttachmentHandler := connect_go.NewUnaryHandler(
+		TaskServiceAddTaskAttachmentProcedure,
+		svc.AddTaskAttachment,
+		opts...,
+	)
 	return "/tkd.tasks.v1.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
@@ -224,6 +245,8 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 			taskServiceListTasksHandler.ServeHTTP(w, r)
 		case TaskServiceGetTaskProcedure:
 			taskServiceGetTaskHandler.ServeHTTP(w, r)
+		case TaskServiceAddTaskAttachmentProcedure:
+			taskServiceAddTaskAttachmentHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -259,4 +282,8 @@ func (UnimplementedTaskServiceHandler) ListTasks(context.Context, *connect_go.Re
 
 func (UnimplementedTaskServiceHandler) GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.GetTask is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.AddTaskAttachment is not implemented"))
 }
