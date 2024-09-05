@@ -69,3 +69,7 @@ func (root *Root) CustomerImport() customerv1connect.CustomerImportServiceClient
 func (root *Root) Boards() tasksv1connect.BoardServiceClient {
 	return tasksv1connect.NewBoardServiceClient(root.HttpClient, root.Config().BaseURLS.TaskService)
 }
+
+func (root *Root) Tasks() tasksv1connect.TaskServiceClient {
+	return tasksv1connect.NewTaskServiceClient(root.HttpClient, root.Config().BaseURLS.TaskService)
+}
