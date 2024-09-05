@@ -520,3 +520,23 @@ export const StringList = /*@__PURE__*/ proto3.makeMessageType(
   ],
 );
 
+/**
+ * @generated from message tkd.roster.v1.ReapplyShiftTimesRequest
+ */
+export const ReapplyShiftTimesRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.roster.v1.ReapplyShiftTimesRequest",
+  () => [
+    { no: 1, name: "roster_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.roster.v1.ReapplyShiftTimesResponse
+ */
+export const ReapplyShiftTimesResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.roster.v1.ReapplyShiftTimesResponse",
+  () => [
+    { no: 1, name: "roster", kind: "message", T: Roster },
+  ],
+);
+

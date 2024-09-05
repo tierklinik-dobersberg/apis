@@ -167,6 +167,12 @@ service RosterService {
         };
     }
 
+    rpc ReapplyShiftTimes(ReapplyShiftTimesRequest) returns (ReapplyShiftTimesResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
     rpc ExportRoster(ExportRosterRequest) returns (ExportRosterResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
@@ -632,4 +638,12 @@ message ExportRosterResponse {
 // TODO(ppacher): move to common?
 message StringList {
     repeated string values = 1;
+}
+
+message ReapplyShiftTimesRequest {
+    string roster_id = 1;
+}
+
+message ReapplyShiftTimesResponse {
+    Roster roster = 1;
 }

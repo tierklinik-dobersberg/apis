@@ -48,6 +48,9 @@ const (
 	// RosterServiceSaveRosterProcedure is the fully-qualified name of the RosterService's SaveRoster
 	// RPC.
 	RosterServiceSaveRosterProcedure = "/tkd.roster.v1.RosterService/SaveRoster"
+	// RosterServiceReapplyShiftTimesProcedure is the fully-qualified name of the RosterService's
+	// ReapplyShiftTimes RPC.
+	RosterServiceReapplyShiftTimesProcedure = "/tkd.roster.v1.RosterService/ReapplyShiftTimes"
 	// RosterServiceExportRosterProcedure is the fully-qualified name of the RosterService's
 	// ExportRoster RPC.
 	RosterServiceExportRosterProcedure = "/tkd.roster.v1.RosterService/ExportRoster"
@@ -88,6 +91,7 @@ type RosterServiceClient interface {
 	// SaveRoster saves a duty roster. It may be used to initially create a new
 	// roster or to save subsequent changes.
 	SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error)
+	ReapplyShiftTimes(context.Context, *connect_go.Request[v1.ReapplyShiftTimesRequest]) (*connect_go.Response[v1.ReapplyShiftTimesResponse], error)
 	ExportRoster(context.Context, *connect_go.Request[v1.ExportRosterRequest]) (*connect_go.Response[v1.ExportRosterResponse], error)
 	// DeleteRoster deletes a roster from the internal storage. This operation
 	// cannot be undone!
@@ -153,6 +157,11 @@ func NewRosterServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+RosterServiceSaveRosterProcedure,
 			opts...,
 		),
+		reapplyShiftTimes: connect_go.NewClient[v1.ReapplyShiftTimesRequest, v1.ReapplyShiftTimesResponse](
+			httpClient,
+			baseURL+RosterServiceReapplyShiftTimesProcedure,
+			opts...,
+		),
 		exportRoster: connect_go.NewClient[v1.ExportRosterRequest, v1.ExportRosterResponse](
 			httpClient,
 			baseURL+RosterServiceExportRosterProcedure,
@@ -213,6 +222,7 @@ type rosterServiceClient struct {
 	listRosterTypes   *connect_go.Client[v1.ListRosterTypesRequest, v1.ListRosterTypesResponse]
 	listShiftTags     *connect_go.Client[v1.ListShiftTagsRequest, v1.ListShiftTagsResponse]
 	saveRoster        *connect_go.Client[v1.SaveRosterRequest, v1.SaveRosterResponse]
+	reapplyShiftTimes *connect_go.Client[v1.ReapplyShiftTimesRequest, v1.ReapplyShiftTimesResponse]
 	exportRoster      *connect_go.Client[v1.ExportRosterRequest, v1.ExportRosterResponse]
 	deleteRoster      *connect_go.Client[v1.DeleteRosterRequest, v1.DeleteRosterResponse]
 	analyzeWorkTime   *connect_go.Client[v1.AnalyzeWorkTimeRequest, v1.AnalyzeWorkTimeResponse]
@@ -248,6 +258,11 @@ func (c *rosterServiceClient) ListShiftTags(ctx context.Context, req *connect_go
 // SaveRoster calls tkd.roster.v1.RosterService.SaveRoster.
 func (c *rosterServiceClient) SaveRoster(ctx context.Context, req *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error) {
 	return c.saveRoster.CallUnary(ctx, req)
+}
+
+// ReapplyShiftTimes calls tkd.roster.v1.RosterService.ReapplyShiftTimes.
+func (c *rosterServiceClient) ReapplyShiftTimes(ctx context.Context, req *connect_go.Request[v1.ReapplyShiftTimesRequest]) (*connect_go.Response[v1.ReapplyShiftTimesResponse], error) {
+	return c.reapplyShiftTimes.CallUnary(ctx, req)
 }
 
 // ExportRoster calls tkd.roster.v1.RosterService.ExportRoster.
@@ -309,6 +324,7 @@ type RosterServiceHandler interface {
 	// SaveRoster saves a duty roster. It may be used to initially create a new
 	// roster or to save subsequent changes.
 	SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error)
+	ReapplyShiftTimes(context.Context, *connect_go.Request[v1.ReapplyShiftTimesRequest]) (*connect_go.Response[v1.ReapplyShiftTimesResponse], error)
 	ExportRoster(context.Context, *connect_go.Request[v1.ExportRosterRequest]) (*connect_go.Response[v1.ExportRosterResponse], error)
 	// DeleteRoster deletes a roster from the internal storage. This operation
 	// cannot be undone!
@@ -368,6 +384,11 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 	rosterServiceSaveRosterHandler := connect_go.NewUnaryHandler(
 		RosterServiceSaveRosterProcedure,
 		svc.SaveRoster,
+		opts...,
+	)
+	rosterServiceReapplyShiftTimesHandler := connect_go.NewUnaryHandler(
+		RosterServiceReapplyShiftTimesProcedure,
+		svc.ReapplyShiftTimes,
 		opts...,
 	)
 	rosterServiceExportRosterHandler := connect_go.NewUnaryHandler(
@@ -432,6 +453,8 @@ func NewRosterServiceHandler(svc RosterServiceHandler, opts ...connect_go.Handle
 			rosterServiceListShiftTagsHandler.ServeHTTP(w, r)
 		case RosterServiceSaveRosterProcedure:
 			rosterServiceSaveRosterHandler.ServeHTTP(w, r)
+		case RosterServiceReapplyShiftTimesProcedure:
+			rosterServiceReapplyShiftTimesHandler.ServeHTTP(w, r)
 		case RosterServiceExportRosterProcedure:
 			rosterServiceExportRosterHandler.ServeHTTP(w, r)
 		case RosterServiceDeleteRosterProcedure:
@@ -479,6 +502,10 @@ func (UnimplementedRosterServiceHandler) ListShiftTags(context.Context, *connect
 
 func (UnimplementedRosterServiceHandler) SaveRoster(context.Context, *connect_go.Request[v1.SaveRosterRequest]) (*connect_go.Response[v1.SaveRosterResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.SaveRoster is not implemented"))
+}
+
+func (UnimplementedRosterServiceHandler) ReapplyShiftTimes(context.Context, *connect_go.Request[v1.ReapplyShiftTimesRequest]) (*connect_go.Response[v1.ReapplyShiftTimesResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.roster.v1.RosterService.ReapplyShiftTimes is not implemented"))
 }
 
 func (UnimplementedRosterServiceHandler) ExportRoster(context.Context, *connect_go.Request[v1.ExportRosterRequest]) (*connect_go.Response[v1.ExportRosterResponse], error) {

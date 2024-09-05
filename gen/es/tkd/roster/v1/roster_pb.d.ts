@@ -1661,3 +1661,51 @@ export declare class StringList extends Message<StringList> {
   static equals(a: StringList | PlainMessage<StringList> | undefined, b: StringList | PlainMessage<StringList> | undefined): boolean;
 }
 
+/**
+ * @generated from message tkd.roster.v1.ReapplyShiftTimesRequest
+ */
+export declare class ReapplyShiftTimesRequest extends Message<ReapplyShiftTimesRequest> {
+  /**
+   * @generated from field: string roster_id = 1;
+   */
+  rosterId: string;
+
+  constructor(data?: PartialMessage<ReapplyShiftTimesRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ReapplyShiftTimesRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ReapplyShiftTimesRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ReapplyShiftTimesRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ReapplyShiftTimesRequest;
+
+  static equals(a: ReapplyShiftTimesRequest | PlainMessage<ReapplyShiftTimesRequest> | undefined, b: ReapplyShiftTimesRequest | PlainMessage<ReapplyShiftTimesRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.roster.v1.ReapplyShiftTimesResponse
+ */
+export declare class ReapplyShiftTimesResponse extends Message<ReapplyShiftTimesResponse> {
+  /**
+   * @generated from field: tkd.roster.v1.Roster roster = 1;
+   */
+  roster?: Roster;
+
+  constructor(data?: PartialMessage<ReapplyShiftTimesResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.roster.v1.ReapplyShiftTimesResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ReapplyShiftTimesResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ReapplyShiftTimesResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ReapplyShiftTimesResponse;
+
+  static equals(a: ReapplyShiftTimesResponse | PlainMessage<ReapplyShiftTimesResponse> | undefined, b: ReapplyShiftTimesResponse | PlainMessage<ReapplyShiftTimesResponse> | undefined): boolean;
+}
+

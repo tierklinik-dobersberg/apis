@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, CreateRosterTypeRequest, CreateRosterTypeResponse, DeleteRosterRequest, DeleteRosterResponse, DeleteRosterTypeRequest, DeleteRosterTypeResponse, ExportRosterRequest, ExportRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetUserShiftsRequest, GetUserShiftsResponse, GetWorkingStaffRequest, GetWorkingStaffRequest2, GetWorkingStaffResponse, ListRosterTypesRequest, ListRosterTypesResponse, ListShiftTagsRequest, ListShiftTagsResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
+import { AnalyzeWorkTimeRequest, AnalyzeWorkTimeResponse, ApproveRosterRequest, ApproveRosterResponse, CreateRosterTypeRequest, CreateRosterTypeResponse, DeleteRosterRequest, DeleteRosterResponse, DeleteRosterTypeRequest, DeleteRosterTypeResponse, ExportRosterRequest, ExportRosterResponse, GetRequiredShiftsRequest, GetRequiredShiftsResponse, GetRosterRequest, GetRosterResponse, GetUserShiftsRequest, GetUserShiftsResponse, GetWorkingStaffRequest, GetWorkingStaffRequest2, GetWorkingStaffResponse, ListRosterTypesRequest, ListRosterTypesResponse, ListShiftTagsRequest, ListShiftTagsResponse, ReapplyShiftTimesRequest, ReapplyShiftTimesResponse, SaveRosterRequest, SaveRosterResponse, SendRosterPreviewRequest, SendRosterPreviewResponse } from "./roster_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -58,6 +58,15 @@ export const RosterService = {
       name: "SaveRoster",
       I: SaveRosterRequest,
       O: SaveRosterResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.roster.v1.RosterService.ReapplyShiftTimes
+     */
+    reapplyShiftTimes: {
+      name: "ReapplyShiftTimes",
+      I: ReapplyShiftTimesRequest,
+      O: ReapplyShiftTimesResponse,
       kind: MethodKind.Unary,
     },
     /**
