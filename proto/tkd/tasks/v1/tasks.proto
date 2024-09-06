@@ -276,6 +276,7 @@ message ListTasksRequest {
 
 message ListTasksResponse {
     repeated Task tasks = 1;
+    int64 total_count = 2;
 }
 
 message AddTaskAttachmentRequest {

@@ -63,6 +63,18 @@ message TaskStatus {
     ];
 
     string description = 2;
+
+    string color = 3;
+}
+
+message TaskTag {
+    string tag = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string description = 2;
+
+    string color = 3;
 }
 
 message Board {
@@ -75,6 +87,7 @@ message Board {
     }
 
     repeated TaskStatus allowed_task_status = 5;
+    repeated TaskTag allowed_task_tags = 6;
 
     BoardPermission read_permission = 10;
     BoardPermission write_permission = 11;
@@ -115,6 +128,30 @@ service BoardService {
     }
 
     rpc DeleteNotification(DeleteNotificationRequest) returns (DeleteNotificationResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc AddTaskStatus(AddTaskStatusRequest) returns (AddTaskStatusResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc DeleteTaskStatus(DeleteTaskStatusRequest) returns (DeleteTaskStatusResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc AddTaskTag(AddTaskTagRequest) returns (AddTaskTagResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc DeleteTaskTag(DeleteTaskTagRequest) returns (DeleteTaskTagResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
@@ -191,5 +228,61 @@ message DeleteNotificationRequest {
 }
 
 message DeleteNotificationResponse {
+    Board board = 1;
+}
+
+message AddTaskStatusRequest {
+    string task_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    TaskStatus status = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message AddTaskStatusResponse {
+    Board board = 1;
+}
+
+message DeleteTaskStatusRequest {
+    string board_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string status = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message DeleteTaskStatusResponse {
+    Board board = 1;
+}
+
+message AddTaskTagRequest {
+    string board_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    TaskTag tag = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message AddTaskTagResponse {
+    Board board = 1;
+}
+
+message DeleteTaskTagRequest {
+    string task_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string tag = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message DeleteTaskTagResponse {
     Board board = 1;
 }

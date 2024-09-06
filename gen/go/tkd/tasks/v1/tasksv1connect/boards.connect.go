@@ -50,6 +50,17 @@ const (
 	// BoardServiceDeleteNotificationProcedure is the fully-qualified name of the BoardService's
 	// DeleteNotification RPC.
 	BoardServiceDeleteNotificationProcedure = "/tkd.tasks.v1.BoardService/DeleteNotification"
+	// BoardServiceAddTaskStatusProcedure is the fully-qualified name of the BoardService's
+	// AddTaskStatus RPC.
+	BoardServiceAddTaskStatusProcedure = "/tkd.tasks.v1.BoardService/AddTaskStatus"
+	// BoardServiceDeleteTaskStatusProcedure is the fully-qualified name of the BoardService's
+	// DeleteTaskStatus RPC.
+	BoardServiceDeleteTaskStatusProcedure = "/tkd.tasks.v1.BoardService/DeleteTaskStatus"
+	// BoardServiceAddTaskTagProcedure is the fully-qualified name of the BoardService's AddTaskTag RPC.
+	BoardServiceAddTaskTagProcedure = "/tkd.tasks.v1.BoardService/AddTaskTag"
+	// BoardServiceDeleteTaskTagProcedure is the fully-qualified name of the BoardService's
+	// DeleteTaskTag RPC.
+	BoardServiceDeleteTaskTagProcedure = "/tkd.tasks.v1.BoardService/DeleteTaskTag"
 )
 
 // BoardServiceClient is a client for the tkd.tasks.v1.BoardService service.
@@ -60,6 +71,10 @@ type BoardServiceClient interface {
 	GetBoard(context.Context, *connect_go.Request[v1.GetBoardRequest]) (*connect_go.Response[v1.GetBoardResponse], error)
 	SaveNotification(context.Context, *connect_go.Request[v1.SaveNotificationRequest]) (*connect_go.Response[v1.SaveNotificationResponse], error)
 	DeleteNotification(context.Context, *connect_go.Request[v1.DeleteNotificationRequest]) (*connect_go.Response[v1.DeleteNotificationResponse], error)
+	AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error)
+	DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error)
+	AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error)
+	DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error)
 }
 
 // NewBoardServiceClient constructs a client for the tkd.tasks.v1.BoardService service. By default,
@@ -102,6 +117,26 @@ func NewBoardServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+BoardServiceDeleteNotificationProcedure,
 			opts...,
 		),
+		addTaskStatus: connect_go.NewClient[v1.AddTaskStatusRequest, v1.AddTaskStatusResponse](
+			httpClient,
+			baseURL+BoardServiceAddTaskStatusProcedure,
+			opts...,
+		),
+		deleteTaskStatus: connect_go.NewClient[v1.DeleteTaskStatusRequest, v1.DeleteTaskStatusResponse](
+			httpClient,
+			baseURL+BoardServiceDeleteTaskStatusProcedure,
+			opts...,
+		),
+		addTaskTag: connect_go.NewClient[v1.AddTaskTagRequest, v1.AddTaskTagResponse](
+			httpClient,
+			baseURL+BoardServiceAddTaskTagProcedure,
+			opts...,
+		),
+		deleteTaskTag: connect_go.NewClient[v1.DeleteTaskTagRequest, v1.DeleteTaskTagResponse](
+			httpClient,
+			baseURL+BoardServiceDeleteTaskTagProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -113,6 +148,10 @@ type boardServiceClient struct {
 	getBoard           *connect_go.Client[v1.GetBoardRequest, v1.GetBoardResponse]
 	saveNotification   *connect_go.Client[v1.SaveNotificationRequest, v1.SaveNotificationResponse]
 	deleteNotification *connect_go.Client[v1.DeleteNotificationRequest, v1.DeleteNotificationResponse]
+	addTaskStatus      *connect_go.Client[v1.AddTaskStatusRequest, v1.AddTaskStatusResponse]
+	deleteTaskStatus   *connect_go.Client[v1.DeleteTaskStatusRequest, v1.DeleteTaskStatusResponse]
+	addTaskTag         *connect_go.Client[v1.AddTaskTagRequest, v1.AddTaskTagResponse]
+	deleteTaskTag      *connect_go.Client[v1.DeleteTaskTagRequest, v1.DeleteTaskTagResponse]
 }
 
 // CreateBoard calls tkd.tasks.v1.BoardService.CreateBoard.
@@ -145,6 +184,26 @@ func (c *boardServiceClient) DeleteNotification(ctx context.Context, req *connec
 	return c.deleteNotification.CallUnary(ctx, req)
 }
 
+// AddTaskStatus calls tkd.tasks.v1.BoardService.AddTaskStatus.
+func (c *boardServiceClient) AddTaskStatus(ctx context.Context, req *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error) {
+	return c.addTaskStatus.CallUnary(ctx, req)
+}
+
+// DeleteTaskStatus calls tkd.tasks.v1.BoardService.DeleteTaskStatus.
+func (c *boardServiceClient) DeleteTaskStatus(ctx context.Context, req *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error) {
+	return c.deleteTaskStatus.CallUnary(ctx, req)
+}
+
+// AddTaskTag calls tkd.tasks.v1.BoardService.AddTaskTag.
+func (c *boardServiceClient) AddTaskTag(ctx context.Context, req *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error) {
+	return c.addTaskTag.CallUnary(ctx, req)
+}
+
+// DeleteTaskTag calls tkd.tasks.v1.BoardService.DeleteTaskTag.
+func (c *boardServiceClient) DeleteTaskTag(ctx context.Context, req *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error) {
+	return c.deleteTaskTag.CallUnary(ctx, req)
+}
+
 // BoardServiceHandler is an implementation of the tkd.tasks.v1.BoardService service.
 type BoardServiceHandler interface {
 	CreateBoard(context.Context, *connect_go.Request[v1.CreateBoardRequest]) (*connect_go.Response[v1.CreateBoardResponse], error)
@@ -153,6 +212,10 @@ type BoardServiceHandler interface {
 	GetBoard(context.Context, *connect_go.Request[v1.GetBoardRequest]) (*connect_go.Response[v1.GetBoardResponse], error)
 	SaveNotification(context.Context, *connect_go.Request[v1.SaveNotificationRequest]) (*connect_go.Response[v1.SaveNotificationResponse], error)
 	DeleteNotification(context.Context, *connect_go.Request[v1.DeleteNotificationRequest]) (*connect_go.Response[v1.DeleteNotificationResponse], error)
+	AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error)
+	DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error)
+	AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error)
+	DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error)
 }
 
 // NewBoardServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -191,6 +254,26 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 		svc.DeleteNotification,
 		opts...,
 	)
+	boardServiceAddTaskStatusHandler := connect_go.NewUnaryHandler(
+		BoardServiceAddTaskStatusProcedure,
+		svc.AddTaskStatus,
+		opts...,
+	)
+	boardServiceDeleteTaskStatusHandler := connect_go.NewUnaryHandler(
+		BoardServiceDeleteTaskStatusProcedure,
+		svc.DeleteTaskStatus,
+		opts...,
+	)
+	boardServiceAddTaskTagHandler := connect_go.NewUnaryHandler(
+		BoardServiceAddTaskTagProcedure,
+		svc.AddTaskTag,
+		opts...,
+	)
+	boardServiceDeleteTaskTagHandler := connect_go.NewUnaryHandler(
+		BoardServiceDeleteTaskTagProcedure,
+		svc.DeleteTaskTag,
+		opts...,
+	)
 	return "/tkd.tasks.v1.BoardService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case BoardServiceCreateBoardProcedure:
@@ -205,6 +288,14 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 			boardServiceSaveNotificationHandler.ServeHTTP(w, r)
 		case BoardServiceDeleteNotificationProcedure:
 			boardServiceDeleteNotificationHandler.ServeHTTP(w, r)
+		case BoardServiceAddTaskStatusProcedure:
+			boardServiceAddTaskStatusHandler.ServeHTTP(w, r)
+		case BoardServiceDeleteTaskStatusProcedure:
+			boardServiceDeleteTaskStatusHandler.ServeHTTP(w, r)
+		case BoardServiceAddTaskTagProcedure:
+			boardServiceAddTaskTagHandler.ServeHTTP(w, r)
+		case BoardServiceDeleteTaskTagProcedure:
+			boardServiceDeleteTaskTagHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -236,4 +327,20 @@ func (UnimplementedBoardServiceHandler) SaveNotification(context.Context, *conne
 
 func (UnimplementedBoardServiceHandler) DeleteNotification(context.Context, *connect_go.Request[v1.DeleteNotificationRequest]) (*connect_go.Response[v1.DeleteNotificationResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.DeleteNotification is not implemented"))
+}
+
+func (UnimplementedBoardServiceHandler) AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.AddTaskStatus is not implemented"))
+}
+
+func (UnimplementedBoardServiceHandler) DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.DeleteTaskStatus is not implemented"))
+}
+
+func (UnimplementedBoardServiceHandler) AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.AddTaskTag is not implemented"))
+}
+
+func (UnimplementedBoardServiceHandler) DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.DeleteTaskTag is not implemented"))
 }
