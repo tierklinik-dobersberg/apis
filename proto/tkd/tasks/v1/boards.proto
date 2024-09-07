@@ -176,6 +176,9 @@ message CreateBoardRequest {
     BoardPermission read_permission = 10;
     BoardPermission write_permission = 11;
     repeated BoardNotification notifications = 12;
+
+    bool write_includes_tag_management = 14;
+    bool write_includes_status_management = 15;
 }
 
 message CreateBoardResponse {
@@ -232,7 +235,7 @@ message DeleteNotificationResponse {
 }
 
 message AddTaskStatusRequest {
-    string task_id = 1 [
+    string board_id = 1 [
         (buf.validate.field).required = true
     ];
 
@@ -274,7 +277,7 @@ message AddTaskTagResponse {
 }
 
 message DeleteTaskTagRequest {
-    string task_id = 1 [
+    string board_id = 1 [
         (buf.validate.field).required = true
     ];
 
