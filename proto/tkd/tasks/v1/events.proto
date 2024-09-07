@@ -9,3 +9,11 @@ message TaskEvent {
     Task task = 1;
     EventType event_type = 2;
 }
+
+message BoardEvent {
+    oneof kind {
+        Board board_created = 1;
+        Board board_updated = 2;
+        string board_deleted = 3;
+    }
+}
