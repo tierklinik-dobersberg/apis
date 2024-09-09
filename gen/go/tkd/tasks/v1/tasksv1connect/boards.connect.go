@@ -37,6 +37,9 @@ const (
 	// BoardServiceCreateBoardProcedure is the fully-qualified name of the BoardService's CreateBoard
 	// RPC.
 	BoardServiceCreateBoardProcedure = "/tkd.tasks.v1.BoardService/CreateBoard"
+	// BoardServiceUpdateBoardProcedure is the fully-qualified name of the BoardService's UpdateBoard
+	// RPC.
+	BoardServiceUpdateBoardProcedure = "/tkd.tasks.v1.BoardService/UpdateBoard"
 	// BoardServiceListBoardsProcedure is the fully-qualified name of the BoardService's ListBoards RPC.
 	BoardServiceListBoardsProcedure = "/tkd.tasks.v1.BoardService/ListBoards"
 	// BoardServiceDeleteBoardProcedure is the fully-qualified name of the BoardService's DeleteBoard
@@ -66,6 +69,7 @@ const (
 // BoardServiceClient is a client for the tkd.tasks.v1.BoardService service.
 type BoardServiceClient interface {
 	CreateBoard(context.Context, *connect_go.Request[v1.CreateBoardRequest]) (*connect_go.Response[v1.CreateBoardResponse], error)
+	UpdateBoard(context.Context, *connect_go.Request[v1.UpdateBoardRequest]) (*connect_go.Response[v1.UpdateBoardResponse], error)
 	ListBoards(context.Context, *connect_go.Request[v1.ListBoardsRequest]) (*connect_go.Response[v1.ListBoardsResponse], error)
 	DeleteBoard(context.Context, *connect_go.Request[v1.DeleteBoardRequest]) (*connect_go.Response[emptypb.Empty], error)
 	GetBoard(context.Context, *connect_go.Request[v1.GetBoardRequest]) (*connect_go.Response[v1.GetBoardResponse], error)
@@ -90,6 +94,11 @@ func NewBoardServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 		createBoard: connect_go.NewClient[v1.CreateBoardRequest, v1.CreateBoardResponse](
 			httpClient,
 			baseURL+BoardServiceCreateBoardProcedure,
+			opts...,
+		),
+		updateBoard: connect_go.NewClient[v1.UpdateBoardRequest, v1.UpdateBoardResponse](
+			httpClient,
+			baseURL+BoardServiceUpdateBoardProcedure,
 			opts...,
 		),
 		listBoards: connect_go.NewClient[v1.ListBoardsRequest, v1.ListBoardsResponse](
@@ -143,6 +152,7 @@ func NewBoardServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 // boardServiceClient implements BoardServiceClient.
 type boardServiceClient struct {
 	createBoard        *connect_go.Client[v1.CreateBoardRequest, v1.CreateBoardResponse]
+	updateBoard        *connect_go.Client[v1.UpdateBoardRequest, v1.UpdateBoardResponse]
 	listBoards         *connect_go.Client[v1.ListBoardsRequest, v1.ListBoardsResponse]
 	deleteBoard        *connect_go.Client[v1.DeleteBoardRequest, emptypb.Empty]
 	getBoard           *connect_go.Client[v1.GetBoardRequest, v1.GetBoardResponse]
@@ -157,6 +167,11 @@ type boardServiceClient struct {
 // CreateBoard calls tkd.tasks.v1.BoardService.CreateBoard.
 func (c *boardServiceClient) CreateBoard(ctx context.Context, req *connect_go.Request[v1.CreateBoardRequest]) (*connect_go.Response[v1.CreateBoardResponse], error) {
 	return c.createBoard.CallUnary(ctx, req)
+}
+
+// UpdateBoard calls tkd.tasks.v1.BoardService.UpdateBoard.
+func (c *boardServiceClient) UpdateBoard(ctx context.Context, req *connect_go.Request[v1.UpdateBoardRequest]) (*connect_go.Response[v1.UpdateBoardResponse], error) {
+	return c.updateBoard.CallUnary(ctx, req)
 }
 
 // ListBoards calls tkd.tasks.v1.BoardService.ListBoards.
@@ -207,6 +222,7 @@ func (c *boardServiceClient) DeleteTaskTag(ctx context.Context, req *connect_go.
 // BoardServiceHandler is an implementation of the tkd.tasks.v1.BoardService service.
 type BoardServiceHandler interface {
 	CreateBoard(context.Context, *connect_go.Request[v1.CreateBoardRequest]) (*connect_go.Response[v1.CreateBoardResponse], error)
+	UpdateBoard(context.Context, *connect_go.Request[v1.UpdateBoardRequest]) (*connect_go.Response[v1.UpdateBoardResponse], error)
 	ListBoards(context.Context, *connect_go.Request[v1.ListBoardsRequest]) (*connect_go.Response[v1.ListBoardsResponse], error)
 	DeleteBoard(context.Context, *connect_go.Request[v1.DeleteBoardRequest]) (*connect_go.Response[emptypb.Empty], error)
 	GetBoard(context.Context, *connect_go.Request[v1.GetBoardRequest]) (*connect_go.Response[v1.GetBoardResponse], error)
@@ -227,6 +243,11 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 	boardServiceCreateBoardHandler := connect_go.NewUnaryHandler(
 		BoardServiceCreateBoardProcedure,
 		svc.CreateBoard,
+		opts...,
+	)
+	boardServiceUpdateBoardHandler := connect_go.NewUnaryHandler(
+		BoardServiceUpdateBoardProcedure,
+		svc.UpdateBoard,
 		opts...,
 	)
 	boardServiceListBoardsHandler := connect_go.NewUnaryHandler(
@@ -278,6 +299,8 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 		switch r.URL.Path {
 		case BoardServiceCreateBoardProcedure:
 			boardServiceCreateBoardHandler.ServeHTTP(w, r)
+		case BoardServiceUpdateBoardProcedure:
+			boardServiceUpdateBoardHandler.ServeHTTP(w, r)
 		case BoardServiceListBoardsProcedure:
 			boardServiceListBoardsHandler.ServeHTTP(w, r)
 		case BoardServiceDeleteBoardProcedure:
@@ -307,6 +330,10 @@ type UnimplementedBoardServiceHandler struct{}
 
 func (UnimplementedBoardServiceHandler) CreateBoard(context.Context, *connect_go.Request[v1.CreateBoardRequest]) (*connect_go.Response[v1.CreateBoardResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.CreateBoard is not implemented"))
+}
+
+func (UnimplementedBoardServiceHandler) UpdateBoard(context.Context, *connect_go.Request[v1.UpdateBoardRequest]) (*connect_go.Response[v1.UpdateBoardResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.UpdateBoard is not implemented"))
 }
 
 func (UnimplementedBoardServiceHandler) ListBoards(context.Context, *connect_go.Request[v1.ListBoardsRequest]) (*connect_go.Response[v1.ListBoardsResponse], error) {

@@ -4,6 +4,7 @@ package tkd.tasks.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/descriptor.proto";
 import "tkd/common/v1/daytime.proto";
@@ -103,6 +104,12 @@ service BoardService {
         };
     }
 
+    rpc UpdateBoard(UpdateBoardRequest) returns (UpdateBoardResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
     rpc ListBoards(ListBoardsRequest) returns (ListBoardsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
@@ -176,12 +183,38 @@ message CreateBoardRequest {
     BoardPermission read_permission = 10;
     BoardPermission write_permission = 11;
     repeated BoardNotification notifications = 12;
-
-    bool write_includes_tag_management = 14;
-    bool write_includes_status_management = 15;
 }
 
 message CreateBoardResponse {
+    Board board = 1;
+}
+
+
+message UpdateBoardRequest {
+    string board_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string display_name = 2;
+
+    string description = 3;
+
+    oneof kind {
+        ListBoard list = 4;
+
+        option (buf.validate.oneof).required = true;
+    }
+
+    repeated TaskStatus allowed_task_status = 5;
+
+    BoardPermission read_permission = 10;
+    BoardPermission write_permission = 11;
+    repeated BoardNotification notifications = 12;
+
+    google.protobuf.FieldMask update_mask = 99;
+}
+
+message UpdateBoardResponse {
     Board board = 1;
 }
 
