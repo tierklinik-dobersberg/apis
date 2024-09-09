@@ -13,6 +13,7 @@ import "tkd/common/v1/geolocation.proto";
 import "tkd/common/v1/pagination.proto";
 import "tkd/common/v1/view.proto";
 import "tkd/common/v1/descriptor.proto";
+import "tkd/common/v1/list_wrappers.proto";
 import "tkd/customer/v1/customer.proto";
 
 message Attachment {
@@ -198,9 +199,11 @@ message UpdateTaskRequest {
     }
 
     // Tags is a list of opaque string tags.
-    repeated string add_tags = 7;
-
-    repeated string delete_tags = 9;
+    oneof tags {
+        tkd.common.v1.StringList add_tags = 7;
+        tkd.common.v1.StringList delete_tags = 9;
+        tkd.common.v1.StringList replace_tags = 14;
+    }
 
     // Status may hold an additional task status. Note that status values
     // are opaque to the TaskService.
@@ -210,10 +213,16 @@ message UpdateTaskRequest {
     // completed.
     google.protobuf.Timestamp due_time = 11;
 
-    repeated AddProperty add_properties = 12;
-    repeated string delete_properties = 13;
+    oneof properties {
+        AddProperties add_properties = 12;
+        tkd.common.v1.StringList delete_properties = 13;
+    }
 
     google.protobuf.FieldMask update_mask = 99;
+}
+
+message AddProperties {
+    repeated AddProperty properties = 12;
 }
 
 message AddProperty {
