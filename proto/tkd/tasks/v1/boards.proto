@@ -94,6 +94,9 @@ message Board {
     BoardPermission write_permission = 11;
     repeated BoardNotification notifications = 12;
     string owner_id = 13;
+
+    repeated string eligible_role_ids = 14;
+    repeated string eligible_user_ids = 15;
 }
 
 // BoardService allows for managing task boards.
@@ -184,6 +187,8 @@ message CreateBoardRequest {
     BoardPermission read_permission = 10;
     BoardPermission write_permission = 11;
     repeated BoardNotification notifications = 12;
+    repeated string eligible_role_ids = 13;
+    repeated string eligible_user_ids = 14;
 }
 
 message CreateBoardResponse {
@@ -210,8 +215,14 @@ message UpdateBoardRequest {
     repeated TaskTag allowed_task_tags = 6;
 
     BoardPermission read_permission = 10;
+
     BoardPermission write_permission = 11;
+
     repeated BoardNotification notifications = 12;
+
+    repeated string eligible_role_ids = 13;
+
+    repeated string eligible_user_ids = 14;
 
     google.protobuf.FieldMask update_mask = 99;
 }
