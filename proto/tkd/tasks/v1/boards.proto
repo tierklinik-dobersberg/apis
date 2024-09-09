@@ -179,6 +179,7 @@ message CreateBoardRequest {
     }
 
     repeated TaskStatus allowed_task_status = 4;
+    repeated TaskTag allowed_task_tags = 5;
 
     BoardPermission read_permission = 10;
     BoardPermission write_permission = 11;
@@ -206,6 +207,7 @@ message UpdateBoardRequest {
     }
 
     repeated TaskStatus allowed_task_status = 5;
+    repeated TaskTag allowed_task_tags = 6;
 
     BoardPermission read_permission = 10;
     BoardPermission write_permission = 11;
