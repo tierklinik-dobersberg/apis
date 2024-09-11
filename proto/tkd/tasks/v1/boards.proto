@@ -11,6 +11,16 @@ import "tkd/common/v1/daytime.proto";
 
 message ListBoard {}
 
+// BoardPermission specifies which users or roles are allowed or denied
+// to perform a given operation.
+// Dending on the child fields, the behavior for permission evaluation is
+// different:
+//   - if all allow_* fields are empty, the permission is a simple deny-list
+//     and allows operations by default
+//   - if all deny_* fields are empty, the permission is a simple allow-list
+//     and denies operations by default.
+//   - If all allow_* and deny_* fields are empty, everyone is allowed to
+//     perform any opertion by default.
 message BoardPermission {
     repeated string allow_roles = 1;
     repeated string allow_users = 2;
@@ -18,6 +28,8 @@ message BoardPermission {
     repeated string deny_users = 4;
 }
 
+// NotificationType defines which type of notifications should be sent
+// for board or task subscriptions.
 enum NotificationType {
     NOTIFICATION_TYPE_UNSPECIFIED = 0;
     NOTIFICATION_TYPE_SMS = 1;
@@ -29,115 +41,194 @@ enum EventType {
     // UNSPECIFIED is equal to ALL
     EVENT_TYPE_UNSPECIFIED = 0;
 
+    // Published when a new task has been created
     EVENT_TYPE_CREATED = 1;
+
+    // Published when a task has been updated
     EVENT_TYPE_UPDATED = 2;
-    EVENT_TYPE_CHANGED = 3;
-    EVENT_TYPE_COMPLETED = 4;
-    EVENT_TYPE_ASSIGNEE_CHANGED = 5;
+
+    // Published when a task has been deleted
+    EVENT_TYPE_DELETED = 3;
 }
 
-message BoardNotification {
-    string name = 1 [
-        (buf.validate.field).required = true
-    ];
-    string subject_template = 2;
-    string message_template = 3 [
-        (buf.validate.field).required = true
-    ];
-    repeated string recipient_user_ids = 4;
-    repeated string recipient_role_ids = 5;
-
-    NotificationType notification_type = 6;
-
-    repeated tkd.common.v1.DayTime send_times = 7 [
-        (buf.validate.field).required = true
-    ];
-
-    repeated EventType event_types = 8 [
-        (buf.validate.field).required = true
-    ];
-}
-
+// TaskStatus defines a status that might be set on a task.
 message TaskStatus {
+    // Status is the actual status value and must be unique!
     string status = 1 [
         (buf.validate.field).required = true
     ];
 
+    // Description is an optional, human readable description 
+    // of the task status.
     string description = 2;
 
+    // Color might define a color for the task status.
+    // if set, it should follow the HTML/CSS Hex-Color (6-digit) format.
+    // Alpha-channels are not allowed.
     string color = 3;
 }
 
+message TaskPriority {
+    // Name is the name of the priority and must be unique accross
+    // a board.
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // Description is an optional description of the board.
+    string descritpion = 2;
+
+    // Priority is the actual priority value.
+    // A higher number indicates a higher priority.
+    // A priority value must be unique accross a single board.
+    int32 priority = 3;
+
+    // Color defines a color for this priority to be used
+    // within a user front-end. If set, it should follow the HTLM/CSS
+    // Hex-Color (6-digits) format.
+    string color = 4;
+}
+
+// TaskTag defines a tag that might be assigned to a task.
 message TaskTag {
+    // Tag is the actual tag value and must be unique across the board.
     string tag = 1 [
         (buf.validate.field).required = true
     ];
 
+    // Description is an optional, human readable description 
+    // of the task tag.
     string description = 2;
 
+    // Color might define a color for the task tag.
+    // if set, it should follow the HTML/CSS Hex-Color (6-digit) format.
+    // Alpha-channels are not allowed.
     string color = 3;
 }
 
+// Subscription defines an (un-)subscribe for task update notifications.
+message Subscription {
+    // UserId is the id of the user that either subscribed to board or task
+    // updates.
+    string user_id = 1;
+
+    // NotificationTypes defines which kind of notifications the user want's to receive
+    repeated NotificationType notification_types = 2;
+
+    // Unsubscribed is set to true if the user unsubscribed from any notifications.
+    bool unsubscribed = 3;
+}
+
+// Board is a task board.
 message Board {
-    string id = 1;
-    string display_name = 2;
+    // ID is the unique ID of the board.
+    string id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // DisplayName is a human friendly display name of the board
+    string display_name = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // Description is an optional, human friendly description of the board
     string description = 3;
 
+    // Kind describes the kind of the task board. currently on list-style boards
+    // are supported.
     oneof kind {
         ListBoard list = 4;
     }
 
+    // AllowedTaskStatus defines all possible status values a task may have.
     repeated TaskStatus allowed_task_status = 5;
+
+    // AllowedTaskTags defines all possible tags values that might be assigned to
+    // a task.
     repeated TaskTag allowed_task_tags = 6;
 
+    // AllowedTaskPriorities defines all possible priority values that might be set
+    // on task.
+    repeated TaskPriority allowed_task_priorities = 18;
+
+    // HelpText is a markdown formatted help text of the board.
+    string help_text = 7;
+
+    // ReadPermissions determines which roles and users are allowed or denied
+    // when reading the board or tasks
     BoardPermission read_permission = 10;
+
+    // WritePermissions determines which roles and users are allowed or denied
+    // when writing to the board or task resources.
     BoardPermission write_permission = 11;
-    repeated BoardNotification notifications = 12;
+
+    // Was: BoardNotifications()
+    reserved 12;
+
+    // OwnerId is the ID of the board owner.
     string owner_id = 13;
 
+    // EligibleRoleIds specifies all roles that are eligible for task assignment.
     repeated string eligible_role_ids = 14;
+
+    // EligibleUserIds specifies all user ids that are aligible for task assignment.
     repeated string eligible_user_ids = 15;
+
+    // Subscriptions is a map of user-id to subscription setting.
+    map<string, Subscription> subscriptions = 16;
+
+    // InitialStatus is the initial status for newly created board tasks.
+    // If empty, the "empty" status value is also allowed.
+    // Note, if a task status is unset (that is, to an empty string),
+    // the InitialStatus value is used.
+    string initial_status = 17;
 }
+
 
 // BoardService allows for managing task boards.
 service BoardService {
+    // CreateBoard creates a new task board.
+    // The authenticated user perfoming this RPC is set as the 
+    // board owner and the only one that is allowed to manage board
+    // settings.
+    // A board subscription for all task updates is automatically created
+    // for the board owner.
     rpc CreateBoard(CreateBoardRequest) returns (CreateBoardResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
     }
 
+    // UpdateBoard allowed to update various board settings.
+    // Only the board owner is allowed to perform board updates.
+    // Note that if the board owner is changed, a subscription for the
+    // board owner will be created but any existing subscriptions of the
+    // old board owner will NOT BE REMOVED!
     rpc UpdateBoard(UpdateBoardRequest) returns (UpdateBoardResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
     }
 
+    // ListBoards returns a list of boards the authenticated user has read or write
+    // permisssions for.
     rpc ListBoards(ListBoardsRequest) returns (ListBoardsResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
     }
 
+    // DeleteBoard deletes as task board and all associated task resources.
+    // This can only be executed by the board owner.
+    // Attention: this operation cannot be undone!
     rpc DeleteBoard(DeleteBoardRequest) returns (google.protobuf.Empty) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
     }
 
+    // GetBoard loads a specific task-board identified by it's unique ID.
     rpc GetBoard(GetBoardRequest) returns (GetBoardResponse) {
-        option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED
-        };
-    }
-
-    rpc SaveNotification(SaveNotificationRequest) returns (SaveNotificationResponse) {
-        option (tkd.common.v1.auth) = {
-            require: AUTH_REQ_REQUIRED
-        };
-    }
-
-    rpc DeleteNotification(DeleteNotificationRequest) returns (DeleteNotificationResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
@@ -166,117 +257,194 @@ service BoardService {
             require: AUTH_REQ_REQUIRED
         };
     }
+
+    rpc ManageSubscription(ManageSubscriptionRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 }
 
+message ManageSubscriptionRequest {
+    // ID is either the board or the task ID.
+    string id = 1;
+
+    // UserId is the ID of the user that subscribes or unsubscribes to board/task updates.
+    // This field may only be set by an idm_superuser account. If unset, it defaults to the
+    // authenticated user.
+    string user_id = 2;
+
+    // Unsubscribe should be set to true to unsubscribe from any updates.
+    bool unsubscribe = 3;
+
+    // Types is a list of notification types to subscribe or unsubscribe.
+    // If empty, an unsubsribe request will remove all subscribes.
+    // If empty, an subscribe request will subscribe to the preferred backend default.
+    repeated NotificationType types = 4;
+}
+
+// CreateBoardRequest is the request to create a new task board.
 message CreateBoardRequest {
+    // DisplayName is human friendly name of the board.
+    // It is required to be set and unqiue!
     string display_name = 1 [
         (buf.validate.field).required = true
     ];
 
+    // Description holds an optional board description
     string description = 2;
 
+    // Kind is the board kind.
+    // Currently on list-style boards are supported.
     oneof kind {
         ListBoard list = 3;
 
         option (buf.validate.oneof).required = true;
     }
 
+    // AllowedTaskStatus defines all possible status values a task might
+    // have.
     repeated TaskStatus allowed_task_status = 4;
+
+    // AllowedTaskTags defines all possible tags that can be assigned to
+    // a task.
     repeated TaskTag allowed_task_tags = 5;
 
+    // AllowedTaskPriorities defines all possible priority values that can be
+    // set on a task.
+    repeated TaskPriority allowed_task_priorities = 16;
+
+    // HelpText specifies an additional help text for users of the task-board.
+    string help_text = 6;
+
+    // ReadPermission defines which users or roles are allowed/denied to read tasks
+    // from the board.
+    // If empty (including child fields), all users are allowed to read board tasks
     BoardPermission read_permission = 10;
+
+    // WritePermission defines which users or roles are allowed/denied to write or update
+    // tasks in the the board.
+    // If empty (including child fields), all users are allowed to update or create tasks.
     BoardPermission write_permission = 11;
-    repeated BoardNotification notifications = 12;
+
+    // EligibleRoleIds specifies which user roles can be assigned to a task
     repeated string eligible_role_ids = 13;
+
+    // EligibleUserIds specifies which users can be assigned to a task.
     repeated string eligible_user_ids = 14;
+
+    // InitialStatus is the initial status for newly created board tasks.
+    // If empty, the "empty" status value is also allowed.
+    // Note, if a task status is unset (that is, to an empty string),
+    // the InitialStatus value is used.
+    string initial_status = 15;
 }
 
+// CreateBoardResponse is the response message sent for CreateBoard RPCs
 message CreateBoardResponse {
     Board board = 1;
 }
 
 
+// UpdateBoardRequest is the request message type for the BoardService.UpdateBoard RPC.
+// See [Board] for more information about the meaning of the different message fields.
 message UpdateBoardRequest {
+    // BoardId specifies the ID of the board that should be updated.
     string board_id = 1 [
         (buf.validate.field).required = true
     ];
 
+    // DisplayName specifies the new display name of the board.
     string display_name = 2;
 
+    // Description specifies the new board description.
     string description = 3;
 
+    // Kind specifies the new board kind.
+    // Currently only list-style board are supported.
     oneof kind {
         ListBoard list = 4;
-
-        option (buf.validate.oneof).required = true;
     }
 
+    // AllowedTaskStatus specifies the new list of allowed task statuses.
     repeated TaskStatus allowed_task_status = 5;
+
+    // AllowedTasktags specifies the new list of allowed task tags.
     repeated TaskTag allowed_task_tags = 6;
 
+    // AllowedTaskPriorities defines all possible priority values that can be
+    // set on a task.
+    repeated TaskPriority allowed_task_priorities = 15;
+
+    // HelpText specifies the new help text of the board.
+    string help_text = 7;
+
+    // OwnerId can be set to change the board owner.
+    // Note that after this operation, further update to the board
+    // settings will be denied as only the board owner is allowed to
+    // change settings.
+    string owner_id = 8;
+
+    // InitialStatus specifies the new initial_status of the board.
+    // If changed to a non-empty value, all tasks with an empty status field
+    // will be updated to the new initial_status value.
+    string initial_status = 9;
+
+    // ReadPermission specifies the new read permissions.
     BoardPermission read_permission = 10;
 
+    // WritePermission specifies the new write permissions.
     BoardPermission write_permission = 11;
 
-    repeated BoardNotification notifications = 12;
-
+    // EligibleRoleIds specifies a new set of roles that are eligible for
+    // task assignment.
     repeated string eligible_role_ids = 13;
 
+    // EligibleUserIds specifies a new set of users that are eligible for
+    // task assignment.
     repeated string eligible_user_ids = 14;
 
-    google.protobuf.FieldMask update_mask = 99;
+    // UpdateMask specifies which fields of the board should be updates.
+    // Updates must specify an UpdateMask with an non-empty Paths member.
+    // Otherwise, no updates will be performed.
+    google.protobuf.FieldMask update_mask = 99 [
+        (buf.validate.field).required = true
+    ];
 }
 
+// UpdateBoardResponse is the response message sent for UpdateBoard RPCs
 message UpdateBoardResponse {
     Board board = 1;
 }
 
+// DeleteBoard is the request message for DeleteBoard RPCs
 message DeleteBoardRequest {
+    // Id is the the ID of the board to delete.
     string id = 1 [
         (buf.validate.field).required = true
     ];
 }
 
-message ListBoardsRequest {
+// ListBoardsRequests is the request message for ListBoards RPCs
+message ListBoardsRequest {}
 
-}
+// ListBoardsResponse is the respones message for ListBoards RPCs
 message ListBoardsResponse {
+    // Boards holds a list of all boards.
     repeated Board boards = 1;
 }
 
+// GetBoardRequest is the request message for GetBoard RPCs
 message GetBoardRequest {
+    // Id is the id of the board to retrieve.
     string id = 1 [
         (buf.validate.field).required = true
     ];
 }
 
+// GetBoardResponse is the response message for GetBoard RPCs
 message GetBoardResponse {
-    Board board = 1;
-}
-
-message SaveNotificationRequest {
-    string board_id = 1 [
-        (buf.validate.field).required = true
-    ];
-
-    BoardNotification notification = 2;
-}
-
-message SaveNotificationResponse {
-    Board board = 1;
-}
-
-message DeleteNotificationRequest {
-    string board_id = 1 [
-        (buf.validate.field).required = true
-    ];
-
-    string notification_name = 2 [
-        (buf.validate.field).required = true
-    ];
-}
-
-message DeleteNotificationResponse {
+    // Board is the returned board.
     Board board = 1;
 }
 

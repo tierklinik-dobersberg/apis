@@ -14,7 +14,9 @@ import "tkd/common/v1/pagination.proto";
 import "tkd/common/v1/view.proto";
 import "tkd/common/v1/descriptor.proto";
 import "tkd/common/v1/list_wrappers.proto";
+import "tkd/common/v1/time_range.proto";
 import "tkd/customer/v1/customer.proto";
+import "tkd/tasks/v1/boards.proto";
 
 message Attachment {
     // Name is a task-unique name for the attachment.
@@ -77,6 +79,13 @@ message Task {
     // Properties may hold application specific properties.
     map<string, google.protobuf.Any> properties = 15;
 
+    // Subscriptions is a map, indexed by user_id, that holds subscription
+    // settings.
+    map<string, tkd.tasks.v1.Subscription> subscriptions = 16;
+
+    // Priority is the task priortiy.
+    int32 priortiy = 17;
+
     // CreateTime is the time at which the task has been created.
     google.protobuf.Timestamp create_time = 90;
 
@@ -136,6 +145,11 @@ service TaskService {
             require: AUTH_REQ_REQUIRED
         };
     }
+    rpc ManageSubscription(tkd.tasks.v1.ManageSubscriptionRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 }
 
 message CreateTaskRequest {
@@ -173,6 +187,9 @@ message CreateTaskRequest {
 
     // Properties may hold application specific properties.
     map<string, google.protobuf.Any> properties = 11;
+
+    // Priority is the task priority.
+    int32 priority = 12;
 }
 
 message CreateTaskResponse {
@@ -217,6 +234,9 @@ message UpdateTaskRequest {
         AddProperties add_properties = 12;
         tkd.common.v1.StringList delete_properties = 13;
     }
+
+    // Priority is the new priority value.
+    int32 priority = 15;
 
     google.protobuf.FieldMask update_mask = 99;
 }
@@ -272,7 +292,7 @@ message TaskQuery {
     repeated string tags = 3;
     repeated string assigned_to = 4;
     repeated string created_by = 5;
-    google.protobuf.Timestamp due_before = 6;
+    tkd.common.v1.TimeRange due_between = 6;
     google.protobuf.BoolValue completed = 7;
 }
 

@@ -47,12 +47,6 @@ const (
 	BoardServiceDeleteBoardProcedure = "/tkd.tasks.v1.BoardService/DeleteBoard"
 	// BoardServiceGetBoardProcedure is the fully-qualified name of the BoardService's GetBoard RPC.
 	BoardServiceGetBoardProcedure = "/tkd.tasks.v1.BoardService/GetBoard"
-	// BoardServiceSaveNotificationProcedure is the fully-qualified name of the BoardService's
-	// SaveNotification RPC.
-	BoardServiceSaveNotificationProcedure = "/tkd.tasks.v1.BoardService/SaveNotification"
-	// BoardServiceDeleteNotificationProcedure is the fully-qualified name of the BoardService's
-	// DeleteNotification RPC.
-	BoardServiceDeleteNotificationProcedure = "/tkd.tasks.v1.BoardService/DeleteNotification"
 	// BoardServiceAddTaskStatusProcedure is the fully-qualified name of the BoardService's
 	// AddTaskStatus RPC.
 	BoardServiceAddTaskStatusProcedure = "/tkd.tasks.v1.BoardService/AddTaskStatus"
@@ -64,21 +58,40 @@ const (
 	// BoardServiceDeleteTaskTagProcedure is the fully-qualified name of the BoardService's
 	// DeleteTaskTag RPC.
 	BoardServiceDeleteTaskTagProcedure = "/tkd.tasks.v1.BoardService/DeleteTaskTag"
+	// BoardServiceManageSubscriptionProcedure is the fully-qualified name of the BoardService's
+	// ManageSubscription RPC.
+	BoardServiceManageSubscriptionProcedure = "/tkd.tasks.v1.BoardService/ManageSubscription"
 )
 
 // BoardServiceClient is a client for the tkd.tasks.v1.BoardService service.
 type BoardServiceClient interface {
+	// CreateBoard creates a new task board.
+	// The authenticated user perfoming this RPC is set as the
+	// board owner and the only one that is allowed to manage board
+	// settings.
+	// A board subscription for all task updates is automatically created
+	// for the board owner.
 	CreateBoard(context.Context, *connect_go.Request[v1.CreateBoardRequest]) (*connect_go.Response[v1.CreateBoardResponse], error)
+	// UpdateBoard allowed to update various board settings.
+	// Only the board owner is allowed to perform board updates.
+	// Note that if the board owner is changed, a subscription for the
+	// board owner will be created but any existing subscriptions of the
+	// old board owner will NOT BE REMOVED!
 	UpdateBoard(context.Context, *connect_go.Request[v1.UpdateBoardRequest]) (*connect_go.Response[v1.UpdateBoardResponse], error)
+	// ListBoards returns a list of boards the authenticated user has read or write
+	// permisssions for.
 	ListBoards(context.Context, *connect_go.Request[v1.ListBoardsRequest]) (*connect_go.Response[v1.ListBoardsResponse], error)
+	// DeleteBoard deletes as task board and all associated task resources.
+	// This can only be executed by the board owner.
+	// Attention: this operation cannot be undone!
 	DeleteBoard(context.Context, *connect_go.Request[v1.DeleteBoardRequest]) (*connect_go.Response[emptypb.Empty], error)
+	// GetBoard loads a specific task-board identified by it's unique ID.
 	GetBoard(context.Context, *connect_go.Request[v1.GetBoardRequest]) (*connect_go.Response[v1.GetBoardResponse], error)
-	SaveNotification(context.Context, *connect_go.Request[v1.SaveNotificationRequest]) (*connect_go.Response[v1.SaveNotificationResponse], error)
-	DeleteNotification(context.Context, *connect_go.Request[v1.DeleteNotificationRequest]) (*connect_go.Response[v1.DeleteNotificationResponse], error)
 	AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error)
 	DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error)
 	AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error)
 	DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error)
+	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewBoardServiceClient constructs a client for the tkd.tasks.v1.BoardService service. By default,
@@ -116,16 +129,6 @@ func NewBoardServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+BoardServiceGetBoardProcedure,
 			opts...,
 		),
-		saveNotification: connect_go.NewClient[v1.SaveNotificationRequest, v1.SaveNotificationResponse](
-			httpClient,
-			baseURL+BoardServiceSaveNotificationProcedure,
-			opts...,
-		),
-		deleteNotification: connect_go.NewClient[v1.DeleteNotificationRequest, v1.DeleteNotificationResponse](
-			httpClient,
-			baseURL+BoardServiceDeleteNotificationProcedure,
-			opts...,
-		),
 		addTaskStatus: connect_go.NewClient[v1.AddTaskStatusRequest, v1.AddTaskStatusResponse](
 			httpClient,
 			baseURL+BoardServiceAddTaskStatusProcedure,
@@ -146,6 +149,11 @@ func NewBoardServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+BoardServiceDeleteTaskTagProcedure,
 			opts...,
 		),
+		manageSubscription: connect_go.NewClient[v1.ManageSubscriptionRequest, emptypb.Empty](
+			httpClient,
+			baseURL+BoardServiceManageSubscriptionProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -156,12 +164,11 @@ type boardServiceClient struct {
 	listBoards         *connect_go.Client[v1.ListBoardsRequest, v1.ListBoardsResponse]
 	deleteBoard        *connect_go.Client[v1.DeleteBoardRequest, emptypb.Empty]
 	getBoard           *connect_go.Client[v1.GetBoardRequest, v1.GetBoardResponse]
-	saveNotification   *connect_go.Client[v1.SaveNotificationRequest, v1.SaveNotificationResponse]
-	deleteNotification *connect_go.Client[v1.DeleteNotificationRequest, v1.DeleteNotificationResponse]
 	addTaskStatus      *connect_go.Client[v1.AddTaskStatusRequest, v1.AddTaskStatusResponse]
 	deleteTaskStatus   *connect_go.Client[v1.DeleteTaskStatusRequest, v1.DeleteTaskStatusResponse]
 	addTaskTag         *connect_go.Client[v1.AddTaskTagRequest, v1.AddTaskTagResponse]
 	deleteTaskTag      *connect_go.Client[v1.DeleteTaskTagRequest, v1.DeleteTaskTagResponse]
+	manageSubscription *connect_go.Client[v1.ManageSubscriptionRequest, emptypb.Empty]
 }
 
 // CreateBoard calls tkd.tasks.v1.BoardService.CreateBoard.
@@ -189,16 +196,6 @@ func (c *boardServiceClient) GetBoard(ctx context.Context, req *connect_go.Reque
 	return c.getBoard.CallUnary(ctx, req)
 }
 
-// SaveNotification calls tkd.tasks.v1.BoardService.SaveNotification.
-func (c *boardServiceClient) SaveNotification(ctx context.Context, req *connect_go.Request[v1.SaveNotificationRequest]) (*connect_go.Response[v1.SaveNotificationResponse], error) {
-	return c.saveNotification.CallUnary(ctx, req)
-}
-
-// DeleteNotification calls tkd.tasks.v1.BoardService.DeleteNotification.
-func (c *boardServiceClient) DeleteNotification(ctx context.Context, req *connect_go.Request[v1.DeleteNotificationRequest]) (*connect_go.Response[v1.DeleteNotificationResponse], error) {
-	return c.deleteNotification.CallUnary(ctx, req)
-}
-
 // AddTaskStatus calls tkd.tasks.v1.BoardService.AddTaskStatus.
 func (c *boardServiceClient) AddTaskStatus(ctx context.Context, req *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error) {
 	return c.addTaskStatus.CallUnary(ctx, req)
@@ -219,19 +216,40 @@ func (c *boardServiceClient) DeleteTaskTag(ctx context.Context, req *connect_go.
 	return c.deleteTaskTag.CallUnary(ctx, req)
 }
 
+// ManageSubscription calls tkd.tasks.v1.BoardService.ManageSubscription.
+func (c *boardServiceClient) ManageSubscription(ctx context.Context, req *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.manageSubscription.CallUnary(ctx, req)
+}
+
 // BoardServiceHandler is an implementation of the tkd.tasks.v1.BoardService service.
 type BoardServiceHandler interface {
+	// CreateBoard creates a new task board.
+	// The authenticated user perfoming this RPC is set as the
+	// board owner and the only one that is allowed to manage board
+	// settings.
+	// A board subscription for all task updates is automatically created
+	// for the board owner.
 	CreateBoard(context.Context, *connect_go.Request[v1.CreateBoardRequest]) (*connect_go.Response[v1.CreateBoardResponse], error)
+	// UpdateBoard allowed to update various board settings.
+	// Only the board owner is allowed to perform board updates.
+	// Note that if the board owner is changed, a subscription for the
+	// board owner will be created but any existing subscriptions of the
+	// old board owner will NOT BE REMOVED!
 	UpdateBoard(context.Context, *connect_go.Request[v1.UpdateBoardRequest]) (*connect_go.Response[v1.UpdateBoardResponse], error)
+	// ListBoards returns a list of boards the authenticated user has read or write
+	// permisssions for.
 	ListBoards(context.Context, *connect_go.Request[v1.ListBoardsRequest]) (*connect_go.Response[v1.ListBoardsResponse], error)
+	// DeleteBoard deletes as task board and all associated task resources.
+	// This can only be executed by the board owner.
+	// Attention: this operation cannot be undone!
 	DeleteBoard(context.Context, *connect_go.Request[v1.DeleteBoardRequest]) (*connect_go.Response[emptypb.Empty], error)
+	// GetBoard loads a specific task-board identified by it's unique ID.
 	GetBoard(context.Context, *connect_go.Request[v1.GetBoardRequest]) (*connect_go.Response[v1.GetBoardResponse], error)
-	SaveNotification(context.Context, *connect_go.Request[v1.SaveNotificationRequest]) (*connect_go.Response[v1.SaveNotificationResponse], error)
-	DeleteNotification(context.Context, *connect_go.Request[v1.DeleteNotificationRequest]) (*connect_go.Response[v1.DeleteNotificationResponse], error)
 	AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error)
 	DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error)
 	AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error)
 	DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error)
+	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewBoardServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -265,16 +283,6 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 		svc.GetBoard,
 		opts...,
 	)
-	boardServiceSaveNotificationHandler := connect_go.NewUnaryHandler(
-		BoardServiceSaveNotificationProcedure,
-		svc.SaveNotification,
-		opts...,
-	)
-	boardServiceDeleteNotificationHandler := connect_go.NewUnaryHandler(
-		BoardServiceDeleteNotificationProcedure,
-		svc.DeleteNotification,
-		opts...,
-	)
 	boardServiceAddTaskStatusHandler := connect_go.NewUnaryHandler(
 		BoardServiceAddTaskStatusProcedure,
 		svc.AddTaskStatus,
@@ -295,6 +303,11 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 		svc.DeleteTaskTag,
 		opts...,
 	)
+	boardServiceManageSubscriptionHandler := connect_go.NewUnaryHandler(
+		BoardServiceManageSubscriptionProcedure,
+		svc.ManageSubscription,
+		opts...,
+	)
 	return "/tkd.tasks.v1.BoardService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case BoardServiceCreateBoardProcedure:
@@ -307,10 +320,6 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 			boardServiceDeleteBoardHandler.ServeHTTP(w, r)
 		case BoardServiceGetBoardProcedure:
 			boardServiceGetBoardHandler.ServeHTTP(w, r)
-		case BoardServiceSaveNotificationProcedure:
-			boardServiceSaveNotificationHandler.ServeHTTP(w, r)
-		case BoardServiceDeleteNotificationProcedure:
-			boardServiceDeleteNotificationHandler.ServeHTTP(w, r)
 		case BoardServiceAddTaskStatusProcedure:
 			boardServiceAddTaskStatusHandler.ServeHTTP(w, r)
 		case BoardServiceDeleteTaskStatusProcedure:
@@ -319,6 +328,8 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 			boardServiceAddTaskTagHandler.ServeHTTP(w, r)
 		case BoardServiceDeleteTaskTagProcedure:
 			boardServiceDeleteTaskTagHandler.ServeHTTP(w, r)
+		case BoardServiceManageSubscriptionProcedure:
+			boardServiceManageSubscriptionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -348,14 +359,6 @@ func (UnimplementedBoardServiceHandler) GetBoard(context.Context, *connect_go.Re
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.GetBoard is not implemented"))
 }
 
-func (UnimplementedBoardServiceHandler) SaveNotification(context.Context, *connect_go.Request[v1.SaveNotificationRequest]) (*connect_go.Response[v1.SaveNotificationResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.SaveNotification is not implemented"))
-}
-
-func (UnimplementedBoardServiceHandler) DeleteNotification(context.Context, *connect_go.Request[v1.DeleteNotificationRequest]) (*connect_go.Response[v1.DeleteNotificationResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.DeleteNotification is not implemented"))
-}
-
 func (UnimplementedBoardServiceHandler) AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.AddTaskStatus is not implemented"))
 }
@@ -370,4 +373,8 @@ func (UnimplementedBoardServiceHandler) AddTaskTag(context.Context, *connect_go.
 
 func (UnimplementedBoardServiceHandler) DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.DeleteTaskTag is not implemented"))
+}
+
+func (UnimplementedBoardServiceHandler) ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.ManageSubscription is not implemented"))
 }

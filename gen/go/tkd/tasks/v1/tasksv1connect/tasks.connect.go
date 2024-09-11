@@ -55,6 +55,9 @@ const (
 	// TaskServiceDeleteTaskAttachmentProcedure is the fully-qualified name of the TaskService's
 	// DeleteTaskAttachment RPC.
 	TaskServiceDeleteTaskAttachmentProcedure = "/tkd.tasks.v1.TaskService/DeleteTaskAttachment"
+	// TaskServiceManageSubscriptionProcedure is the fully-qualified name of the TaskService's
+	// ManageSubscription RPC.
+	TaskServiceManageSubscriptionProcedure = "/tkd.tasks.v1.TaskService/ManageSubscription"
 )
 
 // TaskServiceClient is a client for the tkd.tasks.v1.TaskService service.
@@ -68,6 +71,7 @@ type TaskServiceClient interface {
 	GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error)
 	AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error)
 	DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error)
+	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewTaskServiceClient constructs a client for the tkd.tasks.v1.TaskService service. By default, it
@@ -125,6 +129,11 @@ func NewTaskServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+TaskServiceDeleteTaskAttachmentProcedure,
 			opts...,
 		),
+		manageSubscription: connect_go.NewClient[v1.ManageSubscriptionRequest, emptypb.Empty](
+			httpClient,
+			baseURL+TaskServiceManageSubscriptionProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -139,6 +148,7 @@ type taskServiceClient struct {
 	getTask              *connect_go.Client[v1.GetTaskRequest, v1.GetTaskResponse]
 	addTaskAttachment    *connect_go.Client[v1.AddTaskAttachmentRequest, v1.AddTaskAttachmentResponse]
 	deleteTaskAttachment *connect_go.Client[v1.DeleteTaskAttachmentRequest, v1.DeleteTaskAttachmentResponse]
+	manageSubscription   *connect_go.Client[v1.ManageSubscriptionRequest, emptypb.Empty]
 }
 
 // CreateTask calls tkd.tasks.v1.TaskService.CreateTask.
@@ -186,6 +196,11 @@ func (c *taskServiceClient) DeleteTaskAttachment(ctx context.Context, req *conne
 	return c.deleteTaskAttachment.CallUnary(ctx, req)
 }
 
+// ManageSubscription calls tkd.tasks.v1.TaskService.ManageSubscription.
+func (c *taskServiceClient) ManageSubscription(ctx context.Context, req *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.manageSubscription.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tkd.tasks.v1.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect_go.Request[v1.CreateTaskRequest]) (*connect_go.Response[v1.CreateTaskResponse], error)
@@ -197,6 +212,7 @@ type TaskServiceHandler interface {
 	GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error)
 	AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error)
 	DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error)
+	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -250,6 +266,11 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 		svc.DeleteTaskAttachment,
 		opts...,
 	)
+	taskServiceManageSubscriptionHandler := connect_go.NewUnaryHandler(
+		TaskServiceManageSubscriptionProcedure,
+		svc.ManageSubscription,
+		opts...,
+	)
 	return "/tkd.tasks.v1.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
@@ -270,6 +291,8 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 			taskServiceAddTaskAttachmentHandler.ServeHTTP(w, r)
 		case TaskServiceDeleteTaskAttachmentProcedure:
 			taskServiceDeleteTaskAttachmentHandler.ServeHTTP(w, r)
+		case TaskServiceManageSubscriptionProcedure:
+			taskServiceManageSubscriptionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -313,4 +336,8 @@ func (UnimplementedTaskServiceHandler) AddTaskAttachment(context.Context, *conne
 
 func (UnimplementedTaskServiceHandler) DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.DeleteTaskAttachment is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.ManageSubscription is not implemented"))
 }
