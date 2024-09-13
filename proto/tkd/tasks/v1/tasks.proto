@@ -8,6 +8,7 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/struct.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/geolocation.proto";
 import "tkd/common/v1/pagination.proto";
@@ -99,6 +100,55 @@ message Task {
     google.protobuf.Timestamp assign_time = 93;
 }
 
+message TaskValueChange {
+    string field_name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Value old_value = 2;
+    google.protobuf.Value new_value = 3;
+}
+
+message TaskReaction {
+    string user_id = 1;
+    string reaction = 2;
+}
+
+message TaskComment {
+    // Comment holds the task comment in markdown format
+    string comment = 1;
+
+    repeated TaskReaction reactions = 2;
+}
+
+message TaskTimelineEntry {
+    // Id is the id of the timeline entry
+    string id = 1;
+
+    // TaskId is the ID of the task to which this time-line entry
+    // belongs.
+    string task_id = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // CreateTime is the timestamp at which the timeline entry
+    // has been created.
+    google.protobuf.Timestamp create_time = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    // UserId is the id of the user that created the timeline entry.
+    string user_id = 4;
+
+    // Kind describes the kind of timeline entry.
+    oneof kind {
+        TaskValueChange value_change = 6;
+        TaskComment comment = 7;
+
+        option (buf.validate.oneof).required = true;
+    }
+}
+
 service TaskService {
     rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
         option (tkd.common.v1.auth) = {
@@ -146,6 +196,11 @@ service TaskService {
         };
     }
     rpc ManageSubscription(tkd.tasks.v1.ManageSubscriptionRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+    rpc GetTimeline(GetTimelineRequest) returns (GetTimelineResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
@@ -342,4 +397,12 @@ message DeleteTaskAttachmentRequest {
 
 message DeleteTaskAttachmentResponse {
     Task task = 1;
+}
+
+message GetTimelineRequest {
+    repeated string task_ids = 2;
+}
+
+message GetTimelineResponse {
+    repeated TaskTimelineEntry timeline = 1;
 }

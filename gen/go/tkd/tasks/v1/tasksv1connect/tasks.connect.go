@@ -58,6 +58,8 @@ const (
 	// TaskServiceManageSubscriptionProcedure is the fully-qualified name of the TaskService's
 	// ManageSubscription RPC.
 	TaskServiceManageSubscriptionProcedure = "/tkd.tasks.v1.TaskService/ManageSubscription"
+	// TaskServiceGetTimelineProcedure is the fully-qualified name of the TaskService's GetTimeline RPC.
+	TaskServiceGetTimelineProcedure = "/tkd.tasks.v1.TaskService/GetTimeline"
 )
 
 // TaskServiceClient is a client for the tkd.tasks.v1.TaskService service.
@@ -72,6 +74,7 @@ type TaskServiceClient interface {
 	AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error)
 	DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error)
 	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
+	GetTimeline(context.Context, *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error)
 }
 
 // NewTaskServiceClient constructs a client for the tkd.tasks.v1.TaskService service. By default, it
@@ -134,6 +137,11 @@ func NewTaskServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+TaskServiceManageSubscriptionProcedure,
 			opts...,
 		),
+		getTimeline: connect_go.NewClient[v1.GetTimelineRequest, v1.GetTimelineResponse](
+			httpClient,
+			baseURL+TaskServiceGetTimelineProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -149,6 +157,7 @@ type taskServiceClient struct {
 	addTaskAttachment    *connect_go.Client[v1.AddTaskAttachmentRequest, v1.AddTaskAttachmentResponse]
 	deleteTaskAttachment *connect_go.Client[v1.DeleteTaskAttachmentRequest, v1.DeleteTaskAttachmentResponse]
 	manageSubscription   *connect_go.Client[v1.ManageSubscriptionRequest, emptypb.Empty]
+	getTimeline          *connect_go.Client[v1.GetTimelineRequest, v1.GetTimelineResponse]
 }
 
 // CreateTask calls tkd.tasks.v1.TaskService.CreateTask.
@@ -201,6 +210,11 @@ func (c *taskServiceClient) ManageSubscription(ctx context.Context, req *connect
 	return c.manageSubscription.CallUnary(ctx, req)
 }
 
+// GetTimeline calls tkd.tasks.v1.TaskService.GetTimeline.
+func (c *taskServiceClient) GetTimeline(ctx context.Context, req *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error) {
+	return c.getTimeline.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tkd.tasks.v1.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect_go.Request[v1.CreateTaskRequest]) (*connect_go.Response[v1.CreateTaskResponse], error)
@@ -213,6 +227,7 @@ type TaskServiceHandler interface {
 	AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error)
 	DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error)
 	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
+	GetTimeline(context.Context, *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -271,6 +286,11 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 		svc.ManageSubscription,
 		opts...,
 	)
+	taskServiceGetTimelineHandler := connect_go.NewUnaryHandler(
+		TaskServiceGetTimelineProcedure,
+		svc.GetTimeline,
+		opts...,
+	)
 	return "/tkd.tasks.v1.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
@@ -293,6 +313,8 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 			taskServiceDeleteTaskAttachmentHandler.ServeHTTP(w, r)
 		case TaskServiceManageSubscriptionProcedure:
 			taskServiceManageSubscriptionHandler.ServeHTTP(w, r)
+		case TaskServiceGetTimelineProcedure:
+			taskServiceGetTimelineHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -340,4 +362,8 @@ func (UnimplementedTaskServiceHandler) DeleteTaskAttachment(context.Context, *co
 
 func (UnimplementedTaskServiceHandler) ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.ManageSubscription is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) GetTimeline(context.Context, *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.GetTimeline is not implemented"))
 }
