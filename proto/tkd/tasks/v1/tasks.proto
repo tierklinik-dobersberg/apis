@@ -205,6 +205,18 @@ service TaskService {
             require: AUTH_REQ_REQUIRED
         };
     }
+
+    rpc CreateTaskComment(CreateTaskCommentRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc AddTaskCommentReaction(AddTaskCommentReactionRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
 }
 
 message CreateTaskRequest {
@@ -405,4 +417,24 @@ message GetTimelineRequest {
 
 message GetTimelineResponse {
     repeated TaskTimelineEntry timeline = 1;
+}
+
+message CreateTaskCommentRequest {
+    string task_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string comment = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message AddTaskCommentReactionRequest {
+    string comment_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string reaction = 2 [
+        (buf.validate.field).required = true
+    ];
 }

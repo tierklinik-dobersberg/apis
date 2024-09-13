@@ -60,6 +60,12 @@ const (
 	TaskServiceManageSubscriptionProcedure = "/tkd.tasks.v1.TaskService/ManageSubscription"
 	// TaskServiceGetTimelineProcedure is the fully-qualified name of the TaskService's GetTimeline RPC.
 	TaskServiceGetTimelineProcedure = "/tkd.tasks.v1.TaskService/GetTimeline"
+	// TaskServiceCreateTaskCommentProcedure is the fully-qualified name of the TaskService's
+	// CreateTaskComment RPC.
+	TaskServiceCreateTaskCommentProcedure = "/tkd.tasks.v1.TaskService/CreateTaskComment"
+	// TaskServiceAddTaskCommentReactionProcedure is the fully-qualified name of the TaskService's
+	// AddTaskCommentReaction RPC.
+	TaskServiceAddTaskCommentReactionProcedure = "/tkd.tasks.v1.TaskService/AddTaskCommentReaction"
 )
 
 // TaskServiceClient is a client for the tkd.tasks.v1.TaskService service.
@@ -75,6 +81,8 @@ type TaskServiceClient interface {
 	DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error)
 	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
 	GetTimeline(context.Context, *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error)
+	CreateTaskComment(context.Context, *connect_go.Request[v1.CreateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error)
+	AddTaskCommentReaction(context.Context, *connect_go.Request[v1.AddTaskCommentReactionRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewTaskServiceClient constructs a client for the tkd.tasks.v1.TaskService service. By default, it
@@ -142,22 +150,34 @@ func NewTaskServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+TaskServiceGetTimelineProcedure,
 			opts...,
 		),
+		createTaskComment: connect_go.NewClient[v1.CreateTaskCommentRequest, emptypb.Empty](
+			httpClient,
+			baseURL+TaskServiceCreateTaskCommentProcedure,
+			opts...,
+		),
+		addTaskCommentReaction: connect_go.NewClient[v1.AddTaskCommentReactionRequest, emptypb.Empty](
+			httpClient,
+			baseURL+TaskServiceAddTaskCommentReactionProcedure,
+			opts...,
+		),
 	}
 }
 
 // taskServiceClient implements TaskServiceClient.
 type taskServiceClient struct {
-	createTask           *connect_go.Client[v1.CreateTaskRequest, v1.CreateTaskResponse]
-	updateTask           *connect_go.Client[v1.UpdateTaskRequest, v1.UpdateTaskResponse]
-	assignTask           *connect_go.Client[v1.AssignTaskRequest, v1.AssignTaskResponse]
-	completeTask         *connect_go.Client[v1.CompleteTaskRequest, v1.CompleteTaskResponse]
-	deleteTask           *connect_go.Client[v1.DeleteTaskRequest, emptypb.Empty]
-	listTasks            *connect_go.Client[v1.ListTasksRequest, v1.ListTasksResponse]
-	getTask              *connect_go.Client[v1.GetTaskRequest, v1.GetTaskResponse]
-	addTaskAttachment    *connect_go.Client[v1.AddTaskAttachmentRequest, v1.AddTaskAttachmentResponse]
-	deleteTaskAttachment *connect_go.Client[v1.DeleteTaskAttachmentRequest, v1.DeleteTaskAttachmentResponse]
-	manageSubscription   *connect_go.Client[v1.ManageSubscriptionRequest, emptypb.Empty]
-	getTimeline          *connect_go.Client[v1.GetTimelineRequest, v1.GetTimelineResponse]
+	createTask             *connect_go.Client[v1.CreateTaskRequest, v1.CreateTaskResponse]
+	updateTask             *connect_go.Client[v1.UpdateTaskRequest, v1.UpdateTaskResponse]
+	assignTask             *connect_go.Client[v1.AssignTaskRequest, v1.AssignTaskResponse]
+	completeTask           *connect_go.Client[v1.CompleteTaskRequest, v1.CompleteTaskResponse]
+	deleteTask             *connect_go.Client[v1.DeleteTaskRequest, emptypb.Empty]
+	listTasks              *connect_go.Client[v1.ListTasksRequest, v1.ListTasksResponse]
+	getTask                *connect_go.Client[v1.GetTaskRequest, v1.GetTaskResponse]
+	addTaskAttachment      *connect_go.Client[v1.AddTaskAttachmentRequest, v1.AddTaskAttachmentResponse]
+	deleteTaskAttachment   *connect_go.Client[v1.DeleteTaskAttachmentRequest, v1.DeleteTaskAttachmentResponse]
+	manageSubscription     *connect_go.Client[v1.ManageSubscriptionRequest, emptypb.Empty]
+	getTimeline            *connect_go.Client[v1.GetTimelineRequest, v1.GetTimelineResponse]
+	createTaskComment      *connect_go.Client[v1.CreateTaskCommentRequest, emptypb.Empty]
+	addTaskCommentReaction *connect_go.Client[v1.AddTaskCommentReactionRequest, emptypb.Empty]
 }
 
 // CreateTask calls tkd.tasks.v1.TaskService.CreateTask.
@@ -215,6 +235,16 @@ func (c *taskServiceClient) GetTimeline(ctx context.Context, req *connect_go.Req
 	return c.getTimeline.CallUnary(ctx, req)
 }
 
+// CreateTaskComment calls tkd.tasks.v1.TaskService.CreateTaskComment.
+func (c *taskServiceClient) CreateTaskComment(ctx context.Context, req *connect_go.Request[v1.CreateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.createTaskComment.CallUnary(ctx, req)
+}
+
+// AddTaskCommentReaction calls tkd.tasks.v1.TaskService.AddTaskCommentReaction.
+func (c *taskServiceClient) AddTaskCommentReaction(ctx context.Context, req *connect_go.Request[v1.AddTaskCommentReactionRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.addTaskCommentReaction.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tkd.tasks.v1.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect_go.Request[v1.CreateTaskRequest]) (*connect_go.Response[v1.CreateTaskResponse], error)
@@ -228,6 +258,8 @@ type TaskServiceHandler interface {
 	DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error)
 	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
 	GetTimeline(context.Context, *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error)
+	CreateTaskComment(context.Context, *connect_go.Request[v1.CreateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error)
+	AddTaskCommentReaction(context.Context, *connect_go.Request[v1.AddTaskCommentReactionRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -291,6 +323,16 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 		svc.GetTimeline,
 		opts...,
 	)
+	taskServiceCreateTaskCommentHandler := connect_go.NewUnaryHandler(
+		TaskServiceCreateTaskCommentProcedure,
+		svc.CreateTaskComment,
+		opts...,
+	)
+	taskServiceAddTaskCommentReactionHandler := connect_go.NewUnaryHandler(
+		TaskServiceAddTaskCommentReactionProcedure,
+		svc.AddTaskCommentReaction,
+		opts...,
+	)
 	return "/tkd.tasks.v1.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
@@ -315,6 +357,10 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 			taskServiceManageSubscriptionHandler.ServeHTTP(w, r)
 		case TaskServiceGetTimelineProcedure:
 			taskServiceGetTimelineHandler.ServeHTTP(w, r)
+		case TaskServiceCreateTaskCommentProcedure:
+			taskServiceCreateTaskCommentHandler.ServeHTTP(w, r)
+		case TaskServiceAddTaskCommentReactionProcedure:
+			taskServiceAddTaskCommentReactionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -366,4 +412,12 @@ func (UnimplementedTaskServiceHandler) ManageSubscription(context.Context, *conn
 
 func (UnimplementedTaskServiceHandler) GetTimeline(context.Context, *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.GetTimeline is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) CreateTaskComment(context.Context, *connect_go.Request[v1.CreateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.CreateTaskComment is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) AddTaskCommentReaction(context.Context, *connect_go.Request[v1.AddTaskCommentReactionRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.AddTaskCommentReaction is not implemented"))
 }

@@ -182,6 +182,10 @@ message Board {
     // Note, if a task status is unset (that is, to an empty string),
     // the InitialStatus value is used.
     string initial_status = 17;
+
+    // DoneStatus may hold a status value that should be set once
+    // the task is completed.
+    string done_status = 19;
 }
 
 
@@ -338,6 +342,10 @@ message CreateBoardRequest {
     // Note, if a task status is unset (that is, to an empty string),
     // the InitialStatus value is used.
     string initial_status = 15;
+
+    // DoneStatus may hold a status value that should be set once
+    // the task is completed.
+    string done_status = 17;
 }
 
 // CreateBoardResponse is the response message sent for CreateBoard RPCs
@@ -389,6 +397,10 @@ message UpdateBoardRequest {
     // If changed to a non-empty value, all tasks with an empty status field
     // will be updated to the new initial_status value.
     string initial_status = 9;
+
+    // DoneStatus may hold a status value that should be set once
+    // the task is completed.
+    string done_status = 16;
 
     // ReadPermission specifies the new read permissions.
     BoardPermission read_permission = 10;
