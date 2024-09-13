@@ -84,7 +84,7 @@ message Task {
     map<string, tkd.tasks.v1.Subscription> subscriptions = 16;
 
     // Priority is the task priortiy.
-    int32 priortiy = 17;
+    google.protobuf.Int32Value priority = 17;
 
     // CreateTime is the time at which the task has been created.
     google.protobuf.Timestamp create_time = 90;
@@ -189,7 +189,7 @@ message CreateTaskRequest {
     map<string, google.protobuf.Any> properties = 11;
 
     // Priority is the task priority.
-    int32 priority = 12;
+    google.protobuf.Int32Value priority = 12;
 }
 
 message CreateTaskResponse {
@@ -236,7 +236,7 @@ message UpdateTaskRequest {
     }
 
     // Priority is the new priority value.
-    int32 priority = 15;
+    google.protobuf.Int32Value priority = 15;
 
     google.protobuf.FieldMask update_mask = 99;
 }
