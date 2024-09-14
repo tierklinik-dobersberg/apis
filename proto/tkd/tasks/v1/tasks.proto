@@ -118,7 +118,20 @@ message TaskComment {
     // Comment holds the task comment in markdown format
     string comment = 1;
 
+    // Reactions holds a list of user reactions to that comment.
     repeated TaskReaction reactions = 2;
+
+    // EditTime holds the time the comment has been last edited.
+    // If the comment has never been edited by it's user, this field
+    // is empty.
+    google.protobuf.Timestamp edit_time = 3;
+
+    // DeleteTime is set to the time when the comment has been deleted.
+    google.protobuf.Timestamp delete_time = 4;
+
+    // MarkAsOfftopicTime is set to the them when the comment has been marked
+    // as off-topic.
+    google.protobuf.Timestamp mark_as_offtopic_time = 5;
 }
 
 message TaskTimelineEntry {
@@ -213,6 +226,12 @@ service TaskService {
     }
 
     rpc AddTaskCommentReaction(AddTaskCommentReactionRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc UpdateTaskComment(UpdateTaskCommentRequest) returns (google.protobuf.Empty) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
@@ -437,4 +456,16 @@ message AddTaskCommentReactionRequest {
     string reaction = 2 [
         (buf.validate.field).required = true
     ];
+}
+
+message UpdateTaskCommentRequest {
+    string timeline_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    oneof kind {
+        string new_text = 2;
+        bool delete = 3;
+        bool off_topic = 4;
+    }
 }

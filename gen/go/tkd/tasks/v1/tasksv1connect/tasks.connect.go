@@ -66,6 +66,9 @@ const (
 	// TaskServiceAddTaskCommentReactionProcedure is the fully-qualified name of the TaskService's
 	// AddTaskCommentReaction RPC.
 	TaskServiceAddTaskCommentReactionProcedure = "/tkd.tasks.v1.TaskService/AddTaskCommentReaction"
+	// TaskServiceUpdateTaskCommentProcedure is the fully-qualified name of the TaskService's
+	// UpdateTaskComment RPC.
+	TaskServiceUpdateTaskCommentProcedure = "/tkd.tasks.v1.TaskService/UpdateTaskComment"
 )
 
 // TaskServiceClient is a client for the tkd.tasks.v1.TaskService service.
@@ -83,6 +86,7 @@ type TaskServiceClient interface {
 	GetTimeline(context.Context, *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error)
 	CreateTaskComment(context.Context, *connect_go.Request[v1.CreateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error)
 	AddTaskCommentReaction(context.Context, *connect_go.Request[v1.AddTaskCommentReactionRequest]) (*connect_go.Response[emptypb.Empty], error)
+	UpdateTaskComment(context.Context, *connect_go.Request[v1.UpdateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewTaskServiceClient constructs a client for the tkd.tasks.v1.TaskService service. By default, it
@@ -160,6 +164,11 @@ func NewTaskServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+TaskServiceAddTaskCommentReactionProcedure,
 			opts...,
 		),
+		updateTaskComment: connect_go.NewClient[v1.UpdateTaskCommentRequest, emptypb.Empty](
+			httpClient,
+			baseURL+TaskServiceUpdateTaskCommentProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -178,6 +187,7 @@ type taskServiceClient struct {
 	getTimeline            *connect_go.Client[v1.GetTimelineRequest, v1.GetTimelineResponse]
 	createTaskComment      *connect_go.Client[v1.CreateTaskCommentRequest, emptypb.Empty]
 	addTaskCommentReaction *connect_go.Client[v1.AddTaskCommentReactionRequest, emptypb.Empty]
+	updateTaskComment      *connect_go.Client[v1.UpdateTaskCommentRequest, emptypb.Empty]
 }
 
 // CreateTask calls tkd.tasks.v1.TaskService.CreateTask.
@@ -245,6 +255,11 @@ func (c *taskServiceClient) AddTaskCommentReaction(ctx context.Context, req *con
 	return c.addTaskCommentReaction.CallUnary(ctx, req)
 }
 
+// UpdateTaskComment calls tkd.tasks.v1.TaskService.UpdateTaskComment.
+func (c *taskServiceClient) UpdateTaskComment(ctx context.Context, req *connect_go.Request[v1.UpdateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.updateTaskComment.CallUnary(ctx, req)
+}
+
 // TaskServiceHandler is an implementation of the tkd.tasks.v1.TaskService service.
 type TaskServiceHandler interface {
 	CreateTask(context.Context, *connect_go.Request[v1.CreateTaskRequest]) (*connect_go.Response[v1.CreateTaskResponse], error)
@@ -260,6 +275,7 @@ type TaskServiceHandler interface {
 	GetTimeline(context.Context, *connect_go.Request[v1.GetTimelineRequest]) (*connect_go.Response[v1.GetTimelineResponse], error)
 	CreateTaskComment(context.Context, *connect_go.Request[v1.CreateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error)
 	AddTaskCommentReaction(context.Context, *connect_go.Request[v1.AddTaskCommentReactionRequest]) (*connect_go.Response[emptypb.Empty], error)
+	UpdateTaskComment(context.Context, *connect_go.Request[v1.UpdateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewTaskServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -333,6 +349,11 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 		svc.AddTaskCommentReaction,
 		opts...,
 	)
+	taskServiceUpdateTaskCommentHandler := connect_go.NewUnaryHandler(
+		TaskServiceUpdateTaskCommentProcedure,
+		svc.UpdateTaskComment,
+		opts...,
+	)
 	return "/tkd.tasks.v1.TaskService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TaskServiceCreateTaskProcedure:
@@ -361,6 +382,8 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 			taskServiceCreateTaskCommentHandler.ServeHTTP(w, r)
 		case TaskServiceAddTaskCommentReactionProcedure:
 			taskServiceAddTaskCommentReactionHandler.ServeHTTP(w, r)
+		case TaskServiceUpdateTaskCommentProcedure:
+			taskServiceUpdateTaskCommentHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -420,4 +443,8 @@ func (UnimplementedTaskServiceHandler) CreateTaskComment(context.Context, *conne
 
 func (UnimplementedTaskServiceHandler) AddTaskCommentReaction(context.Context, *connect_go.Request[v1.AddTaskCommentReactionRequest]) (*connect_go.Response[emptypb.Empty], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.AddTaskCommentReaction is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) UpdateTaskComment(context.Context, *connect_go.Request[v1.UpdateTaskCommentRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.UpdateTaskComment is not implemented"))
 }
