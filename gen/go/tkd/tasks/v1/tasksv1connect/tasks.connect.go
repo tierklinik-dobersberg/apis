@@ -47,6 +47,10 @@ const (
 	TaskServiceDeleteTaskProcedure = "/tkd.tasks.v1.TaskService/DeleteTask"
 	// TaskServiceListTasksProcedure is the fully-qualified name of the TaskService's ListTasks RPC.
 	TaskServiceListTasksProcedure = "/tkd.tasks.v1.TaskService/ListTasks"
+	// TaskServiceFilterTasksProcedure is the fully-qualified name of the TaskService's FilterTasks RPC.
+	TaskServiceFilterTasksProcedure = "/tkd.tasks.v1.TaskService/FilterTasks"
+	// TaskServiceParseFilterProcedure is the fully-qualified name of the TaskService's ParseFilter RPC.
+	TaskServiceParseFilterProcedure = "/tkd.tasks.v1.TaskService/ParseFilter"
 	// TaskServiceGetTaskProcedure is the fully-qualified name of the TaskService's GetTask RPC.
 	TaskServiceGetTaskProcedure = "/tkd.tasks.v1.TaskService/GetTask"
 	// TaskServiceAddTaskAttachmentProcedure is the fully-qualified name of the TaskService's
@@ -79,6 +83,8 @@ type TaskServiceClient interface {
 	CompleteTask(context.Context, *connect_go.Request[v1.CompleteTaskRequest]) (*connect_go.Response[v1.CompleteTaskResponse], error)
 	DeleteTask(context.Context, *connect_go.Request[v1.DeleteTaskRequest]) (*connect_go.Response[emptypb.Empty], error)
 	ListTasks(context.Context, *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
+	FilterTasks(context.Context, *connect_go.Request[v1.FilterTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
+	ParseFilter(context.Context, *connect_go.Request[v1.ParseFilterRequest]) (*connect_go.Response[v1.ParseFilterResponse], error)
 	GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error)
 	AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error)
 	DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error)
@@ -127,6 +133,16 @@ func NewTaskServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		listTasks: connect_go.NewClient[v1.ListTasksRequest, v1.ListTasksResponse](
 			httpClient,
 			baseURL+TaskServiceListTasksProcedure,
+			opts...,
+		),
+		filterTasks: connect_go.NewClient[v1.FilterTasksRequest, v1.ListTasksResponse](
+			httpClient,
+			baseURL+TaskServiceFilterTasksProcedure,
+			opts...,
+		),
+		parseFilter: connect_go.NewClient[v1.ParseFilterRequest, v1.ParseFilterResponse](
+			httpClient,
+			baseURL+TaskServiceParseFilterProcedure,
 			opts...,
 		),
 		getTask: connect_go.NewClient[v1.GetTaskRequest, v1.GetTaskResponse](
@@ -180,6 +196,8 @@ type taskServiceClient struct {
 	completeTask           *connect_go.Client[v1.CompleteTaskRequest, v1.CompleteTaskResponse]
 	deleteTask             *connect_go.Client[v1.DeleteTaskRequest, emptypb.Empty]
 	listTasks              *connect_go.Client[v1.ListTasksRequest, v1.ListTasksResponse]
+	filterTasks            *connect_go.Client[v1.FilterTasksRequest, v1.ListTasksResponse]
+	parseFilter            *connect_go.Client[v1.ParseFilterRequest, v1.ParseFilterResponse]
 	getTask                *connect_go.Client[v1.GetTaskRequest, v1.GetTaskResponse]
 	addTaskAttachment      *connect_go.Client[v1.AddTaskAttachmentRequest, v1.AddTaskAttachmentResponse]
 	deleteTaskAttachment   *connect_go.Client[v1.DeleteTaskAttachmentRequest, v1.DeleteTaskAttachmentResponse]
@@ -218,6 +236,16 @@ func (c *taskServiceClient) DeleteTask(ctx context.Context, req *connect_go.Requ
 // ListTasks calls tkd.tasks.v1.TaskService.ListTasks.
 func (c *taskServiceClient) ListTasks(ctx context.Context, req *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error) {
 	return c.listTasks.CallUnary(ctx, req)
+}
+
+// FilterTasks calls tkd.tasks.v1.TaskService.FilterTasks.
+func (c *taskServiceClient) FilterTasks(ctx context.Context, req *connect_go.Request[v1.FilterTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error) {
+	return c.filterTasks.CallUnary(ctx, req)
+}
+
+// ParseFilter calls tkd.tasks.v1.TaskService.ParseFilter.
+func (c *taskServiceClient) ParseFilter(ctx context.Context, req *connect_go.Request[v1.ParseFilterRequest]) (*connect_go.Response[v1.ParseFilterResponse], error) {
+	return c.parseFilter.CallUnary(ctx, req)
 }
 
 // GetTask calls tkd.tasks.v1.TaskService.GetTask.
@@ -268,6 +296,8 @@ type TaskServiceHandler interface {
 	CompleteTask(context.Context, *connect_go.Request[v1.CompleteTaskRequest]) (*connect_go.Response[v1.CompleteTaskResponse], error)
 	DeleteTask(context.Context, *connect_go.Request[v1.DeleteTaskRequest]) (*connect_go.Response[emptypb.Empty], error)
 	ListTasks(context.Context, *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
+	FilterTasks(context.Context, *connect_go.Request[v1.FilterTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
+	ParseFilter(context.Context, *connect_go.Request[v1.ParseFilterRequest]) (*connect_go.Response[v1.ParseFilterResponse], error)
 	GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error)
 	AddTaskAttachment(context.Context, *connect_go.Request[v1.AddTaskAttachmentRequest]) (*connect_go.Response[v1.AddTaskAttachmentResponse], error)
 	DeleteTaskAttachment(context.Context, *connect_go.Request[v1.DeleteTaskAttachmentRequest]) (*connect_go.Response[v1.DeleteTaskAttachmentResponse], error)
@@ -312,6 +342,16 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 	taskServiceListTasksHandler := connect_go.NewUnaryHandler(
 		TaskServiceListTasksProcedure,
 		svc.ListTasks,
+		opts...,
+	)
+	taskServiceFilterTasksHandler := connect_go.NewUnaryHandler(
+		TaskServiceFilterTasksProcedure,
+		svc.FilterTasks,
+		opts...,
+	)
+	taskServiceParseFilterHandler := connect_go.NewUnaryHandler(
+		TaskServiceParseFilterProcedure,
+		svc.ParseFilter,
 		opts...,
 	)
 	taskServiceGetTaskHandler := connect_go.NewUnaryHandler(
@@ -368,6 +408,10 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 			taskServiceDeleteTaskHandler.ServeHTTP(w, r)
 		case TaskServiceListTasksProcedure:
 			taskServiceListTasksHandler.ServeHTTP(w, r)
+		case TaskServiceFilterTasksProcedure:
+			taskServiceFilterTasksHandler.ServeHTTP(w, r)
+		case TaskServiceParseFilterProcedure:
+			taskServiceParseFilterHandler.ServeHTTP(w, r)
 		case TaskServiceGetTaskProcedure:
 			taskServiceGetTaskHandler.ServeHTTP(w, r)
 		case TaskServiceAddTaskAttachmentProcedure:
@@ -415,6 +459,14 @@ func (UnimplementedTaskServiceHandler) DeleteTask(context.Context, *connect_go.R
 
 func (UnimplementedTaskServiceHandler) ListTasks(context.Context, *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.ListTasks is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) FilterTasks(context.Context, *connect_go.Request[v1.FilterTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.FilterTasks is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) ParseFilter(context.Context, *connect_go.Request[v1.ParseFilterRequest]) (*connect_go.Response[v1.ParseFilterResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.ParseFilter is not implemented"))
 }
 
 func (UnimplementedTaskServiceHandler) GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error) {

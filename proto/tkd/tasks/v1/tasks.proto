@@ -193,6 +193,19 @@ service TaskService {
             require: AUTH_REQ_REQUIRED
         };
     }
+
+    rpc FilterTasks(FilterTasksRequest) returns (ListTasksResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    rpc ParseFilter(ParseFilterRequest) returns (ParseFilterResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
     rpc GetTask(GetTaskRequest) returns (GetTaskResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
@@ -387,6 +400,24 @@ message ListTasksRequest {
 
     tkd.common.v1.View view = 91;
     tkd.common.v1.Pagination pagination = 90;
+}
+
+message FilterTasksRequest {
+    string query = 1;
+    string board_id = 2;
+    
+    tkd.common.v1.View view = 91;
+    tkd.common.v1.Pagination pagination = 90;
+}
+
+message ParseFilterRequest {
+    string query = 1;
+    string board_id = 2;
+}
+
+message ParseFilterResponse {
+    string expected_token = 1;
+    repeated string values = 2;
 }
 
 message ListTasksResponse {
