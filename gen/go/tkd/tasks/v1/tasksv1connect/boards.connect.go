@@ -47,6 +47,10 @@ const (
 	BoardServiceDeleteBoardProcedure = "/tkd.tasks.v1.BoardService/DeleteBoard"
 	// BoardServiceGetBoardProcedure is the fully-qualified name of the BoardService's GetBoard RPC.
 	BoardServiceGetBoardProcedure = "/tkd.tasks.v1.BoardService/GetBoard"
+	// BoardServiceAddViewProcedure is the fully-qualified name of the BoardService's AddView RPC.
+	BoardServiceAddViewProcedure = "/tkd.tasks.v1.BoardService/AddView"
+	// BoardServiceDeleteViewProcedure is the fully-qualified name of the BoardService's DeleteView RPC.
+	BoardServiceDeleteViewProcedure = "/tkd.tasks.v1.BoardService/DeleteView"
 	// BoardServiceAddTaskStatusProcedure is the fully-qualified name of the BoardService's
 	// AddTaskStatus RPC.
 	BoardServiceAddTaskStatusProcedure = "/tkd.tasks.v1.BoardService/AddTaskStatus"
@@ -87,10 +91,24 @@ type BoardServiceClient interface {
 	DeleteBoard(context.Context, *connect_go.Request[v1.DeleteBoardRequest]) (*connect_go.Response[emptypb.Empty], error)
 	// GetBoard loads a specific task-board identified by it's unique ID.
 	GetBoard(context.Context, *connect_go.Request[v1.GetBoardRequest]) (*connect_go.Response[v1.GetBoardResponse], error)
-	AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error)
-	DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error)
-	AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error)
-	DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error)
+	// AddView configures a new view for a task board.
+	AddView(context.Context, *connect_go.Request[v1.AddViewRequest]) (*connect_go.Response[v1.Board], error)
+	// DeleteView deletes a view from a task board.
+	DeleteView(context.Context, *connect_go.Request[v1.DeleteViewRequest]) (*connect_go.Response[v1.Board], error)
+	// AddTaskStatus adds a new task status value for a board.
+	AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.Board], error)
+	// DeleteTaskStatus deletes a task status value from a board.
+	// Tasks that still have the deleted status value set will be updated to use
+	// the board's initial_status - which may also be empty.
+	DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.Board], error)
+	// AddTaskTag configures a new task tag to be available for all tasks
+	// within the specified board.
+	AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.Board], error)
+	// DeleteTaskTag deletes a task tag from the board. The tag will be remove dautomatically
+	// from all tasks.
+	DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.Board], error)
+	// ManageSubscription allows users to manage their notification subscription
+	// for a whole board.
 	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
@@ -129,22 +147,32 @@ func NewBoardServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+BoardServiceGetBoardProcedure,
 			opts...,
 		),
-		addTaskStatus: connect_go.NewClient[v1.AddTaskStatusRequest, v1.AddTaskStatusResponse](
+		addView: connect_go.NewClient[v1.AddViewRequest, v1.Board](
+			httpClient,
+			baseURL+BoardServiceAddViewProcedure,
+			opts...,
+		),
+		deleteView: connect_go.NewClient[v1.DeleteViewRequest, v1.Board](
+			httpClient,
+			baseURL+BoardServiceDeleteViewProcedure,
+			opts...,
+		),
+		addTaskStatus: connect_go.NewClient[v1.AddTaskStatusRequest, v1.Board](
 			httpClient,
 			baseURL+BoardServiceAddTaskStatusProcedure,
 			opts...,
 		),
-		deleteTaskStatus: connect_go.NewClient[v1.DeleteTaskStatusRequest, v1.DeleteTaskStatusResponse](
+		deleteTaskStatus: connect_go.NewClient[v1.DeleteTaskStatusRequest, v1.Board](
 			httpClient,
 			baseURL+BoardServiceDeleteTaskStatusProcedure,
 			opts...,
 		),
-		addTaskTag: connect_go.NewClient[v1.AddTaskTagRequest, v1.AddTaskTagResponse](
+		addTaskTag: connect_go.NewClient[v1.AddTaskTagRequest, v1.Board](
 			httpClient,
 			baseURL+BoardServiceAddTaskTagProcedure,
 			opts...,
 		),
-		deleteTaskTag: connect_go.NewClient[v1.DeleteTaskTagRequest, v1.DeleteTaskTagResponse](
+		deleteTaskTag: connect_go.NewClient[v1.DeleteTaskTagRequest, v1.Board](
 			httpClient,
 			baseURL+BoardServiceDeleteTaskTagProcedure,
 			opts...,
@@ -164,10 +192,12 @@ type boardServiceClient struct {
 	listBoards         *connect_go.Client[v1.ListBoardsRequest, v1.ListBoardsResponse]
 	deleteBoard        *connect_go.Client[v1.DeleteBoardRequest, emptypb.Empty]
 	getBoard           *connect_go.Client[v1.GetBoardRequest, v1.GetBoardResponse]
-	addTaskStatus      *connect_go.Client[v1.AddTaskStatusRequest, v1.AddTaskStatusResponse]
-	deleteTaskStatus   *connect_go.Client[v1.DeleteTaskStatusRequest, v1.DeleteTaskStatusResponse]
-	addTaskTag         *connect_go.Client[v1.AddTaskTagRequest, v1.AddTaskTagResponse]
-	deleteTaskTag      *connect_go.Client[v1.DeleteTaskTagRequest, v1.DeleteTaskTagResponse]
+	addView            *connect_go.Client[v1.AddViewRequest, v1.Board]
+	deleteView         *connect_go.Client[v1.DeleteViewRequest, v1.Board]
+	addTaskStatus      *connect_go.Client[v1.AddTaskStatusRequest, v1.Board]
+	deleteTaskStatus   *connect_go.Client[v1.DeleteTaskStatusRequest, v1.Board]
+	addTaskTag         *connect_go.Client[v1.AddTaskTagRequest, v1.Board]
+	deleteTaskTag      *connect_go.Client[v1.DeleteTaskTagRequest, v1.Board]
 	manageSubscription *connect_go.Client[v1.ManageSubscriptionRequest, emptypb.Empty]
 }
 
@@ -196,23 +226,33 @@ func (c *boardServiceClient) GetBoard(ctx context.Context, req *connect_go.Reque
 	return c.getBoard.CallUnary(ctx, req)
 }
 
+// AddView calls tkd.tasks.v1.BoardService.AddView.
+func (c *boardServiceClient) AddView(ctx context.Context, req *connect_go.Request[v1.AddViewRequest]) (*connect_go.Response[v1.Board], error) {
+	return c.addView.CallUnary(ctx, req)
+}
+
+// DeleteView calls tkd.tasks.v1.BoardService.DeleteView.
+func (c *boardServiceClient) DeleteView(ctx context.Context, req *connect_go.Request[v1.DeleteViewRequest]) (*connect_go.Response[v1.Board], error) {
+	return c.deleteView.CallUnary(ctx, req)
+}
+
 // AddTaskStatus calls tkd.tasks.v1.BoardService.AddTaskStatus.
-func (c *boardServiceClient) AddTaskStatus(ctx context.Context, req *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error) {
+func (c *boardServiceClient) AddTaskStatus(ctx context.Context, req *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.Board], error) {
 	return c.addTaskStatus.CallUnary(ctx, req)
 }
 
 // DeleteTaskStatus calls tkd.tasks.v1.BoardService.DeleteTaskStatus.
-func (c *boardServiceClient) DeleteTaskStatus(ctx context.Context, req *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error) {
+func (c *boardServiceClient) DeleteTaskStatus(ctx context.Context, req *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.Board], error) {
 	return c.deleteTaskStatus.CallUnary(ctx, req)
 }
 
 // AddTaskTag calls tkd.tasks.v1.BoardService.AddTaskTag.
-func (c *boardServiceClient) AddTaskTag(ctx context.Context, req *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error) {
+func (c *boardServiceClient) AddTaskTag(ctx context.Context, req *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.Board], error) {
 	return c.addTaskTag.CallUnary(ctx, req)
 }
 
 // DeleteTaskTag calls tkd.tasks.v1.BoardService.DeleteTaskTag.
-func (c *boardServiceClient) DeleteTaskTag(ctx context.Context, req *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error) {
+func (c *boardServiceClient) DeleteTaskTag(ctx context.Context, req *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.Board], error) {
 	return c.deleteTaskTag.CallUnary(ctx, req)
 }
 
@@ -245,10 +285,24 @@ type BoardServiceHandler interface {
 	DeleteBoard(context.Context, *connect_go.Request[v1.DeleteBoardRequest]) (*connect_go.Response[emptypb.Empty], error)
 	// GetBoard loads a specific task-board identified by it's unique ID.
 	GetBoard(context.Context, *connect_go.Request[v1.GetBoardRequest]) (*connect_go.Response[v1.GetBoardResponse], error)
-	AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error)
-	DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error)
-	AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error)
-	DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error)
+	// AddView configures a new view for a task board.
+	AddView(context.Context, *connect_go.Request[v1.AddViewRequest]) (*connect_go.Response[v1.Board], error)
+	// DeleteView deletes a view from a task board.
+	DeleteView(context.Context, *connect_go.Request[v1.DeleteViewRequest]) (*connect_go.Response[v1.Board], error)
+	// AddTaskStatus adds a new task status value for a board.
+	AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.Board], error)
+	// DeleteTaskStatus deletes a task status value from a board.
+	// Tasks that still have the deleted status value set will be updated to use
+	// the board's initial_status - which may also be empty.
+	DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.Board], error)
+	// AddTaskTag configures a new task tag to be available for all tasks
+	// within the specified board.
+	AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.Board], error)
+	// DeleteTaskTag deletes a task tag from the board. The tag will be remove dautomatically
+	// from all tasks.
+	DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.Board], error)
+	// ManageSubscription allows users to manage their notification subscription
+	// for a whole board.
 	ManageSubscription(context.Context, *connect_go.Request[v1.ManageSubscriptionRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
@@ -281,6 +335,16 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 	boardServiceGetBoardHandler := connect_go.NewUnaryHandler(
 		BoardServiceGetBoardProcedure,
 		svc.GetBoard,
+		opts...,
+	)
+	boardServiceAddViewHandler := connect_go.NewUnaryHandler(
+		BoardServiceAddViewProcedure,
+		svc.AddView,
+		opts...,
+	)
+	boardServiceDeleteViewHandler := connect_go.NewUnaryHandler(
+		BoardServiceDeleteViewProcedure,
+		svc.DeleteView,
 		opts...,
 	)
 	boardServiceAddTaskStatusHandler := connect_go.NewUnaryHandler(
@@ -320,6 +384,10 @@ func NewBoardServiceHandler(svc BoardServiceHandler, opts ...connect_go.HandlerO
 			boardServiceDeleteBoardHandler.ServeHTTP(w, r)
 		case BoardServiceGetBoardProcedure:
 			boardServiceGetBoardHandler.ServeHTTP(w, r)
+		case BoardServiceAddViewProcedure:
+			boardServiceAddViewHandler.ServeHTTP(w, r)
+		case BoardServiceDeleteViewProcedure:
+			boardServiceDeleteViewHandler.ServeHTTP(w, r)
 		case BoardServiceAddTaskStatusProcedure:
 			boardServiceAddTaskStatusHandler.ServeHTTP(w, r)
 		case BoardServiceDeleteTaskStatusProcedure:
@@ -359,19 +427,27 @@ func (UnimplementedBoardServiceHandler) GetBoard(context.Context, *connect_go.Re
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.GetBoard is not implemented"))
 }
 
-func (UnimplementedBoardServiceHandler) AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.AddTaskStatusResponse], error) {
+func (UnimplementedBoardServiceHandler) AddView(context.Context, *connect_go.Request[v1.AddViewRequest]) (*connect_go.Response[v1.Board], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.AddView is not implemented"))
+}
+
+func (UnimplementedBoardServiceHandler) DeleteView(context.Context, *connect_go.Request[v1.DeleteViewRequest]) (*connect_go.Response[v1.Board], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.DeleteView is not implemented"))
+}
+
+func (UnimplementedBoardServiceHandler) AddTaskStatus(context.Context, *connect_go.Request[v1.AddTaskStatusRequest]) (*connect_go.Response[v1.Board], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.AddTaskStatus is not implemented"))
 }
 
-func (UnimplementedBoardServiceHandler) DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.DeleteTaskStatusResponse], error) {
+func (UnimplementedBoardServiceHandler) DeleteTaskStatus(context.Context, *connect_go.Request[v1.DeleteTaskStatusRequest]) (*connect_go.Response[v1.Board], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.DeleteTaskStatus is not implemented"))
 }
 
-func (UnimplementedBoardServiceHandler) AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.AddTaskTagResponse], error) {
+func (UnimplementedBoardServiceHandler) AddTaskTag(context.Context, *connect_go.Request[v1.AddTaskTagRequest]) (*connect_go.Response[v1.Board], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.AddTaskTag is not implemented"))
 }
 
-func (UnimplementedBoardServiceHandler) DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.DeleteTaskTagResponse], error) {
+func (UnimplementedBoardServiceHandler) DeleteTaskTag(context.Context, *connect_go.Request[v1.DeleteTaskTagRequest]) (*connect_go.Response[v1.Board], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.BoardService.DeleteTaskTag is not implemented"))
 }
 

@@ -8,6 +8,7 @@ import "google/protobuf/field_mask.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/descriptor.proto";
 import "tkd/common/v1/daytime.proto";
+import "tkd/common/v1/pagination.proto";
 
 message ListBoard {}
 
@@ -119,6 +120,54 @@ message Subscription {
     bool unsubscribed = 3;
 }
 
+message View {
+    // Name holds the unique name of the board.
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // Filter holds a filter query to restrict which 
+    // tasks will be shown in the view.
+    string filter = 2;
+
+    // Sort holds an opational sort configuration for the
+    // board view.
+    tkd.common.v1.Sort sort = 3;
+
+    // GroupByField may specify a field name that should be
+    // used to group tasks together.
+    // It's only possible to group by scalar task values.
+    string group_by_field = 4;
+}
+
+message SummaryNotification {
+    // RecipientUserIds holds a list of user ids that should recieve a summary
+    // notification.
+    // If both recipient_user_ids and recipient_role_ids is empty, the summary notification
+    // will be sent to all users.
+    repeated string recipient_user_ids = 1;
+
+    // RecipientRoleIds holds a list of user role ids that should recieve a summary
+    // notification.
+    repeated string recipient_role_ids = 2;
+
+    // CronSchedule holds the schedule at which a summary notification
+    // should be sent.
+    string cron_schedule = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    // Filter describes an optional text filter to restrict which tasks
+    // are part of the summary notification.
+    string filter = 4;
+
+    // TemplateName holds the name of the mail template that should be used
+    // for the summary notification.
+    // If left empty, the service implementation should provide a default task
+    // list template.
+    string template_name = 5;
+}
+
 // Board is a task board.
 message Board {
     // ID is the unique ID of the board.
@@ -134,11 +183,8 @@ message Board {
     // Description is an optional, human friendly description of the board
     string description = 3;
 
-    // Kind describes the kind of the task board. currently on list-style boards
-    // are supported.
-    oneof kind {
-        ListBoard list = 4;
-    }
+    // Kind is deprecated.
+    reserved 4;
 
     // AllowedTaskStatus defines all possible status values a task may have.
     repeated TaskStatus allowed_task_status = 5;
@@ -186,6 +232,16 @@ message Board {
     // DoneStatus may hold a status value that should be set once
     // the task is completed.
     string done_status = 19;
+
+    // Views holds pre-configured views for the board.
+    repeated View views = 20;
+
+    // SummaryNotifications defines summary notifications for this board.
+    // That is, at a specific schedule (cron-syntax) all tasks that
+    // match the notifications filter setting and passed (with their
+    // description rendered as markdown) to the specified mail template
+    // and are finally sent to the specified list of recipients.
+    repeated SummaryNotification summary_notifications = 21;
 }
 
 
@@ -238,30 +294,54 @@ service BoardService {
         };
     }
 
-    rpc AddTaskStatus(AddTaskStatusRequest) returns (AddTaskStatusResponse) {
+    // AddView configures a new view for a task board.
+    rpc AddView(AddViewRequest) returns (Board) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
     }
 
-    rpc DeleteTaskStatus(DeleteTaskStatusRequest) returns (DeleteTaskStatusResponse) {
+    // DeleteView deletes a view from a task board.
+    rpc DeleteView(DeleteViewRequest) returns (Board) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
     }
 
-    rpc AddTaskTag(AddTaskTagRequest) returns (AddTaskTagResponse) {
+    // AddTaskStatus adds a new task status value for a board.
+    rpc AddTaskStatus(AddTaskStatusRequest) returns (Board) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
     }
 
-    rpc DeleteTaskTag(DeleteTaskTagRequest) returns (DeleteTaskTagResponse) {
+    // DeleteTaskStatus deletes a task status value from a board.
+    // Tasks that still have the deleted status value set will be updated to use
+    // the board's initial_status - which may also be empty.
+    rpc DeleteTaskStatus(DeleteTaskStatusRequest) returns (Board) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
         };
     }
 
+    // AddTaskTag configures a new task tag to be available for all tasks
+    // within the specified board.
+    rpc AddTaskTag(AddTaskTagRequest) returns (Board) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    // DeleteTaskTag deletes a task tag from the board. The tag will be remove dautomatically
+    // from all tasks.
+    rpc DeleteTaskTag(DeleteTaskTagRequest) returns (Board) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
+    // ManageSubscription allows users to manage their notification subscription
+    // for a whole board.
     rpc ManageSubscription(ManageSubscriptionRequest) returns (google.protobuf.Empty) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
@@ -346,6 +426,13 @@ message CreateBoardRequest {
     // DoneStatus may hold a status value that should be set once
     // the task is completed.
     string done_status = 17;
+
+    // View may hold pre-configured views for the board.
+    repeated View views = 18;
+
+    // SummaryNotifications may hold configuration for summary notification
+    // mails for the newly created board.
+    repeated SummaryNotification summary_notifications = 19;
 }
 
 // CreateBoardResponse is the response message sent for CreateBoard RPCs
@@ -416,6 +503,13 @@ message UpdateBoardRequest {
     // task assignment.
     repeated string eligible_user_ids = 14;
 
+    // View may hold pre-configured views for the board.
+    repeated View views = 17;
+
+    // SummaryNotifications may hold configuration for summary notification
+    // mails for the newly created board.
+    repeated SummaryNotification summary_notifications = 18;
+
     // UpdateMask specifies which fields of the board should be updates.
     // Updates must specify an UpdateMask with an non-empty Paths member.
     // Otherwise, no updates will be performed.
@@ -460,58 +554,81 @@ message GetBoardResponse {
     Board board = 1;
 }
 
+// AddTaskStatusRequest is the request message for the AddTaskStatus RPC.
 message AddTaskStatusRequest {
+    // BoardId holds the ID of the board that should be modified.
     string board_id = 1 [
         (buf.validate.field).required = true
     ];
 
+    // Status holds the new status value that should be allowed for
+    // use in the specified board.
+    // If the TaskStatus.status field already exists this operation
+    // performs a replaceement.
     TaskStatus status = 2 [
         (buf.validate.field).required = true
     ];
 }
 
-message AddTaskStatusResponse {
-    Board board = 1;
-}
-
+// DeleteTaskStatusRequest is the request message for the DeleteTaskStatus RPC.
 message DeleteTaskStatusRequest {
+    // BoardId holds the ID of the board that should be modified.
     string board_id = 1 [
         (buf.validate.field).required = true
     ];
 
+    // Status is the status value for the TaskStatus that should
+    // be removed
     string status = 2 [
         (buf.validate.field).required = true
     ];
 }
 
-message DeleteTaskStatusResponse {
-    Board board = 1;
-}
-
+// AddTaskTagRequest is the request message for the AddTaskTag RPC.
 message AddTaskTagRequest {
+    // BoardId holds the ID of the board that should be modified.
     string board_id = 1 [
         (buf.validate.field).required = true
     ];
 
+    // Tag holds the new task tag that should be added to the board.
+    // If the value of TaskTag.tag exists this operation performs
+    // a replacement.
     TaskTag tag = 2 [
         (buf.validate.field).required = true
     ];
 }
 
-message AddTaskTagResponse {
-    Board board = 1;
-}
-
+// DeleteTaskTagRequest is the request message for the DeleteTaskTag RPC.
 message DeleteTaskTagRequest {
+    // BoardId holds the ID of the board that should be modified.
     string board_id = 1 [
         (buf.validate.field).required = true
     ];
 
+    // Tag is the value of the TaskTag.tag that should be removed from
+    // the board.
     string tag = 2 [
         (buf.validate.field).required = true
     ];
 }
 
-message DeleteTaskTagResponse {
-    Board board = 1;
+message AddViewRequest {
+    string board_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    View view = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message DeleteViewRequest {
+    string board_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string view_name = 2 [
+        (buf.validate.field).required = true
+    ];
 }
