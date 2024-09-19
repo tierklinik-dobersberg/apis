@@ -47,6 +47,8 @@ const (
 	TaskServiceDeleteTaskProcedure = "/tkd.tasks.v1.TaskService/DeleteTask"
 	// TaskServiceListTasksProcedure is the fully-qualified name of the TaskService's ListTasks RPC.
 	TaskServiceListTasksProcedure = "/tkd.tasks.v1.TaskService/ListTasks"
+	// TaskServiceQueryViewProcedure is the fully-qualified name of the TaskService's QueryView RPC.
+	TaskServiceQueryViewProcedure = "/tkd.tasks.v1.TaskService/QueryView"
 	// TaskServiceFilterTasksProcedure is the fully-qualified name of the TaskService's FilterTasks RPC.
 	TaskServiceFilterTasksProcedure = "/tkd.tasks.v1.TaskService/FilterTasks"
 	// TaskServiceParseFilterProcedure is the fully-qualified name of the TaskService's ParseFilter RPC.
@@ -83,6 +85,7 @@ type TaskServiceClient interface {
 	CompleteTask(context.Context, *connect_go.Request[v1.CompleteTaskRequest]) (*connect_go.Response[v1.CompleteTaskResponse], error)
 	DeleteTask(context.Context, *connect_go.Request[v1.DeleteTaskRequest]) (*connect_go.Response[emptypb.Empty], error)
 	ListTasks(context.Context, *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
+	QueryView(context.Context, *connect_go.Request[v1.QueryViewRequest]) (*connect_go.Response[v1.QueryViewResponse], error)
 	FilterTasks(context.Context, *connect_go.Request[v1.FilterTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
 	ParseFilter(context.Context, *connect_go.Request[v1.ParseFilterRequest]) (*connect_go.Response[v1.ParseFilterResponse], error)
 	GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error)
@@ -133,6 +136,11 @@ func NewTaskServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 		listTasks: connect_go.NewClient[v1.ListTasksRequest, v1.ListTasksResponse](
 			httpClient,
 			baseURL+TaskServiceListTasksProcedure,
+			opts...,
+		),
+		queryView: connect_go.NewClient[v1.QueryViewRequest, v1.QueryViewResponse](
+			httpClient,
+			baseURL+TaskServiceQueryViewProcedure,
 			opts...,
 		),
 		filterTasks: connect_go.NewClient[v1.FilterTasksRequest, v1.ListTasksResponse](
@@ -196,6 +204,7 @@ type taskServiceClient struct {
 	completeTask           *connect_go.Client[v1.CompleteTaskRequest, v1.CompleteTaskResponse]
 	deleteTask             *connect_go.Client[v1.DeleteTaskRequest, emptypb.Empty]
 	listTasks              *connect_go.Client[v1.ListTasksRequest, v1.ListTasksResponse]
+	queryView              *connect_go.Client[v1.QueryViewRequest, v1.QueryViewResponse]
 	filterTasks            *connect_go.Client[v1.FilterTasksRequest, v1.ListTasksResponse]
 	parseFilter            *connect_go.Client[v1.ParseFilterRequest, v1.ParseFilterResponse]
 	getTask                *connect_go.Client[v1.GetTaskRequest, v1.GetTaskResponse]
@@ -236,6 +245,11 @@ func (c *taskServiceClient) DeleteTask(ctx context.Context, req *connect_go.Requ
 // ListTasks calls tkd.tasks.v1.TaskService.ListTasks.
 func (c *taskServiceClient) ListTasks(ctx context.Context, req *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error) {
 	return c.listTasks.CallUnary(ctx, req)
+}
+
+// QueryView calls tkd.tasks.v1.TaskService.QueryView.
+func (c *taskServiceClient) QueryView(ctx context.Context, req *connect_go.Request[v1.QueryViewRequest]) (*connect_go.Response[v1.QueryViewResponse], error) {
+	return c.queryView.CallUnary(ctx, req)
 }
 
 // FilterTasks calls tkd.tasks.v1.TaskService.FilterTasks.
@@ -296,6 +310,7 @@ type TaskServiceHandler interface {
 	CompleteTask(context.Context, *connect_go.Request[v1.CompleteTaskRequest]) (*connect_go.Response[v1.CompleteTaskResponse], error)
 	DeleteTask(context.Context, *connect_go.Request[v1.DeleteTaskRequest]) (*connect_go.Response[emptypb.Empty], error)
 	ListTasks(context.Context, *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
+	QueryView(context.Context, *connect_go.Request[v1.QueryViewRequest]) (*connect_go.Response[v1.QueryViewResponse], error)
 	FilterTasks(context.Context, *connect_go.Request[v1.FilterTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error)
 	ParseFilter(context.Context, *connect_go.Request[v1.ParseFilterRequest]) (*connect_go.Response[v1.ParseFilterResponse], error)
 	GetTask(context.Context, *connect_go.Request[v1.GetTaskRequest]) (*connect_go.Response[v1.GetTaskResponse], error)
@@ -342,6 +357,11 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 	taskServiceListTasksHandler := connect_go.NewUnaryHandler(
 		TaskServiceListTasksProcedure,
 		svc.ListTasks,
+		opts...,
+	)
+	taskServiceQueryViewHandler := connect_go.NewUnaryHandler(
+		TaskServiceQueryViewProcedure,
+		svc.QueryView,
 		opts...,
 	)
 	taskServiceFilterTasksHandler := connect_go.NewUnaryHandler(
@@ -408,6 +428,8 @@ func NewTaskServiceHandler(svc TaskServiceHandler, opts ...connect_go.HandlerOpt
 			taskServiceDeleteTaskHandler.ServeHTTP(w, r)
 		case TaskServiceListTasksProcedure:
 			taskServiceListTasksHandler.ServeHTTP(w, r)
+		case TaskServiceQueryViewProcedure:
+			taskServiceQueryViewHandler.ServeHTTP(w, r)
 		case TaskServiceFilterTasksProcedure:
 			taskServiceFilterTasksHandler.ServeHTTP(w, r)
 		case TaskServiceParseFilterProcedure:
@@ -459,6 +481,10 @@ func (UnimplementedTaskServiceHandler) DeleteTask(context.Context, *connect_go.R
 
 func (UnimplementedTaskServiceHandler) ListTasks(context.Context, *connect_go.Request[v1.ListTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.ListTasks is not implemented"))
+}
+
+func (UnimplementedTaskServiceHandler) QueryView(context.Context, *connect_go.Request[v1.QueryViewRequest]) (*connect_go.Response[v1.QueryViewResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.tasks.v1.TaskService.QueryView is not implemented"))
 }
 
 func (UnimplementedTaskServiceHandler) FilterTasks(context.Context, *connect_go.Request[v1.FilterTasksRequest]) (*connect_go.Response[v1.ListTasksResponse], error) {

@@ -194,6 +194,12 @@ service TaskService {
         };
     }
 
+    rpc QueryView(QueryViewRequest) returns (QueryViewResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED
+        };
+    }
+
     rpc FilterTasks(FilterTasksRequest) returns (ListTasksResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED
@@ -499,4 +505,46 @@ message UpdateTaskCommentRequest {
         bool delete = 3;
         bool off_topic = 4;
     }
+}
+
+message QueryViewRequest {
+    // View describes the view to query.
+    tkd.tasks.v1.View view = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // BoardIds might be set to a list of board ids to further limit
+    // the returned tasks.
+    repeated string board_ids = 2;
+
+    // Pagination holds pagination settings for the query.
+    // Note that the Pagination.Sort field is ignored
+    // since sorting is already specified in the QueryViewRequest.View.Sort.
+    tkd.common.v1.Pagination pagination = 3;
+}
+
+message TaskGroup{
+    // GroupValue holds the value for this group.
+    google.protobuf.Any group_value = 1;
+
+    // Tasks holds all tasks for that group.
+    repeated Task tasks = 2;
+
+    // ReadMask can be used to limit which fields of the response
+    // message should be set.
+    // If unset or with empty paths, the full response is returned.
+    google.protobuf.FieldMask read_mask = 3;
+}
+
+message QueryViewResponse {
+    // GroupByField holds the field name that was used for
+    // grouping. This one is copied from the QueryViewRequest.view.group_by_field
+    string group_by_field = 1;
+
+    // Groups holds all returned task groups.
+    repeated TaskGroup groups = 2; 
+
+    // Board holds all definitions of all tasks boards that are part of
+    // the response.
+    repeated Board boards = 3;
 }
