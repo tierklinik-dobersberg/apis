@@ -521,6 +521,11 @@ message QueryViewRequest {
     // Note that the Pagination.Sort field is ignored
     // since sorting is already specified in the QueryViewRequest.View.Sort.
     tkd.common.v1.Pagination pagination = 3;
+
+    // ReadMask can be used to limit which fields of the response
+    // message should be set.
+    // If unset or with empty paths, the full response is returned.
+    google.protobuf.FieldMask read_mask = 4;
 }
 
 message TaskGroup{
@@ -530,10 +535,8 @@ message TaskGroup{
     // Tasks holds all tasks for that group.
     repeated Task tasks = 2;
 
-    // ReadMask can be used to limit which fields of the response
-    // message should be set.
-    // If unset or with empty paths, the full response is returned.
-    google.protobuf.FieldMask read_mask = 3;
+    // BoardId holds the ID of the task board for this group.
+    string board_id = 3;
 }
 
 message QueryViewResponse {
