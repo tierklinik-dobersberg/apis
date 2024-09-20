@@ -424,6 +424,8 @@ message ParseFilterRequest {
 message ParseFilterResponse {
     string expected_token = 1;
     repeated string values = 2;
+    string last_field_name = 3;
+    string normalized_query = 4;
 }
 
 message ListTasksResponse {
