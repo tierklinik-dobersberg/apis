@@ -559,6 +559,9 @@ type View struct {
 	// used to group tasks together.
 	// It's only possible to group by scalar task values.
 	GroupByField string `protobuf:"bytes,4,opt,name=group_by_field,json=groupByField,proto3" json:"group_by_field,omitempty"`
+	// GroupSortDirection specifies the sorting direction for
+	// groups returned from the TaskService.QueryView RPC.
+	GroupSortDirection v1.SortDirection `protobuf:"varint,5,opt,name=group_sort_direction,json=groupSortDirection,proto3,enum=tkd.common.v1.SortDirection" json:"group_sort_direction,omitempty"`
 }
 
 func (x *View) Reset() {
@@ -619,6 +622,13 @@ func (x *View) GetGroupByField() string {
 		return x.GroupByField
 	}
 	return ""
+}
+
+func (x *View) GetGroupSortDirection() v1.SortDirection {
+	if x != nil {
+		return x.GroupSortDirection
+	}
+	return v1.SortDirection(0)
 }
 
 type SummaryNotification struct {
@@ -2184,7 +2194,7 @@ var file_tkd_tasks_v1_boards_proto_rawDesc = []byte{
 	0x52, 0x11, 0x6e, 0x6f, 0x74, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x79,
 	0x70, 0x65, 0x73, 0x12, 0x22, 0x0a, 0x0c, 0x75, 0x6e, 0x73, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69,
 	0x62, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0c, 0x75, 0x6e, 0x73, 0x75, 0x62,
-	0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x64, 0x22, 0x8a, 0x01, 0x0a, 0x04, 0x56, 0x69, 0x65, 0x77,
+	0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x64, 0x22, 0xda, 0x01, 0x0a, 0x04, 0x56, 0x69, 0x65, 0x77,
 	0x12, 0x1b, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x07,
 	0xfa, 0xf7, 0x18, 0x03, 0xc8, 0x01, 0x01, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x16, 0x0a,
 	0x06, 0x66, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x66,
@@ -2193,7 +2203,12 @@ var file_tkd_tasks_v1_boards_proto_rawDesc = []byte{
 	0x2e, 0x76, 0x31, 0x2e, 0x53, 0x6f, 0x72, 0x74, 0x52, 0x04, 0x73, 0x6f, 0x72, 0x74, 0x12, 0x24,
 	0x0a, 0x0e, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x5f, 0x62, 0x79, 0x5f, 0x66, 0x69, 0x65, 0x6c, 0x64,
 	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x42, 0x79, 0x46,
-	0x69, 0x65, 0x6c, 0x64, 0x22, 0xdc, 0x01, 0x0a, 0x13, 0x53, 0x75, 0x6d, 0x6d, 0x61, 0x72, 0x79,
+	0x69, 0x65, 0x6c, 0x64, 0x12, 0x4e, 0x0a, 0x14, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x5f, 0x73, 0x6f,
+	0x72, 0x74, 0x5f, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x05, 0x20, 0x01,
+	0x28, 0x0e, 0x32, 0x1c, 0x2e, 0x74, 0x6b, 0x64, 0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e,
+	0x76, 0x31, 0x2e, 0x53, 0x6f, 0x72, 0x74, 0x44, 0x69, 0x72, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x52, 0x12, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x53, 0x6f, 0x72, 0x74, 0x44, 0x69, 0x72, 0x65, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x22, 0xdc, 0x01, 0x0a, 0x13, 0x53, 0x75, 0x6d, 0x6d, 0x61, 0x72, 0x79,
 	0x4e, 0x6f, 0x74, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x2c, 0x0a, 0x12,
 	0x72, 0x65, 0x63, 0x69, 0x70, 0x69, 0x65, 0x6e, 0x74, 0x5f, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69,
 	0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x10, 0x72, 0x65, 0x63, 0x69, 0x70, 0x69,
@@ -2593,75 +2608,77 @@ var file_tkd_tasks_v1_boards_proto_goTypes = []any{
 	(*DeleteViewRequest)(nil),         // 26: tkd.tasks.v1.DeleteViewRequest
 	nil,                               // 27: tkd.tasks.v1.Board.SubscriptionsEntry
 	(*v1.Sort)(nil),                   // 28: tkd.common.v1.Sort
-	(*fieldmaskpb.FieldMask)(nil),     // 29: google.protobuf.FieldMask
-	(*emptypb.Empty)(nil),             // 30: google.protobuf.Empty
+	(v1.SortDirection)(0),             // 29: tkd.common.v1.SortDirection
+	(*fieldmaskpb.FieldMask)(nil),     // 30: google.protobuf.FieldMask
+	(*emptypb.Empty)(nil),             // 31: google.protobuf.Empty
 }
 var file_tkd_tasks_v1_boards_proto_depIdxs = []int32{
 	0,  // 0: tkd.tasks.v1.Subscription.notification_types:type_name -> tkd.tasks.v1.NotificationType
 	28, // 1: tkd.tasks.v1.View.sort:type_name -> tkd.common.v1.Sort
-	4,  // 2: tkd.tasks.v1.Board.allowed_task_status:type_name -> tkd.tasks.v1.TaskStatus
-	6,  // 3: tkd.tasks.v1.Board.allowed_task_tags:type_name -> tkd.tasks.v1.TaskTag
-	5,  // 4: tkd.tasks.v1.Board.allowed_task_priorities:type_name -> tkd.tasks.v1.TaskPriority
-	3,  // 5: tkd.tasks.v1.Board.read_permission:type_name -> tkd.tasks.v1.BoardPermission
-	3,  // 6: tkd.tasks.v1.Board.write_permission:type_name -> tkd.tasks.v1.BoardPermission
-	27, // 7: tkd.tasks.v1.Board.subscriptions:type_name -> tkd.tasks.v1.Board.SubscriptionsEntry
-	8,  // 8: tkd.tasks.v1.Board.views:type_name -> tkd.tasks.v1.View
-	9,  // 9: tkd.tasks.v1.Board.summary_notifications:type_name -> tkd.tasks.v1.SummaryNotification
-	0,  // 10: tkd.tasks.v1.ManageSubscriptionRequest.types:type_name -> tkd.tasks.v1.NotificationType
-	2,  // 11: tkd.tasks.v1.CreateBoardRequest.list:type_name -> tkd.tasks.v1.ListBoard
-	4,  // 12: tkd.tasks.v1.CreateBoardRequest.allowed_task_status:type_name -> tkd.tasks.v1.TaskStatus
-	6,  // 13: tkd.tasks.v1.CreateBoardRequest.allowed_task_tags:type_name -> tkd.tasks.v1.TaskTag
-	5,  // 14: tkd.tasks.v1.CreateBoardRequest.allowed_task_priorities:type_name -> tkd.tasks.v1.TaskPriority
-	3,  // 15: tkd.tasks.v1.CreateBoardRequest.read_permission:type_name -> tkd.tasks.v1.BoardPermission
-	3,  // 16: tkd.tasks.v1.CreateBoardRequest.write_permission:type_name -> tkd.tasks.v1.BoardPermission
-	8,  // 17: tkd.tasks.v1.CreateBoardRequest.views:type_name -> tkd.tasks.v1.View
-	9,  // 18: tkd.tasks.v1.CreateBoardRequest.summary_notifications:type_name -> tkd.tasks.v1.SummaryNotification
-	10, // 19: tkd.tasks.v1.CreateBoardResponse.board:type_name -> tkd.tasks.v1.Board
-	2,  // 20: tkd.tasks.v1.UpdateBoardRequest.list:type_name -> tkd.tasks.v1.ListBoard
-	4,  // 21: tkd.tasks.v1.UpdateBoardRequest.allowed_task_status:type_name -> tkd.tasks.v1.TaskStatus
-	6,  // 22: tkd.tasks.v1.UpdateBoardRequest.allowed_task_tags:type_name -> tkd.tasks.v1.TaskTag
-	5,  // 23: tkd.tasks.v1.UpdateBoardRequest.allowed_task_priorities:type_name -> tkd.tasks.v1.TaskPriority
-	3,  // 24: tkd.tasks.v1.UpdateBoardRequest.read_permission:type_name -> tkd.tasks.v1.BoardPermission
-	3,  // 25: tkd.tasks.v1.UpdateBoardRequest.write_permission:type_name -> tkd.tasks.v1.BoardPermission
-	8,  // 26: tkd.tasks.v1.UpdateBoardRequest.views:type_name -> tkd.tasks.v1.View
-	9,  // 27: tkd.tasks.v1.UpdateBoardRequest.summary_notifications:type_name -> tkd.tasks.v1.SummaryNotification
-	29, // 28: tkd.tasks.v1.UpdateBoardRequest.update_mask:type_name -> google.protobuf.FieldMask
-	10, // 29: tkd.tasks.v1.UpdateBoardResponse.board:type_name -> tkd.tasks.v1.Board
-	10, // 30: tkd.tasks.v1.ListBoardsResponse.boards:type_name -> tkd.tasks.v1.Board
-	10, // 31: tkd.tasks.v1.GetBoardResponse.board:type_name -> tkd.tasks.v1.Board
-	4,  // 32: tkd.tasks.v1.AddTaskStatusRequest.status:type_name -> tkd.tasks.v1.TaskStatus
-	6,  // 33: tkd.tasks.v1.AddTaskTagRequest.tag:type_name -> tkd.tasks.v1.TaskTag
-	8,  // 34: tkd.tasks.v1.AddViewRequest.view:type_name -> tkd.tasks.v1.View
-	7,  // 35: tkd.tasks.v1.Board.SubscriptionsEntry.value:type_name -> tkd.tasks.v1.Subscription
-	12, // 36: tkd.tasks.v1.BoardService.CreateBoard:input_type -> tkd.tasks.v1.CreateBoardRequest
-	14, // 37: tkd.tasks.v1.BoardService.UpdateBoard:input_type -> tkd.tasks.v1.UpdateBoardRequest
-	17, // 38: tkd.tasks.v1.BoardService.ListBoards:input_type -> tkd.tasks.v1.ListBoardsRequest
-	16, // 39: tkd.tasks.v1.BoardService.DeleteBoard:input_type -> tkd.tasks.v1.DeleteBoardRequest
-	19, // 40: tkd.tasks.v1.BoardService.GetBoard:input_type -> tkd.tasks.v1.GetBoardRequest
-	25, // 41: tkd.tasks.v1.BoardService.AddView:input_type -> tkd.tasks.v1.AddViewRequest
-	26, // 42: tkd.tasks.v1.BoardService.DeleteView:input_type -> tkd.tasks.v1.DeleteViewRequest
-	21, // 43: tkd.tasks.v1.BoardService.AddTaskStatus:input_type -> tkd.tasks.v1.AddTaskStatusRequest
-	22, // 44: tkd.tasks.v1.BoardService.DeleteTaskStatus:input_type -> tkd.tasks.v1.DeleteTaskStatusRequest
-	23, // 45: tkd.tasks.v1.BoardService.AddTaskTag:input_type -> tkd.tasks.v1.AddTaskTagRequest
-	24, // 46: tkd.tasks.v1.BoardService.DeleteTaskTag:input_type -> tkd.tasks.v1.DeleteTaskTagRequest
-	11, // 47: tkd.tasks.v1.BoardService.ManageSubscription:input_type -> tkd.tasks.v1.ManageSubscriptionRequest
-	13, // 48: tkd.tasks.v1.BoardService.CreateBoard:output_type -> tkd.tasks.v1.CreateBoardResponse
-	15, // 49: tkd.tasks.v1.BoardService.UpdateBoard:output_type -> tkd.tasks.v1.UpdateBoardResponse
-	18, // 50: tkd.tasks.v1.BoardService.ListBoards:output_type -> tkd.tasks.v1.ListBoardsResponse
-	30, // 51: tkd.tasks.v1.BoardService.DeleteBoard:output_type -> google.protobuf.Empty
-	20, // 52: tkd.tasks.v1.BoardService.GetBoard:output_type -> tkd.tasks.v1.GetBoardResponse
-	10, // 53: tkd.tasks.v1.BoardService.AddView:output_type -> tkd.tasks.v1.Board
-	10, // 54: tkd.tasks.v1.BoardService.DeleteView:output_type -> tkd.tasks.v1.Board
-	10, // 55: tkd.tasks.v1.BoardService.AddTaskStatus:output_type -> tkd.tasks.v1.Board
-	10, // 56: tkd.tasks.v1.BoardService.DeleteTaskStatus:output_type -> tkd.tasks.v1.Board
-	10, // 57: tkd.tasks.v1.BoardService.AddTaskTag:output_type -> tkd.tasks.v1.Board
-	10, // 58: tkd.tasks.v1.BoardService.DeleteTaskTag:output_type -> tkd.tasks.v1.Board
-	30, // 59: tkd.tasks.v1.BoardService.ManageSubscription:output_type -> google.protobuf.Empty
-	48, // [48:60] is the sub-list for method output_type
-	36, // [36:48] is the sub-list for method input_type
-	36, // [36:36] is the sub-list for extension type_name
-	36, // [36:36] is the sub-list for extension extendee
-	0,  // [0:36] is the sub-list for field type_name
+	29, // 2: tkd.tasks.v1.View.group_sort_direction:type_name -> tkd.common.v1.SortDirection
+	4,  // 3: tkd.tasks.v1.Board.allowed_task_status:type_name -> tkd.tasks.v1.TaskStatus
+	6,  // 4: tkd.tasks.v1.Board.allowed_task_tags:type_name -> tkd.tasks.v1.TaskTag
+	5,  // 5: tkd.tasks.v1.Board.allowed_task_priorities:type_name -> tkd.tasks.v1.TaskPriority
+	3,  // 6: tkd.tasks.v1.Board.read_permission:type_name -> tkd.tasks.v1.BoardPermission
+	3,  // 7: tkd.tasks.v1.Board.write_permission:type_name -> tkd.tasks.v1.BoardPermission
+	27, // 8: tkd.tasks.v1.Board.subscriptions:type_name -> tkd.tasks.v1.Board.SubscriptionsEntry
+	8,  // 9: tkd.tasks.v1.Board.views:type_name -> tkd.tasks.v1.View
+	9,  // 10: tkd.tasks.v1.Board.summary_notifications:type_name -> tkd.tasks.v1.SummaryNotification
+	0,  // 11: tkd.tasks.v1.ManageSubscriptionRequest.types:type_name -> tkd.tasks.v1.NotificationType
+	2,  // 12: tkd.tasks.v1.CreateBoardRequest.list:type_name -> tkd.tasks.v1.ListBoard
+	4,  // 13: tkd.tasks.v1.CreateBoardRequest.allowed_task_status:type_name -> tkd.tasks.v1.TaskStatus
+	6,  // 14: tkd.tasks.v1.CreateBoardRequest.allowed_task_tags:type_name -> tkd.tasks.v1.TaskTag
+	5,  // 15: tkd.tasks.v1.CreateBoardRequest.allowed_task_priorities:type_name -> tkd.tasks.v1.TaskPriority
+	3,  // 16: tkd.tasks.v1.CreateBoardRequest.read_permission:type_name -> tkd.tasks.v1.BoardPermission
+	3,  // 17: tkd.tasks.v1.CreateBoardRequest.write_permission:type_name -> tkd.tasks.v1.BoardPermission
+	8,  // 18: tkd.tasks.v1.CreateBoardRequest.views:type_name -> tkd.tasks.v1.View
+	9,  // 19: tkd.tasks.v1.CreateBoardRequest.summary_notifications:type_name -> tkd.tasks.v1.SummaryNotification
+	10, // 20: tkd.tasks.v1.CreateBoardResponse.board:type_name -> tkd.tasks.v1.Board
+	2,  // 21: tkd.tasks.v1.UpdateBoardRequest.list:type_name -> tkd.tasks.v1.ListBoard
+	4,  // 22: tkd.tasks.v1.UpdateBoardRequest.allowed_task_status:type_name -> tkd.tasks.v1.TaskStatus
+	6,  // 23: tkd.tasks.v1.UpdateBoardRequest.allowed_task_tags:type_name -> tkd.tasks.v1.TaskTag
+	5,  // 24: tkd.tasks.v1.UpdateBoardRequest.allowed_task_priorities:type_name -> tkd.tasks.v1.TaskPriority
+	3,  // 25: tkd.tasks.v1.UpdateBoardRequest.read_permission:type_name -> tkd.tasks.v1.BoardPermission
+	3,  // 26: tkd.tasks.v1.UpdateBoardRequest.write_permission:type_name -> tkd.tasks.v1.BoardPermission
+	8,  // 27: tkd.tasks.v1.UpdateBoardRequest.views:type_name -> tkd.tasks.v1.View
+	9,  // 28: tkd.tasks.v1.UpdateBoardRequest.summary_notifications:type_name -> tkd.tasks.v1.SummaryNotification
+	30, // 29: tkd.tasks.v1.UpdateBoardRequest.update_mask:type_name -> google.protobuf.FieldMask
+	10, // 30: tkd.tasks.v1.UpdateBoardResponse.board:type_name -> tkd.tasks.v1.Board
+	10, // 31: tkd.tasks.v1.ListBoardsResponse.boards:type_name -> tkd.tasks.v1.Board
+	10, // 32: tkd.tasks.v1.GetBoardResponse.board:type_name -> tkd.tasks.v1.Board
+	4,  // 33: tkd.tasks.v1.AddTaskStatusRequest.status:type_name -> tkd.tasks.v1.TaskStatus
+	6,  // 34: tkd.tasks.v1.AddTaskTagRequest.tag:type_name -> tkd.tasks.v1.TaskTag
+	8,  // 35: tkd.tasks.v1.AddViewRequest.view:type_name -> tkd.tasks.v1.View
+	7,  // 36: tkd.tasks.v1.Board.SubscriptionsEntry.value:type_name -> tkd.tasks.v1.Subscription
+	12, // 37: tkd.tasks.v1.BoardService.CreateBoard:input_type -> tkd.tasks.v1.CreateBoardRequest
+	14, // 38: tkd.tasks.v1.BoardService.UpdateBoard:input_type -> tkd.tasks.v1.UpdateBoardRequest
+	17, // 39: tkd.tasks.v1.BoardService.ListBoards:input_type -> tkd.tasks.v1.ListBoardsRequest
+	16, // 40: tkd.tasks.v1.BoardService.DeleteBoard:input_type -> tkd.tasks.v1.DeleteBoardRequest
+	19, // 41: tkd.tasks.v1.BoardService.GetBoard:input_type -> tkd.tasks.v1.GetBoardRequest
+	25, // 42: tkd.tasks.v1.BoardService.AddView:input_type -> tkd.tasks.v1.AddViewRequest
+	26, // 43: tkd.tasks.v1.BoardService.DeleteView:input_type -> tkd.tasks.v1.DeleteViewRequest
+	21, // 44: tkd.tasks.v1.BoardService.AddTaskStatus:input_type -> tkd.tasks.v1.AddTaskStatusRequest
+	22, // 45: tkd.tasks.v1.BoardService.DeleteTaskStatus:input_type -> tkd.tasks.v1.DeleteTaskStatusRequest
+	23, // 46: tkd.tasks.v1.BoardService.AddTaskTag:input_type -> tkd.tasks.v1.AddTaskTagRequest
+	24, // 47: tkd.tasks.v1.BoardService.DeleteTaskTag:input_type -> tkd.tasks.v1.DeleteTaskTagRequest
+	11, // 48: tkd.tasks.v1.BoardService.ManageSubscription:input_type -> tkd.tasks.v1.ManageSubscriptionRequest
+	13, // 49: tkd.tasks.v1.BoardService.CreateBoard:output_type -> tkd.tasks.v1.CreateBoardResponse
+	15, // 50: tkd.tasks.v1.BoardService.UpdateBoard:output_type -> tkd.tasks.v1.UpdateBoardResponse
+	18, // 51: tkd.tasks.v1.BoardService.ListBoards:output_type -> tkd.tasks.v1.ListBoardsResponse
+	31, // 52: tkd.tasks.v1.BoardService.DeleteBoard:output_type -> google.protobuf.Empty
+	20, // 53: tkd.tasks.v1.BoardService.GetBoard:output_type -> tkd.tasks.v1.GetBoardResponse
+	10, // 54: tkd.tasks.v1.BoardService.AddView:output_type -> tkd.tasks.v1.Board
+	10, // 55: tkd.tasks.v1.BoardService.DeleteView:output_type -> tkd.tasks.v1.Board
+	10, // 56: tkd.tasks.v1.BoardService.AddTaskStatus:output_type -> tkd.tasks.v1.Board
+	10, // 57: tkd.tasks.v1.BoardService.DeleteTaskStatus:output_type -> tkd.tasks.v1.Board
+	10, // 58: tkd.tasks.v1.BoardService.AddTaskTag:output_type -> tkd.tasks.v1.Board
+	10, // 59: tkd.tasks.v1.BoardService.DeleteTaskTag:output_type -> tkd.tasks.v1.Board
+	31, // 60: tkd.tasks.v1.BoardService.ManageSubscription:output_type -> google.protobuf.Empty
+	49, // [49:61] is the sub-list for method output_type
+	37, // [37:49] is the sub-list for method input_type
+	37, // [37:37] is the sub-list for extension type_name
+	37, // [37:37] is the sub-list for extension extendee
+	0,  // [0:37] is the sub-list for field type_name
 }
 
 func init() { file_tkd_tasks_v1_boards_proto_init() }

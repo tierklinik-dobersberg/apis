@@ -138,6 +138,10 @@ message View {
     // used to group tasks together.
     // It's only possible to group by scalar task values.
     string group_by_field = 4;
+
+    // GroupSortDirection specifies the sorting direction for
+    // groups returned from the TaskService.QueryView RPC.
+    tkd.common.v1.SortDirection group_sort_direction = 5;
 }
 
 message SummaryNotification {
