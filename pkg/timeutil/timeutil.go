@@ -113,9 +113,9 @@ func EndOfWeek(now time.Time) time.Time {
 	}
 
 	year, month, day := now.Date()
-	currentZeroDay := time.Date(year, month, day, 0, 0, 0, 0, time.Local)
+	currentZeroDay := time.Date(year, month, day+1, 0, 0, 0, -1, time.Local)
 
-	return currentZeroDay.Add(-1 * (weekday - 1) * 24 * time.Hour)
+	return currentZeroDay.Add((weekday - 1) * 24 * time.Hour)
 }
 
 func StartOfMonth(now time.Time) time.Time {
@@ -151,4 +151,24 @@ func StartOfYear(now time.Time) time.Time {
 
 func EndOfYear(now time.Time) time.Time {
 	return time.Date(now.Year()+1, time.January, 1, 0, 0, 0, -1, now.Location())
+}
+
+func AddDays(t time.Time, days int) time.Time {
+	return t.Add(24 * time.Hour * time.Duration(days))
+}
+
+func AddWeeks(t time.Time, weeks int) time.Time {
+	return t.Add(7 * 24 * time.Hour * time.Duration(weeks))
+}
+
+func AddMonths(t time.Time, months int) time.Time {
+	year, month, day := t.Date()
+
+	return time.Date(year, month+time.Month(months), day, t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), t.Location())
+}
+
+func AddYears(t time.Time, years int) time.Time {
+	year, month, day := t.Date()
+
+	return time.Date(year+years, month, day, t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), t.Location())
 }
