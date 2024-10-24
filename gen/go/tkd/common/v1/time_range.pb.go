@@ -21,13 +21,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// TimeRange describes a time range with a start and end-time.
+// If both, start and end time is unset, the time range is not valid
+// and no times will match.
 type TimeRange struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// From holds the (inclusive) start time of the timerange.
+	// If from is unspecified, the time-range has an open-start.
 	From *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
-	To   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
+	// To holds the (inclusive) end time of the timerange.
+	// If unspecified, the time range has an open end.
+	To *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
 }
 
 func (x *TimeRange) Reset() {

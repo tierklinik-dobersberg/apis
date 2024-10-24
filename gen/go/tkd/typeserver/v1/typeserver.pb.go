@@ -110,13 +110,13 @@ type ResolveRequest_FileContainingSymbol struct {
 	// (e.g. <package>.<service>[.<method>] or <package>.<type>).
 	//
 	// For example:
-	//   - tkd.typeserver.v1.TypeInfoService
+	//   - tkd.typeserver.v1.TypeResolverService
 	//   - tkd.idm.v1.Profile
 	FileContainingSymbol string `protobuf:"bytes,2,opt,name=file_containing_symbol,json=fileContainingSymbol,proto3,oneof"`
 }
 
 type ResolveRequest_FileContainingUrl struct {
-	// Similar file_containing_symbol but access the type_url for a message.
+	// Similar file_containing_symbol but searches the type_url for a message.
 	// See documentation for google.protobuf.Any for more information.
 	FileContainingUrl string `protobuf:"bytes,3,opt,name=file_containing_url,json=fileContainingUrl,proto3,oneof"`
 }

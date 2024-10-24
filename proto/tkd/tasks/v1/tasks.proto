@@ -552,4 +552,8 @@ message QueryViewResponse {
     // Board holds all definitions of all tasks boards that are part of
     // the response.
     repeated Board boards = 3;
+
+    // NewTaskTemplate is populated by the server as a based template for new
+    // tasks created in the queried view.
+    Task new_task_template = 4;
 }

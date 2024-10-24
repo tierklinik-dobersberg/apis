@@ -16,11 +16,11 @@ message ResolveRequest {
         // (e.g. <package>.<service>[.<method>] or <package>.<type>).
         //
         // For example:
-        //  - tkd.typeserver.v1.TypeInfoService
+        //  - tkd.typeserver.v1.TypeResolverService
         //  - tkd.idm.v1.Profile
         string file_containing_symbol = 2;
 
-        // Similar file_containing_symbol but access the type_url for a message.
+        // Similar file_containing_symbol but searches the type_url for a message.
         // See documentation for google.protobuf.Any for more information.
         string file_containing_url = 3;
     }

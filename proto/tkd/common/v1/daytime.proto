@@ -7,3 +7,16 @@ message DayTime {
     int32 minute = 2;
     int32 second = 3;
 }
+
+// DayTimeRange describes a time range within an unspecified day.
+// If start equals end, not time is matched. If both are unspecified,
+// the whole day is considered. If either of both is unspecified, 
+// start defaults to the start of the day (if only end is specified)
+// and end defaults to the end of the day (if only start is specified).
+message DayTimeRange {
+    // Start is the inclusive start of the daytime range.
+    DayTime start = 1;
+
+    // End is the exclusive end of the daytime range.
+    DayTime end = 2;
+}

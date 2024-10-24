@@ -2663,6 +2663,9 @@ type QueryViewResponse struct {
 	// Board holds all definitions of all tasks boards that are part of
 	// the response.
 	Boards []*Board `protobuf:"bytes,3,rep,name=boards,proto3" json:"boards,omitempty"`
+	// NewTaskTemplate is populated by the server as a based template for new
+	// tasks created in the queried view.
+	NewTaskTemplate *Task `protobuf:"bytes,4,opt,name=new_task_template,json=newTaskTemplate,proto3" json:"new_task_template,omitempty"`
 }
 
 func (x *QueryViewResponse) Reset() {
@@ -2712,6 +2715,13 @@ func (x *QueryViewResponse) GetGroups() []*TaskGroup {
 func (x *QueryViewResponse) GetBoards() []*Board {
 	if x != nil {
 		return x.Boards
+	}
+	return nil
+}
+
+func (x *QueryViewResponse) GetNewTaskTemplate() *Task {
+	if x != nil {
+		return x.NewTaskTemplate
 	}
 	return nil
 }
@@ -3156,7 +3166,7 @@ var file_tkd_tasks_v1_tasks_proto_rawDesc = []byte{
 	0x74, 0x61, 0x73, 0x6b, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x61, 0x73, 0x6b, 0x52, 0x05, 0x74,
 	0x61, 0x73, 0x6b, 0x73, 0x12, 0x19, 0x0a, 0x08, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x5f, 0x69, 0x64,
 	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x49, 0x64, 0x22,
-	0x97, 0x01, 0x0a, 0x11, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x69, 0x65, 0x77, 0x52, 0x65, 0x73,
+	0xd7, 0x01, 0x0a, 0x11, 0x51, 0x75, 0x65, 0x72, 0x79, 0x56, 0x69, 0x65, 0x77, 0x52, 0x65, 0x73,
 	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x24, 0x0a, 0x0e, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x5f, 0x62,
 	0x79, 0x5f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x67,
 	0x72, 0x6f, 0x75, 0x70, 0x42, 0x79, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x12, 0x2f, 0x0a, 0x06, 0x67,
@@ -3165,7 +3175,11 @@ var file_tkd_tasks_v1_tasks_proto_rawDesc = []byte{
 	0x72, 0x6f, 0x75, 0x70, 0x52, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x73, 0x12, 0x2b, 0x0a, 0x06,
 	0x62, 0x6f, 0x61, 0x72, 0x64, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x13, 0x2e, 0x74,
 	0x6b, 0x64, 0x2e, 0x74, 0x61, 0x73, 0x6b, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x61, 0x72,
-	0x64, 0x52, 0x06, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x73, 0x32, 0xa8, 0x0c, 0x0a, 0x0b, 0x54, 0x61,
+	0x64, 0x52, 0x06, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x73, 0x12, 0x3e, 0x0a, 0x11, 0x6e, 0x65, 0x77,
+	0x5f, 0x74, 0x61, 0x73, 0x6b, 0x5f, 0x74, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x74, 0x6b, 0x64, 0x2e, 0x74, 0x61, 0x73, 0x6b, 0x73,
+	0x2e, 0x76, 0x31, 0x2e, 0x54, 0x61, 0x73, 0x6b, 0x52, 0x0f, 0x6e, 0x65, 0x77, 0x54, 0x61, 0x73,
+	0x6b, 0x54, 0x65, 0x6d, 0x70, 0x6c, 0x61, 0x74, 0x65, 0x32, 0xa8, 0x0c, 0x0a, 0x0b, 0x54, 0x61,
 	0x73, 0x6b, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x56, 0x0a, 0x0a, 0x43, 0x72, 0x65,
 	0x61, 0x74, 0x65, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x1f, 0x2e, 0x74, 0x6b, 0x64, 0x2e, 0x74, 0x61,
 	0x73, 0x6b, 0x73, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x54, 0x61, 0x73,
@@ -3415,48 +3429,49 @@ var file_tkd_tasks_v1_tasks_proto_depIdxs = []int32{
 	1,  // 59: tkd.tasks.v1.TaskGroup.tasks:type_name -> tkd.tasks.v1.Task
 	35, // 60: tkd.tasks.v1.QueryViewResponse.groups:type_name -> tkd.tasks.v1.TaskGroup
 	54, // 61: tkd.tasks.v1.QueryViewResponse.boards:type_name -> tkd.tasks.v1.Board
-	48, // 62: tkd.tasks.v1.Task.PropertiesEntry.value:type_name -> google.protobuf.Any
-	55, // 63: tkd.tasks.v1.Task.SubscriptionsEntry.value:type_name -> tkd.tasks.v1.Subscription
-	48, // 64: tkd.tasks.v1.CreateTaskRequest.PropertiesEntry.value:type_name -> google.protobuf.Any
-	6,  // 65: tkd.tasks.v1.TaskService.CreateTask:input_type -> tkd.tasks.v1.CreateTaskRequest
-	8,  // 66: tkd.tasks.v1.TaskService.UpdateTask:input_type -> tkd.tasks.v1.UpdateTaskRequest
-	12, // 67: tkd.tasks.v1.TaskService.AssignTask:input_type -> tkd.tasks.v1.AssignTaskRequest
-	14, // 68: tkd.tasks.v1.TaskService.CompleteTask:input_type -> tkd.tasks.v1.CompleteTaskRequest
-	16, // 69: tkd.tasks.v1.TaskService.DeleteTask:input_type -> tkd.tasks.v1.DeleteTaskRequest
-	20, // 70: tkd.tasks.v1.TaskService.ListTasks:input_type -> tkd.tasks.v1.ListTasksRequest
-	34, // 71: tkd.tasks.v1.TaskService.QueryView:input_type -> tkd.tasks.v1.QueryViewRequest
-	21, // 72: tkd.tasks.v1.TaskService.FilterTasks:input_type -> tkd.tasks.v1.FilterTasksRequest
-	22, // 73: tkd.tasks.v1.TaskService.ParseFilter:input_type -> tkd.tasks.v1.ParseFilterRequest
-	17, // 74: tkd.tasks.v1.TaskService.GetTask:input_type -> tkd.tasks.v1.GetTaskRequest
-	25, // 75: tkd.tasks.v1.TaskService.AddTaskAttachment:input_type -> tkd.tasks.v1.AddTaskAttachmentRequest
-	27, // 76: tkd.tasks.v1.TaskService.DeleteTaskAttachment:input_type -> tkd.tasks.v1.DeleteTaskAttachmentRequest
-	56, // 77: tkd.tasks.v1.TaskService.ManageSubscription:input_type -> tkd.tasks.v1.ManageSubscriptionRequest
-	29, // 78: tkd.tasks.v1.TaskService.GetTimeline:input_type -> tkd.tasks.v1.GetTimelineRequest
-	31, // 79: tkd.tasks.v1.TaskService.CreateTaskComment:input_type -> tkd.tasks.v1.CreateTaskCommentRequest
-	32, // 80: tkd.tasks.v1.TaskService.AddTaskCommentReaction:input_type -> tkd.tasks.v1.AddTaskCommentReactionRequest
-	33, // 81: tkd.tasks.v1.TaskService.UpdateTaskComment:input_type -> tkd.tasks.v1.UpdateTaskCommentRequest
-	7,  // 82: tkd.tasks.v1.TaskService.CreateTask:output_type -> tkd.tasks.v1.CreateTaskResponse
-	11, // 83: tkd.tasks.v1.TaskService.UpdateTask:output_type -> tkd.tasks.v1.UpdateTaskResponse
-	13, // 84: tkd.tasks.v1.TaskService.AssignTask:output_type -> tkd.tasks.v1.AssignTaskResponse
-	15, // 85: tkd.tasks.v1.TaskService.CompleteTask:output_type -> tkd.tasks.v1.CompleteTaskResponse
-	57, // 86: tkd.tasks.v1.TaskService.DeleteTask:output_type -> google.protobuf.Empty
-	24, // 87: tkd.tasks.v1.TaskService.ListTasks:output_type -> tkd.tasks.v1.ListTasksResponse
-	36, // 88: tkd.tasks.v1.TaskService.QueryView:output_type -> tkd.tasks.v1.QueryViewResponse
-	24, // 89: tkd.tasks.v1.TaskService.FilterTasks:output_type -> tkd.tasks.v1.ListTasksResponse
-	23, // 90: tkd.tasks.v1.TaskService.ParseFilter:output_type -> tkd.tasks.v1.ParseFilterResponse
-	18, // 91: tkd.tasks.v1.TaskService.GetTask:output_type -> tkd.tasks.v1.GetTaskResponse
-	26, // 92: tkd.tasks.v1.TaskService.AddTaskAttachment:output_type -> tkd.tasks.v1.AddTaskAttachmentResponse
-	28, // 93: tkd.tasks.v1.TaskService.DeleteTaskAttachment:output_type -> tkd.tasks.v1.DeleteTaskAttachmentResponse
-	57, // 94: tkd.tasks.v1.TaskService.ManageSubscription:output_type -> google.protobuf.Empty
-	30, // 95: tkd.tasks.v1.TaskService.GetTimeline:output_type -> tkd.tasks.v1.GetTimelineResponse
-	57, // 96: tkd.tasks.v1.TaskService.CreateTaskComment:output_type -> google.protobuf.Empty
-	57, // 97: tkd.tasks.v1.TaskService.AddTaskCommentReaction:output_type -> google.protobuf.Empty
-	57, // 98: tkd.tasks.v1.TaskService.UpdateTaskComment:output_type -> google.protobuf.Empty
-	82, // [82:99] is the sub-list for method output_type
-	65, // [65:82] is the sub-list for method input_type
-	65, // [65:65] is the sub-list for extension type_name
-	65, // [65:65] is the sub-list for extension extendee
-	0,  // [0:65] is the sub-list for field type_name
+	1,  // 62: tkd.tasks.v1.QueryViewResponse.new_task_template:type_name -> tkd.tasks.v1.Task
+	48, // 63: tkd.tasks.v1.Task.PropertiesEntry.value:type_name -> google.protobuf.Any
+	55, // 64: tkd.tasks.v1.Task.SubscriptionsEntry.value:type_name -> tkd.tasks.v1.Subscription
+	48, // 65: tkd.tasks.v1.CreateTaskRequest.PropertiesEntry.value:type_name -> google.protobuf.Any
+	6,  // 66: tkd.tasks.v1.TaskService.CreateTask:input_type -> tkd.tasks.v1.CreateTaskRequest
+	8,  // 67: tkd.tasks.v1.TaskService.UpdateTask:input_type -> tkd.tasks.v1.UpdateTaskRequest
+	12, // 68: tkd.tasks.v1.TaskService.AssignTask:input_type -> tkd.tasks.v1.AssignTaskRequest
+	14, // 69: tkd.tasks.v1.TaskService.CompleteTask:input_type -> tkd.tasks.v1.CompleteTaskRequest
+	16, // 70: tkd.tasks.v1.TaskService.DeleteTask:input_type -> tkd.tasks.v1.DeleteTaskRequest
+	20, // 71: tkd.tasks.v1.TaskService.ListTasks:input_type -> tkd.tasks.v1.ListTasksRequest
+	34, // 72: tkd.tasks.v1.TaskService.QueryView:input_type -> tkd.tasks.v1.QueryViewRequest
+	21, // 73: tkd.tasks.v1.TaskService.FilterTasks:input_type -> tkd.tasks.v1.FilterTasksRequest
+	22, // 74: tkd.tasks.v1.TaskService.ParseFilter:input_type -> tkd.tasks.v1.ParseFilterRequest
+	17, // 75: tkd.tasks.v1.TaskService.GetTask:input_type -> tkd.tasks.v1.GetTaskRequest
+	25, // 76: tkd.tasks.v1.TaskService.AddTaskAttachment:input_type -> tkd.tasks.v1.AddTaskAttachmentRequest
+	27, // 77: tkd.tasks.v1.TaskService.DeleteTaskAttachment:input_type -> tkd.tasks.v1.DeleteTaskAttachmentRequest
+	56, // 78: tkd.tasks.v1.TaskService.ManageSubscription:input_type -> tkd.tasks.v1.ManageSubscriptionRequest
+	29, // 79: tkd.tasks.v1.TaskService.GetTimeline:input_type -> tkd.tasks.v1.GetTimelineRequest
+	31, // 80: tkd.tasks.v1.TaskService.CreateTaskComment:input_type -> tkd.tasks.v1.CreateTaskCommentRequest
+	32, // 81: tkd.tasks.v1.TaskService.AddTaskCommentReaction:input_type -> tkd.tasks.v1.AddTaskCommentReactionRequest
+	33, // 82: tkd.tasks.v1.TaskService.UpdateTaskComment:input_type -> tkd.tasks.v1.UpdateTaskCommentRequest
+	7,  // 83: tkd.tasks.v1.TaskService.CreateTask:output_type -> tkd.tasks.v1.CreateTaskResponse
+	11, // 84: tkd.tasks.v1.TaskService.UpdateTask:output_type -> tkd.tasks.v1.UpdateTaskResponse
+	13, // 85: tkd.tasks.v1.TaskService.AssignTask:output_type -> tkd.tasks.v1.AssignTaskResponse
+	15, // 86: tkd.tasks.v1.TaskService.CompleteTask:output_type -> tkd.tasks.v1.CompleteTaskResponse
+	57, // 87: tkd.tasks.v1.TaskService.DeleteTask:output_type -> google.protobuf.Empty
+	24, // 88: tkd.tasks.v1.TaskService.ListTasks:output_type -> tkd.tasks.v1.ListTasksResponse
+	36, // 89: tkd.tasks.v1.TaskService.QueryView:output_type -> tkd.tasks.v1.QueryViewResponse
+	24, // 90: tkd.tasks.v1.TaskService.FilterTasks:output_type -> tkd.tasks.v1.ListTasksResponse
+	23, // 91: tkd.tasks.v1.TaskService.ParseFilter:output_type -> tkd.tasks.v1.ParseFilterResponse
+	18, // 92: tkd.tasks.v1.TaskService.GetTask:output_type -> tkd.tasks.v1.GetTaskResponse
+	26, // 93: tkd.tasks.v1.TaskService.AddTaskAttachment:output_type -> tkd.tasks.v1.AddTaskAttachmentResponse
+	28, // 94: tkd.tasks.v1.TaskService.DeleteTaskAttachment:output_type -> tkd.tasks.v1.DeleteTaskAttachmentResponse
+	57, // 95: tkd.tasks.v1.TaskService.ManageSubscription:output_type -> google.protobuf.Empty
+	30, // 96: tkd.tasks.v1.TaskService.GetTimeline:output_type -> tkd.tasks.v1.GetTimelineResponse
+	57, // 97: tkd.tasks.v1.TaskService.CreateTaskComment:output_type -> google.protobuf.Empty
+	57, // 98: tkd.tasks.v1.TaskService.AddTaskCommentReaction:output_type -> google.protobuf.Empty
+	57, // 99: tkd.tasks.v1.TaskService.UpdateTaskComment:output_type -> google.protobuf.Empty
+	83, // [83:100] is the sub-list for method output_type
+	66, // [66:83] is the sub-list for method input_type
+	66, // [66:66] is the sub-list for extension type_name
+	66, // [66:66] is the sub-list for extension extendee
+	0,  // [0:66] is the sub-list for field type_name
 }
 
 func init() { file_tkd_tasks_v1_tasks_proto_init() }

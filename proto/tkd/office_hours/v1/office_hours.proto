@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package tkd.office_hours.v1;
+
+import "tkd/common/v1/date.proto";
+import "tkd/common/v1/daytime.proto";
+import "tkd/common/v1/dayofweek.proto";
+import "tkd/common/v1/time_range.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+enum HolidayCondition {
+    // HOLIDAY_CONDITION_UNSPECIFIED means that the office hour
+    // is not considered at public holidays.
+    // This would be named EXCLUDE but since it's the default
+    // is named UNSPECIFIED as per protobuf best practices.
+    HOLIDAY_CONDITION_UNSPECIFIED = 0;
+
+    // INCLUDE specifies that the office hour is also valid on 
+    // holidays. Note that OfficeHour.kind still applies.
+    INCLUDE = 1;
+
+    // EXCLUSIVE specifies that the office hour is only valid on 
+    // holidays. Not that OfficeHour.kind still applies.
+    EXCLUSIVE = 2;
+}
+
+message OfficeHour {
+    // Name is a unique name for the office hour.
+    string name = 1;
+
+    // TimeRanges holds a list of day-time ranges at which the "office"
+    // is considered open at the specified kind/holiday.
+    repeated tkd.common.v1.DayTimeRange time_ranges = 2;
+
+    // Kind specifies at which date or day-of-week this office-hour
+    // applies.
+    oneof kind {
+        // Date is a specific date at which this office-hour applies.
+        // If date.year is unspecified (0) it's interpreted as recurring
+        // once every year.
+        tkd.common.v1.Date date = 3;
+
+        // DayOfWeek specifies a day-of-week at which this office hour
+        // applies.
+        tkd.common.v1.DayOfWeek day_of_week = 4;
+    }
+
+    // Reserved for further kinds.
+    reserved 5 to 10;
+
+    // HolidayCondition specifies how this office hour entry should
+    // be treated if the date/day-of-week specified in kind is a holiday.
+    // For HOLIDAY_CONDITION_UNSPECIFIED, the office hour is not considered
+    // during holidays.
+    // For INCLUDE, this office hour is considiered valid on holidays and non-holidays.
+    // For EXCLUSIVE, this office hour is only considered valid when the date/day-of-week
+    // specified in kind is a public holiday.
+    HolidayCondition holiday_condition = 11;
+}
+
+service OfficeHourService {
+    rpc ListHours(ListHoursRequest) returns (ListHoursResponse) {}
+    rpc UpsertOfficeHour(OfficeHour) returns (OfficeHour) {}
+    rpc DeleteOfficeHour(DeleteOfficeHourRequest) returns (google.protobuf.Empty) {}
+    rpc IsOpen(IsOpenRequest) returns (IsOpenResponse) {}
+    rpc OfficeHourRanges(OfficeHourRangesRequest) returns (OfficeHourRangesResponse) {}
+}
+
+// ListHoursRequest is the request message for the ListHours RPC.
+message ListHoursRequest {}
+
+// ListHoursResponse is the response message for the ListHours RPC.
+message ListHoursResponse {
+    // A list of office hours 
+    repeated OfficeHour office_hours = 2;
+}
+
+// IsOpenRequest is the request message for the IsOpen RPC.
+message IsOpenRequest {
+    // Timestamp specifies a specific time where the office-hour
+    // state should be queried.
+    // If unspecified, the current time is used.
+    google.protobuf.Timestamp timestamp = 1;
+}
+
+// IsOpenResponse is the response message for the IsOpen RPC.
+message IsOpenResponse {
+    // Open indicates wheter there is a valid office-hour for the
+    // given timestamp.
+    bool open = 1;
+
+    // OfficeHour is the office hour that is valid for the given
+    // timestamp.
+    OfficeHour office_hour = 2;
+}
+
+// DeleteOfficeHourRequest is the request message for the DeleteOfficeHour RPC.
+message DeleteOfficeHourRequest {
+    // Name of the office-hour to delete.
+    string name = 1;
+}
+
+// OfficeHourRangesRequest is the request message for the OfficeHourRanges request.
+message OfficeHourRangesRequest {
+    // Date to check for opening hours. If unspecified, the current date is used.
+    tkd.common.v1.Date date = 1;
+}
+
+message OfficeHourRangesResponse {
+    // OfficeHour is the office hour that is valid for the given date.
+    OfficeHour office_hour = 1;
+
+    // OpenRanges is a list of time-ranges considered "open" at the given date.
+    repeated tkd.common.v1.TimeRange open_ranges = 2;
+}

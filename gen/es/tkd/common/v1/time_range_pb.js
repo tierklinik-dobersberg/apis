@@ -6,6 +6,10 @@
 import { proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
+ * TimeRange describes a time range with a start and end-time.
+ * If both, start and end time is unset, the time range is not valid
+ * and no times will match.
+ *
  * @generated from message tkd.common.v1.TimeRange
  */
 export const TimeRange = /*@__PURE__*/ proto3.makeMessageType(

@@ -7,15 +7,25 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
+ * TimeRange describes a time range with a start and end-time.
+ * If both, start and end time is unset, the time range is not valid
+ * and no times will match.
+ *
  * @generated from message tkd.common.v1.TimeRange
  */
 export declare class TimeRange extends Message<TimeRange> {
   /**
+   * From holds the (inclusive) start time of the timerange.
+   * If from is unspecified, the time-range has an open-start.
+   *
    * @generated from field: google.protobuf.Timestamp from = 1;
    */
   from?: Timestamp;
 
   /**
+   * To holds the (inclusive) end time of the timerange.
+   * If unspecified, the time range has an open end.
+   *
    * @generated from field: google.protobuf.Timestamp to = 2;
    */
   to?: Timestamp;
