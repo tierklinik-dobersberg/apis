@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package tkd.office_hours.v1;
+
+import "tkd/office_hours/v1/office_hours.proto";
+
+message OpenChangeEvent {
+    bool is_open = 1;
+    OfficeHour office_hour = 2;
+}
