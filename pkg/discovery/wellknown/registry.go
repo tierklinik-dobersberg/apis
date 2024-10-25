@@ -25,6 +25,14 @@ type Service[T any] struct {
 	Factory func(cli connect.HTTPClient, ep string, opts ...connect.ClientOption) T
 }
 
+func (s *Service[T]) Register(ctx context.Context, discoverer discovery.Discoverer, addr string, opts ...RegisterOption) error {
+	return Register(ctx, s, discoverer, addr, opts...)
+}
+
+func (s *Service[T]) Create(ctx context.Context, discoverer discovery.Discoverer, opts ...connect.ClientOption) (T, error) {
+	return NewClient(ctx, discoverer, *s, opts...)
+}
+
 func Create[T any](name string, factory func(connect.HTTPClient, string, ...connect.ClientOption) T) Service[T] {
 	return Service[T]{
 		Name:    name,
@@ -83,10 +91,25 @@ func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T
 	}
 
 	if len(svc) == 0 {
-		return res, fmt.Errorf("no services found")
+		return res, fmt.Errorf("no service instances found")
 	}
 
 	i := svc[rand.IntN(len(svc))]
 
 	return wks.Factory(cli.NewInsecureHttp2Client(), i.Address, opts...), nil
+}
+
+type RegisterOption func(instance *discovery.ServiceInstance)
+
+func Register[T any](ctx context.Context, wk *Service[T], discoverer discovery.Discoverer, addr string, opts ...RegisterOption) error {
+	instance := &discovery.ServiceInstance{
+		Name:    wk.Name,
+		Address: addr,
+	}
+
+	for _, opt := range opts {
+		opt(instance)
+	}
+
+	return discovery.Register(ctx, discoverer, *instance)
 }
