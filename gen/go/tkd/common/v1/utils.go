@@ -92,10 +92,14 @@ func NewTimeRange(start, end time.Time) *TimeRange {
 }
 
 func (dt *DayTimeRange) At(t time.Time) *TimeRange {
+	return NewTimeRange(
+		dt.Start.At(t),
+		dt.End.At(t),
+	)
+}
+
+func (dt *DayTime) At(t time.Time) time.Time {
 	year, month, date := t.Date()
 
-	return NewTimeRange(
-		time.Date(year, month, date, int(dt.Start.Hour), int(dt.Start.Minute), int(dt.Start.Second), 0, t.Location()),
-		time.Date(year, month, date, int(dt.End.Hour), int(dt.Start.Minute), int(dt.Start.Second), 0, t.Location()),
-	)
+	return time.Date(year, month, date, int(dt.Hour), int(dt.Minute), int(dt.Second), 0, t.Location())
 }
