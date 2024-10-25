@@ -113,12 +113,16 @@ func Register[T any](ctx context.Context, wk *Service[T], discoverer discovery.D
 	}
 
 	if instance.Instance == "" {
-		hostname, err := os.Hostname()
-		if err != nil {
-			return fmt.Errorf("failed to get hostname: %w", err)
-		}
+		if i := os.Getenv("INSTANCE_ID"); i != "" {
+			instance.Instance = i
+		} else {
+			hostname, err := os.Hostname()
+			if err != nil {
+				return fmt.Errorf("failed to get hostname: %w", err)
+			}
 
-		instance.Instance = hostname
+			instance.Instance = hostname
+		}
 	}
 
 	return discovery.Register(ctx, discoverer, *instance)
