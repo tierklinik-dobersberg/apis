@@ -4,11 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
 	consul "github.com/hashicorp/consul/api"
 	"github.com/tierklinik-dobersberg/apis/pkg/discovery"
+	"github.com/tierklinik-dobersberg/apis/pkg/discovery/noopdiscover"
 )
 
 // Registry defines a consul based service registry
@@ -26,6 +28,16 @@ func NewRegistery(addr string) (*Registry, error) {
 		return nil, err
 	}
 	return &Registry{client: client}, nil
+}
+
+// NewFromEnv tries to configure a consul discoverer from the environment.
+func NewFromEnv() (discovery.Discoverer, error) {
+	addr := os.Getenv("CONSUL")
+	if addr == "" {
+		return &noopdiscover.NoOpDiscoverer{}, nil
+	}
+
+	return NewRegistery(addr)
 }
 
 // Register creates a service record in the registry
