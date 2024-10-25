@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand/v2"
+	"os"
 
 	"github.com/bufbuild/connect-go"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1/calendarv1connect"
@@ -111,5 +112,26 @@ func Register[T any](ctx context.Context, wk *Service[T], discoverer discovery.D
 		opt(instance)
 	}
 
+	if instance.Instance == "" {
+		hostname, err := os.Hostname()
+		if err != nil {
+			return fmt.Errorf("failed to get hostname: %w", err)
+		}
+
+		instance.Instance = hostname
+	}
+
 	return discovery.Register(ctx, discoverer, *instance)
+}
+
+func WithInstanceID(id string) RegisterOption {
+	return func(instance *discovery.ServiceInstance) {
+		instance.Instance = id
+	}
+}
+
+func WithMeta(meta map[string]string) RegisterOption {
+	return func(instance *discovery.ServiceInstance) {
+		instance.Meta = meta
+	}
 }
