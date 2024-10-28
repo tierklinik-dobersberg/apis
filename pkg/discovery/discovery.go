@@ -43,7 +43,12 @@ type Discoverer interface {
 
 // Register one or more service using discoverer and update the service instance health
 // every 5 seconds.
-func Register(ctx context.Context, discoverer Discoverer, instances ...ServiceInstance) error {
+func Register(ctx context.Context, discoverer Discoverer, instances ...*ServiceInstance) error {
+	hostname, err := os.Hostname()
+	if err != nil {
+		return fmt.Errorf("failed to get hostname: %w", err)
+	}
+
 	for _, instance := range instances {
 		parts := strings.Split(instance.Address, ":")
 		if len(parts) != 2 {
@@ -59,9 +64,14 @@ func Register(ctx context.Context, discoverer Discoverer, instances ...ServiceIn
 			}
 		}
 
+		// Ensure there's a valid instance-ID
+		if instance.Instance == "" {
+			instance.Instance = hostname
+		}
+
 		instance.Address = strings.Join(parts, ":")
 
-		if err := discoverer.Register(ctx, instance); err != nil {
+		if err := discoverer.Register(ctx, *instance); err != nil {
 			return fmt.Errorf("%s: failed to register service instance: %w", instance.Instance, err)
 		}
 
@@ -70,13 +80,13 @@ func Register(ctx context.Context, discoverer Discoverer, instances ...ServiceIn
 			defer ticker.Stop()
 
 			defer func() {
-				if err := discoverer.Deregister(ctx, instance); err != nil {
+				if err := discoverer.Deregister(ctx, *instance); err != nil {
 					slog.Error("failed to deregister service from catalog", "error", err, "instance", instance.Instance)
 				}
 			}()
 
 			for {
-				if err := discoverer.MarkHealthy(ctx, instance); err != nil {
+				if err := discoverer.MarkHealthy(ctx, *instance); err != nil {
 					slog.Error("failed to mark service instance as healthy", "error", err, "instance", instance.Instance)
 				}
 
