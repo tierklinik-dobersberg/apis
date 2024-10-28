@@ -105,5 +105,7 @@ func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T
 
 	i := svc[rand.IntN(len(svc))]
 
-	return wks.Factory(cli.NewInsecureHttp2Client(), i.Address, opts...), nil
+	addr := fmt.Sprintf("http://%s", i.Address)
+
+	return wks.Factory(cli.NewInsecureHttp2Client(), addr, opts...), nil
 }
