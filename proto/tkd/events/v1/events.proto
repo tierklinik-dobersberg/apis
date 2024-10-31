@@ -6,21 +6,51 @@ import "google/protobuf/any.proto";
 import "google/protobuf/empty.proto";
 import "buf/validate/validate.proto";
 
+// Event describes is a protobuf defined event that
+// can be published and subscribed to using the EventsService.
 message Event {
+    // Event holds the actual event. Since the event type is unknown
+    // to the events-service, it is encapsulated as a google.protobuf.Any
+    // message.
+    // To support JSON based Connect-RPC, the events service either needs to have
+    // all possible event message descriptors compiled into the final binary or
+    // use a typeserver to lookup the file/message descriptors.
+    // See tkd.typeserver.v1 and github.com/tierklinik-dobersberg/pbtype-server
+    // for a type-server implementation.
+    //
+    // This field is required!
     google.protobuf.Any event = 1 [
         (buf.validate.field).required = true
     ];
 
+    // Retained may optionally be set to bool to indicate that this message should
+    // be retained and immediately sent to every new subscriber.
+    // Note that only one message per event-type can be retained and a new retained message
+    // will overwrite any previously sent message of the same event-type (that is, Event.event.type_url)
+    //
+    // For more information check the Retained-Flag documentation of MQTT since this feature is based on it.
     bool retained = 2;
 }
 
+// EventService allows to subscribe to and publish events.
 service EventService {
+    // Subscribe can be used in a bidirectional way to subscribe and unsubscribe to
+    // events published to the EventService. 
     rpc Subscribe(stream SubscribeRequest) returns (stream Event);
 
+    // SubscribeOnce is similar to Subscribe but does not accept streaming requests.
+    // This is mainly to support browsers which do not yet provide support for streamed
+    // request bodies but do support streaming responses.
     rpc SubscribeOnce(SubscribeOnceRequest) returns (stream Event);
 
+    // Publish an event through the EventService to all registered subscribers.
+    // The published event may optionally be set as Retained in which case the event
+    // is immediately sent to any new subscriber.
+    // See comment on Event.retained for more information.
     rpc Publish(Event) returns (google.protobuf.Empty);
 
+    // PublishStream is like Publish but allows to use a persistent connection for publishing
+    // events.
     rpc PublishStream(stream Event) returns (google.protobuf.Empty);
 }
 
