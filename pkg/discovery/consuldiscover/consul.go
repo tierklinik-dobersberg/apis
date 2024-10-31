@@ -60,6 +60,9 @@ func (r *Registry) Register(ctx context.Context, instance discovery.ServiceInsta
 		Check: &consul.AgentServiceCheck{
 			CheckID: instance.Instance,
 			TTL:     "10s",
+
+			// Automatically remove unhealthy services after 10 minutes
+			DeregisterCriticalServiceAfter: "10m",
 		},
 		Meta: instance.Meta,
 	})
