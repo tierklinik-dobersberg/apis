@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package tkd.orthanc_bridge.v1;
+
+message InstanceReceivedEvent {
+    string study_uid = 1;
+    string series_uid = 2;
+    string instance_uid = 3;
+    string patient_name = 4;
+    string owner_name = 5;
+    string modality = 6;
+}
