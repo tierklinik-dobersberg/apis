@@ -23,13 +23,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Event describes is a protobuf defined event that
+// can be published and subscribed to using the EventsService.
 type Event struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Event    *anypb.Any `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
-	Retained bool       `protobuf:"varint,2,opt,name=retained,proto3" json:"retained,omitempty"`
+	// Event holds the actual event. Since the event type is unknown
+	// to the events-service, it is encapsulated as a google.protobuf.Any
+	// message.
+	// To support JSON based Connect-RPC, the events service either needs to have
+	// all possible event message descriptors compiled into the final binary or
+	// use a typeserver to lookup the file/message descriptors.
+	// See tkd.typeserver.v1 and github.com/tierklinik-dobersberg/pbtype-server
+	// for a type-server implementation.
+	//
+	// This field is required!
+	Event *anypb.Any `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
+	// Retained may optionally be set to bool to indicate that this message should
+	// be retained and immediately sent to every new subscriber.
+	// Note that only one message per event-type can be retained and a new retained message
+	// will overwrite any previously sent message of the same event-type (that is, Event.event.type_url)
+	//
+	// For more information check the Retained-Flag documentation of MQTT since this feature is based on it.
+	Retained bool `protobuf:"varint,2,opt,name=retained,proto3" json:"retained,omitempty"`
 }
 
 func (x *Event) Reset() {

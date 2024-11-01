@@ -1,6 +1,6 @@
 {
   "name": "@tierklinik-dobersberg/apis",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Connect-ES API definitions for Tierklinik Dobersberg services",
   "type": "module",
   "files": [
@@ -71,6 +71,12 @@
       "default": "./gen/es/tkd/idm/v1/index.js",
       "esm": "./gen/es/tkd/idm/v1/index.js",
       "esm2022": "./gen/es/tkd/idm/v1/index.js"
+    },
+    "./office_hours/v1": {
+      "types": "./gen/es/tkd/office_hours/v1/index.d.ts",
+      "default": "./gen/es/tkd/office_hours/v1/index.js",
+      "esm": "./gen/es/tkd/office_hours/v1/index.js",
+      "esm2022": "./gen/es/tkd/office_hours/v1/index.js"
     },
     "./orthanc_bridge/v1": {
       "types": "./gen/es/tkd/orthanc_bridge/v1/index.d.ts",

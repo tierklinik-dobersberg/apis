@@ -48,9 +48,20 @@ const (
 
 // EventServiceClient is a client for the tkd.events.v1.EventService service.
 type EventServiceClient interface {
+	// Subscribe can be used in a bidirectional way to subscribe and unsubscribe to
+	// events published to the EventService.
 	Subscribe(context.Context) *connect_go.BidiStreamForClient[v1.SubscribeRequest, v1.Event]
+	// SubscribeOnce is similar to Subscribe but does not accept streaming requests.
+	// This is mainly to support browsers which do not yet provide support for streamed
+	// request bodies but do support streaming responses.
 	SubscribeOnce(context.Context, *connect_go.Request[v1.SubscribeOnceRequest]) (*connect_go.ServerStreamForClient[v1.Event], error)
+	// Publish an event through the EventService to all registered subscribers.
+	// The published event may optionally be set as Retained in which case the event
+	// is immediately sent to any new subscriber.
+	// See comment on Event.retained for more information.
 	Publish(context.Context, *connect_go.Request[v1.Event]) (*connect_go.Response[emptypb.Empty], error)
+	// PublishStream is like Publish but allows to use a persistent connection for publishing
+	// events.
 	PublishStream(context.Context) *connect_go.ClientStreamForClient[v1.Event, emptypb.Empty]
 }
 
@@ -117,9 +128,20 @@ func (c *eventServiceClient) PublishStream(ctx context.Context) *connect_go.Clie
 
 // EventServiceHandler is an implementation of the tkd.events.v1.EventService service.
 type EventServiceHandler interface {
+	// Subscribe can be used in a bidirectional way to subscribe and unsubscribe to
+	// events published to the EventService.
 	Subscribe(context.Context, *connect_go.BidiStream[v1.SubscribeRequest, v1.Event]) error
+	// SubscribeOnce is similar to Subscribe but does not accept streaming requests.
+	// This is mainly to support browsers which do not yet provide support for streamed
+	// request bodies but do support streaming responses.
 	SubscribeOnce(context.Context, *connect_go.Request[v1.SubscribeOnceRequest], *connect_go.ServerStream[v1.Event]) error
+	// Publish an event through the EventService to all registered subscribers.
+	// The published event may optionally be set as Retained in which case the event
+	// is immediately sent to any new subscriber.
+	// See comment on Event.retained for more information.
 	Publish(context.Context, *connect_go.Request[v1.Event]) (*connect_go.Response[emptypb.Empty], error)
+	// PublishStream is like Publish but allows to use a persistent connection for publishing
+	// events.
 	PublishStream(context.Context, *connect_go.ClientStream[v1.Event]) (*connect_go.Response[emptypb.Empty], error)
 }
 
