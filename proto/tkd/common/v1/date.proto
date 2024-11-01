@@ -19,9 +19,19 @@ enum Month {
 }
 
 message Date {
+    //  Year holds the year of the date.
     int64 year = 1;
+
+    // Month holds the month of the date.
     Month month = 2;
+
+    // Day holds the day-of-month.
     int32 day = 3;
+
+    // Timezone optionally holds the timezone.
+    // If unset, the server will default to the local
+    // timezone.
+    string timezone = 4;
 }
 
 message DateRange {

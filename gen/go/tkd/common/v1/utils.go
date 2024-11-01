@@ -2,6 +2,7 @@ package commonv1
 
 import (
 	"errors"
+	"log/slog"
 	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -46,6 +47,15 @@ func (d *Date) AsTime() time.Time {
 }
 
 func (d *Date) AsTimeInLocation(loc *time.Location) time.Time {
+	if d.Timezone != "" {
+		t, err := time.LoadLocation(d.Timezone)
+		if err != nil {
+			slog.Error("invalid timezone specifier in tkd.common.v1.Date", "timezone", d.Timezone)
+		} else {
+			loc = t
+		}
+	}
+
 	return time.Date(int(d.Year), d.Month.AsMonth(), int(d.Day), 0, 0, 0, 0, loc)
 }
 
