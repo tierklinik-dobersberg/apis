@@ -33,14 +33,15 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// OrthancBridgeSearchPatientsProcedure is the fully-qualified name of the OrthancBridge's
-	// SearchPatients RPC.
-	OrthancBridgeSearchPatientsProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/SearchPatients"
+	// OrthancBridgeListStudiesProcedure is the fully-qualified name of the OrthancBridge's ListStudies
+	// RPC.
+	OrthancBridgeListStudiesProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/ListStudies"
 )
 
 // OrthancBridgeClient is a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
 type OrthancBridgeClient interface {
-	SearchPatients(context.Context, *connect_go.Request[v1.SearchPatientsRequest]) (*connect_go.Response[v1.SearchPatientsResponse], error)
+	// ListStudies returns a list of studies matching a given criteria.
+	ListStudies(context.Context, *connect_go.Request[v1.ListStudiesRequest]) (*connect_go.Response[v1.ListStudiesResponse], error)
 }
 
 // NewOrthancBridgeClient constructs a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
@@ -53,9 +54,9 @@ type OrthancBridgeClient interface {
 func NewOrthancBridgeClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) OrthancBridgeClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &orthancBridgeClient{
-		searchPatients: connect_go.NewClient[v1.SearchPatientsRequest, v1.SearchPatientsResponse](
+		listStudies: connect_go.NewClient[v1.ListStudiesRequest, v1.ListStudiesResponse](
 			httpClient,
-			baseURL+OrthancBridgeSearchPatientsProcedure,
+			baseURL+OrthancBridgeListStudiesProcedure,
 			opts...,
 		),
 	}
@@ -63,17 +64,18 @@ func NewOrthancBridgeClient(httpClient connect_go.HTTPClient, baseURL string, op
 
 // orthancBridgeClient implements OrthancBridgeClient.
 type orthancBridgeClient struct {
-	searchPatients *connect_go.Client[v1.SearchPatientsRequest, v1.SearchPatientsResponse]
+	listStudies *connect_go.Client[v1.ListStudiesRequest, v1.ListStudiesResponse]
 }
 
-// SearchPatients calls tkd.orthanc_bridge.v1.OrthancBridge.SearchPatients.
-func (c *orthancBridgeClient) SearchPatients(ctx context.Context, req *connect_go.Request[v1.SearchPatientsRequest]) (*connect_go.Response[v1.SearchPatientsResponse], error) {
-	return c.searchPatients.CallUnary(ctx, req)
+// ListStudies calls tkd.orthanc_bridge.v1.OrthancBridge.ListStudies.
+func (c *orthancBridgeClient) ListStudies(ctx context.Context, req *connect_go.Request[v1.ListStudiesRequest]) (*connect_go.Response[v1.ListStudiesResponse], error) {
+	return c.listStudies.CallUnary(ctx, req)
 }
 
 // OrthancBridgeHandler is an implementation of the tkd.orthanc_bridge.v1.OrthancBridge service.
 type OrthancBridgeHandler interface {
-	SearchPatients(context.Context, *connect_go.Request[v1.SearchPatientsRequest]) (*connect_go.Response[v1.SearchPatientsResponse], error)
+	// ListStudies returns a list of studies matching a given criteria.
+	ListStudies(context.Context, *connect_go.Request[v1.ListStudiesRequest]) (*connect_go.Response[v1.ListStudiesResponse], error)
 }
 
 // NewOrthancBridgeHandler builds an HTTP handler from the service implementation. It returns the
@@ -82,15 +84,15 @@ type OrthancBridgeHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewOrthancBridgeHandler(svc OrthancBridgeHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	orthancBridgeSearchPatientsHandler := connect_go.NewUnaryHandler(
-		OrthancBridgeSearchPatientsProcedure,
-		svc.SearchPatients,
+	orthancBridgeListStudiesHandler := connect_go.NewUnaryHandler(
+		OrthancBridgeListStudiesProcedure,
+		svc.ListStudies,
 		opts...,
 	)
 	return "/tkd.orthanc_bridge.v1.OrthancBridge/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case OrthancBridgeSearchPatientsProcedure:
-			orthancBridgeSearchPatientsHandler.ServeHTTP(w, r)
+		case OrthancBridgeListStudiesProcedure:
+			orthancBridgeListStudiesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -100,6 +102,6 @@ func NewOrthancBridgeHandler(svc OrthancBridgeHandler, opts ...connect_go.Handle
 // UnimplementedOrthancBridgeHandler returns CodeUnimplemented from all methods.
 type UnimplementedOrthancBridgeHandler struct{}
 
-func (UnimplementedOrthancBridgeHandler) SearchPatients(context.Context, *connect_go.Request[v1.SearchPatientsRequest]) (*connect_go.Response[v1.SearchPatientsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.SearchPatients is not implemented"))
+func (UnimplementedOrthancBridgeHandler) ListStudies(context.Context, *connect_go.Request[v1.ListStudiesRequest]) (*connect_go.Response[v1.ListStudiesResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.ListStudies is not implemented"))
 }

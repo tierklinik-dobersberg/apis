@@ -3,86 +3,123 @@ syntax = "proto3";
 package tkd.orthanc_bridge.v1;
 
 import "google/protobuf/timestamp.proto";
-
-enum SearchLevel {
-    SEARCH_LEVEL_UNSPECIFIED = 0;
-    SEARCH_LEVEL_PATIENT = 1;
-    SEARCH_LEVEL_STUDY = 2;
-    SEARCH_LEVEL_SERIES = 3;
-    SEARCH_LEVEL_INSTANCE = 4;
-}
+import "google/protobuf/struct.proto";
+import "tkd/common/v1/pagination.proto";
+import "tkd/common/v1/date.proto";
 
 service OrthancBridge {
-    rpc SearchPatients(SearchPatientsRequest) returns (SearchPatientsResponse) {}
+    // ListStudies returns a list of studies matching a given criteria.
+    rpc ListStudies(ListStudiesRequest) returns (ListStudiesResponse) {}
 }
 
-message SearchPatientsRequest {
-    bool case_sensitive = 1;
+message FilterTag {
+    // Tag is either the well-known name or the numeric DICOM tag.
+    string tag = 1;
 
-    int64 limit = 2;
-    int64 since = 3;
-
-    repeated string requested_tags = 4;
-
-    string patient_name = 5;
-    string responsible_person = 6;
-
-    // The date to search for. Might either be in one of the following formats:
-    //  - YYYY : search withing a specified year
-    //  - YYYY-MM: search within a specified month/year
-    //  - YYYY-MM-DD: search at a specifc date.
-    //
-    string date = 7;
-
-    // The orthanc instance that should be searched. If unspecified
-    // orthanc-bridge will try to determine the best instance to search
-    // given date is set.
-    string instance = 8;
+    // Value holds the tag value represented as a string.
+    repeated string value = 2;
 }
 
-message SearchPatientsResponse {
-    string id = 1;
-
-    PatientMainTags main_tags = 2;
+message DICOMTag {
+    string tag = 1;
+    string value_representation = 2;
+    repeated google.protobuf.Value value = 3;
 }
 
-message PatientMainTags {
-    string patient_name = 1;
-    string patient_id = 2;
-    string patient_birth_date = 3; // YYYY-MM-DD
-    string patient_sex = 4;
-    repeated string other_patient_ids = 5;
+message ListStudiesRequest {
+    // DateRange might be set to only return studies created
+    // withing the specified date-range.
+    tkd.common.v1.DateRange date_range = 1;
+
+    // OwnerName might be set to only return studies where the
+    // ResponsiblePersonName matches owner_name.
+    string owner_name = 2;
+
+    // PatientName might be set to only return studies for the 
+    // given patient name
+    string patient_name = 3;
+
+    // Modality might be set to only return studies for the given
+    // DICOM modality.
+    string modality = 4;
+
+    // FilterTags might contain additional DICOM tag filters
+    // represented by their stringified value.
+    repeated FilterTag filter_tags = 5;
+
+    // IncludeTags might hold well-known names or their numeric DICOM tag
+    // values that should be included in the response.
+    repeated string include_tags = 6;
+
+    // EnableFuzzyMatching might be set to true to enable fuzzy matching
+    // using the wildcard character '*'
+    bool enable_fuzzy_matching = 10;
+
+    // Pagintion can be set to enable paginated responses.
+    tkd.common.v1.Pagination pagination = 11;
+
 }
 
-message StudyMainTags {
-    google.protobuf.Timestamp time = 1; // from StudyDate and StudyTime
-    string study_id = 2;
-    string study_description = 3;
-    string accession_number = 4;
-    string study_instance_uid = 5;
-    string requested_precedure_description = 6;
-    string institution_name = 7;
-    string requesting_physician = 8;
-    string reffering_pysician_name = 9;
+message Thumbnail {
+    // Mime holds the mime type of Thumbnail.data
+    string mime = 1;
+
+    // Data holds the binary thumbnail image.
+    bytes data = 2;
 }
 
-message SeriesMainTags {
-    google.protobuf.Timestamp time = 1; // from SeriesDate and SeriesTime
-    string modality = 2;
-    string manufacturer = 3;
-    string station_name = 4;
-    string series_description = 5;
-    string body_part_examined = 6;
-    string sequence_name = 7;
-    string protocol_name = 8;
-    string series_number = 9;
-    string series_instance_uid = 10;
-    string series_type = 11;
-    string performed_procedure_step_description = 12;
+message Instance {
+    // InstanceUID holds the DICOM instance UID
+    string instance_uid = 1;
+
+    // Time holds the time the instance has been created.
+    google.protobuf.Timestamp time = 3;
+
+    repeated DICOMTag tags = 4;
 }
 
-message InstanceMainTags {
-    google.protobuf.Timestamp time = 1; // from InstanceCreationDate and InstanceCreationTime
-    int64 acquisition_number = 2;
-    string image_comments = 3;
+message Series {
+    // SeriesUid is the DICOM UID for the series
+    string series_uid = 1;
+
+    // Instances holds all DICOM instances of this series.
+    repeated Instance instances = 2;
+
+    // Time holds the timestamp at which the series has been created.
+    google.protobuf.Timestamp time = 3;
+
+    repeated DICOMTag tags = 4;
+}
+
+
+message Study {
+    // StudyUid is the DICOM UID of the study
+    string study_uid = 1;
+
+    // Series holds all series within the study.
+    repeated Series series = 2;
+
+    // Time holds the time at which the study has been created. 
+    google.protobuf.Timestamp time = 3;
+
+    // PatientName is the name of the patient.
+    string patient_name = 4;
+
+    // OwnerName is the name of the patient owner.
+    string owner_name = 5;
+
+    // Modalities holds all modalities available within the study.
+    repeated string modalities = 6;
+
+    repeated DICOMTag tags = 7;
+}
+
+message ListStudiesResponse {
+    // Studies holds all studies that satisfied the ListStudiesRequest
+    repeated Study studies = 5;
+
+    // TotalCount holds the total count of matched studies. Only
+    // the subset requested by ListStudiesRequest.pagination is
+    // returned in the studies field.
+    int64 total_count = 10;
 }
