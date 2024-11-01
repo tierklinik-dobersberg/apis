@@ -4,10 +4,14 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1/calendarv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/comment/v1/commentv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/customer/v1/customerv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1/eventsv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1/idmv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/office_hours/v1/office_hoursv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/orthanc_bridge/v1/orthanc_bridgev1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1/pbx3cxv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1/tasksv1connect"
+	"github.com/tierklinik-dobersberg/apis/pkg/events"
 )
 
 func (root *Root) OffTime() rosterv1connect.OffTimeServiceClient {
@@ -72,4 +76,26 @@ func (root *Root) Boards() tasksv1connect.BoardServiceClient {
 
 func (root *Root) Tasks() tasksv1connect.TaskServiceClient {
 	return tasksv1connect.NewTaskServiceClient(root.HttpClient, root.Config().BaseURLS.TaskService)
+}
+
+func (root *Root) OfficeHourService() office_hoursv1connect.OfficeHourServiceClient {
+	return office_hoursv1connect.NewOfficeHourServiceClient(root.HttpClient, root.Config().OfficeHourService)
+}
+
+func (root *Root) EventsService() eventsv1connect.EventServiceClient {
+	return eventsv1connect.NewEventServiceClient(root.HttpClient, root.Config().EventsService)
+}
+
+func (root *Root) OrthancBridge() orthanc_bridgev1connect.OrthancBridgeClient {
+	return orthanc_bridgev1connect.NewOrthancBridgeClient(root.HttpClient, root.Config().OrthancBridge)
+}
+
+func (root *Root) EventStreamClient() (*events.Client, error) {
+	cli := events.NewClient(root.Config().OrthancBridge, root.HttpClient)
+
+	if err := cli.Start(root.Context()); err != nil {
+		return nil, err
+	}
+
+	return cli, nil
 }
