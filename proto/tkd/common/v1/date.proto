@@ -23,3 +23,8 @@ message Date {
     Month month = 2;
     int32 day = 3;
 }
+
+message DateRange {
+    Date from = 1;
+    Date to = 2;
+}
