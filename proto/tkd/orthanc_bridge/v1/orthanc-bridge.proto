@@ -76,6 +76,9 @@ message Instance {
     google.protobuf.Timestamp time = 3;
 
     repeated DICOMTag tags = 4;
+
+    // Thumbail may hold a image thumbnail of the DICOM instance.
+    Thumbnail thumbnail = 5;
 }
 
 message Series {
