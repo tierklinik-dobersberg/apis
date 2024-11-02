@@ -24,6 +24,7 @@ message DICOMTag {
     string tag = 1;
     string value_representation = 2;
     repeated google.protobuf.Value value = 3;
+    string name = 4;
 }
 
 message ListStudiesRequest {
