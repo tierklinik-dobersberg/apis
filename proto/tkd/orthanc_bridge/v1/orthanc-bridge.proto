@@ -4,12 +4,25 @@ package tkd.orthanc_bridge.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
+import "buf/validate/validate.proto";
 import "tkd/common/v1/pagination.proto";
 import "tkd/common/v1/date.proto";
+import "tkd/common/v1/descriptor.proto";
+
+message DICOMTag {
+    string tag = 1;
+    string value_representation = 2;
+    repeated google.protobuf.Value value = 3;
+    string name = 4;
+}
 
 service OrthancBridge {
     // ListStudies returns a list of studies matching a given criteria.
     rpc ListStudies(ListStudiesRequest) returns (ListStudiesResponse) {}
+
+    // DownloadStudy allows to download selected instances from a study.
+    // For multi-file downloads, the files are packed into a ZIP archive.
+    rpc DownloadStudy(DownloadStudyRequest) returns (DownloadStudyResponse) {}
 }
 
 message FilterTag {
@@ -18,13 +31,6 @@ message FilterTag {
 
     // Value holds the tag value represented as a string.
     repeated string value = 2;
-}
-
-message DICOMTag {
-    string tag = 1;
-    string value_representation = 2;
-    repeated google.protobuf.Value value = 3;
-    string name = 4;
 }
 
 message ListStudiesRequest {
@@ -126,4 +132,21 @@ message ListStudiesResponse {
     // the subset requested by ListStudiesRequest.pagination is
     // returned in the studies field.
     int64 total_count = 10;
+}
+
+message DownloadStudyRequest {
+    // StudyUid holds the UID of the study that should be downloaded
+    string study_uid = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // InstanceUids might be set to limit wich DICOM instances should
+    // be part of the download.
+    // If unset, all instances of the given study will be downloaded.
+    repeated string instance_uids = 2;
+}
+
+message DownloadStudyResponse {
+    // DownloadLink holds the download link for the study.
+    string download_link = 1;
 }

@@ -36,12 +36,18 @@ const (
 	// OrthancBridgeListStudiesProcedure is the fully-qualified name of the OrthancBridge's ListStudies
 	// RPC.
 	OrthancBridgeListStudiesProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/ListStudies"
+	// OrthancBridgeDownloadStudyProcedure is the fully-qualified name of the OrthancBridge's
+	// DownloadStudy RPC.
+	OrthancBridgeDownloadStudyProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/DownloadStudy"
 )
 
 // OrthancBridgeClient is a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
 type OrthancBridgeClient interface {
 	// ListStudies returns a list of studies matching a given criteria.
 	ListStudies(context.Context, *connect_go.Request[v1.ListStudiesRequest]) (*connect_go.Response[v1.ListStudiesResponse], error)
+	// DownloadStudy allows to download selected instances from a study.
+	// For multi-file downloads, the files are packed into a ZIP archive.
+	DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error)
 }
 
 // NewOrthancBridgeClient constructs a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
@@ -59,12 +65,18 @@ func NewOrthancBridgeClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+OrthancBridgeListStudiesProcedure,
 			opts...,
 		),
+		downloadStudy: connect_go.NewClient[v1.DownloadStudyRequest, v1.DownloadStudyResponse](
+			httpClient,
+			baseURL+OrthancBridgeDownloadStudyProcedure,
+			opts...,
+		),
 	}
 }
 
 // orthancBridgeClient implements OrthancBridgeClient.
 type orthancBridgeClient struct {
-	listStudies *connect_go.Client[v1.ListStudiesRequest, v1.ListStudiesResponse]
+	listStudies   *connect_go.Client[v1.ListStudiesRequest, v1.ListStudiesResponse]
+	downloadStudy *connect_go.Client[v1.DownloadStudyRequest, v1.DownloadStudyResponse]
 }
 
 // ListStudies calls tkd.orthanc_bridge.v1.OrthancBridge.ListStudies.
@@ -72,10 +84,18 @@ func (c *orthancBridgeClient) ListStudies(ctx context.Context, req *connect_go.R
 	return c.listStudies.CallUnary(ctx, req)
 }
 
+// DownloadStudy calls tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy.
+func (c *orthancBridgeClient) DownloadStudy(ctx context.Context, req *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error) {
+	return c.downloadStudy.CallUnary(ctx, req)
+}
+
 // OrthancBridgeHandler is an implementation of the tkd.orthanc_bridge.v1.OrthancBridge service.
 type OrthancBridgeHandler interface {
 	// ListStudies returns a list of studies matching a given criteria.
 	ListStudies(context.Context, *connect_go.Request[v1.ListStudiesRequest]) (*connect_go.Response[v1.ListStudiesResponse], error)
+	// DownloadStudy allows to download selected instances from a study.
+	// For multi-file downloads, the files are packed into a ZIP archive.
+	DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error)
 }
 
 // NewOrthancBridgeHandler builds an HTTP handler from the service implementation. It returns the
@@ -89,10 +109,17 @@ func NewOrthancBridgeHandler(svc OrthancBridgeHandler, opts ...connect_go.Handle
 		svc.ListStudies,
 		opts...,
 	)
+	orthancBridgeDownloadStudyHandler := connect_go.NewUnaryHandler(
+		OrthancBridgeDownloadStudyProcedure,
+		svc.DownloadStudy,
+		opts...,
+	)
 	return "/tkd.orthanc_bridge.v1.OrthancBridge/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case OrthancBridgeListStudiesProcedure:
 			orthancBridgeListStudiesHandler.ServeHTTP(w, r)
+		case OrthancBridgeDownloadStudyProcedure:
+			orthancBridgeDownloadStudyHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -104,4 +131,8 @@ type UnimplementedOrthancBridgeHandler struct{}
 
 func (UnimplementedOrthancBridgeHandler) ListStudies(context.Context, *connect_go.Request[v1.ListStudiesRequest]) (*connect_go.Response[v1.ListStudiesResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.ListStudies is not implemented"))
+}
+
+func (UnimplementedOrthancBridgeHandler) DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy is not implemented"))
 }
