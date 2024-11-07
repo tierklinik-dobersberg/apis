@@ -139,6 +139,7 @@ enum DownloadType {
     DICOM = 1;
     PNG = 2;
     JPEG = 3;
+    AVI = 4;
 }
 
 message DownloadStudyRequest {
