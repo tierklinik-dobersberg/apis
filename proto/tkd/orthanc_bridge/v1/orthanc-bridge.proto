@@ -134,6 +134,13 @@ message ListStudiesResponse {
     int64 total_count = 10;
 }
 
+enum DownloadType {
+    DOWNLOAD_TYPE_UNSPECIFIED = 0;
+    DICOM = 1;
+    PNG = 2;
+    JPEG = 3;
+}
+
 message DownloadStudyRequest {
     // StudyUid holds the UID of the study that should be downloaded
     string study_uid = 1 [
@@ -144,6 +151,11 @@ message DownloadStudyRequest {
     // be part of the download.
     // If unset, all instances of the given study will be downloaded.
     repeated string instance_uids = 2;
+
+    // Specifies which types to download.
+    repeated DownloadType types = 3 [
+        (buf.validate.field).required = true
+    ];
 }
 
 message DownloadStudyResponse {
