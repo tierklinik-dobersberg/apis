@@ -18,11 +18,19 @@ message DICOMTag {
 
 service OrthancBridge {
     // ListStudies returns a list of studies matching a given criteria.
-    rpc ListStudies(ListStudiesRequest) returns (ListStudiesResponse) {}
+    rpc ListStudies(ListStudiesRequest) returns (ListStudiesResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 
     // DownloadStudy allows to download selected instances from a study.
     // For multi-file downloads, the files are packed into a ZIP archive.
-    rpc DownloadStudy(DownloadStudyRequest) returns (DownloadStudyResponse) {}
+    rpc DownloadStudy(DownloadStudyRequest) returns (DownloadStudyResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message FilterTag {
