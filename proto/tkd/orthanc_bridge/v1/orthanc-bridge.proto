@@ -4,6 +4,7 @@ package tkd.orthanc_bridge.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/duration.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/pagination.proto";
 import "tkd/common/v1/date.proto";
@@ -144,9 +145,21 @@ message ListStudiesResponse {
 
 enum DownloadType {
     DOWNLOAD_TYPE_UNSPECIFIED = 0;
+
+    // DICOM specifies that the study/instance should be exported
+    // as DICOM (.dcm) file
     DICOM = 1;
+
+    // PNG specifies that the study/instance should be exported
+    // as a PNG (.png) image
     PNG = 2;
+
+    // JPEG specifies that the study/instance should be exported
+    // as a JPEG (.jpg) image
     JPEG = 3;
+
+    // AVI specifies that multi-frame instances should be exported
+    // as a MJPEG video (.avi)
     AVI = 4;
 }
 
@@ -165,9 +178,20 @@ message DownloadStudyRequest {
     repeated DownloadType types = 3 [
         (buf.validate.field).required = true
     ];
+
+    // TimeToLive specifies how long the generated export should
+    // be kept on the file-system.
+    // Note that server implementation might decided to add a lower
+    // or upper limit to the TTL.
+    // Check the expire_time field in DownloadStudyResponse.
+    google.protobuf.Duration time_to_live = 4;
 }
 
 message DownloadStudyResponse {
     // DownloadLink holds the download link for the study.
     string download_link = 1;
+
+    // ExpireTime holds the time at which the download link expires
+    // and the generated export will be deleted from the server.
+    google.protobuf.Timestamp expire_time = 2;
 }
