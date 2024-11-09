@@ -11,9 +11,17 @@ import "tkd/common/v1/date.proto";
 import "tkd/common/v1/descriptor.proto";
 
 message DICOMTag {
+    // Tag is the DICOM tag value in it's hex format
     string tag = 1;
+
+    // ValueRepresentation is the VR of the DICOM tag.
     string value_representation = 2;
+
+    // Value holds the DICOM tag value(s) encoded as google.protobuf.Value
     repeated google.protobuf.Value value = 3;
+
+    // Name holds the pretty-name of the DICOM tag.
+    // For private tags, this field is unset.
     string name = 4;
 }
 

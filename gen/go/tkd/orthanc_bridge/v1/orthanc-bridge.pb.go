@@ -93,10 +93,15 @@ type DICOMTag struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Tag                 string            `protobuf:"bytes,1,opt,name=tag,proto3" json:"tag,omitempty"`
-	ValueRepresentation string            `protobuf:"bytes,2,opt,name=value_representation,json=valueRepresentation,proto3" json:"value_representation,omitempty"`
-	Value               []*structpb.Value `protobuf:"bytes,3,rep,name=value,proto3" json:"value,omitempty"`
-	Name                string            `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	// Tag is the DICOM tag value in it's hex format
+	Tag string `protobuf:"bytes,1,opt,name=tag,proto3" json:"tag,omitempty"`
+	// ValueRepresentation is the VR of the DICOM tag.
+	ValueRepresentation string `protobuf:"bytes,2,opt,name=value_representation,json=valueRepresentation,proto3" json:"value_representation,omitempty"`
+	// Value holds the DICOM tag value(s) encoded as google.protobuf.Value
+	Value []*structpb.Value `protobuf:"bytes,3,rep,name=value,proto3" json:"value,omitempty"`
+	// Name holds the pretty-name of the DICOM tag.
+	// For private tags, this field is unset.
+	Name string `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 }
 
 func (x *DICOMTag) Reset() {

@@ -161,6 +161,7 @@ export const IntrospectResponse = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.idm.v1.IntrospectResponse",
   () => [
     { no: 1, name: "profile", kind: "message", T: Profile },
+    { no: 2, name: "valid_time", kind: "message", T: Timestamp },
   ],
 );
 

@@ -414,6 +414,14 @@ export declare class IntrospectResponse extends Message<IntrospectResponse> {
    */
   profile?: Profile;
 
+  /**
+   * ValidTime holds the time until the provided access
+   * token is valid.
+   *
+   * @generated from field: google.protobuf.Timestamp valid_time = 2;
+   */
+  validTime?: Timestamp;
+
   constructor(data?: PartialMessage<IntrospectResponse>);
 
   static readonly runtime: typeof proto3;
