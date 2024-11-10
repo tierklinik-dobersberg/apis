@@ -40,6 +40,12 @@ service OrthancBridge {
             require: AUTH_REQ_REQUIRED,
         };
     }
+
+    rpc ShareStudy(ShareStudyRequest) returns (ShareStudyResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message FilterTag {
@@ -202,4 +208,23 @@ message DownloadStudyResponse {
     // ExpireTime holds the time at which the download link expires
     // and the generated export will be deleted from the server.
     google.protobuf.Timestamp expire_time = 2;
+}
+
+message ShareStudyRequest {
+    string study_uid = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    repeated string instance_uids = 2;
+
+    google.protobuf.Duration valid_duration = 3;
+}
+
+message ShareStudyResponse {
+    // Token is the generated share token.
+    string token = 1;
+
+    // ViewerUrl is the access url to the shared study
+    // on the built-in viewer
+    string viewer_url = 2;
 }

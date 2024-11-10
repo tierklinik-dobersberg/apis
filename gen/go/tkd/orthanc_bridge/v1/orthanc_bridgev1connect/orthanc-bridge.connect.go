@@ -39,6 +39,9 @@ const (
 	// OrthancBridgeDownloadStudyProcedure is the fully-qualified name of the OrthancBridge's
 	// DownloadStudy RPC.
 	OrthancBridgeDownloadStudyProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/DownloadStudy"
+	// OrthancBridgeShareStudyProcedure is the fully-qualified name of the OrthancBridge's ShareStudy
+	// RPC.
+	OrthancBridgeShareStudyProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/ShareStudy"
 )
 
 // OrthancBridgeClient is a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
@@ -48,6 +51,7 @@ type OrthancBridgeClient interface {
 	// DownloadStudy allows to download selected instances from a study.
 	// For multi-file downloads, the files are packed into a ZIP archive.
 	DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error)
+	ShareStudy(context.Context, *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error)
 }
 
 // NewOrthancBridgeClient constructs a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
@@ -70,6 +74,11 @@ func NewOrthancBridgeClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+OrthancBridgeDownloadStudyProcedure,
 			opts...,
 		),
+		shareStudy: connect_go.NewClient[v1.ShareStudyRequest, v1.ShareStudyResponse](
+			httpClient,
+			baseURL+OrthancBridgeShareStudyProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -77,6 +86,7 @@ func NewOrthancBridgeClient(httpClient connect_go.HTTPClient, baseURL string, op
 type orthancBridgeClient struct {
 	listStudies   *connect_go.Client[v1.ListStudiesRequest, v1.ListStudiesResponse]
 	downloadStudy *connect_go.Client[v1.DownloadStudyRequest, v1.DownloadStudyResponse]
+	shareStudy    *connect_go.Client[v1.ShareStudyRequest, v1.ShareStudyResponse]
 }
 
 // ListStudies calls tkd.orthanc_bridge.v1.OrthancBridge.ListStudies.
@@ -89,6 +99,11 @@ func (c *orthancBridgeClient) DownloadStudy(ctx context.Context, req *connect_go
 	return c.downloadStudy.CallUnary(ctx, req)
 }
 
+// ShareStudy calls tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy.
+func (c *orthancBridgeClient) ShareStudy(ctx context.Context, req *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error) {
+	return c.shareStudy.CallUnary(ctx, req)
+}
+
 // OrthancBridgeHandler is an implementation of the tkd.orthanc_bridge.v1.OrthancBridge service.
 type OrthancBridgeHandler interface {
 	// ListStudies returns a list of studies matching a given criteria.
@@ -96,6 +111,7 @@ type OrthancBridgeHandler interface {
 	// DownloadStudy allows to download selected instances from a study.
 	// For multi-file downloads, the files are packed into a ZIP archive.
 	DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error)
+	ShareStudy(context.Context, *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error)
 }
 
 // NewOrthancBridgeHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +130,19 @@ func NewOrthancBridgeHandler(svc OrthancBridgeHandler, opts ...connect_go.Handle
 		svc.DownloadStudy,
 		opts...,
 	)
+	orthancBridgeShareStudyHandler := connect_go.NewUnaryHandler(
+		OrthancBridgeShareStudyProcedure,
+		svc.ShareStudy,
+		opts...,
+	)
 	return "/tkd.orthanc_bridge.v1.OrthancBridge/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case OrthancBridgeListStudiesProcedure:
 			orthancBridgeListStudiesHandler.ServeHTTP(w, r)
 		case OrthancBridgeDownloadStudyProcedure:
 			orthancBridgeDownloadStudyHandler.ServeHTTP(w, r)
+		case OrthancBridgeShareStudyProcedure:
+			orthancBridgeShareStudyHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +158,8 @@ func (UnimplementedOrthancBridgeHandler) ListStudies(context.Context, *connect_g
 
 func (UnimplementedOrthancBridgeHandler) DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy is not implemented"))
+}
+
+func (UnimplementedOrthancBridgeHandler) ShareStudy(context.Context, *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy is not implemented"))
 }
