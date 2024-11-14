@@ -1,6 +1,6 @@
 {
   "name": "@tierklinik-dobersberg/apis",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "Connect-ES API definitions for Tierklinik Dobersberg services",
   "type": "module",
   "files": [
@@ -38,99 +38,105 @@
     },
     "./calendar/v1": {
       "types": "./gen/es/tkd/calendar/v1/index.d.ts",
-      "default": "./gen/es/tkd/calendar/v1/index.js",
+      "esm2022": "./gen/es/tkd/calendar/v1/index.js",
       "esm": "./gen/es/tkd/calendar/v1/index.js",
-      "esm2022": "./gen/es/tkd/calendar/v1/index.js"
+      "default": "./gen/es/tkd/calendar/v1/index.js"
     },
     "./comment/v1": {
       "types": "./gen/es/tkd/comment/v1/index.d.ts",
-      "default": "./gen/es/tkd/comment/v1/index.js",
+      "esm2022": "./gen/es/tkd/comment/v1/index.js",
       "esm": "./gen/es/tkd/comment/v1/index.js",
-      "esm2022": "./gen/es/tkd/comment/v1/index.js"
+      "default": "./gen/es/tkd/comment/v1/index.js"
     },
     "./common/v1": {
       "types": "./gen/es/tkd/common/v1/index.d.ts",
-      "default": "./gen/es/tkd/common/v1/index.js",
+      "esm2022": "./gen/es/tkd/common/v1/index.js",
       "esm": "./gen/es/tkd/common/v1/index.js",
-      "esm2022": "./gen/es/tkd/common/v1/index.js"
+      "default": "./gen/es/tkd/common/v1/index.js"
     },
     "./customer/v1": {
       "types": "./gen/es/tkd/customer/v1/index.d.ts",
-      "default": "./gen/es/tkd/customer/v1/index.js",
+      "esm2022": "./gen/es/tkd/customer/v1/index.js",
       "esm": "./gen/es/tkd/customer/v1/index.js",
-      "esm2022": "./gen/es/tkd/customer/v1/index.js"
+      "default": "./gen/es/tkd/customer/v1/index.js"
     },
     "./events/v1": {
       "types": "./gen/es/tkd/events/v1/index.d.ts",
-      "default": "./gen/es/tkd/events/v1/index.js",
+      "esm2022": "./gen/es/tkd/events/v1/index.js",
       "esm": "./gen/es/tkd/events/v1/index.js",
-      "esm2022": "./gen/es/tkd/events/v1/index.js"
+      "default": "./gen/es/tkd/events/v1/index.js"
     },
     "./idm/v1": {
       "types": "./gen/es/tkd/idm/v1/index.d.ts",
-      "default": "./gen/es/tkd/idm/v1/index.js",
+      "esm2022": "./gen/es/tkd/idm/v1/index.js",
       "esm": "./gen/es/tkd/idm/v1/index.js",
-      "esm2022": "./gen/es/tkd/idm/v1/index.js"
+      "default": "./gen/es/tkd/idm/v1/index.js"
     },
     "./office_hours/v1": {
       "types": "./gen/es/tkd/office_hours/v1/index.d.ts",
-      "default": "./gen/es/tkd/office_hours/v1/index.js",
+      "esm2022": "./gen/es/tkd/office_hours/v1/index.js",
       "esm": "./gen/es/tkd/office_hours/v1/index.js",
-      "esm2022": "./gen/es/tkd/office_hours/v1/index.js"
+      "default": "./gen/es/tkd/office_hours/v1/index.js"
     },
     "./orthanc_bridge/v1": {
       "types": "./gen/es/tkd/orthanc_bridge/v1/index.d.ts",
-      "default": "./gen/es/tkd/orthanc_bridge/v1/index.js",
+      "esm2022": "./gen/es/tkd/orthanc_bridge/v1/index.js",
       "esm": "./gen/es/tkd/orthanc_bridge/v1/index.js",
-      "esm2022": "./gen/es/tkd/orthanc_bridge/v1/index.js"
+      "default": "./gen/es/tkd/orthanc_bridge/v1/index.js"
     },
     "./pbx3cx/v1": {
       "types": "./gen/es/tkd/pbx3cx/v1/index.d.ts",
-      "default": "./gen/es/tkd/pbx3cx/v1/index.js",
+      "esm2022": "./gen/es/tkd/pbx3cx/v1/index.js",
       "esm": "./gen/es/tkd/pbx3cx/v1/index.js",
-      "esm2022": "./gen/es/tkd/pbx3cx/v1/index.js"
+      "default": "./gen/es/tkd/pbx3cx/v1/index.js"
     },
     "./roster/v1": {
       "types": "./gen/es/tkd/roster/v1/index.d.ts",
-      "default": "./gen/es/tkd/roster/v1/index.js",
+      "esm2022": "./gen/es/tkd/roster/v1/index.js",
       "esm": "./gen/es/tkd/roster/v1/index.js",
-      "esm2022": "./gen/es/tkd/roster/v1/index.js"
+      "default": "./gen/es/tkd/roster/v1/index.js"
     },
     "./survey/survey_connect.d.ts": {
       "types": "./gen/es/tkd/survey/survey_connect.d.ts/index.d.ts",
-      "default": "./gen/es/tkd/survey/survey_connect.d.ts/index.js",
+      "esm2022": "./gen/es/tkd/survey/survey_connect.d.ts/index.js",
       "esm": "./gen/es/tkd/survey/survey_connect.d.ts/index.js",
-      "esm2022": "./gen/es/tkd/survey/survey_connect.d.ts/index.js"
+      "default": "./gen/es/tkd/survey/survey_connect.d.ts/index.js"
     },
     "./survey/survey_connect.js": {
       "types": "./gen/es/tkd/survey/survey_connect.js/index.d.ts",
-      "default": "./gen/es/tkd/survey/survey_connect.js/index.js",
+      "esm2022": "./gen/es/tkd/survey/survey_connect.js/index.js",
       "esm": "./gen/es/tkd/survey/survey_connect.js/index.js",
-      "esm2022": "./gen/es/tkd/survey/survey_connect.js/index.js"
+      "default": "./gen/es/tkd/survey/survey_connect.js/index.js"
     },
     "./survey/survey_pb.d.ts": {
       "types": "./gen/es/tkd/survey/survey_pb.d.ts/index.d.ts",
-      "default": "./gen/es/tkd/survey/survey_pb.d.ts/index.js",
+      "esm2022": "./gen/es/tkd/survey/survey_pb.d.ts/index.js",
       "esm": "./gen/es/tkd/survey/survey_pb.d.ts/index.js",
-      "esm2022": "./gen/es/tkd/survey/survey_pb.d.ts/index.js"
+      "default": "./gen/es/tkd/survey/survey_pb.d.ts/index.js"
     },
     "./survey/survey_pb.js": {
       "types": "./gen/es/tkd/survey/survey_pb.js/index.d.ts",
-      "default": "./gen/es/tkd/survey/survey_pb.js/index.js",
+      "esm2022": "./gen/es/tkd/survey/survey_pb.js/index.js",
       "esm": "./gen/es/tkd/survey/survey_pb.js/index.js",
-      "esm2022": "./gen/es/tkd/survey/survey_pb.js/index.js"
+      "default": "./gen/es/tkd/survey/survey_pb.js/index.js"
+    },
+    "./survey/v1": {
+      "types": "./gen/es/tkd/survey/v1/index.d.ts",
+      "esm2022": "./gen/es/tkd/survey/v1/index.js",
+      "esm": "./gen/es/tkd/survey/v1/index.js",
+      "default": "./gen/es/tkd/survey/v1/index.js"
     },
     "./tasks/v1": {
       "types": "./gen/es/tkd/tasks/v1/index.d.ts",
-      "default": "./gen/es/tkd/tasks/v1/index.js",
+      "esm2022": "./gen/es/tkd/tasks/v1/index.js",
       "esm": "./gen/es/tkd/tasks/v1/index.js",
-      "esm2022": "./gen/es/tkd/tasks/v1/index.js"
+      "default": "./gen/es/tkd/tasks/v1/index.js"
     },
     "./typeserver/v1": {
       "types": "./gen/es/tkd/typeserver/v1/index.d.ts",
-      "default": "./gen/es/tkd/typeserver/v1/index.js",
+      "esm2022": "./gen/es/tkd/typeserver/v1/index.js",
       "esm": "./gen/es/tkd/typeserver/v1/index.js",
-      "esm2022": "./gen/es/tkd/typeserver/v1/index.js"
+      "default": "./gen/es/tkd/typeserver/v1/index.js"
     }
   }
 }

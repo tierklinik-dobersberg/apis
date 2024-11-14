@@ -14,5 +14,6 @@ import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/survey_connect
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/survey_connect.js"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/survey_pb.d.ts"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/survey_pb.js"
+import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/typeserver/v1"

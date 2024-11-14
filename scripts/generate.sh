@@ -14,7 +14,7 @@ for pkg in ./gen/es/tkd/**/*; do
 
     entrypoint="${pkg/gen\/es\/tkd\//}"
 
-    pkgjson=$(echo "$pkgjson" | jq ".exports += { \"${entrypoint}\": { \"types\": \"${pkg}/index.d.ts\", \"default\": \"${pkg}/index.js\", \"esm\": \"${pkg}/index.js\", \"esm2022\": \"${pkg}/index.js\" } }" )
+    pkgjson=$(echo "$pkgjson" | jq ".exports += { \"${entrypoint}\": { \"types\": \"${pkg}/index.d.ts\", \"esm2022\": \"${pkg}/index.js\", \"esm\": \"${pkg}/index.js\", \"default\": \"${pkg}/index.js\" } }" )
 
     echo "${pkg}" 
 
