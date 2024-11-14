@@ -303,6 +303,10 @@ message SaveRosterRequest {
     // CASIndex can be set to the CASIndex returned by GetRoster to ensure
     // there have been no changes.
     uint64 cas_index = 10;
+
+    // KeepApproval might be set to true to keep the previous roster approval
+    // instead of removing the approval and all related work-time entries.
+    bool keep_approval = 11;
 }
 
 message WorkTimeAnalysisWeek {

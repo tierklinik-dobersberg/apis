@@ -427,6 +427,14 @@ export declare class SaveRosterRequest extends Message<SaveRosterRequest> {
    */
   casIndex: bigint;
 
+  /**
+   * KeepApproval might be set to true to keep the previous roster approval
+   * instead of removing the approval and all related work-time entries.
+   *
+   * @generated from field: bool keep_approval = 11;
+   */
+  keepApproval: boolean;
+
   constructor(data?: PartialMessage<SaveRosterRequest>);
 
   static readonly runtime: typeof proto3;
