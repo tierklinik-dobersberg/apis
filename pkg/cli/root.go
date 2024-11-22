@@ -93,7 +93,7 @@ func (root *Root) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	if token != "" {
-		req.Header.Add("Authentication", "Bearer "+token)
+		req.Header.Add("Authorization", "Bearer "+token)
 	}
 
 	if root.Debug() {
@@ -245,7 +245,6 @@ func New(name string) *Root {
 			}
 
 			if root.tokens.AccessToken != "" {
-
 				_, err := root.Auth().Introspect(root.Context(), connect.NewRequest(&idmv1.IntrospectRequest{}))
 				if err != nil {
 					var cerr *connect.Error
