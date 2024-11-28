@@ -1,7 +1,8 @@
 package bsonql
 
 import (
-	"errors"
+	"fmt"
+	"log"
 
 	"github.com/tierklinik-dobersberg/apis/pkg/ql"
 	"go.mongodb.org/mongo-driver/bson"
@@ -28,7 +29,7 @@ func (b *BSONQL) convertNode(node ql.Node) (bson.M, error) {
 		return b.convertOperation(v)
 	}
 
-	return nil, errors.New("unsupported node type")
+	return nil, fmt.Errorf("unsupported node type: %T", node)
 }
 
 func (b *BSONQL) convertExpression(exp *ql.Expression) (bson.M, error) {
@@ -57,6 +58,10 @@ func (b *BSONQL) convertExpression(exp *ql.Expression) (bson.M, error) {
 }
 
 func (b *BSONQL) convertOperation(op *ql.Operation) (bson.M, error) {
+	if op.RightNode == nil {
+		return b.convertNode(op.LeftNode)
+	}
+
 	bsonOp := "$and"
 	if op.Gate == "OR" {
 		bsonOp = "$or"
@@ -64,11 +69,13 @@ func (b *BSONQL) convertOperation(op *ql.Operation) (bson.M, error) {
 
 	left, err := b.convertNode(op.LeftNode)
 	if err != nil {
+		log.Printf("error on left-node: %v (%s)", op.LeftNode, op.String())
 		return nil, err
 	}
 
 	right, err := b.convertNode(op.RightNode)
 	if err != nil {
+		log.Printf("error on right-node: %v (%s)", op.RightNode, op.String())
 		return nil, err
 	}
 
