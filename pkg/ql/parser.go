@@ -13,11 +13,11 @@ type Parser struct {
 	raw string
 	buf TokenStack
 
-	schema []FieldSpec
+	schema FieldProvider
 }
 
 // NewParser returns a new instance of Parser.
-func NewParser(s string, spec []FieldSpec) *Parser {
+func NewParser(s string, spec FieldProvider) *Parser {
 	return &Parser{
 		s:      NewLexer(strings.NewReader(s)),
 		raw:    s,
@@ -155,7 +155,7 @@ func (p *Parser) parseExpression() (Node, error) {
 				return exp, fmt.Errorf("expected Field, got %v", tok)
 			}
 
-			spec := p.lookupSpec(lit)
+			spec := p.schema.LookupField(lit)
 			if spec == nil {
 				return exp, fmt.Errorf("invalid or unsupported field name %q", lit)
 			}
@@ -231,23 +231,4 @@ func (p *Parser) scanIgnoreWhitespace() (tok Token, lit string) {
 // unscan pushes the previously read tokens back onto the buffer.
 func (p *Parser) unscan(tok TokenInfo) {
 	p.buf.Push(tok)
-}
-
-func (p *Parser) lookupSpec(lit string) *FieldSpec {
-	l := strings.ToLower(lit)
-
-	for _, spec := range p.schema {
-		if strings.ToLower(spec.Name) == l {
-			return &spec
-		}
-
-		for _, a := range spec.Aliases {
-			if strings.ToLower(a) == l {
-				return &spec
-			}
-		}
-
-	}
-
-	return nil
 }

@@ -2,6 +2,7 @@ package ql
 
 import (
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -15,6 +16,12 @@ type (
 	}
 
 	TypeResolverFunc func(string) (any, error)
+
+	FieldProvider interface {
+		LookupField(name string) *FieldSpec
+	}
+
+	FieldList []FieldSpec
 
 	FieldSpec struct {
 		// Name is the name of the field.
@@ -34,6 +41,25 @@ type (
 		TypeResolver TypeResolver
 	}
 )
+
+func (fl FieldList) LookupField(lit string) *FieldSpec {
+	l := strings.ToLower(lit)
+
+	for _, spec := range fl {
+		if strings.ToLower(spec.Name) == l {
+			return &spec
+		}
+
+		for _, a := range spec.Aliases {
+			if strings.ToLower(a) == l {
+				return &spec
+			}
+		}
+
+	}
+
+	return nil
+}
 
 func (trf TypeResolverFunc) ResolveType(s string) (any, error) {
 	return trf(s)

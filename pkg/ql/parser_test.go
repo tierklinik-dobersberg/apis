@@ -19,7 +19,7 @@ func TestParser_Basic(t *testing.T) {
 		Name: "dueTime",
 	}
 
-	p := NewParser(query, []FieldSpec{completedField, dueTimeField})
+	p := NewParser(query, FieldList{completedField, dueTimeField})
 
 	res, err := p.Parse()
 	require.NoError(t, err)
