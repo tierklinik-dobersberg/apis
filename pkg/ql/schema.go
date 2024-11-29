@@ -188,6 +188,10 @@ func NullableType(next TypeResolver) TypeResolver {
 			return nil, nil
 		}
 
-		return next.ResolveType(s)
+		if next != nil {
+			return next.ResolveType(s)
+		}
+
+		return s, nil
 	})
 }
