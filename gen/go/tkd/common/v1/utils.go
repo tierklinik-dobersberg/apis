@@ -2,7 +2,11 @@ package commonv1
 
 import (
 	"errors"
+	"fmt"
 	"log/slog"
+	"math"
+	"strconv"
+	"strings"
 	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -112,4 +116,62 @@ func (dt *DayTime) At(t time.Time) time.Time {
 	year, month, date := t.Date()
 
 	return time.Date(year, month, date, int(dt.Hour), int(dt.Minute), int(dt.Second), 0, t.Location())
+}
+
+func (dt *DayTime) AsDuration() time.Duration {
+	return (time.Hour * time.Duration(dt.Hour)) + (time.Minute * time.Duration(dt.Minute)) + (time.Second * time.Duration(dt.Second))
+}
+
+func DayTimeFromDuration(d time.Duration) *DayTime {
+	du := float64(d)
+	hours := math.Floor(du / float64(time.Hour))
+	du -= (hours * float64(time.Hour))
+
+	minutes := math.Floor(du / float64(time.Minute))
+	du -= (minutes * float64(time.Minute))
+
+	seconds := math.Floor(du / float64(time.Second))
+
+	return &DayTime{
+		Hour:   int32(hours),
+		Minute: int32(minutes),
+		Second: int32(seconds),
+	}
+}
+
+func ParseDayTime(s string) (*DayTime, error) {
+	parts := strings.Split(s, ":")
+	if len(parts) < 2 || len(parts) > 3 {
+		return nil, fmt.Errorf("invalid day-time format, expected HH:MM[:SS]")
+	}
+
+	var (
+		hours   int
+		minutes int
+		seconds int
+		err     error
+	)
+
+	hours, err = strconv.Atoi(strings.TrimPrefix(parts[0], "0"))
+	if err != nil {
+		return nil, err
+	}
+
+	minutes, err = strconv.Atoi(strings.TrimPrefix(parts[1], "0"))
+	if err != nil {
+		return nil, err
+	}
+
+	if len(parts) == 3 {
+		seconds, err = strconv.Atoi(strings.TrimPrefix(parts[2], "0"))
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &DayTime{
+		Hour:   int32(hours),
+		Minute: int32(minutes),
+		Second: int32(seconds),
+	}, nil
 }
