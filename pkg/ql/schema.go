@@ -4,6 +4,10 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/go-multierror"
+	commonv1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
+	"github.com/tierklinik-dobersberg/apis/pkg/timeutil"
 )
 
 type (
@@ -17,11 +21,15 @@ type (
 
 	TypeResolverFunc func(string) (any, error)
 
+	CombinedTypeResolver struct {
+		Resolvers []TypeResolver
+	}
+
 	FieldProvider interface {
 		LookupField(name string) *FieldSpec
 	}
 
-	FieldList []FieldSpec
+	FieldList []FieldProvider
 
 	FieldSpec struct {
 		// Name is the name of the field.
@@ -38,27 +46,60 @@ type (
 		// Description holds the description for the field.
 		Description string
 
+		// TypeResolver is called to get the concrete typed value for this field.
+		// It is only called if Children is unset.
 		TypeResolver TypeResolver
+
+		Children FieldProvider
+
+		// Data might be used to attach addtional data to a FieldSpec.
+		Data map[string]any
 	}
 )
 
 func (fl FieldList) LookupField(lit string) *FieldSpec {
-	l := strings.ToLower(lit)
-
 	for _, spec := range fl {
-		if strings.ToLower(spec.Name) == l {
-			return &spec
+		if match := spec.LookupField(lit); match != nil {
+			return match
 		}
-
-		for _, a := range spec.Aliases {
-			if strings.ToLower(a) == l {
-				return &spec
-			}
-		}
-
 	}
 
 	return nil
+}
+
+func (spec FieldSpec) LookupField(name string) *FieldSpec {
+	l := strings.ToLower(name)
+
+	if strings.ToLower(spec.Name) == l {
+		return &spec
+	}
+
+	for _, a := range spec.Aliases {
+		if strings.ToLower(a) == l {
+			return &spec
+		}
+	}
+
+	if spec.Children != nil {
+		return spec.Children.LookupField(name)
+	}
+
+	return nil
+}
+
+func (cr *CombinedTypeResolver) ResolveType(s string) (any, error) {
+	merr := new(multierror.Error)
+
+	for _, r := range cr.Resolvers {
+		res, err := r.ResolveType(s)
+		if err == nil {
+			return res, nil
+		}
+
+		merr.Errors = append(merr.Errors, err)
+	}
+
+	return nil, merr.ErrorOrNil()
 }
 
 func (trf TypeResolverFunc) ResolveType(s string) (any, error) {
@@ -93,7 +134,7 @@ func TimeType() TypeResolver {
 	})
 }
 
-func DateType() TypeResolver {
+func DateOnlyType() TypeResolver {
 	return TypeResolverFunc(func(s string) (any, error) {
 		d, err := time.Parse(time.DateOnly, s)
 		return d, err
@@ -104,5 +145,23 @@ func TimeFormatType(format string) TypeResolver {
 	return TypeResolverFunc(func(s string) (any, error) {
 		t, err := time.Parse(format, s)
 		return t, err
+	})
+}
+
+func TimeStartKeywordType(loc *time.Location) TypeResolver {
+	return TypeResolverFunc(func(s string) (any, error) {
+		return timeutil.ParseStartInLocation(s, loc)
+	})
+}
+
+func TimeEndKeywordType(loc *time.Location) TypeResolver {
+	return TypeResolverFunc(func(s string) (any, error) {
+		return timeutil.ParseEndInLocation(s, loc)
+	})
+}
+
+func DayTimeType(loc *time.Location) TypeResolver {
+	return TypeResolverFunc(func(s string) (any, error) {
+		return commonv1.ParseDayTime(s)
 	})
 }
