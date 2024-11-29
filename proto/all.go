@@ -1,19 +1,28 @@
 package proto
 
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/comment/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/customer/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/office_hours/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/orthanc_bridge/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/survey_connect.d.ts"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/survey_connect.js"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/survey_pb.d.ts"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/survey_pb.js"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1"
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/typeserver/v1"
+import (
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1"
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/comment/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/customer/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/office_hours/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/orthanc_bridge/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/survey/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1"
+
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/typeserver/v1"
+)
