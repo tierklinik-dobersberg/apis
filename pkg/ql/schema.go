@@ -1,6 +1,7 @@
 package ql
 
 import (
+	"context"
 	"strconv"
 	"strings"
 	"time"
@@ -12,8 +13,10 @@ import (
 
 type (
 	ValueProvider interface {
-		ProvideValues(prefix string) ([]string, error)
+		ProvideValues(ctx context.Context, prefix string) ([]string, error)
 	}
+
+	ValueProviderFunc func(context.Context, string) ([]string, error)
 
 	TypeResolver interface {
 		ResolveType(value string) (any, error)
@@ -56,6 +59,10 @@ type (
 		Data map[string]any
 	}
 )
+
+func (vpf ValueProviderFunc) ProvideValues(ctx context.Context, prefix string) ([]string, error) {
+	return vpf(ctx, prefix)
+}
 
 func (fl FieldList) LookupField(lit string) *FieldSpec {
 	for _, spec := range fl {
