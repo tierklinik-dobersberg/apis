@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/tierklinik-dobersberg/apis/pkg/ql"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -17,7 +18,7 @@ func AddValueProviders(col *mongo.Collection, fields ql.FieldList) {
 		}
 
 		spec.ValueProvider = ql.ValueProviderFunc(func(ctx context.Context, prefix string) ([]string, error) {
-			values, err := col.Distinct(ctx, spec.Name, nil)
+			values, err := col.Distinct(ctx, spec.Name, bson.M{})
 			if err != nil {
 				return nil, err
 			}
