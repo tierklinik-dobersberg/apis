@@ -1,12 +1,19 @@
 package ql
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
 )
 
-type FieldNameResolverFunc func(parent string, field reflect.StructField) string
+var (
+	ErrSkipField = errors.New("skip field")
+)
+
+type (
+	FieldNameResolverFunc func(parent string, field reflect.StructField) string
+)
 
 func TagNameResolver(tagName string) FieldNameResolverFunc {
 	return func(parent string, field reflect.StructField) string {
@@ -102,9 +109,6 @@ func generateSchema(name string, val reflect.Type, nameResolver FieldNameResolve
 		}
 
 		spec.Children = list
-
-	default:
-		return nil, fmt.Errorf("unsupported value type %s", val.String())
 	}
 
 	return spec, nil
