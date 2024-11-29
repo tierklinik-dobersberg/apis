@@ -36,6 +36,7 @@ func (b *BSONQL) convertNode(node ql.Node) (bson.M, error) {
 
 func (b *BSONQL) convertExpression(exp *ql.Expression) (bson.M, error) {
 	op := ""
+	value := exp.Value
 
 	switch exp.Comparator {
 	case "=":
@@ -52,6 +53,19 @@ func (b *BSONQL) convertExpression(exp *ql.Expression) (bson.M, error) {
 		op = "$lte"
 	}
 
+	// if we have a == nil or != nil we convert that to
+	// an $exists expression.
+	if value == nil {
+		switch op {
+		case "$eq":
+			value = false
+		case "$ne":
+			value = true
+		}
+
+		op = "$exists"
+	}
+
 	fieldName := exp.Field.Name
 	if n, ok := exp.Field.Data[BSONFieldName].(string); ok {
 		fieldName = n
@@ -59,7 +73,7 @@ func (b *BSONQL) convertExpression(exp *ql.Expression) (bson.M, error) {
 
 	return bson.M{
 		fieldName: bson.M{
-			op: exp.Value,
+			op: value,
 		},
 	}, nil
 }

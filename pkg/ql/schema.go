@@ -181,3 +181,13 @@ func DayTimeType(loc *time.Location) TypeResolver {
 		return commonv1.ParseDayTime(s)
 	})
 }
+
+func NullableType(next TypeResolver) TypeResolver {
+	return TypeResolverFunc(func(s string) (any, error) {
+		if strings.ToLower(s) == "null" || strings.ToLower(s) == "nil" {
+			return nil, nil
+		}
+
+		return next.ResolveType(s)
+	})
+}
