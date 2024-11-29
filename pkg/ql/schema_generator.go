@@ -1,17 +1,15 @@
-package bsonql
+package ql
 
 import (
 	"fmt"
 	"reflect"
 	"strings"
-
-	"github.com/tierklinik-dobersberg/apis/pkg/ql"
 )
 
-type FieldNameResolverFunc func(field reflect.StructField) string
+type FieldNameResolverFunc func(parent string, field reflect.StructField) string
 
 func TagNameResolver(tagName string) FieldNameResolverFunc {
-	return func(field reflect.StructField) string {
+	return func(parent string, field reflect.StructField) string {
 		tag := field.Tag.Get(tagName)
 		if tag == "" {
 			return ""
@@ -32,7 +30,7 @@ var (
 	YAMLTagNameResolver = TagNameResolver("yaml")
 )
 
-func SchemaFromModel(model any, nameResolver FieldNameResolverFunc) (ql.FieldList, error) {
+func SchemaFromModel(model any, nameResolver FieldNameResolverFunc) (FieldList, error) {
 	val := reflect.ValueOf(model).Type()
 
 	switch val.Kind() {
@@ -49,31 +47,31 @@ func SchemaFromModel(model any, nameResolver FieldNameResolverFunc) (ql.FieldLis
 		return nil, err
 	}
 
-	return spec.Children.(ql.FieldList), nil
+	return spec.Children.(FieldList), nil
 }
 
-func generateSchema(name string, val reflect.Type, nameResolver FieldNameResolverFunc) (*ql.FieldSpec, error) {
+func generateSchema(name string, val reflect.Type, nameResolver FieldNameResolverFunc) (*FieldSpec, error) {
 	switch val.Kind() {
 	case reflect.Ptr, reflect.Interface:
 		val = val.Elem()
 	}
 
-	spec := &ql.FieldSpec{
+	spec := &FieldSpec{
 		Name: name,
 	}
 
 	switch val.Kind() {
 	case reflect.Int, reflect.Int16, reflect.Int32, reflect.Int8, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-		spec.TypeResolver = ql.IntType()
+		spec.TypeResolver = IntType()
 
 	case reflect.Float32, reflect.Float64:
-		spec.TypeResolver = ql.FloatType()
+		spec.TypeResolver = FloatType()
 
 	case reflect.String:
 		// no type resolver needed
 
 	case reflect.Struct:
-		list := ql.FieldList{}
+		list := FieldList{}
 		for idx := 0; idx < val.NumField(); idx++ {
 			field := val.Field(idx)
 
@@ -82,16 +80,15 @@ func generateSchema(name string, val reflect.Type, nameResolver FieldNameResolve
 			}
 
 			fieldName := field.Name
+
 			if nameResolver != nil {
-				fieldName = nameResolver(field)
+				fieldName = nameResolver(name, field)
+			} else if name != "" {
+				fieldName = fmt.Sprintf("%s.%s", name, field.Name)
 			}
 
 			if fieldName == "" {
 				continue
-			}
-
-			if name != "" {
-				fieldName = fmt.Sprintf("%s.%s", name, field.Name)
 			}
 
 			fieldSpec, err := generateSchema(fieldName, field.Type, nameResolver)

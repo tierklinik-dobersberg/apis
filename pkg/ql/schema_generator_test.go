@@ -1,4 +1,4 @@
-package bsonql
+package ql
 
 import (
 	"testing"
