@@ -12,6 +12,8 @@ type BSONQL struct {
 	Schema ql.FieldProvider
 }
 
+const BSONFieldName = "bson"
+
 func (b *BSONQL) Parse(s string) (bson.M, error) {
 	res, err := ql.NewParser(s, b.Schema).Parse()
 	if err != nil {
@@ -50,8 +52,13 @@ func (b *BSONQL) convertExpression(exp *ql.Expression) (bson.M, error) {
 		op = "$lte"
 	}
 
+	fieldName := exp.Field.Name
+	if n, ok := exp.Field.Data[BSONFieldName].(string); ok {
+		fieldName = n
+	}
+
 	return bson.M{
-		exp.Field.Name: bson.M{
+		fieldName: bson.M{
 			op: exp.Value,
 		},
 	}, nil

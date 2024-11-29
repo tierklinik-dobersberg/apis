@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 )
 
 var (
@@ -64,19 +65,11 @@ func generateSchema(name string, val reflect.Type, nameResolver FieldNameResolve
 	}
 
 	spec := &FieldSpec{
-		Name: name,
+		Name:         name,
+		TypeResolver: getTypeResolver(val),
 	}
 
 	switch val.Kind() {
-	case reflect.Int, reflect.Int16, reflect.Int32, reflect.Int8, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-		spec.TypeResolver = IntType()
-
-	case reflect.Float32, reflect.Float64:
-		spec.TypeResolver = FloatType()
-
-	case reflect.String:
-		// no type resolver needed
-
 	case reflect.Struct:
 		list := FieldList{}
 		for idx := 0; idx < val.NumField(); idx++ {
@@ -112,4 +105,24 @@ func generateSchema(name string, val reflect.Type, nameResolver FieldNameResolve
 	}
 
 	return spec, nil
+}
+
+var (
+	timeType = reflect.TypeOf(time.Time{})
+)
+
+func getTypeResolver(val reflect.Type) TypeResolver {
+	if val == timeType {
+		return TimeType()
+	}
+
+	switch val.Kind() {
+	case reflect.Int, reflect.Int16, reflect.Int32, reflect.Int8, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		return IntType()
+
+	case reflect.Float32, reflect.Float64:
+		return FloatType()
+	}
+
+	return nil
 }
