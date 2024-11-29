@@ -134,6 +134,12 @@ service VoiceMailService {
             require: AUTH_REQ_REQUIRED,
         };
     }
+
+    rpc SearchVoiceMails(SearchVoiceMailsRequest) returns (SearchVoiceMailsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message CreateMailboxRequest {
@@ -219,4 +225,19 @@ message UpdateMailboxRequest {
 
 message UpdateMailboxResponse {
     Mailbox mailbox = 1;
+}
+
+message SearchVoiceMailsRequest {
+    string mailbox = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string query = 2;
+
+    tkd.common.v1.View view = 3;
+}
+
+message SearchVoiceMailsResponse {
+    repeated VoiceMail voicemails = 1;
+    repeated tkd.customer.v1.Customer customers = 2;
 }

@@ -55,6 +55,9 @@ const (
 	// VoiceMailServiceMarkVoiceMailsProcedure is the fully-qualified name of the VoiceMailService's
 	// MarkVoiceMails RPC.
 	VoiceMailServiceMarkVoiceMailsProcedure = "/tkd.pbx3cx.v1.VoiceMailService/MarkVoiceMails"
+	// VoiceMailServiceSearchVoiceMailsProcedure is the fully-qualified name of the VoiceMailService's
+	// SearchVoiceMails RPC.
+	VoiceMailServiceSearchVoiceMailsProcedure = "/tkd.pbx3cx.v1.VoiceMailService/SearchVoiceMails"
 )
 
 // VoiceMailServiceClient is a client for the tkd.pbx3cx.v1.VoiceMailService service.
@@ -66,6 +69,7 @@ type VoiceMailServiceClient interface {
 	ListVoiceMails(context.Context, *connect_go.Request[v1.ListVoiceMailsRequest]) (*connect_go.Response[v1.ListVoiceMailsResponse], error)
 	GetVoiceMail(context.Context, *connect_go.Request[v1.GetVoiceMailRequest]) (*connect_go.Response[v1.GetVoiceMailResponse], error)
 	MarkVoiceMails(context.Context, *connect_go.Request[v1.MarkVoiceMailsRequest]) (*connect_go.Response[v1.MarkVoiceMailsResponse], error)
+	SearchVoiceMails(context.Context, *connect_go.Request[v1.SearchVoiceMailsRequest]) (*connect_go.Response[v1.SearchVoiceMailsResponse], error)
 }
 
 // NewVoiceMailServiceClient constructs a client for the tkd.pbx3cx.v1.VoiceMailService service. By
@@ -113,18 +117,24 @@ func NewVoiceMailServiceClient(httpClient connect_go.HTTPClient, baseURL string,
 			baseURL+VoiceMailServiceMarkVoiceMailsProcedure,
 			opts...,
 		),
+		searchVoiceMails: connect_go.NewClient[v1.SearchVoiceMailsRequest, v1.SearchVoiceMailsResponse](
+			httpClient,
+			baseURL+VoiceMailServiceSearchVoiceMailsProcedure,
+			opts...,
+		),
 	}
 }
 
 // voiceMailServiceClient implements VoiceMailServiceClient.
 type voiceMailServiceClient struct {
-	createMailbox  *connect_go.Client[v1.CreateMailboxRequest, v1.CreateMailboxResponse]
-	listMailboxes  *connect_go.Client[v1.ListMailboxesRequest, v1.ListMailboxesResponse]
-	deleteMailbox  *connect_go.Client[v1.DeleteMailboxRequest, emptypb.Empty]
-	updateMailbox  *connect_go.Client[v1.UpdateMailboxRequest, v1.UpdateMailboxResponse]
-	listVoiceMails *connect_go.Client[v1.ListVoiceMailsRequest, v1.ListVoiceMailsResponse]
-	getVoiceMail   *connect_go.Client[v1.GetVoiceMailRequest, v1.GetVoiceMailResponse]
-	markVoiceMails *connect_go.Client[v1.MarkVoiceMailsRequest, v1.MarkVoiceMailsResponse]
+	createMailbox    *connect_go.Client[v1.CreateMailboxRequest, v1.CreateMailboxResponse]
+	listMailboxes    *connect_go.Client[v1.ListMailboxesRequest, v1.ListMailboxesResponse]
+	deleteMailbox    *connect_go.Client[v1.DeleteMailboxRequest, emptypb.Empty]
+	updateMailbox    *connect_go.Client[v1.UpdateMailboxRequest, v1.UpdateMailboxResponse]
+	listVoiceMails   *connect_go.Client[v1.ListVoiceMailsRequest, v1.ListVoiceMailsResponse]
+	getVoiceMail     *connect_go.Client[v1.GetVoiceMailRequest, v1.GetVoiceMailResponse]
+	markVoiceMails   *connect_go.Client[v1.MarkVoiceMailsRequest, v1.MarkVoiceMailsResponse]
+	searchVoiceMails *connect_go.Client[v1.SearchVoiceMailsRequest, v1.SearchVoiceMailsResponse]
 }
 
 // CreateMailbox calls tkd.pbx3cx.v1.VoiceMailService.CreateMailbox.
@@ -162,6 +172,11 @@ func (c *voiceMailServiceClient) MarkVoiceMails(ctx context.Context, req *connec
 	return c.markVoiceMails.CallUnary(ctx, req)
 }
 
+// SearchVoiceMails calls tkd.pbx3cx.v1.VoiceMailService.SearchVoiceMails.
+func (c *voiceMailServiceClient) SearchVoiceMails(ctx context.Context, req *connect_go.Request[v1.SearchVoiceMailsRequest]) (*connect_go.Response[v1.SearchVoiceMailsResponse], error) {
+	return c.searchVoiceMails.CallUnary(ctx, req)
+}
+
 // VoiceMailServiceHandler is an implementation of the tkd.pbx3cx.v1.VoiceMailService service.
 type VoiceMailServiceHandler interface {
 	CreateMailbox(context.Context, *connect_go.Request[v1.CreateMailboxRequest]) (*connect_go.Response[v1.CreateMailboxResponse], error)
@@ -171,6 +186,7 @@ type VoiceMailServiceHandler interface {
 	ListVoiceMails(context.Context, *connect_go.Request[v1.ListVoiceMailsRequest]) (*connect_go.Response[v1.ListVoiceMailsResponse], error)
 	GetVoiceMail(context.Context, *connect_go.Request[v1.GetVoiceMailRequest]) (*connect_go.Response[v1.GetVoiceMailResponse], error)
 	MarkVoiceMails(context.Context, *connect_go.Request[v1.MarkVoiceMailsRequest]) (*connect_go.Response[v1.MarkVoiceMailsResponse], error)
+	SearchVoiceMails(context.Context, *connect_go.Request[v1.SearchVoiceMailsRequest]) (*connect_go.Response[v1.SearchVoiceMailsResponse], error)
 }
 
 // NewVoiceMailServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -214,6 +230,11 @@ func NewVoiceMailServiceHandler(svc VoiceMailServiceHandler, opts ...connect_go.
 		svc.MarkVoiceMails,
 		opts...,
 	)
+	voiceMailServiceSearchVoiceMailsHandler := connect_go.NewUnaryHandler(
+		VoiceMailServiceSearchVoiceMailsProcedure,
+		svc.SearchVoiceMails,
+		opts...,
+	)
 	return "/tkd.pbx3cx.v1.VoiceMailService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case VoiceMailServiceCreateMailboxProcedure:
@@ -230,6 +251,8 @@ func NewVoiceMailServiceHandler(svc VoiceMailServiceHandler, opts ...connect_go.
 			voiceMailServiceGetVoiceMailHandler.ServeHTTP(w, r)
 		case VoiceMailServiceMarkVoiceMailsProcedure:
 			voiceMailServiceMarkVoiceMailsHandler.ServeHTTP(w, r)
+		case VoiceMailServiceSearchVoiceMailsProcedure:
+			voiceMailServiceSearchVoiceMailsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -265,4 +288,8 @@ func (UnimplementedVoiceMailServiceHandler) GetVoiceMail(context.Context, *conne
 
 func (UnimplementedVoiceMailServiceHandler) MarkVoiceMails(context.Context, *connect_go.Request[v1.MarkVoiceMailsRequest]) (*connect_go.Response[v1.MarkVoiceMailsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.VoiceMailService.MarkVoiceMails is not implemented"))
+}
+
+func (UnimplementedVoiceMailServiceHandler) SearchVoiceMails(context.Context, *connect_go.Request[v1.SearchVoiceMailsRequest]) (*connect_go.Response[v1.SearchVoiceMailsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.VoiceMailService.SearchVoiceMails is not implemented"))
 }
