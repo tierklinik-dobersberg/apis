@@ -157,12 +157,21 @@ func TimeFormatType(format string) TypeResolver {
 
 func TimeStartKeywordType(loc *time.Location) TypeResolver {
 	return TypeResolverFunc(func(s string) (any, error) {
+		t, err := timeutil.ResolveTime(s, time.Now())
+		if err == nil {
+			return t, nil
+		}
 		return timeutil.ParseStartInLocation(s, loc)
 	})
 }
 
 func TimeEndKeywordType(loc *time.Location) TypeResolver {
 	return TypeResolverFunc(func(s string) (any, error) {
+		t, err := timeutil.ResolveTime(s, time.Now())
+		if err == nil {
+			return t, nil
+		}
+
 		return timeutil.ParseEndInLocation(s, loc)
 	})
 }
