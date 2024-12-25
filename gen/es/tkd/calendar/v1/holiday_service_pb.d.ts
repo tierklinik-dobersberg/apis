@@ -5,6 +5,7 @@
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
+import type { Date } from "../../common/v1/date_pb.js";
 
 /**
  * HolidayType specifies the type of a public holiday.
@@ -285,5 +286,72 @@ export declare class NumberOfWorkDaysResponse extends Message<NumberOfWorkDaysRe
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): NumberOfWorkDaysResponse;
 
   static equals(a: NumberOfWorkDaysResponse | PlainMessage<NumberOfWorkDaysResponse> | undefined, b: NumberOfWorkDaysResponse | PlainMessage<NumberOfWorkDaysResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.calendar.v1.IsHolidayRequest
+ */
+export declare class IsHolidayRequest extends Message<IsHolidayRequest> {
+  /**
+   * Date is the date to check.
+   * If unset, the current day in the server's timezone is used.
+   *
+   * @generated from field: tkd.common.v1.Date date = 1;
+   */
+  date?: Date;
+
+  constructor(data?: PartialMessage<IsHolidayRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.IsHolidayRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): IsHolidayRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): IsHolidayRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): IsHolidayRequest;
+
+  static equals(a: IsHolidayRequest | PlainMessage<IsHolidayRequest> | undefined, b: IsHolidayRequest | PlainMessage<IsHolidayRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.calendar.v1.IsHolidayResponse
+ */
+export declare class IsHolidayResponse extends Message<IsHolidayResponse> {
+  /**
+   * Whether or not the queried date is a holiday.
+   *
+   * @generated from field: bool is_holiday = 1;
+   */
+  isHoliday: boolean;
+
+  /**
+   * The holiday, if any.
+   *
+   * @generated from field: tkd.calendar.v1.PublicHoliday holiday = 2;
+   */
+  holiday?: PublicHoliday;
+
+  /**
+   * QueriedDate holds the queried date.
+   *
+   * @generated from field: tkd.common.v1.Date queried_date = 3;
+   */
+  queriedDate?: Date;
+
+  constructor(data?: PartialMessage<IsHolidayResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.IsHolidayResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): IsHolidayResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): IsHolidayResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): IsHolidayResponse;
+
+  static equals(a: IsHolidayResponse | PlainMessage<IsHolidayResponse> | undefined, b: IsHolidayResponse | PlainMessage<IsHolidayResponse> | undefined): boolean;
 }
 

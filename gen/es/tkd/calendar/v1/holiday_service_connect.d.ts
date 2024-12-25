@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetHolidayRequest, GetHolidayResponse, NumberOfWorkDaysRequest, NumberOfWorkDaysResponse } from "./holiday_service_pb.js";
+import { GetHolidayRequest, GetHolidayResponse, IsHolidayRequest, IsHolidayResponse, NumberOfWorkDaysRequest, NumberOfWorkDaysResponse } from "./holiday_service_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -23,6 +23,17 @@ export declare const HolidayService: {
       readonly name: "GetHoliday",
       readonly I: typeof GetHolidayRequest,
       readonly O: typeof GetHolidayResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * Returns whether or not a given date is a public holiday.
+     *
+     * @generated from rpc tkd.calendar.v1.HolidayService.IsHolidy
+     */
+    readonly isHolidy: {
+      readonly name: "IsHolidy",
+      readonly I: typeof IsHolidayRequest,
+      readonly O: typeof IsHolidayResponse,
       readonly kind: MethodKind.Unary,
     },
     /**

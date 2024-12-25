@@ -4,6 +4,7 @@
 // @ts-nocheck
 
 import { proto3, Timestamp } from "@bufbuild/protobuf";
+import { Date } from "../../common/v1/date_pb.js";
 
 /**
  * HolidayType specifies the type of a public holiday.
@@ -93,6 +94,28 @@ export const NumberOfWorkDaysResponse = /*@__PURE__*/ proto3.makeMessageType(
     { no: 1, name: "number_of_work_days", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
     { no: 2, name: "number_of_weekend_days", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
     { no: 3, name: "number_of_holidays", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.calendar.v1.IsHolidayRequest
+ */
+export const IsHolidayRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.IsHolidayRequest",
+  () => [
+    { no: 1, name: "date", kind: "message", T: Date },
+  ],
+);
+
+/**
+ * @generated from message tkd.calendar.v1.IsHolidayResponse
+ */
+export const IsHolidayResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.IsHolidayResponse",
+  () => [
+    { no: 1, name: "is_holiday", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "holiday", kind: "message", T: PublicHoliday },
+    { no: 3, name: "queried_date", kind: "message", T: Date },
   ],
 );
 

@@ -3,6 +3,7 @@ syntax = "proto3";
 package tkd.calendar.v1;
 
 import "google/protobuf/timestamp.proto";
+import "tkd/common/v1/date.proto";
 import "buf/validate/validate.proto";
 
 // HolidayType specifies the type of a public holiday.
@@ -46,6 +47,9 @@ message PublicHoliday {
 service HolidayService {
     // GetHoliday returns a list of public holidays at a specifed year.
     rpc GetHoliday(GetHolidayRequest) returns (GetHolidayResponse) {}
+
+    // Returns whether or not a given date is a public holiday.
+    rpc IsHolidy(IsHolidayRequest) returns (IsHolidayResponse) {}
 
     // NumberOfWorkDays calculates the number of working days within a specified
     // time range taking weekends and public-holidays into account.
@@ -113,4 +117,21 @@ message NumberOfWorkDaysResponse {
     // Note that holidays on weekends are counted for both,
     // number_of_weekend_days and number_of_holidays.
     uint32 number_of_holidays = 3;
+}
+
+message IsHolidayRequest {
+    // Date is the date to check.
+    // If unset, the current day in the server's timezone is used.
+    tkd.common.v1.Date date = 1;
+}
+
+message IsHolidayResponse {
+    // Whether or not the queried date is a holiday.
+    bool is_holiday = 1;
+
+    // The holiday, if any.
+    PublicHoliday holiday = 2;
+
+    // QueriedDate holds the queried date.
+    tkd.common.v1.Date queried_date = 3;
 }
