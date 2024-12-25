@@ -28,10 +28,10 @@ export const HolidayService = {
     /**
      * Returns whether or not a given date is a public holiday.
      *
-     * @generated from rpc tkd.calendar.v1.HolidayService.IsHolidy
+     * @generated from rpc tkd.calendar.v1.HolidayService.IsHoliday
      */
-    isHolidy: {
-      name: "IsHolidy",
+    isHoliday: {
+      name: "IsHoliday",
       I: IsHolidayRequest,
       O: IsHolidayResponse,
       kind: MethodKind.Unary,

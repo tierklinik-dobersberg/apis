@@ -28,10 +28,10 @@ export declare const HolidayService: {
     /**
      * Returns whether or not a given date is a public holiday.
      *
-     * @generated from rpc tkd.calendar.v1.HolidayService.IsHolidy
+     * @generated from rpc tkd.calendar.v1.HolidayService.IsHoliday
      */
-    readonly isHolidy: {
-      readonly name: "IsHolidy",
+    readonly isHoliday: {
+      readonly name: "IsHoliday",
       readonly I: typeof IsHolidayRequest,
       readonly O: typeof IsHolidayResponse,
       readonly kind: MethodKind.Unary,

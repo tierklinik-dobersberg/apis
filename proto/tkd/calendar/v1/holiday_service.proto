@@ -49,7 +49,7 @@ service HolidayService {
     rpc GetHoliday(GetHolidayRequest) returns (GetHolidayResponse) {}
 
     // Returns whether or not a given date is a public holiday.
-    rpc IsHolidy(IsHolidayRequest) returns (IsHolidayResponse) {}
+    rpc IsHoliday(IsHolidayRequest) returns (IsHolidayResponse) {}
 
     // NumberOfWorkDays calculates the number of working days within a specified
     // time range taking weekends and public-holidays into account.

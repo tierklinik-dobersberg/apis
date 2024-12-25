@@ -36,8 +36,9 @@ const (
 	// HolidayServiceGetHolidayProcedure is the fully-qualified name of the HolidayService's GetHoliday
 	// RPC.
 	HolidayServiceGetHolidayProcedure = "/tkd.calendar.v1.HolidayService/GetHoliday"
-	// HolidayServiceIsHolidyProcedure is the fully-qualified name of the HolidayService's IsHolidy RPC.
-	HolidayServiceIsHolidyProcedure = "/tkd.calendar.v1.HolidayService/IsHolidy"
+	// HolidayServiceIsHolidayProcedure is the fully-qualified name of the HolidayService's IsHoliday
+	// RPC.
+	HolidayServiceIsHolidayProcedure = "/tkd.calendar.v1.HolidayService/IsHoliday"
 	// HolidayServiceNumberOfWorkDaysProcedure is the fully-qualified name of the HolidayService's
 	// NumberOfWorkDays RPC.
 	HolidayServiceNumberOfWorkDaysProcedure = "/tkd.calendar.v1.HolidayService/NumberOfWorkDays"
@@ -48,7 +49,7 @@ type HolidayServiceClient interface {
 	// GetHoliday returns a list of public holidays at a specifed year.
 	GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error)
 	// Returns whether or not a given date is a public holiday.
-	IsHolidy(context.Context, *connect_go.Request[v1.IsHolidayRequest]) (*connect_go.Response[v1.IsHolidayResponse], error)
+	IsHoliday(context.Context, *connect_go.Request[v1.IsHolidayRequest]) (*connect_go.Response[v1.IsHolidayResponse], error)
 	// NumberOfWorkDays calculates the number of working days within a specified
 	// time range taking weekends and public-holidays into account.
 	NumberOfWorkDays(context.Context, *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error)
@@ -69,9 +70,9 @@ func NewHolidayServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 			baseURL+HolidayServiceGetHolidayProcedure,
 			opts...,
 		),
-		isHolidy: connect_go.NewClient[v1.IsHolidayRequest, v1.IsHolidayResponse](
+		isHoliday: connect_go.NewClient[v1.IsHolidayRequest, v1.IsHolidayResponse](
 			httpClient,
-			baseURL+HolidayServiceIsHolidyProcedure,
+			baseURL+HolidayServiceIsHolidayProcedure,
 			opts...,
 		),
 		numberOfWorkDays: connect_go.NewClient[v1.NumberOfWorkDaysRequest, v1.NumberOfWorkDaysResponse](
@@ -85,7 +86,7 @@ func NewHolidayServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 // holidayServiceClient implements HolidayServiceClient.
 type holidayServiceClient struct {
 	getHoliday       *connect_go.Client[v1.GetHolidayRequest, v1.GetHolidayResponse]
-	isHolidy         *connect_go.Client[v1.IsHolidayRequest, v1.IsHolidayResponse]
+	isHoliday        *connect_go.Client[v1.IsHolidayRequest, v1.IsHolidayResponse]
 	numberOfWorkDays *connect_go.Client[v1.NumberOfWorkDaysRequest, v1.NumberOfWorkDaysResponse]
 }
 
@@ -94,9 +95,9 @@ func (c *holidayServiceClient) GetHoliday(ctx context.Context, req *connect_go.R
 	return c.getHoliday.CallUnary(ctx, req)
 }
 
-// IsHolidy calls tkd.calendar.v1.HolidayService.IsHolidy.
-func (c *holidayServiceClient) IsHolidy(ctx context.Context, req *connect_go.Request[v1.IsHolidayRequest]) (*connect_go.Response[v1.IsHolidayResponse], error) {
-	return c.isHolidy.CallUnary(ctx, req)
+// IsHoliday calls tkd.calendar.v1.HolidayService.IsHoliday.
+func (c *holidayServiceClient) IsHoliday(ctx context.Context, req *connect_go.Request[v1.IsHolidayRequest]) (*connect_go.Response[v1.IsHolidayResponse], error) {
+	return c.isHoliday.CallUnary(ctx, req)
 }
 
 // NumberOfWorkDays calls tkd.calendar.v1.HolidayService.NumberOfWorkDays.
@@ -109,7 +110,7 @@ type HolidayServiceHandler interface {
 	// GetHoliday returns a list of public holidays at a specifed year.
 	GetHoliday(context.Context, *connect_go.Request[v1.GetHolidayRequest]) (*connect_go.Response[v1.GetHolidayResponse], error)
 	// Returns whether or not a given date is a public holiday.
-	IsHolidy(context.Context, *connect_go.Request[v1.IsHolidayRequest]) (*connect_go.Response[v1.IsHolidayResponse], error)
+	IsHoliday(context.Context, *connect_go.Request[v1.IsHolidayRequest]) (*connect_go.Response[v1.IsHolidayResponse], error)
 	// NumberOfWorkDays calculates the number of working days within a specified
 	// time range taking weekends and public-holidays into account.
 	NumberOfWorkDays(context.Context, *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error)
@@ -126,9 +127,9 @@ func NewHolidayServiceHandler(svc HolidayServiceHandler, opts ...connect_go.Hand
 		svc.GetHoliday,
 		opts...,
 	)
-	holidayServiceIsHolidyHandler := connect_go.NewUnaryHandler(
-		HolidayServiceIsHolidyProcedure,
-		svc.IsHolidy,
+	holidayServiceIsHolidayHandler := connect_go.NewUnaryHandler(
+		HolidayServiceIsHolidayProcedure,
+		svc.IsHoliday,
 		opts...,
 	)
 	holidayServiceNumberOfWorkDaysHandler := connect_go.NewUnaryHandler(
@@ -140,8 +141,8 @@ func NewHolidayServiceHandler(svc HolidayServiceHandler, opts ...connect_go.Hand
 		switch r.URL.Path {
 		case HolidayServiceGetHolidayProcedure:
 			holidayServiceGetHolidayHandler.ServeHTTP(w, r)
-		case HolidayServiceIsHolidyProcedure:
-			holidayServiceIsHolidyHandler.ServeHTTP(w, r)
+		case HolidayServiceIsHolidayProcedure:
+			holidayServiceIsHolidayHandler.ServeHTTP(w, r)
 		case HolidayServiceNumberOfWorkDaysProcedure:
 			holidayServiceNumberOfWorkDaysHandler.ServeHTTP(w, r)
 		default:
@@ -157,8 +158,8 @@ func (UnimplementedHolidayServiceHandler) GetHoliday(context.Context, *connect_g
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.HolidayService.GetHoliday is not implemented"))
 }
 
-func (UnimplementedHolidayServiceHandler) IsHolidy(context.Context, *connect_go.Request[v1.IsHolidayRequest]) (*connect_go.Response[v1.IsHolidayResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.HolidayService.IsHolidy is not implemented"))
+func (UnimplementedHolidayServiceHandler) IsHoliday(context.Context, *connect_go.Request[v1.IsHolidayRequest]) (*connect_go.Response[v1.IsHolidayResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.HolidayService.IsHoliday is not implemented"))
 }
 
 func (UnimplementedHolidayServiceHandler) NumberOfWorkDays(context.Context, *connect_go.Request[v1.NumberOfWorkDaysRequest]) (*connect_go.Response[v1.NumberOfWorkDaysResponse], error) {
