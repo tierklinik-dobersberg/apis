@@ -112,6 +112,49 @@ func (dt *DayTimeRange) At(t time.Time) *TimeRange {
 	)
 }
 
+// IncludesAt checks whether the DayTimeRange, applied to ref, includes the DayTime dt.
+// If dtr is nil or both Start and End are nil, true is returned.
+// If dtr.Start is nil, it is assumed to be 00:00:00
+// If dtr.End is nil, it is assumed to be 00:00:00 on the next day.
+// Start is inclusive while end is exclusive.
+func (dtr *DayTimeRange) IncludesAt(ref time.Time, dt *DayTime) bool {
+	if dtr == nil {
+		return true
+	}
+
+	var (
+		startTime time.Time
+		endTime   time.Time
+		query     = dt.At(ref)
+	)
+
+	if dtr.Start != nil {
+		startTime = dtr.Start.At(ref)
+	}
+	if dtr.End != nil {
+		endTime = dtr.End.At(ref)
+	}
+
+	if startTime.IsZero() && endTime.IsZero() {
+		return true
+	}
+
+	if startTime.IsZero() {
+		return query.Before(endTime)
+	}
+
+	if endTime.IsZero() {
+		return query.Equal(startTime) || query.After(startTime)
+	}
+
+	// if end is before start the previous day is meant
+	if startTime.After(endTime) || startTime.Equal(endTime) {
+		startTime = startTime.Add(-24 * time.Hour)
+	}
+
+	return (query.Equal(startTime) || query.After(startTime)) && query.Before(endTime)
+}
+
 func (dt *DayTime) At(t time.Time) time.Time {
 	year, month, date := t.Date()
 
