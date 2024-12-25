@@ -218,3 +218,53 @@ func ParseDayTime(s string) (*DayTime, error) {
 		Second: int32(seconds),
 	}, nil
 }
+
+// ParseDayTimeRange parses a day-time range from a string of the following format: HH:MM:[SS] - HH:MM:[SS]
+func ParseDayTimeRange(s string) (*DayTimeRange, error) {
+	parts := strings.Split(s, "-")
+	if len(parts) != 2 {
+		return nil, fmt.Errorf("invalid day-time range format")
+	}
+
+	startStr := strings.TrimSpace(parts[0])
+	endStr := strings.TrimSpace(parts[1])
+
+	var (
+		start *DayTime
+		end   *DayTime
+		err   error
+	)
+
+	if startStr != "" {
+		start, err = ParseDayTime(startStr)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse start time: %w", err)
+		}
+	}
+
+	if endStr != "" {
+		end, err = ParseDayTime(endStr)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse end time: %w", err)
+		}
+	}
+
+	return &DayTimeRange{
+		Start: start,
+		End:   end,
+	}, nil
+}
+
+func (dt *DayTime) Pretty() string {
+	if dt == nil {
+		return ""
+	}
+
+	return fmt.Sprintf("%02d:%02d:%02d", dt.Hour, dt.Minute, dt.Second)
+}
+
+func (dtr *DayTimeRange) Pretty() string {
+	return strings.TrimSpace(
+		dtr.Start.Pretty() + " - " + dtr.End.Pretty(),
+	)
+}
