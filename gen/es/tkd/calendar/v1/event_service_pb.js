@@ -8,6 +8,18 @@ import { Calendar, CalendarEvent } from "./event_pb.js";
 import { TimeRange } from "../../common/v1/time_range_pb.js";
 
 /**
+ * @generated from enum tkd.calendar.v1.CalenarEventRequestKind
+ */
+export const CalenarEventRequestKind = /*@__PURE__*/ proto3.makeEnum(
+  "tkd.calendar.v1.CalenarEventRequestKind",
+  [
+    {no: 0, name: "CALENDAR_EVENT_REQUEST_KIND_UNSPECIFIED"},
+    {no: 1, name: "CALENDAR_EVENT_REQUEST_KIND_EVENTS"},
+    {no: 2, name: "CALENDAR_EVENT_REQUEST_KIND_FREE_SLOTS"},
+  ],
+);
+
+/**
  * ListCalendarsRequest is used by the ListCalendars RPC. There are now message
  * fields for now.
  *
@@ -60,6 +72,7 @@ export const ListEventsRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 4, name: "time_range", kind: "message", T: TimeRange, oneof: "search_time" },
     { no: 5, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search_time" },
     { no: 6, name: "read_mask", kind: "message", T: FieldMask },
+    { no: 7, name: "request_kinds", kind: "enum", T: proto3.getEnumType(CalenarEventRequestKind), repeated: true },
   ],
 );
 

@@ -9,6 +9,26 @@ import type { Calendar, CalendarEvent } from "./event_pb.js";
 import type { TimeRange } from "../../common/v1/time_range_pb.js";
 
 /**
+ * @generated from enum tkd.calendar.v1.CalenarEventRequestKind
+ */
+export declare enum CalenarEventRequestKind {
+  /**
+   * @generated from enum value: CALENDAR_EVENT_REQUEST_KIND_UNSPECIFIED = 0;
+   */
+  CALENDAR_EVENT_REQUEST_KIND_UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: CALENDAR_EVENT_REQUEST_KIND_EVENTS = 1;
+   */
+  CALENDAR_EVENT_REQUEST_KIND_EVENTS = 1,
+
+  /**
+   * @generated from enum value: CALENDAR_EVENT_REQUEST_KIND_FREE_SLOTS = 2;
+   */
+  CALENDAR_EVENT_REQUEST_KIND_FREE_SLOTS = 2,
+}
+
+/**
  * ListCalendarsRequest is used by the ListCalendars RPC. There are now message
  * fields for now.
  *
@@ -172,6 +192,16 @@ export declare class ListEventsRequest extends Message<ListEventsRequest> {
    * @generated from field: google.protobuf.FieldMask read_mask = 6;
    */
   readMask?: FieldMask;
+
+  /**
+   * RequestKinds might be set to a list of calendar event request kinds that
+   * should be returned.
+   * If unset or the UNSPECIFIED value is used, it defaults to CALENDAR_EVENT_REQUEST_KIND_EVENTS
+   * and only regular events will be returned.
+   *
+   * @generated from field: repeated tkd.calendar.v1.CalenarEventRequestKind request_kinds = 7;
+   */
+  requestKinds: CalenarEventRequestKind[];
 
   constructor(data?: PartialMessage<ListEventsRequest>);
 

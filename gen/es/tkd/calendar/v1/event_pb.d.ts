@@ -119,6 +119,15 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
    */
   extraData?: Any;
 
+  /**
+   * IsFree is set to true if the user is free (i.e. not busy).
+   * The calendar service might calculate free slots for users and report them
+   * during the ListEvents RPC.
+   *
+   * @generated from field: bool is_free = 9;
+   */
+  isFree: boolean;
+
   constructor(data?: PartialMessage<CalendarEvent>);
 
   static readonly runtime: typeof proto3;

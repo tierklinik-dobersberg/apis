@@ -48,6 +48,11 @@ message CalendarEvent {
     // ExtraData may holds additional information about the calendar entry. In
     // most cases, this should be CustomerAnnotation
     google.protobuf.Any extra_data = 8;
+
+    // IsFree is set to true if the user is free (i.e. not busy).
+    // The calendar service might calculate free slots for users and report them
+    // during the ListEvents RPC.
+    bool is_free = 9;
 }
 
 message CustomerAnnotation {

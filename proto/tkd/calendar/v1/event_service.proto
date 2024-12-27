@@ -89,6 +89,12 @@ message EventSource {
     repeated string user_ids = 2;
 }
 
+enum CalenarEventRequestKind {
+    CALENDAR_EVENT_REQUEST_KIND_UNSPECIFIED = 0;
+    CALENDAR_EVENT_REQUEST_KIND_EVENTS = 1;
+    CALENDAR_EVENT_REQUEST_KIND_FREE_SLOTS = 2;
+}
+
 // ListEventsRequest is the request message for the ListEvents RPC and supports
 // querying calendar events over a list of sources.
 message ListEventsRequest {
@@ -129,6 +135,12 @@ message ListEventsRequest {
     // ReadMask can be used to limit the number of fields returned in the
     // response.
     google.protobuf.FieldMask read_mask = 6;
+
+    // RequestKinds might be set to a list of calendar event request kinds that
+    // should be returned.
+    // If unset or the UNSPECIFIED value is used, it defaults to CALENDAR_EVENT_REQUEST_KIND_EVENTS
+    // and only regular events will be returned.
+    repeated CalenarEventRequestKind request_kinds = 7;
 }
 
 
