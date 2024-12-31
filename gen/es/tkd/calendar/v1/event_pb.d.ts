@@ -42,6 +42,15 @@ export declare class Calendar extends Message<Calendar> {
    */
   color: string;
 
+  /**
+   * UserId is set to the user that is associated with this calendar, if any.
+   * Note that if multiple users are associated with an calendar, only the first
+   * is returned here.
+   *
+   * @generated from field: string user_id = 5;
+   */
+  userId: string;
+
   constructor(data?: PartialMessage<Calendar>);
 
   static readonly runtime: typeof proto3;

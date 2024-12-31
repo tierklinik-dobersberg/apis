@@ -20,6 +20,11 @@ message Calendar {
 
     // Color holds the calendar color.
     string color = 4;
+
+    // UserId is set to the user that is associated with this calendar, if any.
+    // Note that if multiple users are associated with an calendar, only the first
+    // is returned here.
+    string user_id = 5;
 }
 
 message CalendarEvent {
