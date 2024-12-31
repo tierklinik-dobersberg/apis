@@ -277,5 +277,5 @@ func New(name string) *Root {
 }
 
 func NewInsecureHttp2Client() *http.Client {
-	h2utils.NewInsecureHttp2Client()
+	return h2utils.NewInsecureHttp2Client()
 }
