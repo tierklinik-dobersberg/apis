@@ -16,8 +16,8 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1/tasksv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/typeserver/v1/typeserverv1connect"
-	"github.com/tierklinik-dobersberg/apis/pkg/cli"
 	"github.com/tierklinik-dobersberg/apis/pkg/discovery"
+	"github.com/tierklinik-dobersberg/apis/pkg/h2utils"
 )
 
 type Service[T any] struct {
@@ -107,5 +107,5 @@ func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T
 
 	addr := fmt.Sprintf("http://%s", i.Address)
 
-	return wks.Factory(cli.NewInsecureHttp2Client(), addr, opts...), nil
+	return wks.Factory(h2utils.NewInsecureHttp2Client(), addr, opts...), nil
 }

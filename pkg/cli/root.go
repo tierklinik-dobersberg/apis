@@ -17,7 +17,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	idmv1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1"
-	"golang.org/x/net/http2"
+	"github.com/tierklinik-dobersberg/apis/pkg/h2utils"
 )
 
 type BaseURLS struct {
@@ -277,16 +277,5 @@ func New(name string) *Root {
 }
 
 func NewInsecureHttp2Client() *http.Client {
-	return &http.Client{
-		Transport: &http2.Transport{
-			AllowHTTP: true,
-			DialTLS: func(network, addr string, _ *tls.Config) (net.Conn, error) {
-				// If you're also using this client for non-h2c traffic, you may want
-				// to delegate to tls.Dial if the network isn't TCP or the addr isn't
-				// in an allowlist.
-				return net.Dial(network, addr)
-			},
-			// Don't forget timeouts!
-		},
-	}
+	h2utils.NewInsecureHttp2Client()
 }
