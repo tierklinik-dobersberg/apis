@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateInboundNumberRequest, CreateInboundNumberResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteInboundNumberRequest, DeleteInboundNumberResponse, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListInboundNumberRequest, ListInboundNumberResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateInboundNumberRequest, UpdateInboundNumberResponse } from "./calllog_pb.js";
+import { CreateInboundNumberRequest, CreateInboundNumberResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteInboundNumberRequest, DeleteInboundNumberResponse, DeleteOverwriteRequest, DeleteOverwriteResponse, DeletePhoneExtensionRequest, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListInboundNumberRequest, ListInboundNumberResponse, ListPhoneExtensionsRequest, ListPhoneExtensionsResponse, PhoneExtension, RecordCallRequest, RegisterPhoneExtensionRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateInboundNumberRequest, UpdateInboundNumberResponse, UpdatePhoneExtensionRequest } from "./calllog_pb.js";
 import { Empty, MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -69,6 +69,42 @@ export const CallService = {
       name: "ListInboundNumber",
       I: ListInboundNumberRequest,
       O: ListInboundNumberResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.RegisterPhoneExtension
+     */
+    registerPhoneExtension: {
+      name: "RegisterPhoneExtension",
+      I: RegisterPhoneExtensionRequest,
+      O: PhoneExtension,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.UpdatePhoneExtension
+     */
+    updatePhoneExtension: {
+      name: "UpdatePhoneExtension",
+      I: UpdatePhoneExtensionRequest,
+      O: PhoneExtension,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.DeletePhoneExtension
+     */
+    deletePhoneExtension: {
+      name: "DeletePhoneExtension",
+      I: DeletePhoneExtensionRequest,
+      O: Empty,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.ListPhoneExtensions
+     */
+    listPhoneExtensions: {
+      name: "ListPhoneExtensions",
+      I: ListPhoneExtensionsRequest,
+      O: ListPhoneExtensionsResponse,
       kind: MethodKind.Unary,
     },
     /**

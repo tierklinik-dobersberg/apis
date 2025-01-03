@@ -50,6 +50,18 @@ const (
 	// CallServiceListInboundNumberProcedure is the fully-qualified name of the CallService's
 	// ListInboundNumber RPC.
 	CallServiceListInboundNumberProcedure = "/tkd.pbx3cx.v1.CallService/ListInboundNumber"
+	// CallServiceRegisterPhoneExtensionProcedure is the fully-qualified name of the CallService's
+	// RegisterPhoneExtension RPC.
+	CallServiceRegisterPhoneExtensionProcedure = "/tkd.pbx3cx.v1.CallService/RegisterPhoneExtension"
+	// CallServiceUpdatePhoneExtensionProcedure is the fully-qualified name of the CallService's
+	// UpdatePhoneExtension RPC.
+	CallServiceUpdatePhoneExtensionProcedure = "/tkd.pbx3cx.v1.CallService/UpdatePhoneExtension"
+	// CallServiceDeletePhoneExtensionProcedure is the fully-qualified name of the CallService's
+	// DeletePhoneExtension RPC.
+	CallServiceDeletePhoneExtensionProcedure = "/tkd.pbx3cx.v1.CallService/DeletePhoneExtension"
+	// CallServiceListPhoneExtensionsProcedure is the fully-qualified name of the CallService's
+	// ListPhoneExtensions RPC.
+	CallServiceListPhoneExtensionsProcedure = "/tkd.pbx3cx.v1.CallService/ListPhoneExtensions"
 	// CallServiceCreateOverwriteProcedure is the fully-qualified name of the CallService's
 	// CreateOverwrite RPC.
 	CallServiceCreateOverwriteProcedure = "/tkd.pbx3cx.v1.CallService/CreateOverwrite"
@@ -80,6 +92,10 @@ type CallServiceClient interface {
 	UpdateInboundNumber(context.Context, *connect_go.Request[v1.UpdateInboundNumberRequest]) (*connect_go.Response[v1.UpdateInboundNumberResponse], error)
 	DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.DeleteInboundNumberResponse], error)
 	ListInboundNumber(context.Context, *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
+	RegisterPhoneExtension(context.Context, *connect_go.Request[v1.RegisterPhoneExtensionRequest]) (*connect_go.Response[v1.PhoneExtension], error)
+	UpdatePhoneExtension(context.Context, *connect_go.Request[v1.UpdatePhoneExtensionRequest]) (*connect_go.Response[v1.PhoneExtension], error)
+	DeletePhoneExtension(context.Context, *connect_go.Request[v1.DeletePhoneExtensionRequest]) (*connect_go.Response[emptypb.Empty], error)
+	ListPhoneExtensions(context.Context, *connect_go.Request[v1.ListPhoneExtensionsRequest]) (*connect_go.Response[v1.ListPhoneExtensionsResponse], error)
 	// Overwrite APIS
 	CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error)
 	DeleteOverwrite(context.Context, *connect_go.Request[v1.DeleteOverwriteRequest]) (*connect_go.Response[v1.DeleteOverwriteResponse], error)
@@ -131,6 +147,26 @@ func NewCallServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 			baseURL+CallServiceListInboundNumberProcedure,
 			opts...,
 		),
+		registerPhoneExtension: connect_go.NewClient[v1.RegisterPhoneExtensionRequest, v1.PhoneExtension](
+			httpClient,
+			baseURL+CallServiceRegisterPhoneExtensionProcedure,
+			opts...,
+		),
+		updatePhoneExtension: connect_go.NewClient[v1.UpdatePhoneExtensionRequest, v1.PhoneExtension](
+			httpClient,
+			baseURL+CallServiceUpdatePhoneExtensionProcedure,
+			opts...,
+		),
+		deletePhoneExtension: connect_go.NewClient[v1.DeletePhoneExtensionRequest, emptypb.Empty](
+			httpClient,
+			baseURL+CallServiceDeletePhoneExtensionProcedure,
+			opts...,
+		),
+		listPhoneExtensions: connect_go.NewClient[v1.ListPhoneExtensionsRequest, v1.ListPhoneExtensionsResponse](
+			httpClient,
+			baseURL+CallServiceListPhoneExtensionsProcedure,
+			opts...,
+		),
 		createOverwrite: connect_go.NewClient[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse](
 			httpClient,
 			baseURL+CallServiceCreateOverwriteProcedure,
@@ -166,18 +202,22 @@ func NewCallServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts
 
 // callServiceClient implements CallServiceClient.
 type callServiceClient struct {
-	recordCall          *connect_go.Client[v1.RecordCallRequest, emptypb.Empty]
-	getOnCall           *connect_go.Client[v1.GetOnCallRequest, v1.GetOnCallResponse]
-	createInboundNumber *connect_go.Client[v1.CreateInboundNumberRequest, v1.CreateInboundNumberResponse]
-	updateInboundNumber *connect_go.Client[v1.UpdateInboundNumberRequest, v1.UpdateInboundNumberResponse]
-	deleteInboundNumber *connect_go.Client[v1.DeleteInboundNumberRequest, v1.DeleteInboundNumberResponse]
-	listInboundNumber   *connect_go.Client[v1.ListInboundNumberRequest, v1.ListInboundNumberResponse]
-	createOverwrite     *connect_go.Client[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse]
-	deleteOverwrite     *connect_go.Client[v1.DeleteOverwriteRequest, v1.DeleteOverwriteResponse]
-	getOverwrite        *connect_go.Client[v1.GetOverwriteRequest, v1.GetOverwriteResponse]
-	getLogsForDate      *connect_go.Client[v1.GetLogsForDateRequest, v1.GetLogsForDateResponse]
-	searchCallLogs      *connect_go.Client[v1.SearchCallLogsRequest, v1.SearchCallLogsResponse]
-	getLogsForCustomer  *connect_go.Client[v1.GetLogsForCustomerRequest, v1.GetLogsForCustomerResponse]
+	recordCall             *connect_go.Client[v1.RecordCallRequest, emptypb.Empty]
+	getOnCall              *connect_go.Client[v1.GetOnCallRequest, v1.GetOnCallResponse]
+	createInboundNumber    *connect_go.Client[v1.CreateInboundNumberRequest, v1.CreateInboundNumberResponse]
+	updateInboundNumber    *connect_go.Client[v1.UpdateInboundNumberRequest, v1.UpdateInboundNumberResponse]
+	deleteInboundNumber    *connect_go.Client[v1.DeleteInboundNumberRequest, v1.DeleteInboundNumberResponse]
+	listInboundNumber      *connect_go.Client[v1.ListInboundNumberRequest, v1.ListInboundNumberResponse]
+	registerPhoneExtension *connect_go.Client[v1.RegisterPhoneExtensionRequest, v1.PhoneExtension]
+	updatePhoneExtension   *connect_go.Client[v1.UpdatePhoneExtensionRequest, v1.PhoneExtension]
+	deletePhoneExtension   *connect_go.Client[v1.DeletePhoneExtensionRequest, emptypb.Empty]
+	listPhoneExtensions    *connect_go.Client[v1.ListPhoneExtensionsRequest, v1.ListPhoneExtensionsResponse]
+	createOverwrite        *connect_go.Client[v1.CreateOverwriteRequest, v1.CreateOverwriteResponse]
+	deleteOverwrite        *connect_go.Client[v1.DeleteOverwriteRequest, v1.DeleteOverwriteResponse]
+	getOverwrite           *connect_go.Client[v1.GetOverwriteRequest, v1.GetOverwriteResponse]
+	getLogsForDate         *connect_go.Client[v1.GetLogsForDateRequest, v1.GetLogsForDateResponse]
+	searchCallLogs         *connect_go.Client[v1.SearchCallLogsRequest, v1.SearchCallLogsResponse]
+	getLogsForCustomer     *connect_go.Client[v1.GetLogsForCustomerRequest, v1.GetLogsForCustomerResponse]
 }
 
 // RecordCall calls tkd.pbx3cx.v1.CallService.RecordCall.
@@ -208,6 +248,26 @@ func (c *callServiceClient) DeleteInboundNumber(ctx context.Context, req *connec
 // ListInboundNumber calls tkd.pbx3cx.v1.CallService.ListInboundNumber.
 func (c *callServiceClient) ListInboundNumber(ctx context.Context, req *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error) {
 	return c.listInboundNumber.CallUnary(ctx, req)
+}
+
+// RegisterPhoneExtension calls tkd.pbx3cx.v1.CallService.RegisterPhoneExtension.
+func (c *callServiceClient) RegisterPhoneExtension(ctx context.Context, req *connect_go.Request[v1.RegisterPhoneExtensionRequest]) (*connect_go.Response[v1.PhoneExtension], error) {
+	return c.registerPhoneExtension.CallUnary(ctx, req)
+}
+
+// UpdatePhoneExtension calls tkd.pbx3cx.v1.CallService.UpdatePhoneExtension.
+func (c *callServiceClient) UpdatePhoneExtension(ctx context.Context, req *connect_go.Request[v1.UpdatePhoneExtensionRequest]) (*connect_go.Response[v1.PhoneExtension], error) {
+	return c.updatePhoneExtension.CallUnary(ctx, req)
+}
+
+// DeletePhoneExtension calls tkd.pbx3cx.v1.CallService.DeletePhoneExtension.
+func (c *callServiceClient) DeletePhoneExtension(ctx context.Context, req *connect_go.Request[v1.DeletePhoneExtensionRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.deletePhoneExtension.CallUnary(ctx, req)
+}
+
+// ListPhoneExtensions calls tkd.pbx3cx.v1.CallService.ListPhoneExtensions.
+func (c *callServiceClient) ListPhoneExtensions(ctx context.Context, req *connect_go.Request[v1.ListPhoneExtensionsRequest]) (*connect_go.Response[v1.ListPhoneExtensionsResponse], error) {
+	return c.listPhoneExtensions.CallUnary(ctx, req)
 }
 
 // CreateOverwrite calls tkd.pbx3cx.v1.CallService.CreateOverwrite.
@@ -250,6 +310,10 @@ type CallServiceHandler interface {
 	UpdateInboundNumber(context.Context, *connect_go.Request[v1.UpdateInboundNumberRequest]) (*connect_go.Response[v1.UpdateInboundNumberResponse], error)
 	DeleteInboundNumber(context.Context, *connect_go.Request[v1.DeleteInboundNumberRequest]) (*connect_go.Response[v1.DeleteInboundNumberResponse], error)
 	ListInboundNumber(context.Context, *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error)
+	RegisterPhoneExtension(context.Context, *connect_go.Request[v1.RegisterPhoneExtensionRequest]) (*connect_go.Response[v1.PhoneExtension], error)
+	UpdatePhoneExtension(context.Context, *connect_go.Request[v1.UpdatePhoneExtensionRequest]) (*connect_go.Response[v1.PhoneExtension], error)
+	DeletePhoneExtension(context.Context, *connect_go.Request[v1.DeletePhoneExtensionRequest]) (*connect_go.Response[emptypb.Empty], error)
+	ListPhoneExtensions(context.Context, *connect_go.Request[v1.ListPhoneExtensionsRequest]) (*connect_go.Response[v1.ListPhoneExtensionsResponse], error)
 	// Overwrite APIS
 	CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error)
 	DeleteOverwrite(context.Context, *connect_go.Request[v1.DeleteOverwriteRequest]) (*connect_go.Response[v1.DeleteOverwriteResponse], error)
@@ -297,6 +361,26 @@ func NewCallServiceHandler(svc CallServiceHandler, opts ...connect_go.HandlerOpt
 		svc.ListInboundNumber,
 		opts...,
 	)
+	callServiceRegisterPhoneExtensionHandler := connect_go.NewUnaryHandler(
+		CallServiceRegisterPhoneExtensionProcedure,
+		svc.RegisterPhoneExtension,
+		opts...,
+	)
+	callServiceUpdatePhoneExtensionHandler := connect_go.NewUnaryHandler(
+		CallServiceUpdatePhoneExtensionProcedure,
+		svc.UpdatePhoneExtension,
+		opts...,
+	)
+	callServiceDeletePhoneExtensionHandler := connect_go.NewUnaryHandler(
+		CallServiceDeletePhoneExtensionProcedure,
+		svc.DeletePhoneExtension,
+		opts...,
+	)
+	callServiceListPhoneExtensionsHandler := connect_go.NewUnaryHandler(
+		CallServiceListPhoneExtensionsProcedure,
+		svc.ListPhoneExtensions,
+		opts...,
+	)
 	callServiceCreateOverwriteHandler := connect_go.NewUnaryHandler(
 		CallServiceCreateOverwriteProcedure,
 		svc.CreateOverwrite,
@@ -341,6 +425,14 @@ func NewCallServiceHandler(svc CallServiceHandler, opts ...connect_go.HandlerOpt
 			callServiceDeleteInboundNumberHandler.ServeHTTP(w, r)
 		case CallServiceListInboundNumberProcedure:
 			callServiceListInboundNumberHandler.ServeHTTP(w, r)
+		case CallServiceRegisterPhoneExtensionProcedure:
+			callServiceRegisterPhoneExtensionHandler.ServeHTTP(w, r)
+		case CallServiceUpdatePhoneExtensionProcedure:
+			callServiceUpdatePhoneExtensionHandler.ServeHTTP(w, r)
+		case CallServiceDeletePhoneExtensionProcedure:
+			callServiceDeletePhoneExtensionHandler.ServeHTTP(w, r)
+		case CallServiceListPhoneExtensionsProcedure:
+			callServiceListPhoneExtensionsHandler.ServeHTTP(w, r)
 		case CallServiceCreateOverwriteProcedure:
 			callServiceCreateOverwriteHandler.ServeHTTP(w, r)
 		case CallServiceDeleteOverwriteProcedure:
@@ -384,6 +476,22 @@ func (UnimplementedCallServiceHandler) DeleteInboundNumber(context.Context, *con
 
 func (UnimplementedCallServiceHandler) ListInboundNumber(context.Context, *connect_go.Request[v1.ListInboundNumberRequest]) (*connect_go.Response[v1.ListInboundNumberResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.ListInboundNumber is not implemented"))
+}
+
+func (UnimplementedCallServiceHandler) RegisterPhoneExtension(context.Context, *connect_go.Request[v1.RegisterPhoneExtensionRequest]) (*connect_go.Response[v1.PhoneExtension], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.RegisterPhoneExtension is not implemented"))
+}
+
+func (UnimplementedCallServiceHandler) UpdatePhoneExtension(context.Context, *connect_go.Request[v1.UpdatePhoneExtensionRequest]) (*connect_go.Response[v1.PhoneExtension], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.UpdatePhoneExtension is not implemented"))
+}
+
+func (UnimplementedCallServiceHandler) DeletePhoneExtension(context.Context, *connect_go.Request[v1.DeletePhoneExtensionRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.DeletePhoneExtension is not implemented"))
+}
+
+func (UnimplementedCallServiceHandler) ListPhoneExtensions(context.Context, *connect_go.Request[v1.ListPhoneExtensionsRequest]) (*connect_go.Response[v1.ListPhoneExtensionsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.pbx3cx.v1.CallService.ListPhoneExtensions is not implemented"))
 }
 
 func (UnimplementedCallServiceHandler) CreateOverwrite(context.Context, *connect_go.Request[v1.CreateOverwriteRequest]) (*connect_go.Response[v1.CreateOverwriteResponse], error) {

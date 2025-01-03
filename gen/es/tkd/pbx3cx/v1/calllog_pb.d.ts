@@ -346,6 +346,47 @@ export declare class InboundNumber extends Message<InboundNumber> {
 }
 
 /**
+ * @generated from message tkd.pbx3cx.v1.PhoneExtension
+ */
+export declare class PhoneExtension extends Message<PhoneExtension> {
+  /**
+   * Extension is the phone extension.
+   *
+   * @generated from field: string extension = 1;
+   */
+  extension: string;
+
+  /**
+   * EligibleForOverwrite might be set to true if this phone extension
+   * is eligible for using in an on-call overwrite.
+   *
+   * @generated from field: bool eligible_for_overwrite = 2;
+   */
+  eligibleForOverwrite: boolean;
+
+  /**
+   * DisplayName is a human readable name for displaying in a user interface.
+   *
+   * @generated from field: string display_name = 3;
+   */
+  displayName: string;
+
+  constructor(data?: PartialMessage<PhoneExtension>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.PhoneExtension";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PhoneExtension;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PhoneExtension;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PhoneExtension;
+
+  static equals(a: PhoneExtension | PlainMessage<PhoneExtension> | undefined, b: PhoneExtension | PlainMessage<PhoneExtension> | undefined): boolean;
+}
+
+/**
  * @generated from message tkd.pbx3cx.v1.RecordCallRequest
  */
 export declare class RecordCallRequest extends Message<RecordCallRequest> {
@@ -1134,5 +1175,130 @@ export declare class UpdateInboundNumberResponse extends Message<UpdateInboundNu
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateInboundNumberResponse;
 
   static equals(a: UpdateInboundNumberResponse | PlainMessage<UpdateInboundNumberResponse> | undefined, b: UpdateInboundNumberResponse | PlainMessage<UpdateInboundNumberResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.pbx3cx.v1.RegisterPhoneExtensionRequest
+ */
+export declare class RegisterPhoneExtensionRequest extends Message<RegisterPhoneExtensionRequest> {
+  /**
+   * @generated from field: tkd.pbx3cx.v1.PhoneExtension phone_extension = 1;
+   */
+  phoneExtension?: PhoneExtension;
+
+  constructor(data?: PartialMessage<RegisterPhoneExtensionRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.RegisterPhoneExtensionRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RegisterPhoneExtensionRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RegisterPhoneExtensionRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RegisterPhoneExtensionRequest;
+
+  static equals(a: RegisterPhoneExtensionRequest | PlainMessage<RegisterPhoneExtensionRequest> | undefined, b: RegisterPhoneExtensionRequest | PlainMessage<RegisterPhoneExtensionRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.pbx3cx.v1.UpdatePhoneExtensionRequest
+ */
+export declare class UpdatePhoneExtensionRequest extends Message<UpdatePhoneExtensionRequest> {
+  /**
+   * @generated from field: string extension = 1;
+   */
+  extension: string;
+
+  /**
+   * @generated from field: tkd.pbx3cx.v1.PhoneExtension phone_extension = 2;
+   */
+  phoneExtension?: PhoneExtension;
+
+  /**
+   * @generated from field: google.protobuf.FieldMask update_mask = 3;
+   */
+  updateMask?: FieldMask;
+
+  constructor(data?: PartialMessage<UpdatePhoneExtensionRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.UpdatePhoneExtensionRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdatePhoneExtensionRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdatePhoneExtensionRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdatePhoneExtensionRequest;
+
+  static equals(a: UpdatePhoneExtensionRequest | PlainMessage<UpdatePhoneExtensionRequest> | undefined, b: UpdatePhoneExtensionRequest | PlainMessage<UpdatePhoneExtensionRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.pbx3cx.v1.DeletePhoneExtensionRequest
+ */
+export declare class DeletePhoneExtensionRequest extends Message<DeletePhoneExtensionRequest> {
+  /**
+   * @generated from field: string extension = 1;
+   */
+  extension: string;
+
+  constructor(data?: PartialMessage<DeletePhoneExtensionRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.DeletePhoneExtensionRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeletePhoneExtensionRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeletePhoneExtensionRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeletePhoneExtensionRequest;
+
+  static equals(a: DeletePhoneExtensionRequest | PlainMessage<DeletePhoneExtensionRequest> | undefined, b: DeletePhoneExtensionRequest | PlainMessage<DeletePhoneExtensionRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.pbx3cx.v1.ListPhoneExtensionsRequest
+ */
+export declare class ListPhoneExtensionsRequest extends Message<ListPhoneExtensionsRequest> {
+  constructor(data?: PartialMessage<ListPhoneExtensionsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.ListPhoneExtensionsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListPhoneExtensionsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListPhoneExtensionsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListPhoneExtensionsRequest;
+
+  static equals(a: ListPhoneExtensionsRequest | PlainMessage<ListPhoneExtensionsRequest> | undefined, b: ListPhoneExtensionsRequest | PlainMessage<ListPhoneExtensionsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.pbx3cx.v1.ListPhoneExtensionsResponse
+ */
+export declare class ListPhoneExtensionsResponse extends Message<ListPhoneExtensionsResponse> {
+  /**
+   * @generated from field: repeated tkd.pbx3cx.v1.PhoneExtension phone_extensions = 1;
+   */
+  phoneExtensions: PhoneExtension[];
+
+  constructor(data?: PartialMessage<ListPhoneExtensionsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.pbx3cx.v1.ListPhoneExtensionsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListPhoneExtensionsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListPhoneExtensionsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListPhoneExtensionsResponse;
+
+  static equals(a: ListPhoneExtensionsResponse | PlainMessage<ListPhoneExtensionsResponse> | undefined, b: ListPhoneExtensionsResponse | PlainMessage<ListPhoneExtensionsResponse> | undefined): boolean;
 }
 

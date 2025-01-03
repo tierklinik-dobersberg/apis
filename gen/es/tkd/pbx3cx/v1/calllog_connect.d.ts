@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateInboundNumberRequest, CreateInboundNumberResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteInboundNumberRequest, DeleteInboundNumberResponse, DeleteOverwriteRequest, DeleteOverwriteResponse, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListInboundNumberRequest, ListInboundNumberResponse, RecordCallRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateInboundNumberRequest, UpdateInboundNumberResponse } from "./calllog_pb.js";
+import { CreateInboundNumberRequest, CreateInboundNumberResponse, CreateOverwriteRequest, CreateOverwriteResponse, DeleteInboundNumberRequest, DeleteInboundNumberResponse, DeleteOverwriteRequest, DeleteOverwriteResponse, DeletePhoneExtensionRequest, GetLogsForCustomerRequest, GetLogsForCustomerResponse, GetLogsForDateRequest, GetLogsForDateResponse, GetOnCallRequest, GetOnCallResponse, GetOverwriteRequest, GetOverwriteResponse, ListInboundNumberRequest, ListInboundNumberResponse, ListPhoneExtensionsRequest, ListPhoneExtensionsResponse, PhoneExtension, RecordCallRequest, RegisterPhoneExtensionRequest, SearchCallLogsRequest, SearchCallLogsResponse, UpdateInboundNumberRequest, UpdateInboundNumberResponse, UpdatePhoneExtensionRequest } from "./calllog_pb.js";
 import { Empty, MethodIdempotency, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -69,6 +69,42 @@ export declare const CallService: {
       readonly name: "ListInboundNumber",
       readonly I: typeof ListInboundNumberRequest,
       readonly O: typeof ListInboundNumberResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.RegisterPhoneExtension
+     */
+    readonly registerPhoneExtension: {
+      readonly name: "RegisterPhoneExtension",
+      readonly I: typeof RegisterPhoneExtensionRequest,
+      readonly O: typeof PhoneExtension,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.UpdatePhoneExtension
+     */
+    readonly updatePhoneExtension: {
+      readonly name: "UpdatePhoneExtension",
+      readonly I: typeof UpdatePhoneExtensionRequest,
+      readonly O: typeof PhoneExtension,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.DeletePhoneExtension
+     */
+    readonly deletePhoneExtension: {
+      readonly name: "DeletePhoneExtension",
+      readonly I: typeof DeletePhoneExtensionRequest,
+      readonly O: typeof Empty,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.pbx3cx.v1.CallService.ListPhoneExtensions
+     */
+    readonly listPhoneExtensions: {
+      readonly name: "ListPhoneExtensions",
+      readonly I: typeof ListPhoneExtensionsRequest,
+      readonly O: typeof ListPhoneExtensionsResponse,
       readonly kind: MethodKind.Unary,
     },
     /**

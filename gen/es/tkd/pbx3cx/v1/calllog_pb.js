@@ -113,6 +113,18 @@ export const InboundNumber = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * @generated from message tkd.pbx3cx.v1.PhoneExtension
+ */
+export const PhoneExtension = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.PhoneExtension",
+  () => [
+    { no: 1, name: "extension", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "eligible_for_overwrite", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 3, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * @generated from message tkd.pbx3cx.v1.RecordCallRequest
  */
 export const RecordCallRequest = /*@__PURE__*/ proto3.makeMessageType(
@@ -377,6 +389,56 @@ export const UpdateInboundNumberResponse = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.pbx3cx.v1.UpdateInboundNumberResponse",
   () => [
     { no: 1, name: "inbound_number", kind: "message", T: InboundNumber },
+  ],
+);
+
+/**
+ * @generated from message tkd.pbx3cx.v1.RegisterPhoneExtensionRequest
+ */
+export const RegisterPhoneExtensionRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.RegisterPhoneExtensionRequest",
+  () => [
+    { no: 1, name: "phone_extension", kind: "message", T: PhoneExtension },
+  ],
+);
+
+/**
+ * @generated from message tkd.pbx3cx.v1.UpdatePhoneExtensionRequest
+ */
+export const UpdatePhoneExtensionRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.UpdatePhoneExtensionRequest",
+  () => [
+    { no: 1, name: "extension", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "phone_extension", kind: "message", T: PhoneExtension },
+    { no: 3, name: "update_mask", kind: "message", T: FieldMask },
+  ],
+);
+
+/**
+ * @generated from message tkd.pbx3cx.v1.DeletePhoneExtensionRequest
+ */
+export const DeletePhoneExtensionRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.DeletePhoneExtensionRequest",
+  () => [
+    { no: 1, name: "extension", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.pbx3cx.v1.ListPhoneExtensionsRequest
+ */
+export const ListPhoneExtensionsRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.ListPhoneExtensionsRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.pbx3cx.v1.ListPhoneExtensionsResponse
+ */
+export const ListPhoneExtensionsResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.pbx3cx.v1.ListPhoneExtensionsResponse",
+  () => [
+    { no: 1, name: "phone_extensions", kind: "message", T: PhoneExtension, repeated: true },
   ],
 );
 
