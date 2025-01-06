@@ -371,6 +371,16 @@ export declare class PhoneExtension extends Message<PhoneExtension> {
    */
   displayName: string;
 
+  /**
+   * InternalQueue can be set to true to mark this phone extension as an internal
+   * queue.
+   * That is, calls that are end on an internal queue are actually lost since no
+   * queue agent accepted the call.
+   *
+   * @generated from field: bool internal_queue = 4;
+   */
+  internalQueue: boolean;
+
   constructor(data?: PartialMessage<PhoneExtension>);
 
   static readonly runtime: typeof proto3;

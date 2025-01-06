@@ -121,6 +121,7 @@ export const PhoneExtension = /*@__PURE__*/ proto3.makeMessageType(
     { no: 1, name: "extension", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "eligible_for_overwrite", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 3, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "internal_queue", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 

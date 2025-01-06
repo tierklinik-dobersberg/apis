@@ -111,6 +111,12 @@ message PhoneExtension {
 
     // DisplayName is a human readable name for displaying in a user interface.
     string display_name = 3;
+
+    // InternalQueue can be set to true to mark this phone extension as an internal
+    // queue.
+    // That is, calls that are end on an internal queue are actually lost since no
+    // queue agent accepted the call.
+    bool internal_queue = 4;
 }
 
 service CallService {
