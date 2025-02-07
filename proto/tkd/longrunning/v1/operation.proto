@@ -6,6 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/struct.proto";
+import "buf/validate/validate.proto";
 
 enum OperationState {
     OperationState_UNSPECIFIED = 0;
@@ -52,7 +53,7 @@ message Operation {
     // for this operation to be considred lost.
     // This field is populated by the LongRunningService and is normally double
     // the ttl field.
-    google.protobuf.Duration grace_period = 13;
+    google.protobuf.Duration grace_period = 14;
 
     // Description holds an optional description for this operation.
     string description = 7;
@@ -110,3 +111,10 @@ service LongRunningService {
 
     rpc GetOperation(GetOperationRequest) returns (Operation) {}
 }
+
+message RegisterOperationRequest {}
+message UpdateOperationRequest {}
+message CompleteOperationRequest {}
+message QueryOperationsRequest {}
+message GetOperationRequest {}
+message QueryOperationsResponse {}

@@ -67,6 +67,8 @@ export declare class Calendar extends Message<Calendar> {
 }
 
 /**
+ * next-id: 11
+ *
  * @generated from message tkd.calendar.v1.CalendarEvent
  */
 export declare class CalendarEvent extends Message<CalendarEvent> {
@@ -136,6 +138,13 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
    * @generated from field: bool is_free = 9;
    */
   isFree: boolean;
+
+  /**
+   * CreateTime holds the timestamp at which this calendar event has been created.
+   *
+   * @generated from field: google.protobuf.Timestamp create_time = 10;
+   */
+  createTime?: Timestamp;
 
   constructor(data?: PartialMessage<CalendarEvent>);
 
