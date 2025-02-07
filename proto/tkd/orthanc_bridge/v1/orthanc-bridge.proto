@@ -5,6 +5,7 @@ package tkd.orthanc_bridge.v1;
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/pagination.proto";
 import "tkd/common/v1/date.proto";
@@ -28,6 +29,14 @@ message DICOMTag {
 service OrthancBridge {
     // ListStudies returns a list of studies matching a given criteria.
     rpc ListStudies(ListStudiesRequest) returns (ListStudiesResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // ListRecentStudies is like ListStudies but does not support filtering and will
+    // return the most recent studies.
+    rpc ListRecentStudies(google.protobuf.Empty) returns (ListStudiesResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
         };
