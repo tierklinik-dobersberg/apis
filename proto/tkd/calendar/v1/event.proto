@@ -27,6 +27,7 @@ message Calendar {
     string user_id = 5;
 }
 
+// next-id: 11
 message CalendarEvent {
     // ID is a unique ID for the calendar event.
     string id = 1;
@@ -58,6 +59,9 @@ message CalendarEvent {
     // The calendar service might calculate free slots for users and report them
     // during the ListEvents RPC.
     bool is_free = 9;
+
+    // CreateTime holds the timestamp at which this calendar event has been created.
+    google.protobuf.Timestamp create_time = 10;
 }
 
 message CustomerAnnotation {

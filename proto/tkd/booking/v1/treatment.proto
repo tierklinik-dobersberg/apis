@@ -1,0 +1,151 @@
+syntax = "proto3";
+
+package tkd.booking.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "buf/validate/validate.proto";
+import "tkd/booking/v1/species.proto";
+
+// Treatment describes an available treatment that can be booked using 
+// the self-booking service.
+//
+// Treatments are used to calculate how log a self-booked appointment
+// should last.
+// The final duration for the appointment is calculated by using the
+// highest initial_time_requirement of all treatments and adding the
+// additional_time_requirement for each treatment.
+message Treatment {
+    // Name is the unique name of the treatment.
+    string name = 1;
+
+    // DisplayName is human-readable name of the treatment to be displayed
+    // in a the self-booking user interface.
+    string display_name = 2;
+
+    // HelpText holds an additional help-text to be displayed in the
+    // self-booking user interface.
+    string help_text = 3;
+
+    // Species is a list of animal species this treatment applies to.
+    repeated string species = 4;
+
+    // InitialTimeRequirement is the minumum duration that a self-booked
+    // appointment with this treatment should last. If multiple treatments
+    // are part of an appointment, the highest initial_time_requirement is
+    // used.
+    google.protobuf.Duration initial_time_requirement = 5;
+
+    // AdditionalTimeRequirement is the duration that should be added to a self-booked
+    // appointment when more than one treatment is booked.
+    google.protobuf.Duration additional_time_requirement = 6;
+
+    // AllowedEmployees might be set to a list of user IDs that are capable of
+    // handling an appointment with this treatment.
+    // This is a more strict requirement that preferred_employees.
+    // Note that preferred_employees is still applied after checking availability
+    // of all allowed_employees.
+    repeated string allowed_employees = 7;
+
+    // PreferredEmployees is a list of user IDs that should - preffered - be booked
+    // for handling an self-booked appointment with this treatment.
+    map<string, int32> preferred_employees = 8;
+}
+
+// TreatmentService allows to list, create, update and delete bookable treatments.
+service TreatmentService {
+    // ListTreatments returns a list of available treatments, optionally filtered by
+    // species.
+    rpc ListTreatments(ListTreatmentsRequest) returns (ListTreatmentsResponse) {}
+
+    // CreateTreatment creates a new treatment.
+    rpc CreateTreatment(Treatment) returns (Treatment) {}
+
+    // UpdateTreatment updates an existing treatment.
+    rpc UpdateTreatment(UpdateTreatmentRequest) returns (Treatment) {}
+
+    // DeleteTreatment deletes an existing treatment.
+    rpc DeleteTreatment(DeleteTreatmentRequest) returns (google.protobuf.Empty) {}
+}
+
+// ListTreatmentsRequest is the request message type for the ListTreatments RPC
+// and allowed to optionally filter by species and display_name.
+message ListTreatmentsRequest {
+    // Species might be set to only return treatments applicable
+    // to the given species.
+    //
+    // Species values are case insensitive.
+    string species = 1;
+
+    // DisplayNameSearch can be set to a string to only return treatments
+    // where the display name matches the given search text.
+    string display_name_search = 2;
+}
+
+// ListTreatmentsResponse is the response message type for the ListTreatments RPC.
+message ListTreatmentsResponse {
+    // Treatments is a list of treatments that matched the query.
+    repeated Treatment treatments = 1;
+
+    // Species is a lookup map for all species that are part of the treatments
+    // result.
+    map<string, tkd.booking.v1.Species> species = 2;
+}
+
+// UpdateTreatmentRequest is the request message type for the UpdateTreatment RPC
+// and is used to modify an existing treatment.
+message UpdateTreatmentRequest {
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // NewName is the new name of the treatment.
+    string new_name = 2;
+
+    // DisplayName is human-readable name of the treatment to be displayed
+    // in a the self-booking user interface.
+    string display_name = 3;
+
+    // HelpText holds an additional help-text to be displayed in the
+    // self-booking user interface.
+    string help_text = 4;
+
+    // AddSpecies is a list of species name that should be added to the treatment.
+    repeated string add_species = 5;
+
+    // RemoveSpecies is a list of species names that should be removed from the treatment.
+    repeated string remove_species = 6;
+
+    // InitialTimeRequirement is the minumum duration that a self-booked
+    // appointment with this treatment should last. If multiple treatments
+    // are part of an appointment, the highest initial_time_requirement is
+    // used.
+    google.protobuf.Duration initial_time_requirement = 7;
+
+    // AdditionalTimeRequirement is the duration that should be added to a self-booked
+    // appointment when more than one treatment is booked.
+    google.protobuf.Duration additional_time_requirement = 8;
+
+    repeated string add_allowed_employees = 9;
+    repeated string remove_allowed_employees = 10;
+
+    map<string, int32> update_preferred_employees = 11;
+
+    // UpdateMask specifies which field names of the UpdateTreatmentRequest message
+    // should be considered.
+    // If unspecified or empty, no fields will be updated.
+    // To completely replace all fields, specify a single path '*'.
+    google.protobuf.FieldMask update_mask = 20 [
+        (buf.validate.field).required = true
+    ];
+}
+
+// DeleteTreatmentRequest is the request message type for the DeleteTreatment RPC
+// and is used to delete an existing treatment.
+message DeleteTreatmentRequest {
+    // Name is the name of the treatment that should be deleted.
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+}

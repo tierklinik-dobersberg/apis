@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package tkd.booking.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "buf/validate/validate.proto";
+
+// Species is a well-known species for which treatments are available.
+message Species {
+    // Name is the unique name of the species.
+    string name = 1;
+
+    // DisplayName is a human readable name for the species to be used in the
+    // self-booking user interface.
+    string display_name = 2;
+
+    // RequestCastrationStatus can be set to true if the self-booking user interface
+    // should request the castration status of the patient.
+    bool request_castration_status = 3;
+}
+
+service SpeciesService {
+    rpc CreateSpecies(Species) returns (Species) {}
+    rpc ListSpecies(ListSpeciesRequest) returns (ListSpeciesResponse) {}
+    rpc UpdateSpecies(UpdateSpeciesRequest) returns (Species) {}
+    rpc DeleteSpecies(DeleteSpeciesRequest) returns (google.protobuf.Empty) {}
+}
+
+message ListSpeciesRequest {
+    string search = 1;
+}
+
+message ListSpeciesResponse {
+    repeated Species species = 1;
+}
+
+message UpdateSpeciesRequest {
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    Species species = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.FieldMask update_mask = 3;
+}
+
+message DeleteSpeciesRequest {
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+}

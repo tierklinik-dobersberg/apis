@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package tkd.longrunning.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
+
+enum OperationState {
+    OperationState_UNSPECIFIED = 0;
+    OperationState_PENDING = 1;
+    OperationState_RUNNING = 2;
+    OperationState_COMPLETE = 3;
+    OperationState_LOST = 5;
+}
+
+// Operation is a operation dispatched and which progress can be tracked using
+// LongRunningService.
+message Operation {
+    // UniqueId holds a unique ID for this long running operation.
+    string unique_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // CreateTime holds the time at which this long-running operation
+    // has been created.
+    google.protobuf.Timestamp create_time = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // Owner holds the identifier of the service that created this long-
+    // running operation.
+    string owner = 3;
+
+    // Creator may hold the ID of a user on which behave this operation
+    // has been created.
+    string creator = 4;
+
+    // State holds the current state of the operation.
+    OperationState state = 5;
+
+    // Ttl holds the time-to-live intervals at which the operation owner
+    // should update the state of the operation. If the ttl expires and the service
+    // is not updated within the grace_period, the operation is considered lost.
+    // 
+    // If unspecified, the server might set a default value that must be honored
+    // by the owning service.
+    google.protobuf.Duration ttl = 6;
+
+    // GracePeriod is the grace-period that must expire after the ttl expired
+    // for this operation to be considred lost.
+    // This field is populated by the LongRunningService and is normally double
+    // the ttl field.
+    google.protobuf.Duration grace_period = 13;
+
+    // Description holds an optional description for this operation.
+    string description = 7;
+
+    // Result holds the result of the operation when it's state is
+    // OperationState_COMPLETE.
+    // Depending on the outcome, either the success or error field will be
+    // set.
+    oneof result {
+        OperationSuccess success = 8;
+        OperationError error = 9;
+    }
+
+    // LastUpdate holds the time at wich the operation has last been updated
+    // by it's owning service.
+    google.protobuf.Timestamp last_update = 10;
+
+    // Parameters might hold parameters that have been used when creating
+    // this operation.
+    map<string, google.protobuf.Value> parameters = 11;
+
+    // Annotations might hold service specific data.
+    // In conrast to parameters, which are read-only once the operation has been submitted,
+    // a service owner might update annotations whenever the operation is "pinged".
+    map<string, string> annotations = 12;
+
+    // Kind is a service specific operation kind and is opaque to the LongRunningService.
+    string kind = 13;
+}
+
+message OperationSuccess {
+    // Message may hold a success message.
+    string message = 1;
+
+    // Payload may hold an operation specific payload.
+    google.protobuf.Any payload = 2;
+}
+
+message OperationError {
+    // Message may hold a error message.
+    string message = 1;
+
+    // Payload may hold an operation specific payload.
+    google.protobuf.Any payload = 2;
+}
+
+service LongRunningService {
+    rpc RegisterOperation(RegisterOperationRequest) returns (Operation) {}
+
+    rpc UpdateOperation(UpdateOperationRequest) returns (Operation) {}
+
+    rpc CompleteOperation(CompleteOperationRequest) returns (Operation) {}
+
+    rpc QueryOperations(QueryOperationsRequest) returns (QueryOperationsResponse) {}
+
+    rpc GetOperation(GetOperationRequest) returns (Operation) {}
+}

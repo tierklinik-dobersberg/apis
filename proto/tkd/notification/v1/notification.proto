@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+// NotificationService implements different ways of sending notifications
+// to users or customers.
+service NotificationService {
+}
