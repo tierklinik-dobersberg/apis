@@ -150,6 +150,11 @@ export declare class ListUsersRequest extends Message<ListUsersRequest> {
    */
   filterByRoles: string[];
 
+  /**
+   * @generated from field: bool include_deleted = 4;
+   */
+  includeDeleted: boolean;
+
   constructor(data?: PartialMessage<ListUsersRequest>);
 
   static readonly runtime: typeof proto3;

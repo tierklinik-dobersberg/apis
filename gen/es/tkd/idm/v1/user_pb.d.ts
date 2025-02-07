@@ -233,6 +233,13 @@ export declare class User extends Message<User> {
    */
   primaryPhoneNumber?: PhoneNumber;
 
+  /**
+   * Deleted might be set to true to mark a user as deleted.
+   *
+   * @generated from field: bool deleted = 14;
+   */
+  deleted: boolean;
+
   constructor(data?: PartialMessage<User>);
 
   static readonly runtime: typeof proto3;

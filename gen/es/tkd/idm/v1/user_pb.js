@@ -62,6 +62,7 @@ export const User = /*@__PURE__*/ proto3.makeMessageType(
     { no: 11, name: "birthday", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 12, name: "primary_mail", kind: "message", T: EMail },
     { no: 13, name: "primary_phone_number", kind: "message", T: PhoneNumber },
+    { no: 14, name: "deleted", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 

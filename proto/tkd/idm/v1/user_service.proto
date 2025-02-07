@@ -117,6 +117,8 @@ message ListUsersRequest {
   bool exclude_fields = 2;
 
   repeated string filter_by_roles = 3;
+
+  bool include_deleted = 4;
 }
 
 message ListUsersResponse {

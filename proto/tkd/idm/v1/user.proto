@@ -123,6 +123,9 @@ message User {
   // The primary phone number of the user.
   PhoneNumber primary_phone_number = 13;
 
+  // Deleted might be set to true to mark a user as deleted.
+  bool deleted = 14;
+
   option (tkd.common.v1.readable) = {
     field_mask: {
       paths: [
