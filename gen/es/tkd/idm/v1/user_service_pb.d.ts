@@ -151,9 +151,9 @@ export declare class ListUsersRequest extends Message<ListUsersRequest> {
   filterByRoles: string[];
 
   /**
-   * @generated from field: bool include_deleted = 4;
+   * @generated from field: bool exclude_deleted = 4;
    */
-  includeDeleted: boolean;
+  excludeDeleted: boolean;
 
   constructor(data?: PartialMessage<ListUsersRequest>);
 
