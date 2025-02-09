@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "Generating protobuf files ..."
 buf generate proto
 

@@ -48,15 +48,30 @@ const (
 	// LongRunningServiceGetOperationProcedure is the fully-qualified name of the LongRunningService's
 	// GetOperation RPC.
 	LongRunningServiceGetOperationProcedure = "/tkd.longrunning.v1.LongRunningService/GetOperation"
+	// LongRunningServiceWatchOperationProcedure is the fully-qualified name of the LongRunningService's
+	// WatchOperation RPC.
+	LongRunningServiceWatchOperationProcedure = "/tkd.longrunning.v1.LongRunningService/WatchOperation"
 )
 
 // LongRunningServiceClient is a client for the tkd.longrunning.v1.LongRunningService service.
 type LongRunningServiceClient interface {
+	// RegisterOperation registers a new long-running operation to be queried by users or administrators.
 	RegisterOperation(context.Context, *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	// UpdateOpertation updates the state of an operation and must be called regulary (see ttl and grace_period fields
+	// of the Operation message type)
 	UpdateOperation(context.Context, *connect_go.Request[v1.UpdateOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	// CompleteOperation marks an operation as completed and can set either the result or error
+	// values.
 	CompleteOperation(context.Context, *connect_go.Request[v1.CompleteOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	// QueryOperations returns a list of operations currently stored at the service.
+	// Note that completed operations will be removed from the server automatically after
+	// a server-defined timeout.
 	QueryOperations(context.Context, *connect_go.Request[v1.QueryOperationsRequest]) (*connect_go.Response[v1.QueryOperationsResponse], error)
+	// GetOperation allows to query a operation by ID.
 	GetOperation(context.Context, *connect_go.Request[v1.GetOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	// WatchOperations is like GetOperation but returns a stream that will re-send
+	// the operation whenever it is updated.
+	WatchOperation(context.Context, *connect_go.Request[v1.GetOperationRequest]) (*connect_go.ServerStreamForClient[v1.Operation], error)
 }
 
 // NewLongRunningServiceClient constructs a client for the tkd.longrunning.v1.LongRunningService
@@ -94,6 +109,11 @@ func NewLongRunningServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 			baseURL+LongRunningServiceGetOperationProcedure,
 			opts...,
 		),
+		watchOperation: connect_go.NewClient[v1.GetOperationRequest, v1.Operation](
+			httpClient,
+			baseURL+LongRunningServiceWatchOperationProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -104,6 +124,7 @@ type longRunningServiceClient struct {
 	completeOperation *connect_go.Client[v1.CompleteOperationRequest, v1.Operation]
 	queryOperations   *connect_go.Client[v1.QueryOperationsRequest, v1.QueryOperationsResponse]
 	getOperation      *connect_go.Client[v1.GetOperationRequest, v1.Operation]
+	watchOperation    *connect_go.Client[v1.GetOperationRequest, v1.Operation]
 }
 
 // RegisterOperation calls tkd.longrunning.v1.LongRunningService.RegisterOperation.
@@ -131,14 +152,31 @@ func (c *longRunningServiceClient) GetOperation(ctx context.Context, req *connec
 	return c.getOperation.CallUnary(ctx, req)
 }
 
+// WatchOperation calls tkd.longrunning.v1.LongRunningService.WatchOperation.
+func (c *longRunningServiceClient) WatchOperation(ctx context.Context, req *connect_go.Request[v1.GetOperationRequest]) (*connect_go.ServerStreamForClient[v1.Operation], error) {
+	return c.watchOperation.CallServerStream(ctx, req)
+}
+
 // LongRunningServiceHandler is an implementation of the tkd.longrunning.v1.LongRunningService
 // service.
 type LongRunningServiceHandler interface {
+	// RegisterOperation registers a new long-running operation to be queried by users or administrators.
 	RegisterOperation(context.Context, *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	// UpdateOpertation updates the state of an operation and must be called regulary (see ttl and grace_period fields
+	// of the Operation message type)
 	UpdateOperation(context.Context, *connect_go.Request[v1.UpdateOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	// CompleteOperation marks an operation as completed and can set either the result or error
+	// values.
 	CompleteOperation(context.Context, *connect_go.Request[v1.CompleteOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	// QueryOperations returns a list of operations currently stored at the service.
+	// Note that completed operations will be removed from the server automatically after
+	// a server-defined timeout.
 	QueryOperations(context.Context, *connect_go.Request[v1.QueryOperationsRequest]) (*connect_go.Response[v1.QueryOperationsResponse], error)
+	// GetOperation allows to query a operation by ID.
 	GetOperation(context.Context, *connect_go.Request[v1.GetOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	// WatchOperations is like GetOperation but returns a stream that will re-send
+	// the operation whenever it is updated.
+	WatchOperation(context.Context, *connect_go.Request[v1.GetOperationRequest], *connect_go.ServerStream[v1.Operation]) error
 }
 
 // NewLongRunningServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -172,6 +210,11 @@ func NewLongRunningServiceHandler(svc LongRunningServiceHandler, opts ...connect
 		svc.GetOperation,
 		opts...,
 	)
+	longRunningServiceWatchOperationHandler := connect_go.NewServerStreamHandler(
+		LongRunningServiceWatchOperationProcedure,
+		svc.WatchOperation,
+		opts...,
+	)
 	return "/tkd.longrunning.v1.LongRunningService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case LongRunningServiceRegisterOperationProcedure:
@@ -184,6 +227,8 @@ func NewLongRunningServiceHandler(svc LongRunningServiceHandler, opts ...connect
 			longRunningServiceQueryOperationsHandler.ServeHTTP(w, r)
 		case LongRunningServiceGetOperationProcedure:
 			longRunningServiceGetOperationHandler.ServeHTTP(w, r)
+		case LongRunningServiceWatchOperationProcedure:
+			longRunningServiceWatchOperationHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -211,4 +256,8 @@ func (UnimplementedLongRunningServiceHandler) QueryOperations(context.Context, *
 
 func (UnimplementedLongRunningServiceHandler) GetOperation(context.Context, *connect_go.Request[v1.GetOperationRequest]) (*connect_go.Response[v1.Operation], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.longrunning.v1.LongRunningService.GetOperation is not implemented"))
+}
+
+func (UnimplementedLongRunningServiceHandler) WatchOperation(context.Context, *connect_go.Request[v1.GetOperationRequest], *connect_go.ServerStream[v1.Operation]) error {
+	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.longrunning.v1.LongRunningService.WatchOperation is not implemented"))
 }
