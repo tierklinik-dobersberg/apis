@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func NewInterceptor(validator *protovalidate.Validator) connect.UnaryInterceptorFunc {
+func NewInterceptor(validator protovalidate.Validator) connect.UnaryInterceptorFunc {
 	return func(uf connect.UnaryFunc) connect.UnaryFunc {
 		return func(ctx context.Context, ar connect.AnyRequest) (connect.AnyResponse, error) {
 			if err := timing.Track(ctx, "validator", func() error {
