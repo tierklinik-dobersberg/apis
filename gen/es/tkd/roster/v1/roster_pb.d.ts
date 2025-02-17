@@ -180,6 +180,13 @@ export declare class PlannedShift extends Message<PlannedShift> {
    */
   uniqueId: string;
 
+  /**
+   * TimeWorth holds how much time this shift is worth for time-tracking.
+   *
+   * @generated from field: google.protobuf.Duration time_worth = 6;
+   */
+  timeWorth?: Duration;
+
   constructor(data?: PartialMessage<PlannedShift>);
 
   static readonly runtime: typeof proto3;

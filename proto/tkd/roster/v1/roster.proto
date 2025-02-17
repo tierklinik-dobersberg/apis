@@ -67,6 +67,9 @@ message PlannedShift {
 
     // A unique ID to match PlannedShifts against RequiredShifts.
     string unique_id = 5;
+
+    // TimeWorth holds how much time this shift is worth for time-tracking.
+    google.protobuf.Duration time_worth = 6;
 }
 
 message RosterType {

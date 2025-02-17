@@ -1,6 +1,7 @@
 package mongomigrate_test
 
 import (
+	"context"
 	"errors"
 	"testing"
 
@@ -107,18 +108,18 @@ func TestMultipleMigrationsInOrder(t *testing.T) {
 func TestRollback(t *testing.T) {
 	ctx, cli := mongotest.Start(t)
 
-	migrator := mongomigrate.NewMigrator(cli.Database("test"), "")
+	migrator := mongomigrate.NewMigrator(cli.Database("test2"), "")
 
 	called := false
 
 	migrator.Register(mongomigrate.Migration{
 		Version:     1,
 		Description: "create a single object",
-		Database:    "test",
+		Database:    "test2",
 		Up: mongomigrate.MigrateFunc(func(sc mongo.SessionContext, d *mongo.Database) error {
 			called = true
 
-			_, err := d.Collection("test").InsertOne(ctx, bson.M{"document": true})
+			_, err := d.Collection("test").InsertOne(ctx, bson.M{"document": "foobar"})
 			require.NoError(t, err)
 
 			return errors.New("simulated")
@@ -129,6 +130,6 @@ func TestRollback(t *testing.T) {
 	require.Error(t, err)
 	require.True(t, called)
 
-	doc := cli.Database("test").Collection("test").FindOne(ctx, bson.M{"document": true})
+	doc := cli.Database("test2").Collection("test").FindOne(context.Background(), bson.M{"document": "foobar"})
 	require.Error(t, doc.Err())
 }

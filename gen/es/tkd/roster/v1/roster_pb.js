@@ -65,6 +65,7 @@ export const PlannedShift = /*@__PURE__*/ proto3.makeMessageType(
     { no: 3, name: "assigned_user_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "work_shift_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "unique_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "time_worth", kind: "message", T: Duration },
   ],
 );
 
