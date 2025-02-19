@@ -103,7 +103,7 @@ message OperationError {
 
 service LongRunningService {
     // RegisterOperation registers a new long-running operation to be queried by users or administrators.
-    rpc RegisterOperation(RegisterOperationRequest) returns (Operation) {}
+    rpc RegisterOperation(RegisterOperationRequest) returns (RegisterOperationResponse) {}
 
     // UpdateOpertation updates the state of an operation and must be called regulary (see ttl and grace_period fields
     // of the Operation message type)
@@ -168,18 +168,30 @@ message RegisterOperationRequest {
     string kind = 9;
 }
 
+message RegisterOperationResponse {
+    // Operation is the operation that has been registered.
+    Operation operation = 1;
+
+    // AuthToken holds the token required to perform updates to this operation.
+    string auth_token = 2;
+}
+
 message UpdateOperationRequest {
     string unique_id = 1 [
         (buf.validate.field).required = true
     ];
 
-    // State holds the current state of the operation.
-    OperationState state = 2;
+    // AuthToken is the token returned from the RegisterOperationResponse and must be set
+    // in order to allow updates to the operation.
+    string auth_token = 2;
+
+    // Running specifies if the operation is running or pending.
+    bool running = 3;
 
     // Annotations might hold service specific data.
     // In conrast to parameters, which are read-only once the operation has been submitted,
     // a service owner might update annotations whenever the operation is "pinged".
-    map<string, string> annotations = 3;
+    map<string, string> annotations = 4;
 
     google.protobuf.FieldMask update_mask = 10;
 }
@@ -188,6 +200,10 @@ message CompleteOperationRequest {
     string unique_id = 1 [
         (buf.validate.field).required = true
     ];
+
+    // AuthToken is the token returned from the RegisterOperationResponse and must be set
+    // in order to allow updates to the operation.
+    string auth_token = 2;
 
     // Result holds the result of the operation when it's state is
     // OperationState_COMPLETE.

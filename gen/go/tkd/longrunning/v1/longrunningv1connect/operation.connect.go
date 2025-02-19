@@ -56,7 +56,7 @@ const (
 // LongRunningServiceClient is a client for the tkd.longrunning.v1.LongRunningService service.
 type LongRunningServiceClient interface {
 	// RegisterOperation registers a new long-running operation to be queried by users or administrators.
-	RegisterOperation(context.Context, *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	RegisterOperation(context.Context, *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.RegisterOperationResponse], error)
 	// UpdateOpertation updates the state of an operation and must be called regulary (see ttl and grace_period fields
 	// of the Operation message type)
 	UpdateOperation(context.Context, *connect_go.Request[v1.UpdateOperationRequest]) (*connect_go.Response[v1.Operation], error)
@@ -84,7 +84,7 @@ type LongRunningServiceClient interface {
 func NewLongRunningServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) LongRunningServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &longRunningServiceClient{
-		registerOperation: connect_go.NewClient[v1.RegisterOperationRequest, v1.Operation](
+		registerOperation: connect_go.NewClient[v1.RegisterOperationRequest, v1.RegisterOperationResponse](
 			httpClient,
 			baseURL+LongRunningServiceRegisterOperationProcedure,
 			opts...,
@@ -119,7 +119,7 @@ func NewLongRunningServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 
 // longRunningServiceClient implements LongRunningServiceClient.
 type longRunningServiceClient struct {
-	registerOperation *connect_go.Client[v1.RegisterOperationRequest, v1.Operation]
+	registerOperation *connect_go.Client[v1.RegisterOperationRequest, v1.RegisterOperationResponse]
 	updateOperation   *connect_go.Client[v1.UpdateOperationRequest, v1.Operation]
 	completeOperation *connect_go.Client[v1.CompleteOperationRequest, v1.Operation]
 	queryOperations   *connect_go.Client[v1.QueryOperationsRequest, v1.QueryOperationsResponse]
@@ -128,7 +128,7 @@ type longRunningServiceClient struct {
 }
 
 // RegisterOperation calls tkd.longrunning.v1.LongRunningService.RegisterOperation.
-func (c *longRunningServiceClient) RegisterOperation(ctx context.Context, req *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.Operation], error) {
+func (c *longRunningServiceClient) RegisterOperation(ctx context.Context, req *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.RegisterOperationResponse], error) {
 	return c.registerOperation.CallUnary(ctx, req)
 }
 
@@ -161,7 +161,7 @@ func (c *longRunningServiceClient) WatchOperation(ctx context.Context, req *conn
 // service.
 type LongRunningServiceHandler interface {
 	// RegisterOperation registers a new long-running operation to be queried by users or administrators.
-	RegisterOperation(context.Context, *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.Operation], error)
+	RegisterOperation(context.Context, *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.RegisterOperationResponse], error)
 	// UpdateOpertation updates the state of an operation and must be called regulary (see ttl and grace_period fields
 	// of the Operation message type)
 	UpdateOperation(context.Context, *connect_go.Request[v1.UpdateOperationRequest]) (*connect_go.Response[v1.Operation], error)
@@ -238,7 +238,7 @@ func NewLongRunningServiceHandler(svc LongRunningServiceHandler, opts ...connect
 // UnimplementedLongRunningServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedLongRunningServiceHandler struct{}
 
-func (UnimplementedLongRunningServiceHandler) RegisterOperation(context.Context, *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.Operation], error) {
+func (UnimplementedLongRunningServiceHandler) RegisterOperation(context.Context, *connect_go.Request[v1.RegisterOperationRequest]) (*connect_go.Response[v1.RegisterOperationResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.longrunning.v1.LongRunningService.RegisterOperation is not implemented"))
 }
 
