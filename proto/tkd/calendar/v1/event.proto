@@ -65,8 +65,8 @@ message CalendarEvent {
 }
 
 message CustomerAnnotation {
-    // CustomerSource may be set to the source of the customer record.
-    string customer_source = 1;
+    reserved 1;
+    reserved "customer_source";
 
     // CustomerId is the ID of the customer within the specified source.
     string customer_id = 2;

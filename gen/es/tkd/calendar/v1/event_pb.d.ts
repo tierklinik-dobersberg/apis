@@ -166,13 +166,6 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
  */
 export declare class CustomerAnnotation extends Message<CustomerAnnotation> {
   /**
-   * CustomerSource may be set to the source of the customer record.
-   *
-   * @generated from field: string customer_source = 1;
-   */
-  customerSource: string;
-
-  /**
    * CustomerId is the ID of the customer within the specified source.
    *
    * @generated from field: string customer_id = 2;

@@ -48,7 +48,6 @@ export const CalendarEvent = /*@__PURE__*/ proto3.makeMessageType(
 export const CustomerAnnotation = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.calendar.v1.CustomerAnnotation",
   () => [
-    { no: 1, name: "customer_source", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "customer_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "animal_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "created_by_user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
