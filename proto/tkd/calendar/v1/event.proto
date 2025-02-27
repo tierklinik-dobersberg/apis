@@ -25,6 +25,10 @@ message Calendar {
     // Note that if multiple users are associated with an calendar, only the first
     // is returned here.
     string user_id = 5;
+
+    // IsVirtualResource is set to true if this is a virtual resource
+    // calendar.
+    bool is_virtual_resource = 6;
 }
 
 // next-id: 12

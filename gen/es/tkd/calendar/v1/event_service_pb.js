@@ -16,6 +16,7 @@ export const CalenarEventRequestKind = /*@__PURE__*/ proto3.makeEnum(
     {no: 0, name: "CALENDAR_EVENT_REQUEST_KIND_UNSPECIFIED"},
     {no: 1, name: "CALENDAR_EVENT_REQUEST_KIND_EVENTS"},
     {no: 2, name: "CALENDAR_EVENT_REQUEST_KIND_FREE_SLOTS"},
+    {no: 3, name: "CALENDAR_EVENT_REQUEST_KIND_VIRTUAL_RESOURCES"},
   ],
 );
 
@@ -68,7 +69,9 @@ export const DeleteResourceCalendarRequest = /*@__PURE__*/ proto3.makeMessageTyp
  */
 export const ListCalendarsRequest = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.calendar.v1.ListCalendarsRequest",
-  [],
+  () => [
+    { no: 1, name: "include_virtual_resource_calendars", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ],
 );
 
 /**

@@ -51,6 +51,14 @@ export declare class Calendar extends Message<Calendar> {
    */
   userId: string;
 
+  /**
+   * IsVirtualResource is set to true if this is a virtual resource
+   * calendar.
+   *
+   * @generated from field: bool is_virtual_resource = 6;
+   */
+  isVirtualResource: boolean;
+
   constructor(data?: PartialMessage<Calendar>);
 
   static readonly runtime: typeof proto3;

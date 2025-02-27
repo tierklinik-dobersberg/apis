@@ -26,6 +26,11 @@ export declare enum CalenarEventRequestKind {
    * @generated from enum value: CALENDAR_EVENT_REQUEST_KIND_FREE_SLOTS = 2;
    */
   CALENDAR_EVENT_REQUEST_KIND_FREE_SLOTS = 2,
+
+  /**
+   * @generated from enum value: CALENDAR_EVENT_REQUEST_KIND_VIRTUAL_RESOURCES = 3;
+   */
+  CALENDAR_EVENT_REQUEST_KIND_VIRTUAL_RESOURCES = 3,
 }
 
 /**
@@ -152,6 +157,14 @@ export declare class DeleteResourceCalendarRequest extends Message<DeleteResourc
  * @generated from message tkd.calendar.v1.ListCalendarsRequest
  */
 export declare class ListCalendarsRequest extends Message<ListCalendarsRequest> {
+  /**
+   * IncludeVirtualResourceCalendars can be set to true to also include entries
+   * for virtual resources.
+   *
+   * @generated from field: bool include_virtual_resource_calendars = 1;
+   */
+  includeVirtualResourceCalendars: boolean;
+
   constructor(data?: PartialMessage<ListCalendarsRequest>);
 
   static readonly runtime: typeof proto3;
