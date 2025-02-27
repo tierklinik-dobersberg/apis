@@ -162,6 +162,14 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
    */
   resources: string[];
 
+  /**
+   * VirtualCopy is set to true for all events that are "virtually copied"
+   * into a ResourceCalendar.
+   *
+   * @generated from field: bool virtual_copy = 12;
+   */
+  virtualCopy: boolean;
+
   constructor(data?: PartialMessage<CalendarEvent>);
 
   static readonly runtime: typeof proto3;
