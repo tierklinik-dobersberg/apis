@@ -161,6 +161,7 @@ export const CreateEventRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 4, name: "start", kind: "message", T: Timestamp },
     { no: 5, name: "end", kind: "message", T: Timestamp },
     { no: 6, name: "extra_data", kind: "message", T: Any },
+    { no: 7, name: "resources", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 
@@ -193,6 +194,7 @@ export const UpdateEventRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 5, name: "start", kind: "message", T: Timestamp },
     { no: 6, name: "end", kind: "message", T: Timestamp },
     { no: 7, name: "extra_data", kind: "message", T: Any },
+    { no: 8, name: "resources", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 20, name: "update_mask", kind: "message", T: FieldMask },
   ],
 );

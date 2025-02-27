@@ -240,6 +240,10 @@ message CreateEventRequest {
     // ExtraData might be set to an abritrary protobuf message that should be
     // attached to the calendar event.
     google.protobuf.Any extra_data = 6;
+
+    // Resources is a list of resource names that are required for this calendar
+    // event.
+    repeated string resources = 7;
 }
 
 // CreateEventResponse is the response message of the CreateEvent RPC and
@@ -276,6 +280,10 @@ message UpdateEventRequest {
 
     // ExtraData can be set to replace the extra-data associated with the event.
     google.protobuf.Any extra_data = 7;
+
+    // Resources is a list of resource names that are required for this
+    // calendar event.
+    repeated string resources = 8;
 
     // UpdateMask specifies which fields of the original event should be
     // updated. If left empty, all fields will be replaced with the values from

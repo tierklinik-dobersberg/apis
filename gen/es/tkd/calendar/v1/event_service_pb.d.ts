@@ -456,6 +456,14 @@ export declare class CreateEventRequest extends Message<CreateEventRequest> {
    */
   extraData?: Any;
 
+  /**
+   * Resources is a list of resource names that are required for this calendar
+   * event.
+   *
+   * @generated from field: repeated string resources = 7;
+   */
+  resources: string[];
+
   constructor(data?: PartialMessage<CreateEventRequest>);
 
   static readonly runtime: typeof proto3;
@@ -555,6 +563,14 @@ export declare class UpdateEventRequest extends Message<UpdateEventRequest> {
    * @generated from field: google.protobuf.Any extra_data = 7;
    */
   extraData?: Any;
+
+  /**
+   * Resources is a list of resource names that are required for this
+   * calendar event.
+   *
+   * @generated from field: repeated string resources = 8;
+   */
+  resources: string[];
 
   /**
    * UpdateMask specifies which fields of the original event should be
