@@ -38,6 +38,10 @@ message ResourceCalendar {
 // be reasonable to re-implement those features with different calendar
 // backends.
 service CalendarService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["idm_superuser"]
+    };
+
     // ListCalendars returns a list of available calendars.
     rpc ListCalendars(ListCalendarsRequest) returns (ListCalendarsResponse) {
         option (tkd.common.v1.auth) = {
