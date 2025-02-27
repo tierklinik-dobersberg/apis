@@ -136,7 +136,8 @@ message User {
         "primary_mail",
         "primary_phone_number",
         "birthday",
-        "extra"
+        "extra",
+        "deleted"
       ]
     },
     owner_field_name: "id",
