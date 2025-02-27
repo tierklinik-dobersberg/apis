@@ -29,6 +29,123 @@ export declare enum CalenarEventRequestKind {
 }
 
 /**
+ * @generated from message tkd.calendar.v1.ResourceCalendar
+ */
+export declare class ResourceCalendar extends Message<ResourceCalendar> {
+  /**
+   * Name is the unique name of the resource calendar
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * DisplayName is an optional display-name for the resource
+   * calendar and defaults to the same value as name.
+   *
+   * @generated from field: string display_name = 2;
+   */
+  displayName: string;
+
+  /**
+   * Color is an optional color value (Hex-Format) for this resource.
+   *
+   * @generated from field: string color = 3;
+   */
+  color: string;
+
+  /**
+   * MaxConcurrentUse defines how many events are allowed at the same
+   * time.
+   * If unset, it defaults to 1
+   *
+   * @generated from field: uint32 max_concurrent_use = 4;
+   */
+  maxConcurrentUse: number;
+
+  constructor(data?: PartialMessage<ResourceCalendar>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.ResourceCalendar";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ResourceCalendar;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ResourceCalendar;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ResourceCalendar;
+
+  static equals(a: ResourceCalendar | PlainMessage<ResourceCalendar> | undefined, b: ResourceCalendar | PlainMessage<ResourceCalendar> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.calendar.v1.ListResourceCalendarsResponse
+ */
+export declare class ListResourceCalendarsResponse extends Message<ListResourceCalendarsResponse> {
+  /**
+   * @generated from field: repeated tkd.calendar.v1.ResourceCalendar resource_calendars = 1;
+   */
+  resourceCalendars: ResourceCalendar[];
+
+  constructor(data?: PartialMessage<ListResourceCalendarsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.ListResourceCalendarsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListResourceCalendarsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListResourceCalendarsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListResourceCalendarsResponse;
+
+  static equals(a: ListResourceCalendarsResponse | PlainMessage<ListResourceCalendarsResponse> | undefined, b: ListResourceCalendarsResponse | PlainMessage<ListResourceCalendarsResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.calendar.v1.ListResourceCalendarsRequest
+ */
+export declare class ListResourceCalendarsRequest extends Message<ListResourceCalendarsRequest> {
+  constructor(data?: PartialMessage<ListResourceCalendarsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.ListResourceCalendarsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListResourceCalendarsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListResourceCalendarsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListResourceCalendarsRequest;
+
+  static equals(a: ListResourceCalendarsRequest | PlainMessage<ListResourceCalendarsRequest> | undefined, b: ListResourceCalendarsRequest | PlainMessage<ListResourceCalendarsRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message tkd.calendar.v1.DeleteResourceCalendarRequest
+ */
+export declare class DeleteResourceCalendarRequest extends Message<DeleteResourceCalendarRequest> {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  constructor(data?: PartialMessage<DeleteResourceCalendarRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.DeleteResourceCalendarRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteResourceCalendarRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DeleteResourceCalendarRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DeleteResourceCalendarRequest;
+
+  static equals(a: DeleteResourceCalendarRequest | PlainMessage<DeleteResourceCalendarRequest> | undefined, b: DeleteResourceCalendarRequest | PlainMessage<DeleteResourceCalendarRequest> | undefined): boolean;
+}
+
+/**
  * ListCalendarsRequest is used by the ListCalendars RPC. There are now message
  * fields for now.
  *

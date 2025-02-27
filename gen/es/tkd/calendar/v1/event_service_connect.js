@@ -3,8 +3,8 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateEventRequest, CreateEventResponse, DeleteEventRequest, DeleteEventResponse, ListCalendarsRequest, ListCalendarsResponse, ListEventsRequest, ListEventsResponse, MoveEventRequest, MoveEventResponse, UpdateEventRequest, UpdateEventResponse } from "./event_service_pb.js";
-import { MethodKind } from "@bufbuild/protobuf";
+import { CreateEventRequest, CreateEventResponse, DeleteEventRequest, DeleteEventResponse, DeleteResourceCalendarRequest, ListCalendarsRequest, ListCalendarsResponse, ListEventsRequest, ListEventsResponse, ListResourceCalendarsRequest, ListResourceCalendarsResponse, MoveEventRequest, MoveEventResponse, ResourceCalendar, UpdateEventRequest, UpdateEventResponse } from "./event_service_pb.js";
+import { Empty, MethodKind } from "@bufbuild/protobuf";
 
 /**
  * CalendarService provides RPC methods for retrieving, creating and managing
@@ -90,6 +90,33 @@ export const CalendarService = {
       name: "DeleteEvent",
       I: DeleteEventRequest,
       O: DeleteEventResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.calendar.v1.CalendarService.StoreResourceCalendar
+     */
+    storeResourceCalendar: {
+      name: "StoreResourceCalendar",
+      I: ResourceCalendar,
+      O: ResourceCalendar,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.calendar.v1.CalendarService.ListResourceCalendars
+     */
+    listResourceCalendars: {
+      name: "ListResourceCalendars",
+      I: ListResourceCalendarsRequest,
+      O: ListResourceCalendarsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.calendar.v1.CalendarService.DeleteResourceCalendar
+     */
+    deleteResourceCalendar: {
+      name: "DeleteResourceCalendar",
+      I: DeleteResourceCalendarRequest,
+      O: Empty,
       kind: MethodKind.Unary,
     },
   }

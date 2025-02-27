@@ -67,7 +67,7 @@ export declare class Calendar extends Message<Calendar> {
 }
 
 /**
- * next-id: 11
+ * next-id: 12
  *
  * @generated from message tkd.calendar.v1.CalendarEvent
  */
@@ -145,6 +145,14 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
    * @generated from field: google.protobuf.Timestamp create_time = 10;
    */
   createTime?: Timestamp;
+
+  /**
+   * Resources is a list of unique resource-calendar names that are associated
+   * with this event.
+   *
+   * @generated from field: repeated string resources = 11;
+   */
+  resources: string[];
 
   constructor(data?: PartialMessage<CalendarEvent>);
 

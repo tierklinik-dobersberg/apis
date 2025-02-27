@@ -9,6 +9,7 @@ import (
 	errors "errors"
 	connect_go "github.com/bufbuild/connect-go"
 	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -51,6 +52,15 @@ const (
 	// CalendarServiceDeleteEventProcedure is the fully-qualified name of the CalendarService's
 	// DeleteEvent RPC.
 	CalendarServiceDeleteEventProcedure = "/tkd.calendar.v1.CalendarService/DeleteEvent"
+	// CalendarServiceStoreResourceCalendarProcedure is the fully-qualified name of the
+	// CalendarService's StoreResourceCalendar RPC.
+	CalendarServiceStoreResourceCalendarProcedure = "/tkd.calendar.v1.CalendarService/StoreResourceCalendar"
+	// CalendarServiceListResourceCalendarsProcedure is the fully-qualified name of the
+	// CalendarService's ListResourceCalendars RPC.
+	CalendarServiceListResourceCalendarsProcedure = "/tkd.calendar.v1.CalendarService/ListResourceCalendars"
+	// CalendarServiceDeleteResourceCalendarProcedure is the fully-qualified name of the
+	// CalendarService's DeleteResourceCalendar RPC.
+	CalendarServiceDeleteResourceCalendarProcedure = "/tkd.calendar.v1.CalendarService/DeleteResourceCalendar"
 )
 
 // CalendarServiceClient is a client for the tkd.calendar.v1.CalendarService service.
@@ -73,6 +83,9 @@ type CalendarServiceClient interface {
 	MoveEvent(context.Context, *connect_go.Request[v1.MoveEventRequest]) (*connect_go.Response[v1.MoveEventResponse], error)
 	// DeleteEvent deletes an event from a calendar.
 	DeleteEvent(context.Context, *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[v1.DeleteEventResponse], error)
+	StoreResourceCalendar(context.Context, *connect_go.Request[v1.ResourceCalendar]) (*connect_go.Response[v1.ResourceCalendar], error)
+	ListResourceCalendars(context.Context, *connect_go.Request[v1.ListResourceCalendarsRequest]) (*connect_go.Response[v1.ListResourceCalendarsResponse], error)
+	DeleteResourceCalendar(context.Context, *connect_go.Request[v1.DeleteResourceCalendarRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewCalendarServiceClient constructs a client for the tkd.calendar.v1.CalendarService service. By
@@ -115,17 +128,35 @@ func NewCalendarServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+CalendarServiceDeleteEventProcedure,
 			opts...,
 		),
+		storeResourceCalendar: connect_go.NewClient[v1.ResourceCalendar, v1.ResourceCalendar](
+			httpClient,
+			baseURL+CalendarServiceStoreResourceCalendarProcedure,
+			opts...,
+		),
+		listResourceCalendars: connect_go.NewClient[v1.ListResourceCalendarsRequest, v1.ListResourceCalendarsResponse](
+			httpClient,
+			baseURL+CalendarServiceListResourceCalendarsProcedure,
+			opts...,
+		),
+		deleteResourceCalendar: connect_go.NewClient[v1.DeleteResourceCalendarRequest, emptypb.Empty](
+			httpClient,
+			baseURL+CalendarServiceDeleteResourceCalendarProcedure,
+			opts...,
+		),
 	}
 }
 
 // calendarServiceClient implements CalendarServiceClient.
 type calendarServiceClient struct {
-	listCalendars *connect_go.Client[v1.ListCalendarsRequest, v1.ListCalendarsResponse]
-	listEvents    *connect_go.Client[v1.ListEventsRequest, v1.ListEventsResponse]
-	createEvent   *connect_go.Client[v1.CreateEventRequest, v1.CreateEventResponse]
-	updateEvent   *connect_go.Client[v1.UpdateEventRequest, v1.UpdateEventResponse]
-	moveEvent     *connect_go.Client[v1.MoveEventRequest, v1.MoveEventResponse]
-	deleteEvent   *connect_go.Client[v1.DeleteEventRequest, v1.DeleteEventResponse]
+	listCalendars          *connect_go.Client[v1.ListCalendarsRequest, v1.ListCalendarsResponse]
+	listEvents             *connect_go.Client[v1.ListEventsRequest, v1.ListEventsResponse]
+	createEvent            *connect_go.Client[v1.CreateEventRequest, v1.CreateEventResponse]
+	updateEvent            *connect_go.Client[v1.UpdateEventRequest, v1.UpdateEventResponse]
+	moveEvent              *connect_go.Client[v1.MoveEventRequest, v1.MoveEventResponse]
+	deleteEvent            *connect_go.Client[v1.DeleteEventRequest, v1.DeleteEventResponse]
+	storeResourceCalendar  *connect_go.Client[v1.ResourceCalendar, v1.ResourceCalendar]
+	listResourceCalendars  *connect_go.Client[v1.ListResourceCalendarsRequest, v1.ListResourceCalendarsResponse]
+	deleteResourceCalendar *connect_go.Client[v1.DeleteResourceCalendarRequest, emptypb.Empty]
 }
 
 // ListCalendars calls tkd.calendar.v1.CalendarService.ListCalendars.
@@ -158,6 +189,21 @@ func (c *calendarServiceClient) DeleteEvent(ctx context.Context, req *connect_go
 	return c.deleteEvent.CallUnary(ctx, req)
 }
 
+// StoreResourceCalendar calls tkd.calendar.v1.CalendarService.StoreResourceCalendar.
+func (c *calendarServiceClient) StoreResourceCalendar(ctx context.Context, req *connect_go.Request[v1.ResourceCalendar]) (*connect_go.Response[v1.ResourceCalendar], error) {
+	return c.storeResourceCalendar.CallUnary(ctx, req)
+}
+
+// ListResourceCalendars calls tkd.calendar.v1.CalendarService.ListResourceCalendars.
+func (c *calendarServiceClient) ListResourceCalendars(ctx context.Context, req *connect_go.Request[v1.ListResourceCalendarsRequest]) (*connect_go.Response[v1.ListResourceCalendarsResponse], error) {
+	return c.listResourceCalendars.CallUnary(ctx, req)
+}
+
+// DeleteResourceCalendar calls tkd.calendar.v1.CalendarService.DeleteResourceCalendar.
+func (c *calendarServiceClient) DeleteResourceCalendar(ctx context.Context, req *connect_go.Request[v1.DeleteResourceCalendarRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.deleteResourceCalendar.CallUnary(ctx, req)
+}
+
 // CalendarServiceHandler is an implementation of the tkd.calendar.v1.CalendarService service.
 type CalendarServiceHandler interface {
 	// ListCalendars returns a list of available calendars.
@@ -178,6 +224,9 @@ type CalendarServiceHandler interface {
 	MoveEvent(context.Context, *connect_go.Request[v1.MoveEventRequest]) (*connect_go.Response[v1.MoveEventResponse], error)
 	// DeleteEvent deletes an event from a calendar.
 	DeleteEvent(context.Context, *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[v1.DeleteEventResponse], error)
+	StoreResourceCalendar(context.Context, *connect_go.Request[v1.ResourceCalendar]) (*connect_go.Response[v1.ResourceCalendar], error)
+	ListResourceCalendars(context.Context, *connect_go.Request[v1.ListResourceCalendarsRequest]) (*connect_go.Response[v1.ListResourceCalendarsResponse], error)
+	DeleteResourceCalendar(context.Context, *connect_go.Request[v1.DeleteResourceCalendarRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewCalendarServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -216,6 +265,21 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect_go.Ha
 		svc.DeleteEvent,
 		opts...,
 	)
+	calendarServiceStoreResourceCalendarHandler := connect_go.NewUnaryHandler(
+		CalendarServiceStoreResourceCalendarProcedure,
+		svc.StoreResourceCalendar,
+		opts...,
+	)
+	calendarServiceListResourceCalendarsHandler := connect_go.NewUnaryHandler(
+		CalendarServiceListResourceCalendarsProcedure,
+		svc.ListResourceCalendars,
+		opts...,
+	)
+	calendarServiceDeleteResourceCalendarHandler := connect_go.NewUnaryHandler(
+		CalendarServiceDeleteResourceCalendarProcedure,
+		svc.DeleteResourceCalendar,
+		opts...,
+	)
 	return "/tkd.calendar.v1.CalendarService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CalendarServiceListCalendarsProcedure:
@@ -230,6 +294,12 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect_go.Ha
 			calendarServiceMoveEventHandler.ServeHTTP(w, r)
 		case CalendarServiceDeleteEventProcedure:
 			calendarServiceDeleteEventHandler.ServeHTTP(w, r)
+		case CalendarServiceStoreResourceCalendarProcedure:
+			calendarServiceStoreResourceCalendarHandler.ServeHTTP(w, r)
+		case CalendarServiceListResourceCalendarsProcedure:
+			calendarServiceListResourceCalendarsHandler.ServeHTTP(w, r)
+		case CalendarServiceDeleteResourceCalendarProcedure:
+			calendarServiceDeleteResourceCalendarHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -261,4 +331,16 @@ func (UnimplementedCalendarServiceHandler) MoveEvent(context.Context, *connect_g
 
 func (UnimplementedCalendarServiceHandler) DeleteEvent(context.Context, *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[v1.DeleteEventResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.DeleteEvent is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) StoreResourceCalendar(context.Context, *connect_go.Request[v1.ResourceCalendar]) (*connect_go.Response[v1.ResourceCalendar], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.StoreResourceCalendar is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) ListResourceCalendars(context.Context, *connect_go.Request[v1.ListResourceCalendarsRequest]) (*connect_go.Response[v1.ListResourceCalendarsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.ListResourceCalendars is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) DeleteResourceCalendar(context.Context, *connect_go.Request[v1.DeleteResourceCalendarRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.DeleteResourceCalendar is not implemented"))
 }

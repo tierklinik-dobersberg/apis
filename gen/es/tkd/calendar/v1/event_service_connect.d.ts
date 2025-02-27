@@ -3,8 +3,8 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateEventRequest, CreateEventResponse, DeleteEventRequest, DeleteEventResponse, ListCalendarsRequest, ListCalendarsResponse, ListEventsRequest, ListEventsResponse, MoveEventRequest, MoveEventResponse, UpdateEventRequest, UpdateEventResponse } from "./event_service_pb.js";
-import { MethodKind } from "@bufbuild/protobuf";
+import { CreateEventRequest, CreateEventResponse, DeleteEventRequest, DeleteEventResponse, DeleteResourceCalendarRequest, ListCalendarsRequest, ListCalendarsResponse, ListEventsRequest, ListEventsResponse, ListResourceCalendarsRequest, ListResourceCalendarsResponse, MoveEventRequest, MoveEventResponse, ResourceCalendar, UpdateEventRequest, UpdateEventResponse } from "./event_service_pb.js";
+import { Empty, MethodKind } from "@bufbuild/protobuf";
 
 /**
  * CalendarService provides RPC methods for retrieving, creating and managing
@@ -90,6 +90,33 @@ export declare const CalendarService: {
       readonly name: "DeleteEvent",
       readonly I: typeof DeleteEventRequest,
       readonly O: typeof DeleteEventResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.calendar.v1.CalendarService.StoreResourceCalendar
+     */
+    readonly storeResourceCalendar: {
+      readonly name: "StoreResourceCalendar",
+      readonly I: typeof ResourceCalendar,
+      readonly O: typeof ResourceCalendar,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.calendar.v1.CalendarService.ListResourceCalendars
+     */
+    readonly listResourceCalendars: {
+      readonly name: "ListResourceCalendars",
+      readonly I: typeof ListResourceCalendarsRequest,
+      readonly O: typeof ListResourceCalendarsResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc tkd.calendar.v1.CalendarService.DeleteResourceCalendar
+     */
+    readonly deleteResourceCalendar: {
+      readonly name: "DeleteResourceCalendar",
+      readonly I: typeof DeleteResourceCalendarRequest,
+      readonly O: typeof Empty,
       readonly kind: MethodKind.Unary,
     },
   }

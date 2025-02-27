@@ -22,7 +22,7 @@ export const Calendar = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
- * next-id: 11
+ * next-id: 12
  *
  * @generated from message tkd.calendar.v1.CalendarEvent
  */
@@ -39,6 +39,7 @@ export const CalendarEvent = /*@__PURE__*/ proto3.makeMessageType(
     { no: 8, name: "extra_data", kind: "message", T: Any },
     { no: 9, name: "is_free", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 10, name: "create_time", kind: "message", T: Timestamp },
+    { no: 11, name: "resources", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

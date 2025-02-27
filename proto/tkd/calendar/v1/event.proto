@@ -27,7 +27,7 @@ message Calendar {
     string user_id = 5;
 }
 
-// next-id: 11
+// next-id: 12
 message CalendarEvent {
     // ID is a unique ID for the calendar event.
     string id = 1;
@@ -62,6 +62,10 @@ message CalendarEvent {
 
     // CreateTime holds the timestamp at which this calendar event has been created.
     google.protobuf.Timestamp create_time = 10;
+
+    // Resources is a list of unique resource-calendar names that are associated
+    // with this event.
+    repeated string resources = 11;
 }
 
 message CustomerAnnotation {

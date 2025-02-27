@@ -6,9 +6,29 @@ import "tkd/calendar/v1/event.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/empty.proto";
 import "tkd/common/v1/descriptor.proto";
 import "tkd/common/v1/time_range.proto";
 import "buf/validate/validate.proto";
+
+message ResourceCalendar {
+    // Name is the unique name of the resource calendar
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // DisplayName is an optional display-name for the resource
+    // calendar and defaults to the same value as name.
+    string display_name = 2;
+
+    // Color is an optional color value (Hex-Format) for this resource.
+    string color = 3;
+
+    // MaxConcurrentUse defines how many events are allowed at the same
+    // time.
+    // If unset, it defaults to 1
+    uint32 max_concurrent_use = 4;
+}
 
 // CalendarService provides RPC methods for retrieving, creating and managing
 // events from one or more calendars. While the current implementation in
@@ -65,6 +85,38 @@ service CalendarService {
             require: AUTH_REQ_REQUIRED,
         };
     }
+
+    rpc StoreResourceCalendar(ResourceCalendar) returns (ResourceCalendar) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+
+    rpc ListResourceCalendars(ListResourceCalendarsRequest) returns (ListResourceCalendarsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc DeleteResourceCalendar(DeleteResourceCalendarRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
+}
+
+message ListResourceCalendarsResponse {
+    repeated ResourceCalendar resource_calendars = 1;
+}
+
+message ListResourceCalendarsRequest {
+
+}
+
+message DeleteResourceCalendarRequest {
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
 }
 
 // ListCalendarsRequest is used by the ListCalendars RPC. There are now message

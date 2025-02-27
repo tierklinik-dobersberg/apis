@@ -20,6 +20,47 @@ export const CalenarEventRequestKind = /*@__PURE__*/ proto3.makeEnum(
 );
 
 /**
+ * @generated from message tkd.calendar.v1.ResourceCalendar
+ */
+export const ResourceCalendar = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.ResourceCalendar",
+  () => [
+    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "display_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "color", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "max_concurrent_use", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
+  ],
+);
+
+/**
+ * @generated from message tkd.calendar.v1.ListResourceCalendarsResponse
+ */
+export const ListResourceCalendarsResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.ListResourceCalendarsResponse",
+  () => [
+    { no: 1, name: "resource_calendars", kind: "message", T: ResourceCalendar, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message tkd.calendar.v1.ListResourceCalendarsRequest
+ */
+export const ListResourceCalendarsRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.ListResourceCalendarsRequest",
+  [],
+);
+
+/**
+ * @generated from message tkd.calendar.v1.DeleteResourceCalendarRequest
+ */
+export const DeleteResourceCalendarRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.DeleteResourceCalendarRequest",
+  () => [
+    { no: 1, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * ListCalendarsRequest is used by the ListCalendars RPC. There are now message
  * fields for now.
  *
