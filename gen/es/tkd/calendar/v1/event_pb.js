@@ -19,6 +19,7 @@ export const Calendar = /*@__PURE__*/ proto3.makeMessageType(
     { no: 4, name: "color", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 6, name: "is_virtual_resource", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 7, name: "readonly", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 

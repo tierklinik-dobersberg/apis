@@ -59,6 +59,13 @@ export declare class Calendar extends Message<Calendar> {
    */
   isVirtualResource: boolean;
 
+  /**
+   * Readonly is set to true if this calendar is read-only.
+   *
+   * @generated from field: bool readonly = 7;
+   */
+  readonly: boolean;
+
   constructor(data?: PartialMessage<Calendar>);
 
   static readonly runtime: typeof proto3;

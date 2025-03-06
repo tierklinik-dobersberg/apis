@@ -29,6 +29,9 @@ message Calendar {
     // IsVirtualResource is set to true if this is a virtual resource
     // calendar.
     bool is_virtual_resource = 6;
+
+    // Readonly is set to true if this calendar is read-only.
+    bool readonly = 7;
 }
 
 // next-id: 12
