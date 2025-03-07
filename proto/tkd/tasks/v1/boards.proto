@@ -384,11 +384,11 @@ message CreateBoardRequest {
 
     // Kind is the board kind.
     // Currently on list-style boards are supported.
+    // Kind is deprecated and ignored
     oneof kind {
         ListBoard list = 3;
-
-        option (buf.validate.oneof).required = true;
     }
+
 
     // AllowedTaskStatus defines all possible status values a task might
     // have.
@@ -461,6 +461,7 @@ message UpdateBoardRequest {
 
     // Kind specifies the new board kind.
     // Currently only list-style board are supported.
+    // Kind is deprecated and ignored
     oneof kind {
         ListBoard list = 4;
     }
