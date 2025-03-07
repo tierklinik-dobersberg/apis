@@ -77,6 +77,9 @@ message Task {
     // completed.
     google.protobuf.Timestamp due_time = 14;
 
+    // NotBefore marks the task as not "doable" before the specified timestamp.
+    google.protobuf.Timestamp not_before = 18;
+
     // Properties may hold application specific properties.
     map<string, google.protobuf.Any> properties = 15;
 
@@ -290,6 +293,9 @@ message CreateTaskRequest {
     // completed.
     google.protobuf.Timestamp due_time = 10;
 
+    // NotBefore marks the task as not "doable" before the specified timestamp.
+    google.protobuf.Timestamp not_before = 13;
+
     // Properties may hold application specific properties.
     map<string, google.protobuf.Any> properties = 11;
 
@@ -334,6 +340,9 @@ message UpdateTaskRequest {
     // DueTime holds the time at which the task is expected to be
     // completed.
     google.protobuf.Timestamp due_time = 11;
+
+    // NotBefore marks the task as not "doable" before the specified timestamp.
+    google.protobuf.Timestamp not_before = 16;
 
     oneof properties {
         AddProperties add_properties = 12;
