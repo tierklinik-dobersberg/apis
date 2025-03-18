@@ -1,0 +1,126 @@
+syntax  = "proto3";
+
+package tkd.printing.v1;
+
+import "buf/validate/validate.proto";
+import "tkd/longrunning/v1/operation.proto";
+
+enum PrinterState {
+    PRINTERSTATE_UNSPECIFIED = 0;
+    PRINTERSTATE_IDLE = 1;
+    PRINTERSTATE_PRINTING = 2;
+    PRINTERSTATE_ERROR = 3;
+}
+
+message Printer {
+    // Name holds the unique name of the printer.
+    string name = 1;
+
+    // Manufactorer holds the manufactorer of the printer.
+    string manufactorer = 2;
+
+    // Model holds the printer model.
+    string model = 3;
+
+    // Location holds an optional location for the printer.
+    string location = 4;
+
+    // Description might hold an optional description of the printer.
+    string description = 5;
+
+    // Parameters might hold printing parameters.
+    map<string, string> parameters = 6;
+}
+
+enum Orientation {
+    ORIENTATION_PORTRAIT = 0;
+    ORIENTATION_LANDSCAPE = 1;
+}
+
+enum ColorMode {
+    COLORMODE_COLOR = 0;
+    COLORMODE_GRAYSCALE = 1;
+}
+
+message Document {
+    // Name is the name of the document to print.
+    // It's used to for the long-running operation.
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // ContentType holds the MIME type of the document to be printed.
+    // If set to * or */* the document's MIME type will be autodetected by
+    // checking the first few bytes.
+    string content_type = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // Source defines the source of the document content.
+    oneof source {
+        // Data includes the whole document data in this request.
+        bytes data = 3;
+
+        // URL holds a web URL where the document should be fetched.
+        string url = 4;
+
+        // FilePath holds the path to the document on the file-storage.
+        // Not all service implementations will support this source type.
+        string file_path = 5;
+    }
+
+    Orientation Orientation = 6;
+
+    ColorMode color_mode = 7;
+
+    // Printer might be used to specify the printer where the document should be printed.
+    // If empty, the services default printer will be used.
+    string printer = 10;
+}
+
+service PrintService {
+    rpc ListPrinters(ListPrintersRequest) returns (ListPrintersResponse);
+
+    rpc PrintDocument(Document) returns (tkd.longrunning.v1.Operation);
+
+    rpc PrintDocumentStream(stream PrintDocumentRequest) returns (tkd.longrunning.v1.Operation);
+}
+
+message PrintDocumentRequest {
+    oneof message {
+        Document document = 1;
+        bytes data = 2;
+
+        option (buf.validate.oneof).required = true;
+    }
+}
+
+message ListPrintersRequest {
+    PrinterState printer_state = 1;
+    string location = 2;
+}
+
+message ListPrintersResponse {
+    repeated Printer printers = 1;
+}
+
+enum PrintState {
+    PRINTSTATE_UNSPECIFIED = 0;
+    PRINTSTATE_PENDING = 1;
+    PRINTSTATE_PRINTING = 2;
+    PRINTSTATE_COMPLETED = 3;
+    PRINTSTATE_CANCELLED = 4;
+}
+
+message PrintOperationState {
+    PrintState state = 1;
+
+    // Percent shows how far printing has been done.
+    // It's value is between (inclusive) 0 and 100
+    int32 percent = 2;
+
+    // Document holds the document that is being printed.
+    // If the document content has been specified using the source.data field,
+    // it is omitted to avoid large blobs of data.
+    Document document = 3;
+}
