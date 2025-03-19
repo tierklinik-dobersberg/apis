@@ -11,6 +11,7 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/customer/v1/customerv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1/eventsv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1/idmv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/longrunning/v1/longrunningv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/office_hours/v1/office_hoursv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1/pbx3cxv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
@@ -37,16 +38,17 @@ func Create[T any](name string, factory func(connect.HTTPClient, string, ...conn
 }
 
 var (
-	CalendarV1ServiceScope   = "tkd.calendar.v1"
-	CommentV1ServiceScope    = "tkd.comment.v1"
-	CustomerV1ServiceScope   = "tkd.customer.v1"
-	EventV1ServiceScropt     = "tkd.events.v1"
-	IdmV1ServiceScope        = "tkd.idm.v1"
-	OfficeHourV1ServiceScope = "tkd.office_hours.v1"
-	Pbx3cxV1ServiceScope     = "tkd.pbx3cx.v1"
-	RosterV1ServiceScope     = "tkd.roster.v1"
-	TaskV1ServiceScope       = "tkd.tasks.v1"
-	TypeV1ServiceScope       = "tkd.typeserver.v1"
+	CalendarV1ServiceScope    = "tkd.calendar.v1"
+	CommentV1ServiceScope     = "tkd.comment.v1"
+	CustomerV1ServiceScope    = "tkd.customer.v1"
+	EventV1ServiceScropt      = "tkd.events.v1"
+	IdmV1ServiceScope         = "tkd.idm.v1"
+	OfficeHourV1ServiceScope  = "tkd.office_hours.v1"
+	Pbx3cxV1ServiceScope      = "tkd.pbx3cx.v1"
+	RosterV1ServiceScope      = "tkd.roster.v1"
+	TaskV1ServiceScope        = "tkd.tasks.v1"
+	TypeV1ServiceScope        = "tkd.typeserver.v1"
+	LongrunningV1ServiceScope = "tkd.longrunning.v1"
 )
 
 var (
@@ -89,6 +91,9 @@ var (
 
 	// tkd/typeserver/v1
 	TypeService = Create(TypeV1ServiceScope, typeserverv1connect.NewTypeResolverServiceClient)
+
+	// tkd/longrunning/v1
+	LongRunningService = Create(LongrunningV1ServiceScope, longrunningv1connect.NewLongRunningServiceClient)
 )
 
 func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T], opts ...connect.ClientOption) (T, error) {
