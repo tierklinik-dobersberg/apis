@@ -8,6 +8,7 @@ import "google/protobuf/any.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/field_mask.proto";
 import "buf/validate/validate.proto";
+import "tkd/common/v1/descriptor.proto";
 
 enum OperationState {
     OperationState_UNSPECIFIED = 0;
@@ -103,27 +104,51 @@ message OperationError {
 
 service LongRunningService {
     // RegisterOperation registers a new long-running operation to be queried by users or administrators.
-    rpc RegisterOperation(RegisterOperationRequest) returns (RegisterOperationResponse) {}
+    rpc RegisterOperation(RegisterOperationRequest) returns (RegisterOperationResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
 
     // UpdateOpertation updates the state of an operation and must be called regulary (see ttl and grace_period fields
     // of the Operation message type)
-    rpc UpdateOperation(UpdateOperationRequest) returns (Operation) {}
+    rpc UpdateOperation(UpdateOperationRequest) returns (Operation) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
 
     // CompleteOperation marks an operation as completed and can set either the result or error
     // values.
-    rpc CompleteOperation(CompleteOperationRequest) returns (Operation) {}
+    rpc CompleteOperation(CompleteOperationRequest) returns (Operation) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_ADMIN,
+        };
+    }
 
     // QueryOperations returns a list of operations currently stored at the service.
     // Note that completed operations will be removed from the server automatically after
     // a server-defined timeout.
-    rpc QueryOperations(QueryOperationsRequest) returns (QueryOperationsResponse) {}
+    rpc QueryOperations(QueryOperationsRequest) returns (QueryOperationsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 
     // GetOperation allows to query a operation by ID.
-    rpc GetOperation(GetOperationRequest) returns (Operation) {}
+    rpc GetOperation(GetOperationRequest) returns (Operation) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 
     // WatchOperations is like GetOperation but returns a stream that will re-send
     // the operation whenever it is updated.
-    rpc WatchOperation(GetOperationRequest) returns (stream Operation) {}
+    rpc WatchOperation(GetOperationRequest) returns (stream Operation) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message RegisterOperationRequest {

@@ -21,6 +21,7 @@ message AuthDecorator {
     repeated string admin_roles = 3;
 }
 
+
 message PrivacyACL {
     // The field mask defined which field are accessible to
     // anyone (maybe authenticated) if none of the other
