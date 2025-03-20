@@ -103,6 +103,10 @@ message OperationError {
 }
 
 service LongRunningService {
+    option (tkd.common.v1.service_auth) = {
+        admin_roles: ["idm_superuser", "service_account"]
+    };
+
     // RegisterOperation registers a new long-running operation to be queried by users or administrators.
     rpc RegisterOperation(RegisterOperationRequest) returns (RegisterOperationResponse) {
         option (tkd.common.v1.auth) = {
