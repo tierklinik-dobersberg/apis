@@ -31,6 +31,7 @@ type BaseURLS struct {
 	OfficeHourService string `json:"officeHourService"`
 	EventsService     string `json:"eventsService"`
 	OrthancBridge     string `json:"orthancBridge"`
+	LongRunning       string `json:"longrunning"`
 }
 
 type Config struct {
