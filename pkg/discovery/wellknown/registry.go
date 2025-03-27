@@ -14,6 +14,7 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/longrunning/v1/longrunningv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/office_hours/v1/office_hoursv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1/pbx3cxv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/printing/v1/printingv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1/tasksv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/typeserver/v1/typeserverv1connect"
@@ -49,6 +50,7 @@ var (
 	TaskV1ServiceScope        = "tkd.tasks.v1"
 	TypeV1ServiceScope        = "tkd.typeserver.v1"
 	LongrunningV1ServiceScope = "tkd.longrunning.v1"
+	PrintV1ServiceScope       = "tkd.printing.v1"
 )
 
 var (
@@ -94,6 +96,9 @@ var (
 
 	// tkd/longrunning/v1
 	LongRunningService = Create(LongrunningV1ServiceScope, longrunningv1connect.NewLongRunningServiceClient)
+
+	// tkd/printing/v1
+	PrintService = Create(PrintV1ServiceScope, printingv1connect.NewPrintServiceClient)
 )
 
 func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T], opts ...connect.ClientOption) (T, error) {
