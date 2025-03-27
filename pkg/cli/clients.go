@@ -10,6 +10,7 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/office_hours/v1/office_hoursv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/orthanc_bridge/v1/orthanc_bridgev1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1/pbx3cxv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/printing/v1/printingv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1/tasksv1connect"
 	"github.com/tierklinik-dobersberg/apis/pkg/events"
@@ -103,4 +104,8 @@ func (root *Root) EventStreamClient() (*events.Client, error) {
 
 func (root *Root) LongRunning() longrunningv1connect.LongRunningServiceClient {
 	return longrunningv1connect.NewLongRunningServiceClient(root.HttpClient, root.Config().LongRunning)
+}
+
+func (root *Root) PrintService() printingv1connect.PrintServiceClient {
+	return printingv1connect.NewPrintServiceClient(root.HttpClient, root.Config().PrintService)
 }
