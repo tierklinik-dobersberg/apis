@@ -9,7 +9,7 @@ enum PrinterState {
     PRINTERSTATE_UNSPECIFIED = 0;
     PRINTERSTATE_IDLE = 1;
     PRINTERSTATE_PRINTING = 2;
-    PRINTERSTATE_ERROR = 3;
+    PRINTERSTATE_STOPPED = 3;
 }
 
 message Printer {
@@ -38,8 +38,9 @@ enum Orientation {
 }
 
 enum ColorMode {
-    COLORMODE_COLOR = 0;
-    COLORMODE_GRAYSCALE = 1;
+    COLORMODE_AUTO = 0;
+    COLORMODE_COLOR = 1;
+    COLORMODE_GRAYSCALE = 2;
 }
 
 message Document {
@@ -79,8 +80,11 @@ message Document {
 }
 
 service PrintService {
+    // ListPrinters lists all available printers.
     rpc ListPrinters(ListPrintersRequest) returns (ListPrintersResponse);
 
+    // PrintDocument prints a document and returns a tkd.longrunning.v1.Operation to track
+    // printing progress.
     rpc PrintDocument(Document) returns (tkd.longrunning.v1.Operation);
 
     rpc PrintDocumentStream(stream PrintDocumentRequest) returns (tkd.longrunning.v1.Operation);
@@ -110,17 +114,15 @@ enum PrintState {
     PRINTSTATE_PRINTING = 2;
     PRINTSTATE_COMPLETED = 3;
     PRINTSTATE_CANCELLED = 4;
+    PRINTSTATE_HELD = 5;
+    PRINTSTATE_STOPPED = 6;
 }
 
 message PrintOperationState {
     PrintState state = 1;
 
-    // Percent shows how far printing has been done.
-    // It's value is between (inclusive) 0 and 100
-    int32 percent = 2;
-
     // Document holds the document that is being printed.
     // If the document content has been specified using the source.data field,
     // it is omitted to avoid large blobs of data.
-    Document document = 3;
+    Document document = 2;
 }

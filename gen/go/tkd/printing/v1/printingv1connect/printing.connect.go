@@ -47,7 +47,10 @@ const (
 
 // PrintServiceClient is a client for the tkd.printing.v1.PrintService service.
 type PrintServiceClient interface {
+	// ListPrinters lists all available printers.
 	ListPrinters(context.Context, *connect_go.Request[v1.ListPrintersRequest]) (*connect_go.Response[v1.ListPrintersResponse], error)
+	// PrintDocument prints a document and returns a tkd.longrunning.v1.Operation to track
+	// printing progress.
 	PrintDocument(context.Context, *connect_go.Request[v1.Document]) (*connect_go.Response[v11.Operation], error)
 	PrintDocumentStream(context.Context) *connect_go.ClientStreamForClient[v1.PrintDocumentRequest, v11.Operation]
 }
@@ -104,7 +107,10 @@ func (c *printServiceClient) PrintDocumentStream(ctx context.Context) *connect_g
 
 // PrintServiceHandler is an implementation of the tkd.printing.v1.PrintService service.
 type PrintServiceHandler interface {
+	// ListPrinters lists all available printers.
 	ListPrinters(context.Context, *connect_go.Request[v1.ListPrintersRequest]) (*connect_go.Response[v1.ListPrintersResponse], error)
+	// PrintDocument prints a document and returns a tkd.longrunning.v1.Operation to track
+	// printing progress.
 	PrintDocument(context.Context, *connect_go.Request[v1.Document]) (*connect_go.Response[v11.Operation], error)
 	PrintDocumentStream(context.Context, *connect_go.ClientStream[v1.PrintDocumentRequest]) (*connect_go.Response[v11.Operation], error)
 }
