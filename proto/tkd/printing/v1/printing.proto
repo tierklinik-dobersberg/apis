@@ -79,6 +79,14 @@ message Document {
     string printer = 10;
 }
 
+message Job {
+    string id = 1;
+    string name = 2;
+    PrintState state = 3;
+    int32 progress = 4;
+    string printer = 5;
+}
+
 service PrintService {
     // ListPrinters lists all available printers.
     rpc ListPrinters(ListPrintersRequest) returns (ListPrintersResponse);
@@ -88,6 +96,16 @@ service PrintService {
     rpc PrintDocument(Document) returns (tkd.longrunning.v1.Operation);
 
     rpc PrintDocumentStream(stream PrintDocumentRequest) returns (tkd.longrunning.v1.Operation);
+
+    rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
+}
+
+message ListJobsRequest {
+    repeated string printers = 1;
+}
+
+message ListJobsResponse {
+    repeated Job jobs = 1;
 }
 
 message PrintDocumentRequest {

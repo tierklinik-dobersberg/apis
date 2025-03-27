@@ -472,6 +472,170 @@ func (*Document_Url) isDocument_Source() {}
 
 func (*Document_FilePath) isDocument_Source() {}
 
+type Job struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	State         PrintState             `protobuf:"varint,3,opt,name=state,proto3,enum=tkd.printing.v1.PrintState" json:"state,omitempty"`
+	Progress      int32                  `protobuf:"varint,4,opt,name=progress,proto3" json:"progress,omitempty"`
+	Printer       string                 `protobuf:"bytes,5,opt,name=printer,proto3" json:"printer,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Job) Reset() {
+	*x = Job{}
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Job) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Job) ProtoMessage() {}
+
+func (x *Job) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Job.ProtoReflect.Descriptor instead.
+func (*Job) Descriptor() ([]byte, []int) {
+	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Job) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Job) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Job) GetState() PrintState {
+	if x != nil {
+		return x.State
+	}
+	return PrintState_PRINTSTATE_UNSPECIFIED
+}
+
+func (x *Job) GetProgress() int32 {
+	if x != nil {
+		return x.Progress
+	}
+	return 0
+}
+
+func (x *Job) GetPrinter() string {
+	if x != nil {
+		return x.Printer
+	}
+	return ""
+}
+
+type ListJobsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Printers      []string               `protobuf:"bytes,1,rep,name=printers,proto3" json:"printers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListJobsRequest) Reset() {
+	*x = ListJobsRequest{}
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListJobsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListJobsRequest) ProtoMessage() {}
+
+func (x *ListJobsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListJobsRequest.ProtoReflect.Descriptor instead.
+func (*ListJobsRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListJobsRequest) GetPrinters() []string {
+	if x != nil {
+		return x.Printers
+	}
+	return nil
+}
+
+type ListJobsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Jobs          []*Job                 `protobuf:"bytes,1,rep,name=jobs,proto3" json:"jobs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListJobsResponse) Reset() {
+	*x = ListJobsResponse{}
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListJobsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListJobsResponse) ProtoMessage() {}
+
+func (x *ListJobsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListJobsResponse.ProtoReflect.Descriptor instead.
+func (*ListJobsResponse) Descriptor() ([]byte, []int) {
+	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListJobsResponse) GetJobs() []*Job {
+	if x != nil {
+		return x.Jobs
+	}
+	return nil
+}
+
 type PrintDocumentRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Message:
@@ -485,7 +649,7 @@ type PrintDocumentRequest struct {
 
 func (x *PrintDocumentRequest) Reset() {
 	*x = PrintDocumentRequest{}
-	mi := &file_tkd_printing_v1_printing_proto_msgTypes[2]
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -497,7 +661,7 @@ func (x *PrintDocumentRequest) String() string {
 func (*PrintDocumentRequest) ProtoMessage() {}
 
 func (x *PrintDocumentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_printing_v1_printing_proto_msgTypes[2]
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -510,7 +674,7 @@ func (x *PrintDocumentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrintDocumentRequest.ProtoReflect.Descriptor instead.
 func (*PrintDocumentRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{2}
+	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *PrintDocumentRequest) GetMessage() isPrintDocumentRequest_Message {
@@ -564,7 +728,7 @@ type ListPrintersRequest struct {
 
 func (x *ListPrintersRequest) Reset() {
 	*x = ListPrintersRequest{}
-	mi := &file_tkd_printing_v1_printing_proto_msgTypes[3]
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -576,7 +740,7 @@ func (x *ListPrintersRequest) String() string {
 func (*ListPrintersRequest) ProtoMessage() {}
 
 func (x *ListPrintersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_printing_v1_printing_proto_msgTypes[3]
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -589,7 +753,7 @@ func (x *ListPrintersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPrintersRequest.ProtoReflect.Descriptor instead.
 func (*ListPrintersRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{3}
+	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ListPrintersRequest) GetPrinterState() PrinterState {
@@ -615,7 +779,7 @@ type ListPrintersResponse struct {
 
 func (x *ListPrintersResponse) Reset() {
 	*x = ListPrintersResponse{}
-	mi := &file_tkd_printing_v1_printing_proto_msgTypes[4]
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -627,7 +791,7 @@ func (x *ListPrintersResponse) String() string {
 func (*ListPrintersResponse) ProtoMessage() {}
 
 func (x *ListPrintersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_printing_v1_printing_proto_msgTypes[4]
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -640,7 +804,7 @@ func (x *ListPrintersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPrintersResponse.ProtoReflect.Descriptor instead.
 func (*ListPrintersResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{4}
+	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListPrintersResponse) GetPrinters() []*Printer {
@@ -663,7 +827,7 @@ type PrintOperationState struct {
 
 func (x *PrintOperationState) Reset() {
 	*x = PrintOperationState{}
-	mi := &file_tkd_printing_v1_printing_proto_msgTypes[5]
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -675,7 +839,7 @@ func (x *PrintOperationState) String() string {
 func (*PrintOperationState) ProtoMessage() {}
 
 func (x *PrintOperationState) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_printing_v1_printing_proto_msgTypes[5]
+	mi := &file_tkd_printing_v1_printing_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -688,7 +852,7 @@ func (x *PrintOperationState) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrintOperationState.ProtoReflect.Descriptor instead.
 func (*PrintOperationState) Descriptor() ([]byte, []int) {
-	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{5}
+	return file_tkd_printing_v1_printing_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *PrintOperationState) GetState() PrintState {
@@ -733,7 +897,17 @@ const file_tkd_printing_v1_printing_proto_rawDesc = "" +
 	"color_mode\x18\a \x01(\x0e2\x1a.tkd.printing.v1.ColorModeR\tcolorMode\x12\x18\n" +
 	"\aprinter\x18\n" +
 	" \x01(\tR\aprinterB\b\n" +
-	"\x06source\"x\n" +
+	"\x06source\"\x92\x01\n" +
+	"\x03Job\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x121\n" +
+	"\x05state\x18\x03 \x01(\x0e2\x1b.tkd.printing.v1.PrintStateR\x05state\x12\x1a\n" +
+	"\bprogress\x18\x04 \x01(\x05R\bprogress\x12\x18\n" +
+	"\aprinter\x18\x05 \x01(\tR\aprinter\"-\n" +
+	"\x0fListJobsRequest\x12\x1a\n" +
+	"\bprinters\x18\x01 \x03(\tR\bprinters\"<\n" +
+	"\x10ListJobsResponse\x12(\n" +
+	"\x04jobs\x18\x01 \x03(\v2\x14.tkd.printing.v1.JobR\x04jobs\"x\n" +
 	"\x14PrintDocumentRequest\x127\n" +
 	"\bdocument\x18\x01 \x01(\v2\x19.tkd.printing.v1.DocumentH\x00R\bdocument\x12\x14\n" +
 	"\x04data\x18\x02 \x01(\fH\x00R\x04dataB\x11\n" +
@@ -766,11 +940,12 @@ const file_tkd_printing_v1_printing_proto_rawDesc = "" +
 	"\x14PRINTSTATE_COMPLETED\x10\x03\x12\x18\n" +
 	"\x14PRINTSTATE_CANCELLED\x10\x04\x12\x13\n" +
 	"\x0fPRINTSTATE_HELD\x10\x05\x12\x16\n" +
-	"\x12PRINTSTATE_STOPPED\x10\x062\x95\x02\n" +
+	"\x12PRINTSTATE_STOPPED\x10\x062\xe6\x02\n" +
 	"\fPrintService\x12[\n" +
 	"\fListPrinters\x12$.tkd.printing.v1.ListPrintersRequest\x1a%.tkd.printing.v1.ListPrintersResponse\x12I\n" +
 	"\rPrintDocument\x12\x19.tkd.printing.v1.Document\x1a\x1d.tkd.longrunning.v1.Operation\x12]\n" +
-	"\x13PrintDocumentStream\x12%.tkd.printing.v1.PrintDocumentRequest\x1a\x1d.tkd.longrunning.v1.Operation(\x01B\xcb\x01\n" +
+	"\x13PrintDocumentStream\x12%.tkd.printing.v1.PrintDocumentRequest\x1a\x1d.tkd.longrunning.v1.Operation(\x01\x12O\n" +
+	"\bListJobs\x12 .tkd.printing.v1.ListJobsRequest\x1a!.tkd.printing.v1.ListJobsResponseB\xcb\x01\n" +
 	"\x13com.tkd.printing.v1B\rPrintingProtoP\x01ZGgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/printing/v1;printingv1\xa2\x02\x03TPX\xaa\x02\x0fTkd.Printing.V1\xca\x02\x0fTkd\\Printing\\V1\xe2\x02\x1bTkd\\Printing\\V1\\GPBMetadata\xea\x02\x11Tkd::Printing::V1b\x06proto3"
 
 var (
@@ -786,7 +961,7 @@ func file_tkd_printing_v1_printing_proto_rawDescGZIP() []byte {
 }
 
 var file_tkd_printing_v1_printing_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_tkd_printing_v1_printing_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_tkd_printing_v1_printing_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_tkd_printing_v1_printing_proto_goTypes = []any{
 	(PrinterState)(0),            // 0: tkd.printing.v1.PrinterState
 	(Orientation)(0),             // 1: tkd.printing.v1.Orientation
@@ -794,33 +969,40 @@ var file_tkd_printing_v1_printing_proto_goTypes = []any{
 	(PrintState)(0),              // 3: tkd.printing.v1.PrintState
 	(*Printer)(nil),              // 4: tkd.printing.v1.Printer
 	(*Document)(nil),             // 5: tkd.printing.v1.Document
-	(*PrintDocumentRequest)(nil), // 6: tkd.printing.v1.PrintDocumentRequest
-	(*ListPrintersRequest)(nil),  // 7: tkd.printing.v1.ListPrintersRequest
-	(*ListPrintersResponse)(nil), // 8: tkd.printing.v1.ListPrintersResponse
-	(*PrintOperationState)(nil),  // 9: tkd.printing.v1.PrintOperationState
-	nil,                          // 10: tkd.printing.v1.Printer.ParametersEntry
-	(*v1.Operation)(nil),         // 11: tkd.longrunning.v1.Operation
+	(*Job)(nil),                  // 6: tkd.printing.v1.Job
+	(*ListJobsRequest)(nil),      // 7: tkd.printing.v1.ListJobsRequest
+	(*ListJobsResponse)(nil),     // 8: tkd.printing.v1.ListJobsResponse
+	(*PrintDocumentRequest)(nil), // 9: tkd.printing.v1.PrintDocumentRequest
+	(*ListPrintersRequest)(nil),  // 10: tkd.printing.v1.ListPrintersRequest
+	(*ListPrintersResponse)(nil), // 11: tkd.printing.v1.ListPrintersResponse
+	(*PrintOperationState)(nil),  // 12: tkd.printing.v1.PrintOperationState
+	nil,                          // 13: tkd.printing.v1.Printer.ParametersEntry
+	(*v1.Operation)(nil),         // 14: tkd.longrunning.v1.Operation
 }
 var file_tkd_printing_v1_printing_proto_depIdxs = []int32{
-	10, // 0: tkd.printing.v1.Printer.parameters:type_name -> tkd.printing.v1.Printer.ParametersEntry
+	13, // 0: tkd.printing.v1.Printer.parameters:type_name -> tkd.printing.v1.Printer.ParametersEntry
 	1,  // 1: tkd.printing.v1.Document.Orientation:type_name -> tkd.printing.v1.Orientation
 	2,  // 2: tkd.printing.v1.Document.color_mode:type_name -> tkd.printing.v1.ColorMode
-	5,  // 3: tkd.printing.v1.PrintDocumentRequest.document:type_name -> tkd.printing.v1.Document
-	0,  // 4: tkd.printing.v1.ListPrintersRequest.printer_state:type_name -> tkd.printing.v1.PrinterState
-	4,  // 5: tkd.printing.v1.ListPrintersResponse.printers:type_name -> tkd.printing.v1.Printer
-	3,  // 6: tkd.printing.v1.PrintOperationState.state:type_name -> tkd.printing.v1.PrintState
-	5,  // 7: tkd.printing.v1.PrintOperationState.document:type_name -> tkd.printing.v1.Document
-	7,  // 8: tkd.printing.v1.PrintService.ListPrinters:input_type -> tkd.printing.v1.ListPrintersRequest
-	5,  // 9: tkd.printing.v1.PrintService.PrintDocument:input_type -> tkd.printing.v1.Document
-	6,  // 10: tkd.printing.v1.PrintService.PrintDocumentStream:input_type -> tkd.printing.v1.PrintDocumentRequest
-	8,  // 11: tkd.printing.v1.PrintService.ListPrinters:output_type -> tkd.printing.v1.ListPrintersResponse
-	11, // 12: tkd.printing.v1.PrintService.PrintDocument:output_type -> tkd.longrunning.v1.Operation
-	11, // 13: tkd.printing.v1.PrintService.PrintDocumentStream:output_type -> tkd.longrunning.v1.Operation
-	11, // [11:14] is the sub-list for method output_type
-	8,  // [8:11] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	3,  // 3: tkd.printing.v1.Job.state:type_name -> tkd.printing.v1.PrintState
+	6,  // 4: tkd.printing.v1.ListJobsResponse.jobs:type_name -> tkd.printing.v1.Job
+	5,  // 5: tkd.printing.v1.PrintDocumentRequest.document:type_name -> tkd.printing.v1.Document
+	0,  // 6: tkd.printing.v1.ListPrintersRequest.printer_state:type_name -> tkd.printing.v1.PrinterState
+	4,  // 7: tkd.printing.v1.ListPrintersResponse.printers:type_name -> tkd.printing.v1.Printer
+	3,  // 8: tkd.printing.v1.PrintOperationState.state:type_name -> tkd.printing.v1.PrintState
+	5,  // 9: tkd.printing.v1.PrintOperationState.document:type_name -> tkd.printing.v1.Document
+	10, // 10: tkd.printing.v1.PrintService.ListPrinters:input_type -> tkd.printing.v1.ListPrintersRequest
+	5,  // 11: tkd.printing.v1.PrintService.PrintDocument:input_type -> tkd.printing.v1.Document
+	9,  // 12: tkd.printing.v1.PrintService.PrintDocumentStream:input_type -> tkd.printing.v1.PrintDocumentRequest
+	7,  // 13: tkd.printing.v1.PrintService.ListJobs:input_type -> tkd.printing.v1.ListJobsRequest
+	11, // 14: tkd.printing.v1.PrintService.ListPrinters:output_type -> tkd.printing.v1.ListPrintersResponse
+	14, // 15: tkd.printing.v1.PrintService.PrintDocument:output_type -> tkd.longrunning.v1.Operation
+	14, // 16: tkd.printing.v1.PrintService.PrintDocumentStream:output_type -> tkd.longrunning.v1.Operation
+	8,  // 17: tkd.printing.v1.PrintService.ListJobs:output_type -> tkd.printing.v1.ListJobsResponse
+	14, // [14:18] is the sub-list for method output_type
+	10, // [10:14] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_tkd_printing_v1_printing_proto_init() }
@@ -833,7 +1015,7 @@ func file_tkd_printing_v1_printing_proto_init() {
 		(*Document_Url)(nil),
 		(*Document_FilePath)(nil),
 	}
-	file_tkd_printing_v1_printing_proto_msgTypes[2].OneofWrappers = []any{
+	file_tkd_printing_v1_printing_proto_msgTypes[5].OneofWrappers = []any{
 		(*PrintDocumentRequest_Document)(nil),
 		(*PrintDocumentRequest_Data)(nil),
 	}
@@ -843,7 +1025,7 @@ func file_tkd_printing_v1_printing_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_printing_v1_printing_proto_rawDesc), len(file_tkd_printing_v1_printing_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   7,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

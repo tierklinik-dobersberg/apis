@@ -43,6 +43,8 @@ const (
 	// PrintServicePrintDocumentStreamProcedure is the fully-qualified name of the PrintService's
 	// PrintDocumentStream RPC.
 	PrintServicePrintDocumentStreamProcedure = "/tkd.printing.v1.PrintService/PrintDocumentStream"
+	// PrintServiceListJobsProcedure is the fully-qualified name of the PrintService's ListJobs RPC.
+	PrintServiceListJobsProcedure = "/tkd.printing.v1.PrintService/ListJobs"
 )
 
 // PrintServiceClient is a client for the tkd.printing.v1.PrintService service.
@@ -53,6 +55,7 @@ type PrintServiceClient interface {
 	// printing progress.
 	PrintDocument(context.Context, *connect_go.Request[v1.Document]) (*connect_go.Response[v11.Operation], error)
 	PrintDocumentStream(context.Context) *connect_go.ClientStreamForClient[v1.PrintDocumentRequest, v11.Operation]
+	ListJobs(context.Context, *connect_go.Request[v1.ListJobsRequest]) (*connect_go.Response[v1.ListJobsResponse], error)
 }
 
 // NewPrintServiceClient constructs a client for the tkd.printing.v1.PrintService service. By
@@ -80,6 +83,11 @@ func NewPrintServiceClient(httpClient connect_go.HTTPClient, baseURL string, opt
 			baseURL+PrintServicePrintDocumentStreamProcedure,
 			opts...,
 		),
+		listJobs: connect_go.NewClient[v1.ListJobsRequest, v1.ListJobsResponse](
+			httpClient,
+			baseURL+PrintServiceListJobsProcedure,
+			opts...,
+		),
 	}
 }
 
@@ -88,6 +96,7 @@ type printServiceClient struct {
 	listPrinters        *connect_go.Client[v1.ListPrintersRequest, v1.ListPrintersResponse]
 	printDocument       *connect_go.Client[v1.Document, v11.Operation]
 	printDocumentStream *connect_go.Client[v1.PrintDocumentRequest, v11.Operation]
+	listJobs            *connect_go.Client[v1.ListJobsRequest, v1.ListJobsResponse]
 }
 
 // ListPrinters calls tkd.printing.v1.PrintService.ListPrinters.
@@ -105,6 +114,11 @@ func (c *printServiceClient) PrintDocumentStream(ctx context.Context) *connect_g
 	return c.printDocumentStream.CallClientStream(ctx)
 }
 
+// ListJobs calls tkd.printing.v1.PrintService.ListJobs.
+func (c *printServiceClient) ListJobs(ctx context.Context, req *connect_go.Request[v1.ListJobsRequest]) (*connect_go.Response[v1.ListJobsResponse], error) {
+	return c.listJobs.CallUnary(ctx, req)
+}
+
 // PrintServiceHandler is an implementation of the tkd.printing.v1.PrintService service.
 type PrintServiceHandler interface {
 	// ListPrinters lists all available printers.
@@ -113,6 +127,7 @@ type PrintServiceHandler interface {
 	// printing progress.
 	PrintDocument(context.Context, *connect_go.Request[v1.Document]) (*connect_go.Response[v11.Operation], error)
 	PrintDocumentStream(context.Context, *connect_go.ClientStream[v1.PrintDocumentRequest]) (*connect_go.Response[v11.Operation], error)
+	ListJobs(context.Context, *connect_go.Request[v1.ListJobsRequest]) (*connect_go.Response[v1.ListJobsResponse], error)
 }
 
 // NewPrintServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -136,6 +151,11 @@ func NewPrintServiceHandler(svc PrintServiceHandler, opts ...connect_go.HandlerO
 		svc.PrintDocumentStream,
 		opts...,
 	)
+	printServiceListJobsHandler := connect_go.NewUnaryHandler(
+		PrintServiceListJobsProcedure,
+		svc.ListJobs,
+		opts...,
+	)
 	return "/tkd.printing.v1.PrintService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PrintServiceListPrintersProcedure:
@@ -144,6 +164,8 @@ func NewPrintServiceHandler(svc PrintServiceHandler, opts ...connect_go.HandlerO
 			printServicePrintDocumentHandler.ServeHTTP(w, r)
 		case PrintServicePrintDocumentStreamProcedure:
 			printServicePrintDocumentStreamHandler.ServeHTTP(w, r)
+		case PrintServiceListJobsProcedure:
+			printServiceListJobsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -163,4 +185,8 @@ func (UnimplementedPrintServiceHandler) PrintDocument(context.Context, *connect_
 
 func (UnimplementedPrintServiceHandler) PrintDocumentStream(context.Context, *connect_go.ClientStream[v1.PrintDocumentRequest]) (*connect_go.Response[v11.Operation], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.printing.v1.PrintService.PrintDocumentStream is not implemented"))
+}
+
+func (UnimplementedPrintServiceHandler) ListJobs(context.Context, *connect_go.Request[v1.ListJobsRequest]) (*connect_go.Response[v1.ListJobsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.printing.v1.PrintService.ListJobs is not implemented"))
 }
