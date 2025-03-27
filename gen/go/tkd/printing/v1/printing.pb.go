@@ -479,6 +479,7 @@ type Job struct {
 	State         PrintState             `protobuf:"varint,3,opt,name=state,proto3,enum=tkd.printing.v1.PrintState" json:"state,omitempty"`
 	Progress      int32                  `protobuf:"varint,4,opt,name=progress,proto3" json:"progress,omitempty"`
 	Printer       string                 `protobuf:"bytes,5,opt,name=printer,proto3" json:"printer,omitempty"`
+	OperationId   string                 `protobuf:"bytes,6,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -544,6 +545,13 @@ func (x *Job) GetProgress() int32 {
 func (x *Job) GetPrinter() string {
 	if x != nil {
 		return x.Printer
+	}
+	return ""
+}
+
+func (x *Job) GetOperationId() string {
+	if x != nil {
+		return x.OperationId
 	}
 	return ""
 }
@@ -897,13 +905,14 @@ const file_tkd_printing_v1_printing_proto_rawDesc = "" +
 	"color_mode\x18\a \x01(\x0e2\x1a.tkd.printing.v1.ColorModeR\tcolorMode\x12\x18\n" +
 	"\aprinter\x18\n" +
 	" \x01(\tR\aprinterB\b\n" +
-	"\x06source\"\x92\x01\n" +
+	"\x06source\"\xb5\x01\n" +
 	"\x03Job\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x121\n" +
 	"\x05state\x18\x03 \x01(\x0e2\x1b.tkd.printing.v1.PrintStateR\x05state\x12\x1a\n" +
 	"\bprogress\x18\x04 \x01(\x05R\bprogress\x12\x18\n" +
-	"\aprinter\x18\x05 \x01(\tR\aprinter\"-\n" +
+	"\aprinter\x18\x05 \x01(\tR\aprinter\x12!\n" +
+	"\foperation_id\x18\x06 \x01(\tR\voperationId\"-\n" +
 	"\x0fListJobsRequest\x12\x1a\n" +
 	"\bprinters\x18\x01 \x03(\tR\bprinters\"<\n" +
 	"\x10ListJobsResponse\x12(\n" +

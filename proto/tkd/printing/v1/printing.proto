@@ -85,6 +85,8 @@ message Job {
     PrintState state = 3;
     int32 progress = 4;
     string printer = 5;
+
+    string operation_id = 6;
 }
 
 service PrintService {
