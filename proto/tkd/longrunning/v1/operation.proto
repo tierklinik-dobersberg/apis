@@ -20,6 +20,7 @@ enum OperationState {
 
 // Operation is a operation dispatched and which progress can be tracked using
 // LongRunningService.
+// next-id: 17
 message Operation {
     // UniqueId holds a unique ID for this long running operation.
     string unique_id = 1 [
@@ -84,6 +85,13 @@ message Operation {
 
     // Kind is a service specific operation kind and is opaque to the LongRunningService.
     string kind = 13;
+
+    // PercentDone may holds the percentage of completed work.
+    // Note that not all operations support reporting percent values.
+    int32 percent_done = 15;
+
+    // StatusMessage is an optional status message for the operation.
+    string status_message = 16;
 }
 
 message OperationSuccess {
@@ -221,6 +229,11 @@ message UpdateOperationRequest {
     // In conrast to parameters, which are read-only once the operation has been submitted,
     // a service owner might update annotations whenever the operation is "pinged".
     map<string, string> annotations = 4;
+
+    int32 percent_done = 5;
+
+    // StatusMessage may be set to update the status message of an operatoin.
+    string status_message = 6;
 
     google.protobuf.FieldMask update_mask = 10;
 }

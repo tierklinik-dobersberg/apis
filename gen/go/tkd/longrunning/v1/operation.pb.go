@@ -85,6 +85,7 @@ func (OperationState) EnumDescriptor() ([]byte, []int) {
 
 // Operation is a operation dispatched and which progress can be tracked using
 // LongRunningService.
+// next-id: 17
 type Operation struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// UniqueId holds a unique ID for this long running operation.
@@ -135,7 +136,12 @@ type Operation struct {
 	// a service owner might update annotations whenever the operation is "pinged".
 	Annotations map[string]string `protobuf:"bytes,12,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Kind is a service specific operation kind and is opaque to the LongRunningService.
-	Kind          string `protobuf:"bytes,13,opt,name=kind,proto3" json:"kind,omitempty"`
+	Kind string `protobuf:"bytes,13,opt,name=kind,proto3" json:"kind,omitempty"`
+	// PercentDone may holds the percentage of completed work.
+	// Note that not all operations support reporting percent values.
+	PercentDone int32 `protobuf:"varint,15,opt,name=percent_done,json=percentDone,proto3" json:"percent_done,omitempty"`
+	// StatusMessage is an optional status message for the operation.
+	StatusMessage string `protobuf:"bytes,16,opt,name=status_message,json=statusMessage,proto3" json:"status_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -275,6 +281,20 @@ func (x *Operation) GetAnnotations() map[string]string {
 func (x *Operation) GetKind() string {
 	if x != nil {
 		return x.Kind
+	}
+	return ""
+}
+
+func (x *Operation) GetPercentDone() int32 {
+	if x != nil {
+		return x.PercentDone
+	}
+	return 0
+}
+
+func (x *Operation) GetStatusMessage() string {
+	if x != nil {
+		return x.StatusMessage
 	}
 	return ""
 }
@@ -598,7 +618,10 @@ type UpdateOperationRequest struct {
 	// Annotations might hold service specific data.
 	// In conrast to parameters, which are read-only once the operation has been submitted,
 	// a service owner might update annotations whenever the operation is "pinged".
-	Annotations   map[string]string      `protobuf:"bytes,4,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Annotations map[string]string `protobuf:"bytes,4,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	PercentDone int32             `protobuf:"varint,5,opt,name=percent_done,json=percentDone,proto3" json:"percent_done,omitempty"`
+	// StatusMessage may be set to update the status message of an operatoin.
+	StatusMessage string                 `protobuf:"bytes,6,opt,name=status_message,json=statusMessage,proto3" json:"status_message,omitempty"`
 	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,10,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -660,6 +683,20 @@ func (x *UpdateOperationRequest) GetAnnotations() map[string]string {
 		return x.Annotations
 	}
 	return nil
+}
+
+func (x *UpdateOperationRequest) GetPercentDone() int32 {
+	if x != nil {
+		return x.PercentDone
+	}
+	return 0
+}
+
+func (x *UpdateOperationRequest) GetStatusMessage() string {
+	if x != nil {
+		return x.StatusMessage
+	}
+	return ""
 }
 
 func (x *UpdateOperationRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
@@ -946,7 +983,7 @@ var File_tkd_longrunning_v1_operation_proto protoreflect.FileDescriptor
 
 const file_tkd_longrunning_v1_operation_proto_rawDesc = "" +
 	"\n" +
-	"\"tkd/longrunning/v1/operation.proto\x12\x12tkd.longrunning.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/common/v1/descriptor.proto\"\xff\x06\n" +
+	"\"tkd/longrunning/v1/operation.proto\x12\x12tkd.longrunning.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/common/v1/descriptor.proto\"\xc9\a\n" +
 	"\tOperation\x12$\n" +
 	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x12D\n" +
 	"\vcreate_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
@@ -966,7 +1003,9 @@ const file_tkd_longrunning_v1_operation_proto_rawDesc = "" +
 	"parameters\x18\v \x03(\v2-.tkd.longrunning.v1.Operation.ParametersEntryR\n" +
 	"parameters\x12P\n" +
 	"\vannotations\x18\f \x03(\v2..tkd.longrunning.v1.Operation.AnnotationsEntryR\vannotations\x12\x12\n" +
-	"\x04kind\x18\r \x01(\tR\x04kind\x1aU\n" +
+	"\x04kind\x18\r \x01(\tR\x04kind\x12!\n" +
+	"\fpercent_done\x18\x0f \x01(\x05R\vpercentDone\x12%\n" +
+	"\x0estatus_message\x18\x10 \x01(\tR\rstatusMessage\x1aU\n" +
 	"\x0fParametersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12,\n" +
 	"\x05value\x18\x02 \x01(\v2\x16.google.protobuf.ValueR\x05value:\x028\x01\x1a>\n" +
@@ -1001,13 +1040,15 @@ const file_tkd_longrunning_v1_operation_proto_rawDesc = "" +
 	"\x19RegisterOperationResponse\x12;\n" +
 	"\toperation\x18\x01 \x01(\v2\x1d.tkd.longrunning.v1.OperationR\toperation\x12\x1d\n" +
 	"\n" +
-	"auth_token\x18\x02 \x01(\tR\tauthToken\"\xd3\x02\n" +
+	"auth_token\x18\x02 \x01(\tR\tauthToken\"\x9d\x03\n" +
 	"\x16UpdateOperationRequest\x12$\n" +
 	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x12\x1d\n" +
 	"\n" +
 	"auth_token\x18\x02 \x01(\tR\tauthToken\x12\x18\n" +
 	"\arunning\x18\x03 \x01(\bR\arunning\x12]\n" +
-	"\vannotations\x18\x04 \x03(\v2;.tkd.longrunning.v1.UpdateOperationRequest.AnnotationsEntryR\vannotations\x12;\n" +
+	"\vannotations\x18\x04 \x03(\v2;.tkd.longrunning.v1.UpdateOperationRequest.AnnotationsEntryR\vannotations\x12!\n" +
+	"\fpercent_done\x18\x05 \x01(\x05R\vpercentDone\x12%\n" +
+	"\x0estatus_message\x18\x06 \x01(\tR\rstatusMessage\x12;\n" +
 	"\vupdate_mask\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
 	"updateMask\x1a>\n" +
