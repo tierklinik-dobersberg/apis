@@ -9,6 +9,7 @@ import (
 	errors "errors"
 	connect_go "github.com/bufbuild/connect-go"
 	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/longrunning/v1"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -51,6 +52,12 @@ const (
 	// LongRunningServiceWatchOperationProcedure is the fully-qualified name of the LongRunningService's
 	// WatchOperation RPC.
 	LongRunningServiceWatchOperationProcedure = "/tkd.longrunning.v1.LongRunningService/WatchOperation"
+	// LongRunningServiceStreamOperationLogProcedure is the fully-qualified name of the
+	// LongRunningService's StreamOperationLog RPC.
+	LongRunningServiceStreamOperationLogProcedure = "/tkd.longrunning.v1.LongRunningService/StreamOperationLog"
+	// LongRunningServiceGetOperationLogsProcedure is the fully-qualified name of the
+	// LongRunningService's GetOperationLogs RPC.
+	LongRunningServiceGetOperationLogsProcedure = "/tkd.longrunning.v1.LongRunningService/GetOperationLogs"
 )
 
 // LongRunningServiceClient is a client for the tkd.longrunning.v1.LongRunningService service.
@@ -72,6 +79,10 @@ type LongRunningServiceClient interface {
 	// WatchOperations is like GetOperation but returns a stream that will re-send
 	// the operation whenever it is updated.
 	WatchOperation(context.Context, *connect_go.Request[v1.GetOperationRequest]) (*connect_go.ServerStreamForClient[v1.Operation], error)
+	// StreamOperationLog can be used to stream logs for an operation.
+	StreamOperationLog(context.Context) *connect_go.ClientStreamForClient[v1.StreamOperationLogRequest, emptypb.Empty]
+	// GetOperationLogs can be used to get logs for an operation.
+	GetOperationLogs(context.Context) *connect_go.ClientStreamForClient[v1.GetOperationLogsRequest, v1.GetOperationLogsResponse]
 }
 
 // NewLongRunningServiceClient constructs a client for the tkd.longrunning.v1.LongRunningService
@@ -114,17 +125,29 @@ func NewLongRunningServiceClient(httpClient connect_go.HTTPClient, baseURL strin
 			baseURL+LongRunningServiceWatchOperationProcedure,
 			opts...,
 		),
+		streamOperationLog: connect_go.NewClient[v1.StreamOperationLogRequest, emptypb.Empty](
+			httpClient,
+			baseURL+LongRunningServiceStreamOperationLogProcedure,
+			opts...,
+		),
+		getOperationLogs: connect_go.NewClient[v1.GetOperationLogsRequest, v1.GetOperationLogsResponse](
+			httpClient,
+			baseURL+LongRunningServiceGetOperationLogsProcedure,
+			opts...,
+		),
 	}
 }
 
 // longRunningServiceClient implements LongRunningServiceClient.
 type longRunningServiceClient struct {
-	registerOperation *connect_go.Client[v1.RegisterOperationRequest, v1.RegisterOperationResponse]
-	updateOperation   *connect_go.Client[v1.UpdateOperationRequest, v1.Operation]
-	completeOperation *connect_go.Client[v1.CompleteOperationRequest, v1.Operation]
-	queryOperations   *connect_go.Client[v1.QueryOperationsRequest, v1.QueryOperationsResponse]
-	getOperation      *connect_go.Client[v1.GetOperationRequest, v1.Operation]
-	watchOperation    *connect_go.Client[v1.GetOperationRequest, v1.Operation]
+	registerOperation  *connect_go.Client[v1.RegisterOperationRequest, v1.RegisterOperationResponse]
+	updateOperation    *connect_go.Client[v1.UpdateOperationRequest, v1.Operation]
+	completeOperation  *connect_go.Client[v1.CompleteOperationRequest, v1.Operation]
+	queryOperations    *connect_go.Client[v1.QueryOperationsRequest, v1.QueryOperationsResponse]
+	getOperation       *connect_go.Client[v1.GetOperationRequest, v1.Operation]
+	watchOperation     *connect_go.Client[v1.GetOperationRequest, v1.Operation]
+	streamOperationLog *connect_go.Client[v1.StreamOperationLogRequest, emptypb.Empty]
+	getOperationLogs   *connect_go.Client[v1.GetOperationLogsRequest, v1.GetOperationLogsResponse]
 }
 
 // RegisterOperation calls tkd.longrunning.v1.LongRunningService.RegisterOperation.
@@ -157,6 +180,16 @@ func (c *longRunningServiceClient) WatchOperation(ctx context.Context, req *conn
 	return c.watchOperation.CallServerStream(ctx, req)
 }
 
+// StreamOperationLog calls tkd.longrunning.v1.LongRunningService.StreamOperationLog.
+func (c *longRunningServiceClient) StreamOperationLog(ctx context.Context) *connect_go.ClientStreamForClient[v1.StreamOperationLogRequest, emptypb.Empty] {
+	return c.streamOperationLog.CallClientStream(ctx)
+}
+
+// GetOperationLogs calls tkd.longrunning.v1.LongRunningService.GetOperationLogs.
+func (c *longRunningServiceClient) GetOperationLogs(ctx context.Context) *connect_go.ClientStreamForClient[v1.GetOperationLogsRequest, v1.GetOperationLogsResponse] {
+	return c.getOperationLogs.CallClientStream(ctx)
+}
+
 // LongRunningServiceHandler is an implementation of the tkd.longrunning.v1.LongRunningService
 // service.
 type LongRunningServiceHandler interface {
@@ -177,6 +210,10 @@ type LongRunningServiceHandler interface {
 	// WatchOperations is like GetOperation but returns a stream that will re-send
 	// the operation whenever it is updated.
 	WatchOperation(context.Context, *connect_go.Request[v1.GetOperationRequest], *connect_go.ServerStream[v1.Operation]) error
+	// StreamOperationLog can be used to stream logs for an operation.
+	StreamOperationLog(context.Context, *connect_go.ClientStream[v1.StreamOperationLogRequest]) (*connect_go.Response[emptypb.Empty], error)
+	// GetOperationLogs can be used to get logs for an operation.
+	GetOperationLogs(context.Context, *connect_go.ClientStream[v1.GetOperationLogsRequest]) (*connect_go.Response[v1.GetOperationLogsResponse], error)
 }
 
 // NewLongRunningServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -215,6 +252,16 @@ func NewLongRunningServiceHandler(svc LongRunningServiceHandler, opts ...connect
 		svc.WatchOperation,
 		opts...,
 	)
+	longRunningServiceStreamOperationLogHandler := connect_go.NewClientStreamHandler(
+		LongRunningServiceStreamOperationLogProcedure,
+		svc.StreamOperationLog,
+		opts...,
+	)
+	longRunningServiceGetOperationLogsHandler := connect_go.NewClientStreamHandler(
+		LongRunningServiceGetOperationLogsProcedure,
+		svc.GetOperationLogs,
+		opts...,
+	)
 	return "/tkd.longrunning.v1.LongRunningService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case LongRunningServiceRegisterOperationProcedure:
@@ -229,6 +276,10 @@ func NewLongRunningServiceHandler(svc LongRunningServiceHandler, opts ...connect
 			longRunningServiceGetOperationHandler.ServeHTTP(w, r)
 		case LongRunningServiceWatchOperationProcedure:
 			longRunningServiceWatchOperationHandler.ServeHTTP(w, r)
+		case LongRunningServiceStreamOperationLogProcedure:
+			longRunningServiceStreamOperationLogHandler.ServeHTTP(w, r)
+		case LongRunningServiceGetOperationLogsProcedure:
+			longRunningServiceGetOperationLogsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -260,4 +311,12 @@ func (UnimplementedLongRunningServiceHandler) GetOperation(context.Context, *con
 
 func (UnimplementedLongRunningServiceHandler) WatchOperation(context.Context, *connect_go.Request[v1.GetOperationRequest], *connect_go.ServerStream[v1.Operation]) error {
 	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.longrunning.v1.LongRunningService.WatchOperation is not implemented"))
+}
+
+func (UnimplementedLongRunningServiceHandler) StreamOperationLog(context.Context, *connect_go.ClientStream[v1.StreamOperationLogRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.longrunning.v1.LongRunningService.StreamOperationLog is not implemented"))
+}
+
+func (UnimplementedLongRunningServiceHandler) GetOperationLogs(context.Context, *connect_go.ClientStream[v1.GetOperationLogsRequest]) (*connect_go.Response[v1.GetOperationLogsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.longrunning.v1.LongRunningService.GetOperationLogs is not implemented"))
 }

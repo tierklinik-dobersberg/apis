@@ -13,6 +13,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -81,6 +82,61 @@ func (x OperationState) Number() protoreflect.EnumNumber {
 // Deprecated: Use OperationState.Descriptor instead.
 func (OperationState) EnumDescriptor() ([]byte, []int) {
 	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{0}
+}
+
+type Severity int32
+
+const (
+	Severity_SEVERITY_INFO     Severity = 0
+	Severity_SEVERITY_DEBUG    Severity = 1
+	Severity_SEVERITY_WARNING  Severity = 2
+	Severity_SEVERITY_ERROR    Severity = 3
+	Severity_SEVERITY_CRITICAL Severity = 4
+)
+
+// Enum value maps for Severity.
+var (
+	Severity_name = map[int32]string{
+		0: "SEVERITY_INFO",
+		1: "SEVERITY_DEBUG",
+		2: "SEVERITY_WARNING",
+		3: "SEVERITY_ERROR",
+		4: "SEVERITY_CRITICAL",
+	}
+	Severity_value = map[string]int32{
+		"SEVERITY_INFO":     0,
+		"SEVERITY_DEBUG":    1,
+		"SEVERITY_WARNING":  2,
+		"SEVERITY_ERROR":    3,
+		"SEVERITY_CRITICAL": 4,
+	}
+)
+
+func (x Severity) Enum() *Severity {
+	p := new(Severity)
+	*p = x
+	return p
+}
+
+func (x Severity) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Severity) Descriptor() protoreflect.EnumDescriptor {
+	return file_tkd_longrunning_v1_operation_proto_enumTypes[1].Descriptor()
+}
+
+func (Severity) Type() protoreflect.EnumType {
+	return &file_tkd_longrunning_v1_operation_proto_enumTypes[1]
+}
+
+func (x Severity) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Severity.Descriptor instead.
+func (Severity) EnumDescriptor() ([]byte, []int) {
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{1}
 }
 
 // Operation is a operation dispatched and which progress can be tracked using
@@ -706,6 +762,68 @@ func (x *UpdateOperationRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
 	return nil
 }
 
+type StreamOperationLogRequest struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	UniqueId string                 `protobuf:"bytes,1,opt,name=unique_id,json=uniqueId,proto3" json:"unique_id,omitempty"`
+	// AuthToken is the token returned from the RegisterOperationResponse and must be set
+	// in order to allow updates to the operation.
+	AuthToken     string          `protobuf:"bytes,2,opt,name=auth_token,json=authToken,proto3" json:"auth_token,omitempty"`
+	Logs          []*OperationLog `protobuf:"bytes,3,rep,name=logs,proto3" json:"logs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StreamOperationLogRequest) Reset() {
+	*x = StreamOperationLogRequest{}
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StreamOperationLogRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StreamOperationLogRequest) ProtoMessage() {}
+
+func (x *StreamOperationLogRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StreamOperationLogRequest.ProtoReflect.Descriptor instead.
+func (*StreamOperationLogRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *StreamOperationLogRequest) GetUniqueId() string {
+	if x != nil {
+		return x.UniqueId
+	}
+	return ""
+}
+
+func (x *StreamOperationLogRequest) GetAuthToken() string {
+	if x != nil {
+		return x.AuthToken
+	}
+	return ""
+}
+
+func (x *StreamOperationLogRequest) GetLogs() []*OperationLog {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
 type CompleteOperationRequest struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	UniqueId string                 `protobuf:"bytes,1,opt,name=unique_id,json=uniqueId,proto3" json:"unique_id,omitempty"`
@@ -728,7 +846,7 @@ type CompleteOperationRequest struct {
 
 func (x *CompleteOperationRequest) Reset() {
 	*x = CompleteOperationRequest{}
-	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[6]
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -740,7 +858,7 @@ func (x *CompleteOperationRequest) String() string {
 func (*CompleteOperationRequest) ProtoMessage() {}
 
 func (x *CompleteOperationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[6]
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -753,7 +871,7 @@ func (x *CompleteOperationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompleteOperationRequest.ProtoReflect.Descriptor instead.
 func (*CompleteOperationRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{6}
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CompleteOperationRequest) GetUniqueId() string {
@@ -827,7 +945,7 @@ type QueryOperationsRequest struct {
 
 func (x *QueryOperationsRequest) Reset() {
 	*x = QueryOperationsRequest{}
-	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[7]
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -839,7 +957,7 @@ func (x *QueryOperationsRequest) String() string {
 func (*QueryOperationsRequest) ProtoMessage() {}
 
 func (x *QueryOperationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[7]
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -852,7 +970,7 @@ func (x *QueryOperationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QueryOperationsRequest.ProtoReflect.Descriptor instead.
 func (*QueryOperationsRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{7}
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *QueryOperationsRequest) GetOwner() string {
@@ -893,7 +1011,7 @@ type QueryOperationsResponse struct {
 
 func (x *QueryOperationsResponse) Reset() {
 	*x = QueryOperationsResponse{}
-	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[8]
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -905,7 +1023,7 @@ func (x *QueryOperationsResponse) String() string {
 func (*QueryOperationsResponse) ProtoMessage() {}
 
 func (x *QueryOperationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[8]
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -918,7 +1036,7 @@ func (x *QueryOperationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QueryOperationsResponse.ProtoReflect.Descriptor instead.
 func (*QueryOperationsResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{8}
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *QueryOperationsResponse) GetOperation() []*Operation {
@@ -944,7 +1062,7 @@ type GetOperationRequest struct {
 
 func (x *GetOperationRequest) Reset() {
 	*x = GetOperationRequest{}
-	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[9]
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -956,7 +1074,7 @@ func (x *GetOperationRequest) String() string {
 func (*GetOperationRequest) ProtoMessage() {}
 
 func (x *GetOperationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[9]
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -969,7 +1087,7 @@ func (x *GetOperationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOperationRequest.ProtoReflect.Descriptor instead.
 func (*GetOperationRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{9}
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetOperationRequest) GetUniqueId() string {
@@ -979,11 +1097,167 @@ func (x *GetOperationRequest) GetUniqueId() string {
 	return ""
 }
 
+type GetOperationLogsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UniqueId      string                 `protobuf:"bytes,1,opt,name=unique_id,json=uniqueId,proto3" json:"unique_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOperationLogsRequest) Reset() {
+	*x = GetOperationLogsRequest{}
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOperationLogsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOperationLogsRequest) ProtoMessage() {}
+
+func (x *GetOperationLogsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOperationLogsRequest.ProtoReflect.Descriptor instead.
+func (*GetOperationLogsRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetOperationLogsRequest) GetUniqueId() string {
+	if x != nil {
+		return x.UniqueId
+	}
+	return ""
+}
+
+type OperationLog struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Time          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=time,proto3" json:"time,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Severity      Severity               `protobuf:"varint,3,opt,name=severity,proto3,enum=tkd.longrunning.v1.Severity" json:"severity,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OperationLog) Reset() {
+	*x = OperationLog{}
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OperationLog) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OperationLog) ProtoMessage() {}
+
+func (x *OperationLog) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OperationLog.ProtoReflect.Descriptor instead.
+func (*OperationLog) Descriptor() ([]byte, []int) {
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *OperationLog) GetTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Time
+	}
+	return nil
+}
+
+func (x *OperationLog) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *OperationLog) GetSeverity() Severity {
+	if x != nil {
+		return x.Severity
+	}
+	return Severity_SEVERITY_INFO
+}
+
+type GetOperationLogsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UniqueId      string                 `protobuf:"bytes,1,opt,name=unique_id,json=uniqueId,proto3" json:"unique_id,omitempty"`
+	Logs          []*OperationLog        `protobuf:"bytes,2,rep,name=logs,proto3" json:"logs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOperationLogsResponse) Reset() {
+	*x = GetOperationLogsResponse{}
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOperationLogsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOperationLogsResponse) ProtoMessage() {}
+
+func (x *GetOperationLogsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_longrunning_v1_operation_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOperationLogsResponse.ProtoReflect.Descriptor instead.
+func (*GetOperationLogsResponse) Descriptor() ([]byte, []int) {
+	return file_tkd_longrunning_v1_operation_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetOperationLogsResponse) GetUniqueId() string {
+	if x != nil {
+		return x.UniqueId
+	}
+	return ""
+}
+
+func (x *GetOperationLogsResponse) GetLogs() []*OperationLog {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
 var File_tkd_longrunning_v1_operation_proto protoreflect.FileDescriptor
 
 const file_tkd_longrunning_v1_operation_proto_rawDesc = "" +
 	"\n" +
-	"\"tkd/longrunning/v1/operation.proto\x12\x12tkd.longrunning.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/common/v1/descriptor.proto\"\xc9\a\n" +
+	"\"tkd/longrunning/v1/operation.proto\x12\x12tkd.longrunning.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x19google/protobuf/any.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/common/v1/descriptor.proto\"\xc9\a\n" +
 	"\tOperation\x12$\n" +
 	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x12D\n" +
 	"\vcreate_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
@@ -1040,11 +1314,11 @@ const file_tkd_longrunning_v1_operation_proto_rawDesc = "" +
 	"\x19RegisterOperationResponse\x12;\n" +
 	"\toperation\x18\x01 \x01(\v2\x1d.tkd.longrunning.v1.OperationR\toperation\x12\x1d\n" +
 	"\n" +
-	"auth_token\x18\x02 \x01(\tR\tauthToken\"\x9d\x03\n" +
+	"auth_token\x18\x02 \x01(\tR\tauthToken\"\xa6\x03\n" +
 	"\x16UpdateOperationRequest\x12$\n" +
-	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x12\x1d\n" +
+	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x12&\n" +
 	"\n" +
-	"auth_token\x18\x02 \x01(\tR\tauthToken\x12\x18\n" +
+	"auth_token\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tauthToken\x12\x18\n" +
 	"\arunning\x18\x03 \x01(\bR\arunning\x12]\n" +
 	"\vannotations\x18\x04 \x03(\v2;.tkd.longrunning.v1.UpdateOperationRequest.AnnotationsEntryR\vannotations\x12!\n" +
 	"\fpercent_done\x18\x05 \x01(\x05R\vpercentDone\x12%\n" +
@@ -1054,11 +1328,16 @@ const file_tkd_longrunning_v1_operation_proto_rawDesc = "" +
 	"updateMask\x1a>\n" +
 	"\x10AnnotationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xef\x01\n" +
-	"\x18CompleteOperationRequest\x12$\n" +
-	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x12\x1d\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9f\x01\n" +
+	"\x19StreamOperationLogRequest\x12$\n" +
+	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x12&\n" +
 	"\n" +
-	"auth_token\x18\x02 \x01(\tR\tauthToken\x12@\n" +
+	"auth_token\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tauthToken\x124\n" +
+	"\x04logs\x18\x03 \x03(\v2 .tkd.longrunning.v1.OperationLogR\x04logs\"\xf8\x01\n" +
+	"\x18CompleteOperationRequest\x12$\n" +
+	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x12&\n" +
+	"\n" +
+	"auth_token\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tauthToken\x12@\n" +
 	"\asuccess\x18\b \x01(\v2$.tkd.longrunning.v1.OperationSuccessH\x00R\asuccess\x12:\n" +
 	"\x05error\x18\t \x01(\v2\".tkd.longrunning.v1.OperationErrorH\x00R\x05errorB\x10\n" +
 	"\x06result\x12\x06\xfa\xf7\x18\x02\b\x01\"\x96\x01\n" +
@@ -1072,20 +1351,37 @@ const file_tkd_longrunning_v1_operation_proto_rawDesc = "" +
 	"\vtotal_count\x18\x02 \x01(\x03R\n" +
 	"totalCount\";\n" +
 	"\x13GetOperationRequest\x12$\n" +
-	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId*\x9e\x01\n" +
+	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\"?\n" +
+	"\x17GetOperationLogsRequest\x12$\n" +
+	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\"\x92\x01\n" +
+	"\fOperationLog\x12.\n" +
+	"\x04time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x128\n" +
+	"\bseverity\x18\x03 \x01(\x0e2\x1c.tkd.longrunning.v1.SeverityR\bseverity\"v\n" +
+	"\x18GetOperationLogsResponse\x12$\n" +
+	"\tunique_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\buniqueId\x124\n" +
+	"\x04logs\x18\x02 \x03(\v2 .tkd.longrunning.v1.OperationLogR\x04logs*\x9e\x01\n" +
 	"\x0eOperationState\x12\x1e\n" +
 	"\x1aOperationState_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16OperationState_PENDING\x10\x01\x12\x1a\n" +
 	"\x16OperationState_RUNNING\x10\x02\x12\x1b\n" +
 	"\x17OperationState_COMPLETE\x10\x03\x12\x17\n" +
-	"\x13OperationState_LOST\x10\x052\xb5\x05\n" +
+	"\x13OperationState_LOST\x10\x05*r\n" +
+	"\bSeverity\x12\x11\n" +
+	"\rSEVERITY_INFO\x10\x00\x12\x12\n" +
+	"\x0eSEVERITY_DEBUG\x10\x01\x12\x14\n" +
+	"\x10SEVERITY_WARNING\x10\x02\x12\x12\n" +
+	"\x0eSEVERITY_ERROR\x10\x03\x12\x15\n" +
+	"\x11SEVERITY_CRITICAL\x10\x042\x93\a\n" +
 	"\x12LongRunningService\x12w\n" +
 	"\x11RegisterOperation\x12,.tkd.longrunning.v1.RegisterOperationRequest\x1a-.tkd.longrunning.v1.RegisterOperationResponse\"\x05\xb2~\x02\b\x02\x12c\n" +
 	"\x0fUpdateOperation\x12*.tkd.longrunning.v1.UpdateOperationRequest\x1a\x1d.tkd.longrunning.v1.Operation\"\x05\xb2~\x02\b\x02\x12g\n" +
 	"\x11CompleteOperation\x12,.tkd.longrunning.v1.CompleteOperationRequest\x1a\x1d.tkd.longrunning.v1.Operation\"\x05\xb2~\x02\b\x02\x12q\n" +
 	"\x0fQueryOperations\x12*.tkd.longrunning.v1.QueryOperationsRequest\x1a+.tkd.longrunning.v1.QueryOperationsResponse\"\x05\xb2~\x02\b\x01\x12]\n" +
 	"\fGetOperation\x12'.tkd.longrunning.v1.GetOperationRequest\x1a\x1d.tkd.longrunning.v1.Operation\"\x05\xb2~\x02\b\x01\x12a\n" +
-	"\x0eWatchOperation\x12'.tkd.longrunning.v1.GetOperationRequest\x1a\x1d.tkd.longrunning.v1.Operation\"\x05\xb2~\x02\b\x010\x01\x1a#\xba~ \n" +
+	"\x0eWatchOperation\x12'.tkd.longrunning.v1.GetOperationRequest\x1a\x1d.tkd.longrunning.v1.Operation\"\x05\xb2~\x02\b\x010\x01\x12d\n" +
+	"\x12StreamOperationLog\x12-.tkd.longrunning.v1.StreamOperationLogRequest\x1a\x16.google.protobuf.Empty\"\x05\xb2~\x02\b\x01(\x01\x12v\n" +
+	"\x10GetOperationLogs\x12+.tkd.longrunning.v1.GetOperationLogsRequest\x1a,.tkd.longrunning.v1.GetOperationLogsResponse\"\x05\xb2~\x02\b\x01(\x01\x1a#\xba~ \n" +
 	"\ridm_superuser\n" +
 	"\x0fservice_accountB\xe1\x01\n" +
 	"\x16com.tkd.longrunning.v1B\x0eOperationProtoP\x01ZMgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/longrunning/v1;longrunningv1\xa2\x02\x03TLX\xaa\x02\x12Tkd.Longrunning.V1\xca\x02\x12Tkd\\Longrunning\\V1\xe2\x02\x1eTkd\\Longrunning\\V1\\GPBMetadata\xea\x02\x14Tkd::Longrunning::V1b\x06proto3"
@@ -1102,74 +1398,88 @@ func file_tkd_longrunning_v1_operation_proto_rawDescGZIP() []byte {
 	return file_tkd_longrunning_v1_operation_proto_rawDescData
 }
 
-var file_tkd_longrunning_v1_operation_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tkd_longrunning_v1_operation_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_tkd_longrunning_v1_operation_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_tkd_longrunning_v1_operation_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_tkd_longrunning_v1_operation_proto_goTypes = []any{
 	(OperationState)(0),               // 0: tkd.longrunning.v1.OperationState
-	(*Operation)(nil),                 // 1: tkd.longrunning.v1.Operation
-	(*OperationSuccess)(nil),          // 2: tkd.longrunning.v1.OperationSuccess
-	(*OperationError)(nil),            // 3: tkd.longrunning.v1.OperationError
-	(*RegisterOperationRequest)(nil),  // 4: tkd.longrunning.v1.RegisterOperationRequest
-	(*RegisterOperationResponse)(nil), // 5: tkd.longrunning.v1.RegisterOperationResponse
-	(*UpdateOperationRequest)(nil),    // 6: tkd.longrunning.v1.UpdateOperationRequest
-	(*CompleteOperationRequest)(nil),  // 7: tkd.longrunning.v1.CompleteOperationRequest
-	(*QueryOperationsRequest)(nil),    // 8: tkd.longrunning.v1.QueryOperationsRequest
-	(*QueryOperationsResponse)(nil),   // 9: tkd.longrunning.v1.QueryOperationsResponse
-	(*GetOperationRequest)(nil),       // 10: tkd.longrunning.v1.GetOperationRequest
-	nil,                               // 11: tkd.longrunning.v1.Operation.ParametersEntry
-	nil,                               // 12: tkd.longrunning.v1.Operation.AnnotationsEntry
-	nil,                               // 13: tkd.longrunning.v1.RegisterOperationRequest.ParametersEntry
-	nil,                               // 14: tkd.longrunning.v1.RegisterOperationRequest.AnnotationsEntry
-	nil,                               // 15: tkd.longrunning.v1.UpdateOperationRequest.AnnotationsEntry
-	(*timestamppb.Timestamp)(nil),     // 16: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),       // 17: google.protobuf.Duration
-	(*anypb.Any)(nil),                 // 18: google.protobuf.Any
-	(*fieldmaskpb.FieldMask)(nil),     // 19: google.protobuf.FieldMask
-	(*structpb.Value)(nil),            // 20: google.protobuf.Value
+	(Severity)(0),                     // 1: tkd.longrunning.v1.Severity
+	(*Operation)(nil),                 // 2: tkd.longrunning.v1.Operation
+	(*OperationSuccess)(nil),          // 3: tkd.longrunning.v1.OperationSuccess
+	(*OperationError)(nil),            // 4: tkd.longrunning.v1.OperationError
+	(*RegisterOperationRequest)(nil),  // 5: tkd.longrunning.v1.RegisterOperationRequest
+	(*RegisterOperationResponse)(nil), // 6: tkd.longrunning.v1.RegisterOperationResponse
+	(*UpdateOperationRequest)(nil),    // 7: tkd.longrunning.v1.UpdateOperationRequest
+	(*StreamOperationLogRequest)(nil), // 8: tkd.longrunning.v1.StreamOperationLogRequest
+	(*CompleteOperationRequest)(nil),  // 9: tkd.longrunning.v1.CompleteOperationRequest
+	(*QueryOperationsRequest)(nil),    // 10: tkd.longrunning.v1.QueryOperationsRequest
+	(*QueryOperationsResponse)(nil),   // 11: tkd.longrunning.v1.QueryOperationsResponse
+	(*GetOperationRequest)(nil),       // 12: tkd.longrunning.v1.GetOperationRequest
+	(*GetOperationLogsRequest)(nil),   // 13: tkd.longrunning.v1.GetOperationLogsRequest
+	(*OperationLog)(nil),              // 14: tkd.longrunning.v1.OperationLog
+	(*GetOperationLogsResponse)(nil),  // 15: tkd.longrunning.v1.GetOperationLogsResponse
+	nil,                               // 16: tkd.longrunning.v1.Operation.ParametersEntry
+	nil,                               // 17: tkd.longrunning.v1.Operation.AnnotationsEntry
+	nil,                               // 18: tkd.longrunning.v1.RegisterOperationRequest.ParametersEntry
+	nil,                               // 19: tkd.longrunning.v1.RegisterOperationRequest.AnnotationsEntry
+	nil,                               // 20: tkd.longrunning.v1.UpdateOperationRequest.AnnotationsEntry
+	(*timestamppb.Timestamp)(nil),     // 21: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),       // 22: google.protobuf.Duration
+	(*anypb.Any)(nil),                 // 23: google.protobuf.Any
+	(*fieldmaskpb.FieldMask)(nil),     // 24: google.protobuf.FieldMask
+	(*structpb.Value)(nil),            // 25: google.protobuf.Value
+	(*emptypb.Empty)(nil),             // 26: google.protobuf.Empty
 }
 var file_tkd_longrunning_v1_operation_proto_depIdxs = []int32{
-	16, // 0: tkd.longrunning.v1.Operation.create_time:type_name -> google.protobuf.Timestamp
+	21, // 0: tkd.longrunning.v1.Operation.create_time:type_name -> google.protobuf.Timestamp
 	0,  // 1: tkd.longrunning.v1.Operation.state:type_name -> tkd.longrunning.v1.OperationState
-	17, // 2: tkd.longrunning.v1.Operation.ttl:type_name -> google.protobuf.Duration
-	17, // 3: tkd.longrunning.v1.Operation.grace_period:type_name -> google.protobuf.Duration
-	2,  // 4: tkd.longrunning.v1.Operation.success:type_name -> tkd.longrunning.v1.OperationSuccess
-	3,  // 5: tkd.longrunning.v1.Operation.error:type_name -> tkd.longrunning.v1.OperationError
-	16, // 6: tkd.longrunning.v1.Operation.last_update:type_name -> google.protobuf.Timestamp
-	11, // 7: tkd.longrunning.v1.Operation.parameters:type_name -> tkd.longrunning.v1.Operation.ParametersEntry
-	12, // 8: tkd.longrunning.v1.Operation.annotations:type_name -> tkd.longrunning.v1.Operation.AnnotationsEntry
-	18, // 9: tkd.longrunning.v1.OperationSuccess.result:type_name -> google.protobuf.Any
-	18, // 10: tkd.longrunning.v1.OperationError.error_details:type_name -> google.protobuf.Any
+	22, // 2: tkd.longrunning.v1.Operation.ttl:type_name -> google.protobuf.Duration
+	22, // 3: tkd.longrunning.v1.Operation.grace_period:type_name -> google.protobuf.Duration
+	3,  // 4: tkd.longrunning.v1.Operation.success:type_name -> tkd.longrunning.v1.OperationSuccess
+	4,  // 5: tkd.longrunning.v1.Operation.error:type_name -> tkd.longrunning.v1.OperationError
+	21, // 6: tkd.longrunning.v1.Operation.last_update:type_name -> google.protobuf.Timestamp
+	16, // 7: tkd.longrunning.v1.Operation.parameters:type_name -> tkd.longrunning.v1.Operation.ParametersEntry
+	17, // 8: tkd.longrunning.v1.Operation.annotations:type_name -> tkd.longrunning.v1.Operation.AnnotationsEntry
+	23, // 9: tkd.longrunning.v1.OperationSuccess.result:type_name -> google.protobuf.Any
+	23, // 10: tkd.longrunning.v1.OperationError.error_details:type_name -> google.protobuf.Any
 	0,  // 11: tkd.longrunning.v1.RegisterOperationRequest.initial_state:type_name -> tkd.longrunning.v1.OperationState
-	17, // 12: tkd.longrunning.v1.RegisterOperationRequest.ttl:type_name -> google.protobuf.Duration
-	17, // 13: tkd.longrunning.v1.RegisterOperationRequest.grace_period:type_name -> google.protobuf.Duration
-	13, // 14: tkd.longrunning.v1.RegisterOperationRequest.parameters:type_name -> tkd.longrunning.v1.RegisterOperationRequest.ParametersEntry
-	14, // 15: tkd.longrunning.v1.RegisterOperationRequest.annotations:type_name -> tkd.longrunning.v1.RegisterOperationRequest.AnnotationsEntry
-	1,  // 16: tkd.longrunning.v1.RegisterOperationResponse.operation:type_name -> tkd.longrunning.v1.Operation
-	15, // 17: tkd.longrunning.v1.UpdateOperationRequest.annotations:type_name -> tkd.longrunning.v1.UpdateOperationRequest.AnnotationsEntry
-	19, // 18: tkd.longrunning.v1.UpdateOperationRequest.update_mask:type_name -> google.protobuf.FieldMask
-	2,  // 19: tkd.longrunning.v1.CompleteOperationRequest.success:type_name -> tkd.longrunning.v1.OperationSuccess
-	3,  // 20: tkd.longrunning.v1.CompleteOperationRequest.error:type_name -> tkd.longrunning.v1.OperationError
-	0,  // 21: tkd.longrunning.v1.QueryOperationsRequest.state:type_name -> tkd.longrunning.v1.OperationState
-	1,  // 22: tkd.longrunning.v1.QueryOperationsResponse.operation:type_name -> tkd.longrunning.v1.Operation
-	20, // 23: tkd.longrunning.v1.Operation.ParametersEntry.value:type_name -> google.protobuf.Value
-	20, // 24: tkd.longrunning.v1.RegisterOperationRequest.ParametersEntry.value:type_name -> google.protobuf.Value
-	4,  // 25: tkd.longrunning.v1.LongRunningService.RegisterOperation:input_type -> tkd.longrunning.v1.RegisterOperationRequest
-	6,  // 26: tkd.longrunning.v1.LongRunningService.UpdateOperation:input_type -> tkd.longrunning.v1.UpdateOperationRequest
-	7,  // 27: tkd.longrunning.v1.LongRunningService.CompleteOperation:input_type -> tkd.longrunning.v1.CompleteOperationRequest
-	8,  // 28: tkd.longrunning.v1.LongRunningService.QueryOperations:input_type -> tkd.longrunning.v1.QueryOperationsRequest
-	10, // 29: tkd.longrunning.v1.LongRunningService.GetOperation:input_type -> tkd.longrunning.v1.GetOperationRequest
-	10, // 30: tkd.longrunning.v1.LongRunningService.WatchOperation:input_type -> tkd.longrunning.v1.GetOperationRequest
-	5,  // 31: tkd.longrunning.v1.LongRunningService.RegisterOperation:output_type -> tkd.longrunning.v1.RegisterOperationResponse
-	1,  // 32: tkd.longrunning.v1.LongRunningService.UpdateOperation:output_type -> tkd.longrunning.v1.Operation
-	1,  // 33: tkd.longrunning.v1.LongRunningService.CompleteOperation:output_type -> tkd.longrunning.v1.Operation
-	9,  // 34: tkd.longrunning.v1.LongRunningService.QueryOperations:output_type -> tkd.longrunning.v1.QueryOperationsResponse
-	1,  // 35: tkd.longrunning.v1.LongRunningService.GetOperation:output_type -> tkd.longrunning.v1.Operation
-	1,  // 36: tkd.longrunning.v1.LongRunningService.WatchOperation:output_type -> tkd.longrunning.v1.Operation
-	31, // [31:37] is the sub-list for method output_type
-	25, // [25:31] is the sub-list for method input_type
-	25, // [25:25] is the sub-list for extension type_name
-	25, // [25:25] is the sub-list for extension extendee
-	0,  // [0:25] is the sub-list for field type_name
+	22, // 12: tkd.longrunning.v1.RegisterOperationRequest.ttl:type_name -> google.protobuf.Duration
+	22, // 13: tkd.longrunning.v1.RegisterOperationRequest.grace_period:type_name -> google.protobuf.Duration
+	18, // 14: tkd.longrunning.v1.RegisterOperationRequest.parameters:type_name -> tkd.longrunning.v1.RegisterOperationRequest.ParametersEntry
+	19, // 15: tkd.longrunning.v1.RegisterOperationRequest.annotations:type_name -> tkd.longrunning.v1.RegisterOperationRequest.AnnotationsEntry
+	2,  // 16: tkd.longrunning.v1.RegisterOperationResponse.operation:type_name -> tkd.longrunning.v1.Operation
+	20, // 17: tkd.longrunning.v1.UpdateOperationRequest.annotations:type_name -> tkd.longrunning.v1.UpdateOperationRequest.AnnotationsEntry
+	24, // 18: tkd.longrunning.v1.UpdateOperationRequest.update_mask:type_name -> google.protobuf.FieldMask
+	14, // 19: tkd.longrunning.v1.StreamOperationLogRequest.logs:type_name -> tkd.longrunning.v1.OperationLog
+	3,  // 20: tkd.longrunning.v1.CompleteOperationRequest.success:type_name -> tkd.longrunning.v1.OperationSuccess
+	4,  // 21: tkd.longrunning.v1.CompleteOperationRequest.error:type_name -> tkd.longrunning.v1.OperationError
+	0,  // 22: tkd.longrunning.v1.QueryOperationsRequest.state:type_name -> tkd.longrunning.v1.OperationState
+	2,  // 23: tkd.longrunning.v1.QueryOperationsResponse.operation:type_name -> tkd.longrunning.v1.Operation
+	21, // 24: tkd.longrunning.v1.OperationLog.time:type_name -> google.protobuf.Timestamp
+	1,  // 25: tkd.longrunning.v1.OperationLog.severity:type_name -> tkd.longrunning.v1.Severity
+	14, // 26: tkd.longrunning.v1.GetOperationLogsResponse.logs:type_name -> tkd.longrunning.v1.OperationLog
+	25, // 27: tkd.longrunning.v1.Operation.ParametersEntry.value:type_name -> google.protobuf.Value
+	25, // 28: tkd.longrunning.v1.RegisterOperationRequest.ParametersEntry.value:type_name -> google.protobuf.Value
+	5,  // 29: tkd.longrunning.v1.LongRunningService.RegisterOperation:input_type -> tkd.longrunning.v1.RegisterOperationRequest
+	7,  // 30: tkd.longrunning.v1.LongRunningService.UpdateOperation:input_type -> tkd.longrunning.v1.UpdateOperationRequest
+	9,  // 31: tkd.longrunning.v1.LongRunningService.CompleteOperation:input_type -> tkd.longrunning.v1.CompleteOperationRequest
+	10, // 32: tkd.longrunning.v1.LongRunningService.QueryOperations:input_type -> tkd.longrunning.v1.QueryOperationsRequest
+	12, // 33: tkd.longrunning.v1.LongRunningService.GetOperation:input_type -> tkd.longrunning.v1.GetOperationRequest
+	12, // 34: tkd.longrunning.v1.LongRunningService.WatchOperation:input_type -> tkd.longrunning.v1.GetOperationRequest
+	8,  // 35: tkd.longrunning.v1.LongRunningService.StreamOperationLog:input_type -> tkd.longrunning.v1.StreamOperationLogRequest
+	13, // 36: tkd.longrunning.v1.LongRunningService.GetOperationLogs:input_type -> tkd.longrunning.v1.GetOperationLogsRequest
+	6,  // 37: tkd.longrunning.v1.LongRunningService.RegisterOperation:output_type -> tkd.longrunning.v1.RegisterOperationResponse
+	2,  // 38: tkd.longrunning.v1.LongRunningService.UpdateOperation:output_type -> tkd.longrunning.v1.Operation
+	2,  // 39: tkd.longrunning.v1.LongRunningService.CompleteOperation:output_type -> tkd.longrunning.v1.Operation
+	11, // 40: tkd.longrunning.v1.LongRunningService.QueryOperations:output_type -> tkd.longrunning.v1.QueryOperationsResponse
+	2,  // 41: tkd.longrunning.v1.LongRunningService.GetOperation:output_type -> tkd.longrunning.v1.Operation
+	2,  // 42: tkd.longrunning.v1.LongRunningService.WatchOperation:output_type -> tkd.longrunning.v1.Operation
+	26, // 43: tkd.longrunning.v1.LongRunningService.StreamOperationLog:output_type -> google.protobuf.Empty
+	15, // 44: tkd.longrunning.v1.LongRunningService.GetOperationLogs:output_type -> tkd.longrunning.v1.GetOperationLogsResponse
+	37, // [37:45] is the sub-list for method output_type
+	29, // [29:37] is the sub-list for method input_type
+	29, // [29:29] is the sub-list for extension type_name
+	29, // [29:29] is the sub-list for extension extendee
+	0,  // [0:29] is the sub-list for field type_name
 }
 
 func init() { file_tkd_longrunning_v1_operation_proto_init() }
@@ -1181,7 +1491,7 @@ func file_tkd_longrunning_v1_operation_proto_init() {
 		(*Operation_Success)(nil),
 		(*Operation_Error)(nil),
 	}
-	file_tkd_longrunning_v1_operation_proto_msgTypes[6].OneofWrappers = []any{
+	file_tkd_longrunning_v1_operation_proto_msgTypes[7].OneofWrappers = []any{
 		(*CompleteOperationRequest_Success)(nil),
 		(*CompleteOperationRequest_Error)(nil),
 	}
@@ -1190,8 +1500,8 @@ func file_tkd_longrunning_v1_operation_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_longrunning_v1_operation_proto_rawDesc), len(file_tkd_longrunning_v1_operation_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   15,
+			NumEnums:      2,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -9,7 +9,7 @@ import (
 )
 
 func TestParser_Basic(t *testing.T) {
-	query := "(completed = true) AND dueTime<=now"
+	query := "(completed = true AND dueTime<=now) OR dueTime >= startOfWeek"
 
 	completedField := FieldSpec{
 		Name:         "completed",
@@ -39,6 +39,8 @@ func TestParser_Basic(t *testing.T) {
 			Literal:    "now",
 		},
 	}
+
+	spew.Dump(res)
 
 	require.Equal(t, res.(*Operation).LeftNode.(*Expression).Value, true)
 

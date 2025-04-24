@@ -6,6 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "buf/validate/validate.proto";
 import "tkd/common/v1/descriptor.proto";
@@ -161,6 +162,20 @@ service LongRunningService {
             require: AUTH_REQ_REQUIRED,
         };
     }
+
+    // StreamOperationLog can be used to stream logs for an operation.
+    rpc StreamOperationLog(stream StreamOperationLogRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+    
+    // GetOperationLogs can be used to get logs for an operation.
+    rpc GetOperationLogs(stream GetOperationLogsRequest) returns (GetOperationLogsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message RegisterOperationRequest {
@@ -220,7 +235,9 @@ message UpdateOperationRequest {
 
     // AuthToken is the token returned from the RegisterOperationResponse and must be set
     // in order to allow updates to the operation.
-    string auth_token = 2;
+    string auth_token = 2 [
+        (buf.validate.field).required = true
+    ];
 
     // Running specifies if the operation is running or pending.
     bool running = 3;
@@ -238,6 +255,20 @@ message UpdateOperationRequest {
     google.protobuf.FieldMask update_mask = 10;
 }
 
+message StreamOperationLogRequest {
+    string unique_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // AuthToken is the token returned from the RegisterOperationResponse and must be set
+    // in order to allow updates to the operation.
+    string auth_token = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    repeated OperationLog logs = 3;
+}
+
 message CompleteOperationRequest {
     string unique_id = 1 [
         (buf.validate.field).required = true
@@ -245,7 +276,9 @@ message CompleteOperationRequest {
 
     // AuthToken is the token returned from the RegisterOperationResponse and must be set
     // in order to allow updates to the operation.
-    string auth_token = 2;
+    string auth_token = 2 [
+        (buf.validate.field).required = true
+    ];
 
     // Result holds the result of the operation when it's state is
     // OperationState_COMPLETE.
@@ -283,4 +316,34 @@ message GetOperationRequest {
     string unique_id = 1 [
         (buf.validate.field).required = true
     ];
+}
+
+message GetOperationLogsRequest {
+    string unique_id = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+enum Severity {
+    SEVERITY_INFO = 0;
+    SEVERITY_DEBUG = 1;
+    SEVERITY_WARNING = 2;
+    SEVERITY_ERROR = 3;
+    SEVERITY_CRITICAL = 4;
+}
+
+
+message OperationLog {
+    google.protobuf.Timestamp time = 1;
+    string message = 2;
+    Severity severity = 3;
+}
+
+
+message GetOperationLogsResponse {
+    string unique_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    repeated OperationLog logs = 2;
 }
