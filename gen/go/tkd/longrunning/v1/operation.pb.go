@@ -938,7 +938,9 @@ type QueryOperationsRequest struct {
 	// Kind can be set to filter operations by kind.
 	Kind string `protobuf:"bytes,3,opt,name=kind,proto3" json:"kind,omitempty"`
 	// State can be set to filter operations by state.
-	State         OperationState `protobuf:"varint,4,opt,name=state,proto3,enum=tkd.longrunning.v1.OperationState" json:"state,omitempty"`
+	State OperationState `protobuf:"varint,4,opt,name=state,proto3,enum=tkd.longrunning.v1.OperationState" json:"state,omitempty"`
+	// Query might be set to use a AIP query. If set, all other fields will be ignored.
+	Query         string `protobuf:"bytes,5,opt,name=query,proto3" json:"query,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -999,6 +1001,13 @@ func (x *QueryOperationsRequest) GetState() OperationState {
 		return x.State
 	}
 	return OperationState_OperationState_UNSPECIFIED
+}
+
+func (x *QueryOperationsRequest) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
 }
 
 type QueryOperationsResponse struct {
@@ -1340,12 +1349,13 @@ const file_tkd_longrunning_v1_operation_proto_rawDesc = "" +
 	"auth_token\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tauthToken\x12@\n" +
 	"\asuccess\x18\b \x01(\v2$.tkd.longrunning.v1.OperationSuccessH\x00R\asuccess\x12:\n" +
 	"\x05error\x18\t \x01(\v2\".tkd.longrunning.v1.OperationErrorH\x00R\x05errorB\x10\n" +
-	"\x06result\x12\x06\xfa\xf7\x18\x02\b\x01\"\x96\x01\n" +
+	"\x06result\x12\x06\xfa\xf7\x18\x02\b\x01\"\xac\x01\n" +
 	"\x16QueryOperationsRequest\x12\x14\n" +
 	"\x05owner\x18\x01 \x01(\tR\x05owner\x12\x18\n" +
 	"\acreator\x18\x02 \x01(\tR\acreator\x12\x12\n" +
 	"\x04kind\x18\x03 \x01(\tR\x04kind\x128\n" +
-	"\x05state\x18\x04 \x01(\x0e2\".tkd.longrunning.v1.OperationStateR\x05state\"w\n" +
+	"\x05state\x18\x04 \x01(\x0e2\".tkd.longrunning.v1.OperationStateR\x05state\x12\x14\n" +
+	"\x05query\x18\x05 \x01(\tR\x05query\"w\n" +
 	"\x17QueryOperationsResponse\x12;\n" +
 	"\toperation\x18\x01 \x03(\v2\x1d.tkd.longrunning.v1.OperationR\toperation\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x03R\n" +

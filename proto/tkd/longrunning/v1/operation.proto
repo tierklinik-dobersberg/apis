@@ -304,6 +304,9 @@ message QueryOperationsRequest {
 
     // State can be set to filter operations by state.
     OperationState state = 4;
+
+    // Query might be set to use a AIP query. If set, all other fields will be ignored.
+    string query = 5;
 }
 
 message QueryOperationsResponse {
