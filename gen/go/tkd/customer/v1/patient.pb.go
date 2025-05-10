@@ -108,7 +108,7 @@ type Patient struct {
 	ExtraData  *structpb.Struct `protobuf:"bytes,17,opt,name=extra_data,json=extraData,proto3" json:"extra_data,omitempty"`
 	// InternalReference holds the internal identifier of the patient
 	// from the importer.
-	InternalRefernce string `protobuf:"bytes,9,opt,name=internal_refernce,json=internalRefernce,proto3" json:"internal_refernce,omitempty"`
+	InternalReference string `protobuf:"bytes,9,opt,name=internal_reference,json=internalReference,proto3" json:"internal_reference,omitempty"`
 	// Importer holds an identifier for the importer
 	// that created this patient record.
 	// Records created by human users whill have importer_reference
@@ -238,9 +238,9 @@ func (x *Patient) GetExtraData() *structpb.Struct {
 	return nil
 }
 
-func (x *Patient) GetInternalRefernce() string {
+func (x *Patient) GetInternalReference() string {
 	if x != nil {
-		return x.InternalRefernce
+		return x.InternalReference
 	}
 	return ""
 }
@@ -365,7 +365,7 @@ var File_tkd_customer_v1_patient_proto protoreflect.FileDescriptor
 
 const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\n" +
-	"\x1dtkd/customer/v1/patient.proto\x12\x0ftkd.customer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1bbuf/validate/validate.proto\"\x94\x05\n" +
+	"\x1dtkd/customer/v1/patient.proto\x12\x0ftkd.customer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1bbuf/validate/validate.proto\"\x96\x05\n" +
 	"\aPatient\x12\x1f\n" +
 	"\vcustomer_id\x18\x01 \x01(\tR\n" +
 	"customerId\x12!\n" +
@@ -382,8 +382,8 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"chipNumber\x12\x14\n" +
 	"\x05color\x18\x10 \x01(\tR\x05color\x126\n" +
 	"\n" +
-	"extra_data\x18\x11 \x01(\v2\x17.google.protobuf.StructR\textraData\x12+\n" +
-	"\x11internal_refernce\x18\t \x01(\tR\x10internalRefernce\x12\x1a\n" +
+	"extra_data\x18\x11 \x01(\v2\x17.google.protobuf.StructR\textraData\x12-\n" +
+	"\x12internal_reference\x18\t \x01(\tR\x11internalReference\x12\x1a\n" +
 	"\bimporter\x18\n" +
 	" \x01(\tR\bimporter\x129\n" +
 	"\n" +

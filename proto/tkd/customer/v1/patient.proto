@@ -54,7 +54,7 @@ message Patient {
 
     // InternalReference holds the internal identifier of the patient
     // from the importer.
-    string internal_refernce = 9;
+    string internal_reference = 9;
 
     // Importer holds an identifier for the importer
     // that created this patient record.
