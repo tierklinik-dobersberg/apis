@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package tkd.customer.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/struct.proto";
+import "tkd/common/v1/date.proto";
+import "buf/validate/validate.proto";
+
+enum PatientGender {
+    PATIENT_GENDER_UNSPECIFIED = 0;
+    PATIENT_GENDER_MALE = 1;
+    PATIENT_GENDER_FEMALE = 2;
+    PATIENT_GENDER_MALE_CASTRATED = 3;
+    PATIENT_GENDER_FEMALE_CASTRATED = 4;
+}
+
+message Patient {
+    // CustomerId holds the ID of the customer this patient belongs to.
+    string customer_id = 1;
+
+    // PatientName is the name of the patient.
+    string patient_name = 2;
+
+    // Species describes the species of the patient.
+    string species = 3;
+
+    // Breed describes the breed of the patient.
+    string breed = 14;
+
+    // Birthday holds the birthday of the patient.
+    tkd.common.v1.Date birthday = 4;
+
+    // Gender holds the gender of a patient.
+    PatientGender gender = 5;
+
+    // Comment holds an optional comment for the patient in markdown format.
+    string comment = 6;
+
+    // PatientId holds the internal ID of the patient. It cannot be modified once the patient
+    // has been created.
+    string patient_id = 7;
+
+    // IsAlive is set to true if this patient is still alive.
+    bool is_alive = 8;
+
+    // ChipNumber is the chip-number of the patient.
+    string chip_number = 15;
+
+    string color = 16;
+
+    google.protobuf.Struct extra_data = 17;
+
+    // InternalReference holds the internal identifier of the patient
+    // from the importer.
+    string internal_refernce = 9;
+
+    // Importer holds an identifier for the importer
+    // that created this patient record.
+    // Records created by human users whill have importer_reference
+    // and importer_patient_id set to an empty string ("").
+    string importer = 10;
+
+    // FirstSeen holds the time the patient has been first seen.
+    google.protobuf.Timestamp first_seen = 11;
+
+    // LastUpdated holds the time the patient records has been last updated.
+    google.protobuf.Timestamp last_updated = 12;
+
+    // LastUpdatedBy holds the ID of the user that modified the patient record last.
+    string last_updated_by = 13;
+}
+
+service PatientService {
+    rpc QueryPatients(QueryPatientsRequests) returns (QueryPatientsResponse);
+}
+
+message QueryPatientsRequests {
+    string query = 1;
+}
+
+message QueryPatientsResponse {
+    repeated Patient patients = 1;
+}

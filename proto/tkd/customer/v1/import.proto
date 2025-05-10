@@ -3,6 +3,7 @@ syntax = "proto3";
 package tkd.customer.v1;
 
 import "tkd/customer/v1/customer.proto";
+import "tkd/customer/v1/patient.proto";
 import "tkd/common/v1/descriptor.proto";
 import "google/protobuf/struct.proto";
 import "buf/validate/validate.proto";
@@ -52,6 +53,16 @@ message UpsertCustomerRequest {
     ];
 }
 
+message UpsertPatientRequest {
+    Patient patient = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message UpsertPatientSuccess {
+    string id = 1;
+}
+
 message UpsertCustomerSuccess {
     string id = 1;
 }
@@ -69,6 +80,7 @@ message ImportSessionRequest {
         StartSessionRequest start_session = 1;
         LookupCustomerRequest lookup_customer = 2;
         UpsertCustomerRequest upsert_customer = 3;
+        UpsertPatientRequest upsert_patient = 4;
         ImportSessionComplete complete = 10;
 
         option (buf.validate.oneof).required = true;
@@ -81,7 +93,8 @@ message ImportSessionResponse {
     oneof message {
         StartSessionResponse start_session = 1;
         LookupCustomerResponse lookup_customer = 2;
-        UpsertCustomerSuccess upsert_success = 3;
+        UpsertCustomerSuccess upsert_customer_success = 3;
+        UpsertPatientSuccess upsert_patient_success = 5;
         Error error = 4;
     }
 
