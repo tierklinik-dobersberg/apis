@@ -50,7 +50,15 @@ message Patient {
 
     string color = 16;
 
+    // ExtraData might hold additional data from the importer.
+    // The keys and values are opaque to the server.
+    // Users will likely need to inspect the importer field to distinguish
+    // which keys/values are available.
     google.protobuf.Struct extra_data = 17;
+
+    // AdditionalUniqueId might be set if the software this patient is imported
+    // from provides an addition unique ID.
+    string addition_unique_id = 18;
 
     // InternalReference holds the internal identifier of the patient
     // from the importer.

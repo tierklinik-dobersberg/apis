@@ -103,9 +103,16 @@ type Patient struct {
 	// IsAlive is set to true if this patient is still alive.
 	IsAlive bool `protobuf:"varint,8,opt,name=is_alive,json=isAlive,proto3" json:"is_alive,omitempty"`
 	// ChipNumber is the chip-number of the patient.
-	ChipNumber string           `protobuf:"bytes,15,opt,name=chip_number,json=chipNumber,proto3" json:"chip_number,omitempty"`
-	Color      string           `protobuf:"bytes,16,opt,name=color,proto3" json:"color,omitempty"`
-	ExtraData  *structpb.Struct `protobuf:"bytes,17,opt,name=extra_data,json=extraData,proto3" json:"extra_data,omitempty"`
+	ChipNumber string `protobuf:"bytes,15,opt,name=chip_number,json=chipNumber,proto3" json:"chip_number,omitempty"`
+	Color      string `protobuf:"bytes,16,opt,name=color,proto3" json:"color,omitempty"`
+	// ExtraData might hold additional data from the importer.
+	// The keys and values are opaque to the server.
+	// Users will likely need to inspect the importer field to distinguish
+	// which keys/values are available.
+	ExtraData *structpb.Struct `protobuf:"bytes,17,opt,name=extra_data,json=extraData,proto3" json:"extra_data,omitempty"`
+	// AdditionalUniqueId might be set if the software this patient is imported
+	// from provides an addition unique ID.
+	AdditionUniqueId string `protobuf:"bytes,18,opt,name=addition_unique_id,json=additionUniqueId,proto3" json:"addition_unique_id,omitempty"`
 	// InternalReference holds the internal identifier of the patient
 	// from the importer.
 	InternalReference string `protobuf:"bytes,9,opt,name=internal_reference,json=internalReference,proto3" json:"internal_reference,omitempty"`
@@ -238,6 +245,13 @@ func (x *Patient) GetExtraData() *structpb.Struct {
 	return nil
 }
 
+func (x *Patient) GetAdditionUniqueId() string {
+	if x != nil {
+		return x.AdditionUniqueId
+	}
+	return ""
+}
+
 func (x *Patient) GetInternalReference() string {
 	if x != nil {
 		return x.InternalReference
@@ -365,7 +379,7 @@ var File_tkd_customer_v1_patient_proto protoreflect.FileDescriptor
 
 const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\n" +
-	"\x1dtkd/customer/v1/patient.proto\x12\x0ftkd.customer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1bbuf/validate/validate.proto\"\x96\x05\n" +
+	"\x1dtkd/customer/v1/patient.proto\x12\x0ftkd.customer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1bbuf/validate/validate.proto\"\xc4\x05\n" +
 	"\aPatient\x12\x1f\n" +
 	"\vcustomer_id\x18\x01 \x01(\tR\n" +
 	"customerId\x12!\n" +
@@ -382,7 +396,8 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"chipNumber\x12\x14\n" +
 	"\x05color\x18\x10 \x01(\tR\x05color\x126\n" +
 	"\n" +
-	"extra_data\x18\x11 \x01(\v2\x17.google.protobuf.StructR\textraData\x12-\n" +
+	"extra_data\x18\x11 \x01(\v2\x17.google.protobuf.StructR\textraData\x12,\n" +
+	"\x12addition_unique_id\x18\x12 \x01(\tR\x10additionUniqueId\x12-\n" +
 	"\x12internal_reference\x18\t \x01(\tR\x11internalReference\x12\x1a\n" +
 	"\bimporter\x18\n" +
 	" \x01(\tR\bimporter\x129\n" +
