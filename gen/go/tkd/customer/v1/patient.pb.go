@@ -11,7 +11,8 @@ import (
 	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/fieldmaskpb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
@@ -375,11 +376,416 @@ func (x *QueryPatientsResponse) GetPatients() []*Patient {
 	return nil
 }
 
+type GetPatientsByCustomerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CustomerId    string                 `protobuf:"bytes,1,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPatientsByCustomerRequest) Reset() {
+	*x = GetPatientsByCustomerRequest{}
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPatientsByCustomerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPatientsByCustomerRequest) ProtoMessage() {}
+
+func (x *GetPatientsByCustomerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPatientsByCustomerRequest.ProtoReflect.Descriptor instead.
+func (*GetPatientsByCustomerRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetPatientsByCustomerRequest) GetCustomerId() string {
+	if x != nil {
+		return x.CustomerId
+	}
+	return ""
+}
+
+type GetPatientsByCustomerResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Patients      []*Patient             `protobuf:"bytes,1,rep,name=patients,proto3" json:"patients,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPatientsByCustomerResponse) Reset() {
+	*x = GetPatientsByCustomerResponse{}
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPatientsByCustomerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPatientsByCustomerResponse) ProtoMessage() {}
+
+func (x *GetPatientsByCustomerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPatientsByCustomerResponse.ProtoReflect.Descriptor instead.
+func (*GetPatientsByCustomerResponse) Descriptor() ([]byte, []int) {
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetPatientsByCustomerResponse) GetPatients() []*Patient {
+	if x != nil {
+		return x.Patients
+	}
+	return nil
+}
+
+type GetPatientRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Kind:
+	//
+	//	*GetPatientRequest_AnimalId
+	//	*GetPatientRequest_AdditionalUniqueId
+	Kind          isGetPatientRequest_Kind `protobuf_oneof:"kind"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPatientRequest) Reset() {
+	*x = GetPatientRequest{}
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPatientRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPatientRequest) ProtoMessage() {}
+
+func (x *GetPatientRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPatientRequest.ProtoReflect.Descriptor instead.
+func (*GetPatientRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *GetPatientRequest) GetKind() isGetPatientRequest_Kind {
+	if x != nil {
+		return x.Kind
+	}
+	return nil
+}
+
+func (x *GetPatientRequest) GetAnimalId() string {
+	if x != nil {
+		if x, ok := x.Kind.(*GetPatientRequest_AnimalId); ok {
+			return x.AnimalId
+		}
+	}
+	return ""
+}
+
+func (x *GetPatientRequest) GetAdditionalUniqueId() string {
+	if x != nil {
+		if x, ok := x.Kind.(*GetPatientRequest_AdditionalUniqueId); ok {
+			return x.AdditionalUniqueId
+		}
+	}
+	return ""
+}
+
+type isGetPatientRequest_Kind interface {
+	isGetPatientRequest_Kind()
+}
+
+type GetPatientRequest_AnimalId struct {
+	AnimalId string `protobuf:"bytes,1,opt,name=animal_id,json=animalId,proto3,oneof"`
+}
+
+type GetPatientRequest_AdditionalUniqueId struct {
+	AdditionalUniqueId string `protobuf:"bytes,2,opt,name=additional_unique_id,json=additionalUniqueId,proto3,oneof"`
+}
+
+func (*GetPatientRequest_AnimalId) isGetPatientRequest_Kind() {}
+
+func (*GetPatientRequest_AdditionalUniqueId) isGetPatientRequest_Kind() {}
+
+type Anamnesis struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Time holds the timestamp at which this anamnesis has been created.
+	// If left empty, the server will use the current timestamp.
+	Time *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=time,proto3" json:"time,omitempty"`
+	// Text holds the text of the anamnesis.
+	// Optionally formated in Markdown.
+	Text string `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	// Diagnosis holds an optional diagnosis. It might also be used
+	// for a short summary of the text field.
+	Diagnosis     string `protobuf:"bytes,3,opt,name=diagnosis,proto3" json:"diagnosis,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Anamnesis) Reset() {
+	*x = Anamnesis{}
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Anamnesis) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Anamnesis) ProtoMessage() {}
+
+func (x *Anamnesis) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Anamnesis.ProtoReflect.Descriptor instead.
+func (*Anamnesis) Descriptor() ([]byte, []int) {
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *Anamnesis) GetTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Time
+	}
+	return nil
+}
+
+func (x *Anamnesis) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+func (x *Anamnesis) GetDiagnosis() string {
+	if x != nil {
+		return x.Diagnosis
+	}
+	return ""
+}
+
+type AddAnamnesisRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
+	Anamnesis     *Anamnesis             `protobuf:"bytes,2,opt,name=anamnesis,proto3" json:"anamnesis,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddAnamnesisRequest) Reset() {
+	*x = AddAnamnesisRequest{}
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddAnamnesisRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddAnamnesisRequest) ProtoMessage() {}
+
+func (x *AddAnamnesisRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddAnamnesisRequest.ProtoReflect.Descriptor instead.
+func (*AddAnamnesisRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *AddAnamnesisRequest) GetPatientId() string {
+	if x != nil {
+		return x.PatientId
+	}
+	return ""
+}
+
+func (x *AddAnamnesisRequest) GetAnamnesis() *Anamnesis {
+	if x != nil {
+		return x.Anamnesis
+	}
+	return nil
+}
+
+type GetAnamnesisRequest struct {
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	PatientId string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
+	// TimeRange might be set to limit which anamnesis entries should be returned.
+	TimeRange *v1.TimeRange `protobuf:"bytes,2,opt,name=time_range,json=timeRange,proto3" json:"time_range,omitempty"`
+	// ReadMask can be set to specify which fields of the GetAnamnesisResponse
+	// message should be returned.
+	// By default, only the anamnesis field is set.
+	// To also include the Patient data, set the read_mask to ["patient", "anamnesis"]
+	ReadMask      *fieldmaskpb.FieldMask `protobuf:"bytes,3,opt,name=read_mask,json=readMask,proto3" json:"read_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAnamnesisRequest) Reset() {
+	*x = GetAnamnesisRequest{}
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAnamnesisRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAnamnesisRequest) ProtoMessage() {}
+
+func (x *GetAnamnesisRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAnamnesisRequest.ProtoReflect.Descriptor instead.
+func (*GetAnamnesisRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetAnamnesisRequest) GetPatientId() string {
+	if x != nil {
+		return x.PatientId
+	}
+	return ""
+}
+
+func (x *GetAnamnesisRequest) GetTimeRange() *v1.TimeRange {
+	if x != nil {
+		return x.TimeRange
+	}
+	return nil
+}
+
+func (x *GetAnamnesisRequest) GetReadMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.ReadMask
+	}
+	return nil
+}
+
+type GetAnamnesisResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Patient       *Patient               `protobuf:"bytes,1,opt,name=patient,proto3" json:"patient,omitempty"`
+	Anamnesis     []*Anamnesis           `protobuf:"bytes,2,rep,name=anamnesis,proto3" json:"anamnesis,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAnamnesisResponse) Reset() {
+	*x = GetAnamnesisResponse{}
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAnamnesisResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAnamnesisResponse) ProtoMessage() {}
+
+func (x *GetAnamnesisResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAnamnesisResponse.ProtoReflect.Descriptor instead.
+func (*GetAnamnesisResponse) Descriptor() ([]byte, []int) {
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetAnamnesisResponse) GetPatient() *Patient {
+	if x != nil {
+		return x.Patient
+	}
+	return nil
+}
+
+func (x *GetAnamnesisResponse) GetAnamnesis() []*Anamnesis {
+	if x != nil {
+		return x.Anamnesis
+	}
+	return nil
+}
+
 var File_tkd_customer_v1_patient_proto protoreflect.FileDescriptor
 
 const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\n" +
-	"\x1dtkd/customer/v1/patient.proto\x12\x0ftkd.customer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1bbuf/validate/validate.proto\"\xc4\x05\n" +
+	"\x1dtkd/customer/v1/patient.proto\x12\x0ftkd.customer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1etkd/common/v1/time_range.proto\x1a\x1etkd/common/v1/descriptor.proto\x1a\x1bbuf/validate/validate.proto\"\xc4\x05\n" +
 	"\aPatient\x12\x1f\n" +
 	"\vcustomer_id\x18\x01 \x01(\tR\n" +
 	"customerId\x12!\n" +
@@ -408,15 +814,46 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\x15QueryPatientsRequests\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\"M\n" +
 	"\x15QueryPatientsResponse\x124\n" +
-	"\bpatients\x18\x01 \x03(\v2\x18.tkd.customer.v1.PatientR\bpatients*\xab\x01\n" +
+	"\bpatients\x18\x01 \x03(\v2\x18.tkd.customer.v1.PatientR\bpatients\"H\n" +
+	"\x1cGetPatientsByCustomerRequest\x12(\n" +
+	"\vcustomer_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
+	"customerId\"U\n" +
+	"\x1dGetPatientsByCustomerResponse\x124\n" +
+	"\bpatients\x18\x01 \x03(\v2\x18.tkd.customer.v1.PatientR\bpatients\"v\n" +
+	"\x11GetPatientRequest\x12\x1d\n" +
+	"\tanimal_id\x18\x01 \x01(\tH\x00R\banimalId\x122\n" +
+	"\x14additional_unique_id\x18\x02 \x01(\tH\x00R\x12additionalUniqueIdB\x0e\n" +
+	"\x04kind\x12\x06\xfa\xf7\x18\x02\b\x01\"m\n" +
+	"\tAnamnesis\x12.\n" +
+	"\x04time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1c\n" +
+	"\tdiagnosis\x18\x03 \x01(\tR\tdiagnosis\"\x80\x01\n" +
+	"\x13AddAnamnesisRequest\x12&\n" +
+	"\n" +
+	"patient_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tpatientId\x12A\n" +
+	"\tanamnesis\x18\x02 \x01(\v2\x1a.tkd.customer.v1.AnamnesisB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tanamnesis\"\xaf\x01\n" +
+	"\x13GetAnamnesisRequest\x12&\n" +
+	"\n" +
+	"patient_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tpatientId\x127\n" +
+	"\n" +
+	"time_range\x18\x02 \x01(\v2\x18.tkd.common.v1.TimeRangeR\ttimeRange\x127\n" +
+	"\tread_mask\x18\x03 \x01(\v2\x1a.google.protobuf.FieldMaskR\breadMask\"\x84\x01\n" +
+	"\x14GetAnamnesisResponse\x122\n" +
+	"\apatient\x18\x01 \x01(\v2\x18.tkd.customer.v1.PatientR\apatient\x128\n" +
+	"\tanamnesis\x18\x02 \x03(\v2\x1a.tkd.customer.v1.AnamnesisR\tanamnesis*\xab\x01\n" +
 	"\rPatientGender\x12\x1e\n" +
 	"\x1aPATIENT_GENDER_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13PATIENT_GENDER_MALE\x10\x01\x12\x19\n" +
 	"\x15PATIENT_GENDER_FEMALE\x10\x02\x12!\n" +
 	"\x1dPATIENT_GENDER_MALE_CASTRATED\x10\x03\x12#\n" +
-	"\x1fPATIENT_GENDER_FEMALE_CASTRATED\x10\x042q\n" +
-	"\x0ePatientService\x12_\n" +
-	"\rQueryPatients\x12&.tkd.customer.v1.QueryPatientsRequests\x1a&.tkd.customer.v1.QueryPatientsResponseB\xca\x01\n" +
+	"\x1fPATIENT_GENDER_FEMALE_CASTRATED\x10\x042\x83\x04\n" +
+	"\x0ePatientService\x12f\n" +
+	"\rQueryPatients\x12&.tkd.customer.v1.QueryPatientsRequests\x1a&.tkd.customer.v1.QueryPatientsResponse\"\x05\xb2~\x02\b\x01\x12}\n" +
+	"\x15GetPatientsByCustomer\x12-.tkd.customer.v1.GetPatientsByCustomerRequest\x1a..tkd.customer.v1.GetPatientsByCustomerResponse\"\x05\xb2~\x02\b\x01\x12Q\n" +
+	"\n" +
+	"GetPatient\x12\".tkd.customer.v1.GetPatientRequest\x1a\x18.tkd.customer.v1.Patient\"\x05\xb2~\x02\b\x01\x12S\n" +
+	"\fAddAnamnesis\x12$.tkd.customer.v1.AddAnamnesisRequest\x1a\x16.google.protobuf.Empty\"\x05\xb2~\x02\b\x01\x12b\n" +
+	"\fGetAnamnesis\x12$.tkd.customer.v1.GetAnamnesisRequest\x1a%.tkd.customer.v1.GetAnamnesisResponse\"\x05\xb2~\x02\b\x01B\xca\x01\n" +
 	"\x13com.tkd.customer.v1B\fPatientProtoP\x01ZGgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/customer/v1;customerv1\xa2\x02\x03TCX\xaa\x02\x0fTkd.Customer.V1\xca\x02\x0fTkd\\Customer\\V1\xe2\x02\x1bTkd\\Customer\\V1\\GPBMetadata\xea\x02\x11Tkd::Customer::V1b\x06proto3"
 
 var (
@@ -432,30 +869,55 @@ func file_tkd_customer_v1_patient_proto_rawDescGZIP() []byte {
 }
 
 var file_tkd_customer_v1_patient_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tkd_customer_v1_patient_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_tkd_customer_v1_patient_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_tkd_customer_v1_patient_proto_goTypes = []any{
-	(PatientGender)(0),            // 0: tkd.customer.v1.PatientGender
-	(*Patient)(nil),               // 1: tkd.customer.v1.Patient
-	(*QueryPatientsRequests)(nil), // 2: tkd.customer.v1.QueryPatientsRequests
-	(*QueryPatientsResponse)(nil), // 3: tkd.customer.v1.QueryPatientsResponse
-	(*v1.Date)(nil),               // 4: tkd.common.v1.Date
-	(*structpb.Struct)(nil),       // 5: google.protobuf.Struct
-	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(PatientGender)(0),                    // 0: tkd.customer.v1.PatientGender
+	(*Patient)(nil),                       // 1: tkd.customer.v1.Patient
+	(*QueryPatientsRequests)(nil),         // 2: tkd.customer.v1.QueryPatientsRequests
+	(*QueryPatientsResponse)(nil),         // 3: tkd.customer.v1.QueryPatientsResponse
+	(*GetPatientsByCustomerRequest)(nil),  // 4: tkd.customer.v1.GetPatientsByCustomerRequest
+	(*GetPatientsByCustomerResponse)(nil), // 5: tkd.customer.v1.GetPatientsByCustomerResponse
+	(*GetPatientRequest)(nil),             // 6: tkd.customer.v1.GetPatientRequest
+	(*Anamnesis)(nil),                     // 7: tkd.customer.v1.Anamnesis
+	(*AddAnamnesisRequest)(nil),           // 8: tkd.customer.v1.AddAnamnesisRequest
+	(*GetAnamnesisRequest)(nil),           // 9: tkd.customer.v1.GetAnamnesisRequest
+	(*GetAnamnesisResponse)(nil),          // 10: tkd.customer.v1.GetAnamnesisResponse
+	(*v1.Date)(nil),                       // 11: tkd.common.v1.Date
+	(*structpb.Struct)(nil),               // 12: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),         // 13: google.protobuf.Timestamp
+	(*v1.TimeRange)(nil),                  // 14: tkd.common.v1.TimeRange
+	(*fieldmaskpb.FieldMask)(nil),         // 15: google.protobuf.FieldMask
+	(*emptypb.Empty)(nil),                 // 16: google.protobuf.Empty
 }
 var file_tkd_customer_v1_patient_proto_depIdxs = []int32{
-	4, // 0: tkd.customer.v1.Patient.birthday:type_name -> tkd.common.v1.Date
-	0, // 1: tkd.customer.v1.Patient.gender:type_name -> tkd.customer.v1.PatientGender
-	5, // 2: tkd.customer.v1.Patient.extra_data:type_name -> google.protobuf.Struct
-	6, // 3: tkd.customer.v1.Patient.first_seen:type_name -> google.protobuf.Timestamp
-	6, // 4: tkd.customer.v1.Patient.last_updated:type_name -> google.protobuf.Timestamp
-	1, // 5: tkd.customer.v1.QueryPatientsResponse.patients:type_name -> tkd.customer.v1.Patient
-	2, // 6: tkd.customer.v1.PatientService.QueryPatients:input_type -> tkd.customer.v1.QueryPatientsRequests
-	3, // 7: tkd.customer.v1.PatientService.QueryPatients:output_type -> tkd.customer.v1.QueryPatientsResponse
-	7, // [7:8] is the sub-list for method output_type
-	6, // [6:7] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	11, // 0: tkd.customer.v1.Patient.birthday:type_name -> tkd.common.v1.Date
+	0,  // 1: tkd.customer.v1.Patient.gender:type_name -> tkd.customer.v1.PatientGender
+	12, // 2: tkd.customer.v1.Patient.extra_data:type_name -> google.protobuf.Struct
+	13, // 3: tkd.customer.v1.Patient.first_seen:type_name -> google.protobuf.Timestamp
+	13, // 4: tkd.customer.v1.Patient.last_updated:type_name -> google.protobuf.Timestamp
+	1,  // 5: tkd.customer.v1.QueryPatientsResponse.patients:type_name -> tkd.customer.v1.Patient
+	1,  // 6: tkd.customer.v1.GetPatientsByCustomerResponse.patients:type_name -> tkd.customer.v1.Patient
+	13, // 7: tkd.customer.v1.Anamnesis.time:type_name -> google.protobuf.Timestamp
+	7,  // 8: tkd.customer.v1.AddAnamnesisRequest.anamnesis:type_name -> tkd.customer.v1.Anamnesis
+	14, // 9: tkd.customer.v1.GetAnamnesisRequest.time_range:type_name -> tkd.common.v1.TimeRange
+	15, // 10: tkd.customer.v1.GetAnamnesisRequest.read_mask:type_name -> google.protobuf.FieldMask
+	1,  // 11: tkd.customer.v1.GetAnamnesisResponse.patient:type_name -> tkd.customer.v1.Patient
+	7,  // 12: tkd.customer.v1.GetAnamnesisResponse.anamnesis:type_name -> tkd.customer.v1.Anamnesis
+	2,  // 13: tkd.customer.v1.PatientService.QueryPatients:input_type -> tkd.customer.v1.QueryPatientsRequests
+	4,  // 14: tkd.customer.v1.PatientService.GetPatientsByCustomer:input_type -> tkd.customer.v1.GetPatientsByCustomerRequest
+	6,  // 15: tkd.customer.v1.PatientService.GetPatient:input_type -> tkd.customer.v1.GetPatientRequest
+	8,  // 16: tkd.customer.v1.PatientService.AddAnamnesis:input_type -> tkd.customer.v1.AddAnamnesisRequest
+	9,  // 17: tkd.customer.v1.PatientService.GetAnamnesis:input_type -> tkd.customer.v1.GetAnamnesisRequest
+	3,  // 18: tkd.customer.v1.PatientService.QueryPatients:output_type -> tkd.customer.v1.QueryPatientsResponse
+	5,  // 19: tkd.customer.v1.PatientService.GetPatientsByCustomer:output_type -> tkd.customer.v1.GetPatientsByCustomerResponse
+	1,  // 20: tkd.customer.v1.PatientService.GetPatient:output_type -> tkd.customer.v1.Patient
+	16, // 21: tkd.customer.v1.PatientService.AddAnamnesis:output_type -> google.protobuf.Empty
+	10, // 22: tkd.customer.v1.PatientService.GetAnamnesis:output_type -> tkd.customer.v1.GetAnamnesisResponse
+	18, // [18:23] is the sub-list for method output_type
+	13, // [13:18] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_tkd_customer_v1_patient_proto_init() }
@@ -463,13 +925,17 @@ func file_tkd_customer_v1_patient_proto_init() {
 	if File_tkd_customer_v1_patient_proto != nil {
 		return
 	}
+	file_tkd_customer_v1_patient_proto_msgTypes[5].OneofWrappers = []any{
+		(*GetPatientRequest_AnimalId)(nil),
+		(*GetPatientRequest_AdditionalUniqueId)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_customer_v1_patient_proto_rawDesc), len(file_tkd_customer_v1_patient_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   3,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -9,6 +9,7 @@ import (
 	errors "errors"
 	connect_go "github.com/bufbuild/connect-go"
 	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/customer/v1"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -36,11 +37,27 @@ const (
 	// PatientServiceQueryPatientsProcedure is the fully-qualified name of the PatientService's
 	// QueryPatients RPC.
 	PatientServiceQueryPatientsProcedure = "/tkd.customer.v1.PatientService/QueryPatients"
+	// PatientServiceGetPatientsByCustomerProcedure is the fully-qualified name of the PatientService's
+	// GetPatientsByCustomer RPC.
+	PatientServiceGetPatientsByCustomerProcedure = "/tkd.customer.v1.PatientService/GetPatientsByCustomer"
+	// PatientServiceGetPatientProcedure is the fully-qualified name of the PatientService's GetPatient
+	// RPC.
+	PatientServiceGetPatientProcedure = "/tkd.customer.v1.PatientService/GetPatient"
+	// PatientServiceAddAnamnesisProcedure is the fully-qualified name of the PatientService's
+	// AddAnamnesis RPC.
+	PatientServiceAddAnamnesisProcedure = "/tkd.customer.v1.PatientService/AddAnamnesis"
+	// PatientServiceGetAnamnesisProcedure is the fully-qualified name of the PatientService's
+	// GetAnamnesis RPC.
+	PatientServiceGetAnamnesisProcedure = "/tkd.customer.v1.PatientService/GetAnamnesis"
 )
 
 // PatientServiceClient is a client for the tkd.customer.v1.PatientService service.
 type PatientServiceClient interface {
 	QueryPatients(context.Context, *connect_go.Request[v1.QueryPatientsRequests]) (*connect_go.Response[v1.QueryPatientsResponse], error)
+	GetPatientsByCustomer(context.Context, *connect_go.Request[v1.GetPatientsByCustomerRequest]) (*connect_go.Response[v1.GetPatientsByCustomerResponse], error)
+	GetPatient(context.Context, *connect_go.Request[v1.GetPatientRequest]) (*connect_go.Response[v1.Patient], error)
+	AddAnamnesis(context.Context, *connect_go.Request[v1.AddAnamnesisRequest]) (*connect_go.Response[emptypb.Empty], error)
+	GetAnamnesis(context.Context, *connect_go.Request[v1.GetAnamnesisRequest]) (*connect_go.Response[v1.GetAnamnesisResponse], error)
 }
 
 // NewPatientServiceClient constructs a client for the tkd.customer.v1.PatientService service. By
@@ -58,12 +75,36 @@ func NewPatientServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 			baseURL+PatientServiceQueryPatientsProcedure,
 			opts...,
 		),
+		getPatientsByCustomer: connect_go.NewClient[v1.GetPatientsByCustomerRequest, v1.GetPatientsByCustomerResponse](
+			httpClient,
+			baseURL+PatientServiceGetPatientsByCustomerProcedure,
+			opts...,
+		),
+		getPatient: connect_go.NewClient[v1.GetPatientRequest, v1.Patient](
+			httpClient,
+			baseURL+PatientServiceGetPatientProcedure,
+			opts...,
+		),
+		addAnamnesis: connect_go.NewClient[v1.AddAnamnesisRequest, emptypb.Empty](
+			httpClient,
+			baseURL+PatientServiceAddAnamnesisProcedure,
+			opts...,
+		),
+		getAnamnesis: connect_go.NewClient[v1.GetAnamnesisRequest, v1.GetAnamnesisResponse](
+			httpClient,
+			baseURL+PatientServiceGetAnamnesisProcedure,
+			opts...,
+		),
 	}
 }
 
 // patientServiceClient implements PatientServiceClient.
 type patientServiceClient struct {
-	queryPatients *connect_go.Client[v1.QueryPatientsRequests, v1.QueryPatientsResponse]
+	queryPatients         *connect_go.Client[v1.QueryPatientsRequests, v1.QueryPatientsResponse]
+	getPatientsByCustomer *connect_go.Client[v1.GetPatientsByCustomerRequest, v1.GetPatientsByCustomerResponse]
+	getPatient            *connect_go.Client[v1.GetPatientRequest, v1.Patient]
+	addAnamnesis          *connect_go.Client[v1.AddAnamnesisRequest, emptypb.Empty]
+	getAnamnesis          *connect_go.Client[v1.GetAnamnesisRequest, v1.GetAnamnesisResponse]
 }
 
 // QueryPatients calls tkd.customer.v1.PatientService.QueryPatients.
@@ -71,9 +112,33 @@ func (c *patientServiceClient) QueryPatients(ctx context.Context, req *connect_g
 	return c.queryPatients.CallUnary(ctx, req)
 }
 
+// GetPatientsByCustomer calls tkd.customer.v1.PatientService.GetPatientsByCustomer.
+func (c *patientServiceClient) GetPatientsByCustomer(ctx context.Context, req *connect_go.Request[v1.GetPatientsByCustomerRequest]) (*connect_go.Response[v1.GetPatientsByCustomerResponse], error) {
+	return c.getPatientsByCustomer.CallUnary(ctx, req)
+}
+
+// GetPatient calls tkd.customer.v1.PatientService.GetPatient.
+func (c *patientServiceClient) GetPatient(ctx context.Context, req *connect_go.Request[v1.GetPatientRequest]) (*connect_go.Response[v1.Patient], error) {
+	return c.getPatient.CallUnary(ctx, req)
+}
+
+// AddAnamnesis calls tkd.customer.v1.PatientService.AddAnamnesis.
+func (c *patientServiceClient) AddAnamnesis(ctx context.Context, req *connect_go.Request[v1.AddAnamnesisRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.addAnamnesis.CallUnary(ctx, req)
+}
+
+// GetAnamnesis calls tkd.customer.v1.PatientService.GetAnamnesis.
+func (c *patientServiceClient) GetAnamnesis(ctx context.Context, req *connect_go.Request[v1.GetAnamnesisRequest]) (*connect_go.Response[v1.GetAnamnesisResponse], error) {
+	return c.getAnamnesis.CallUnary(ctx, req)
+}
+
 // PatientServiceHandler is an implementation of the tkd.customer.v1.PatientService service.
 type PatientServiceHandler interface {
 	QueryPatients(context.Context, *connect_go.Request[v1.QueryPatientsRequests]) (*connect_go.Response[v1.QueryPatientsResponse], error)
+	GetPatientsByCustomer(context.Context, *connect_go.Request[v1.GetPatientsByCustomerRequest]) (*connect_go.Response[v1.GetPatientsByCustomerResponse], error)
+	GetPatient(context.Context, *connect_go.Request[v1.GetPatientRequest]) (*connect_go.Response[v1.Patient], error)
+	AddAnamnesis(context.Context, *connect_go.Request[v1.AddAnamnesisRequest]) (*connect_go.Response[emptypb.Empty], error)
+	GetAnamnesis(context.Context, *connect_go.Request[v1.GetAnamnesisRequest]) (*connect_go.Response[v1.GetAnamnesisResponse], error)
 }
 
 // NewPatientServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -87,10 +152,38 @@ func NewPatientServiceHandler(svc PatientServiceHandler, opts ...connect_go.Hand
 		svc.QueryPatients,
 		opts...,
 	)
+	patientServiceGetPatientsByCustomerHandler := connect_go.NewUnaryHandler(
+		PatientServiceGetPatientsByCustomerProcedure,
+		svc.GetPatientsByCustomer,
+		opts...,
+	)
+	patientServiceGetPatientHandler := connect_go.NewUnaryHandler(
+		PatientServiceGetPatientProcedure,
+		svc.GetPatient,
+		opts...,
+	)
+	patientServiceAddAnamnesisHandler := connect_go.NewUnaryHandler(
+		PatientServiceAddAnamnesisProcedure,
+		svc.AddAnamnesis,
+		opts...,
+	)
+	patientServiceGetAnamnesisHandler := connect_go.NewUnaryHandler(
+		PatientServiceGetAnamnesisProcedure,
+		svc.GetAnamnesis,
+		opts...,
+	)
 	return "/tkd.customer.v1.PatientService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PatientServiceQueryPatientsProcedure:
 			patientServiceQueryPatientsHandler.ServeHTTP(w, r)
+		case PatientServiceGetPatientsByCustomerProcedure:
+			patientServiceGetPatientsByCustomerHandler.ServeHTTP(w, r)
+		case PatientServiceGetPatientProcedure:
+			patientServiceGetPatientHandler.ServeHTTP(w, r)
+		case PatientServiceAddAnamnesisProcedure:
+			patientServiceAddAnamnesisHandler.ServeHTTP(w, r)
+		case PatientServiceGetAnamnesisProcedure:
+			patientServiceGetAnamnesisHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -102,4 +195,20 @@ type UnimplementedPatientServiceHandler struct{}
 
 func (UnimplementedPatientServiceHandler) QueryPatients(context.Context, *connect_go.Request[v1.QueryPatientsRequests]) (*connect_go.Response[v1.QueryPatientsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.customer.v1.PatientService.QueryPatients is not implemented"))
+}
+
+func (UnimplementedPatientServiceHandler) GetPatientsByCustomer(context.Context, *connect_go.Request[v1.GetPatientsByCustomerRequest]) (*connect_go.Response[v1.GetPatientsByCustomerResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.customer.v1.PatientService.GetPatientsByCustomer is not implemented"))
+}
+
+func (UnimplementedPatientServiceHandler) GetPatient(context.Context, *connect_go.Request[v1.GetPatientRequest]) (*connect_go.Response[v1.Patient], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.customer.v1.PatientService.GetPatient is not implemented"))
+}
+
+func (UnimplementedPatientServiceHandler) AddAnamnesis(context.Context, *connect_go.Request[v1.AddAnamnesisRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.customer.v1.PatientService.AddAnamnesis is not implemented"))
+}
+
+func (UnimplementedPatientServiceHandler) GetAnamnesis(context.Context, *connect_go.Request[v1.GetAnamnesisRequest]) (*connect_go.Response[v1.GetAnamnesisResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.customer.v1.PatientService.GetAnamnesis is not implemented"))
 }

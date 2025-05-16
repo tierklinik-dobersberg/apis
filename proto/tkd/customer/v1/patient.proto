@@ -3,9 +3,12 @@ syntax = "proto3";
 package tkd.customer.v1;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/struct.proto";
 import "tkd/common/v1/date.proto";
+import "tkd/common/v1/time_range.proto";
+import "tkd/common/v1/descriptor.proto";
 import "buf/validate/validate.proto";
 
 enum PatientGender {
@@ -81,7 +84,35 @@ message Patient {
 }
 
 service PatientService {
-    rpc QueryPatients(QueryPatientsRequests) returns (QueryPatientsResponse);
+    rpc QueryPatients(QueryPatientsRequests) returns (QueryPatientsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc GetPatientsByCustomer(GetPatientsByCustomerRequest) returns (GetPatientsByCustomerResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc GetPatient(GetPatientRequest) returns (Patient) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc AddAnamnesis(AddAnamnesisRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+    
+    rpc GetAnamnesis(GetAnamnesisRequest) returns (GetAnamnesisResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message QueryPatientsRequests {
@@ -90,4 +121,68 @@ message QueryPatientsRequests {
 
 message QueryPatientsResponse {
     repeated Patient patients = 1;
+}
+
+message GetPatientsByCustomerRequest {
+    string customer_id = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message GetPatientsByCustomerResponse {
+    repeated Patient patients = 1;
+}
+
+message GetPatientRequest {
+    oneof kind {
+        string animal_id = 1;
+        string additional_unique_id = 2;        
+
+        option (buf.validate.oneof).required = true;
+    };
+}
+
+message Anamnesis {
+    // Time holds the timestamp at which this anamnesis has been created.
+    // If left empty, the server will use the current timestamp.
+    google.protobuf.Timestamp time = 1;
+
+    // Text holds the text of the anamnesis.
+    // Optionally formated in Markdown.
+    string text = 2;
+
+    // Diagnosis holds an optional diagnosis. It might also be used
+    // for a short summary of the text field.
+    string diagnosis = 3;
+}
+
+message AddAnamnesisRequest {
+    string patient_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    Anamnesis anamnesis = 2 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message GetAnamnesisRequest {
+    string patient_id = 1 [
+        (buf.validate.field).required = true
+    ] ;
+
+    // TimeRange might be set to limit which anamnesis entries should be returned.
+    tkd.common.v1.TimeRange time_range = 2;
+
+    // ReadMask can be set to specify which fields of the GetAnamnesisResponse
+    // message should be returned.
+    // By default, only the anamnesis field is set.
+    // To also include the Patient data, set the read_mask to ["patient", "anamnesis"]
+    google.protobuf.FieldMask read_mask = 3;
+}
+
+message GetAnamnesisResponse {
+    Patient patient = 1;
+
+    repeated Anamnesis anamnesis = 2;
 }
