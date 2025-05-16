@@ -40,6 +40,9 @@ const (
 	// CalendarServiceListEventsProcedure is the fully-qualified name of the CalendarService's
 	// ListEvents RPC.
 	CalendarServiceListEventsProcedure = "/tkd.calendar.v1.CalendarService/ListEvents"
+	// CalendarServiceSearchEventsProcedure is the fully-qualified name of the CalendarService's
+	// SearchEvents RPC.
+	CalendarServiceSearchEventsProcedure = "/tkd.calendar.v1.CalendarService/SearchEvents"
 	// CalendarServiceCreateEventProcedure is the fully-qualified name of the CalendarService's
 	// CreateEvent RPC.
 	CalendarServiceCreateEventProcedure = "/tkd.calendar.v1.CalendarService/CreateEvent"
@@ -70,6 +73,9 @@ type CalendarServiceClient interface {
 	// ListEvents can search and return a list of calendar events for one or
 	// more calendar ids.
 	ListEvents(context.Context, *connect_go.Request[v1.ListEventsRequest]) (*connect_go.Response[v1.ListEventsResponse], error)
+	// SearchEvents can search and return a list of calendar events for one or
+	// more calendar ids.
+	SearchEvents(context.Context, *connect_go.Request[v1.SearchEventsRequest]) (*connect_go.Response[v1.SearchEventsResponse], error)
 	// CreateEvent creates a new calendar event at a specified calendar id.
 	CreateEvent(context.Context, *connect_go.Request[v1.CreateEventRequest]) (*connect_go.Response[v1.CreateEventResponse], error)
 	// UpdateEvent allows to partitially update a calendar event. If the event
@@ -106,6 +112,11 @@ func NewCalendarServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 		listEvents: connect_go.NewClient[v1.ListEventsRequest, v1.ListEventsResponse](
 			httpClient,
 			baseURL+CalendarServiceListEventsProcedure,
+			opts...,
+		),
+		searchEvents: connect_go.NewClient[v1.SearchEventsRequest, v1.SearchEventsResponse](
+			httpClient,
+			baseURL+CalendarServiceSearchEventsProcedure,
 			opts...,
 		),
 		createEvent: connect_go.NewClient[v1.CreateEventRequest, v1.CreateEventResponse](
@@ -150,6 +161,7 @@ func NewCalendarServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 type calendarServiceClient struct {
 	listCalendars          *connect_go.Client[v1.ListCalendarsRequest, v1.ListCalendarsResponse]
 	listEvents             *connect_go.Client[v1.ListEventsRequest, v1.ListEventsResponse]
+	searchEvents           *connect_go.Client[v1.SearchEventsRequest, v1.SearchEventsResponse]
 	createEvent            *connect_go.Client[v1.CreateEventRequest, v1.CreateEventResponse]
 	updateEvent            *connect_go.Client[v1.UpdateEventRequest, v1.UpdateEventResponse]
 	moveEvent              *connect_go.Client[v1.MoveEventRequest, v1.MoveEventResponse]
@@ -167,6 +179,11 @@ func (c *calendarServiceClient) ListCalendars(ctx context.Context, req *connect_
 // ListEvents calls tkd.calendar.v1.CalendarService.ListEvents.
 func (c *calendarServiceClient) ListEvents(ctx context.Context, req *connect_go.Request[v1.ListEventsRequest]) (*connect_go.Response[v1.ListEventsResponse], error) {
 	return c.listEvents.CallUnary(ctx, req)
+}
+
+// SearchEvents calls tkd.calendar.v1.CalendarService.SearchEvents.
+func (c *calendarServiceClient) SearchEvents(ctx context.Context, req *connect_go.Request[v1.SearchEventsRequest]) (*connect_go.Response[v1.SearchEventsResponse], error) {
+	return c.searchEvents.CallUnary(ctx, req)
 }
 
 // CreateEvent calls tkd.calendar.v1.CalendarService.CreateEvent.
@@ -211,6 +228,9 @@ type CalendarServiceHandler interface {
 	// ListEvents can search and return a list of calendar events for one or
 	// more calendar ids.
 	ListEvents(context.Context, *connect_go.Request[v1.ListEventsRequest]) (*connect_go.Response[v1.ListEventsResponse], error)
+	// SearchEvents can search and return a list of calendar events for one or
+	// more calendar ids.
+	SearchEvents(context.Context, *connect_go.Request[v1.SearchEventsRequest]) (*connect_go.Response[v1.SearchEventsResponse], error)
 	// CreateEvent creates a new calendar event at a specified calendar id.
 	CreateEvent(context.Context, *connect_go.Request[v1.CreateEventRequest]) (*connect_go.Response[v1.CreateEventResponse], error)
 	// UpdateEvent allows to partitially update a calendar event. If the event
@@ -243,6 +263,11 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect_go.Ha
 	calendarServiceListEventsHandler := connect_go.NewUnaryHandler(
 		CalendarServiceListEventsProcedure,
 		svc.ListEvents,
+		opts...,
+	)
+	calendarServiceSearchEventsHandler := connect_go.NewUnaryHandler(
+		CalendarServiceSearchEventsProcedure,
+		svc.SearchEvents,
 		opts...,
 	)
 	calendarServiceCreateEventHandler := connect_go.NewUnaryHandler(
@@ -286,6 +311,8 @@ func NewCalendarServiceHandler(svc CalendarServiceHandler, opts ...connect_go.Ha
 			calendarServiceListCalendarsHandler.ServeHTTP(w, r)
 		case CalendarServiceListEventsProcedure:
 			calendarServiceListEventsHandler.ServeHTTP(w, r)
+		case CalendarServiceSearchEventsProcedure:
+			calendarServiceSearchEventsHandler.ServeHTTP(w, r)
 		case CalendarServiceCreateEventProcedure:
 			calendarServiceCreateEventHandler.ServeHTTP(w, r)
 		case CalendarServiceUpdateEventProcedure:
@@ -315,6 +342,10 @@ func (UnimplementedCalendarServiceHandler) ListCalendars(context.Context, *conne
 
 func (UnimplementedCalendarServiceHandler) ListEvents(context.Context, *connect_go.Request[v1.ListEventsRequest]) (*connect_go.Response[v1.ListEventsResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.ListEvents is not implemented"))
+}
+
+func (UnimplementedCalendarServiceHandler) SearchEvents(context.Context, *connect_go.Request[v1.SearchEventsRequest]) (*connect_go.Response[v1.SearchEventsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.calendar.v1.CalendarService.SearchEvents is not implemented"))
 }
 
 func (UnimplementedCalendarServiceHandler) CreateEvent(context.Context, *connect_go.Request[v1.CreateEventRequest]) (*connect_go.Response[v1.CreateEventResponse], error) {

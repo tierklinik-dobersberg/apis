@@ -349,6 +349,104 @@ export declare class ListEventsRequest extends Message<ListEventsRequest> {
 }
 
 /**
+ * SearchEventsRequest is the request message for the SearchEvents RPC and supports
+ * querying calendar events over a list of sources.
+ *
+ * @generated from message tkd.calendar.v1.SearchEventsRequest
+ */
+export declare class SearchEventsRequest extends Message<SearchEventsRequest> {
+  /**
+   * Source describes where cis-cal should look for calendar events. At least
+   * on of the oneof members must be set.
+   *
+   * @generated from oneof tkd.calendar.v1.SearchEventsRequest.source
+   */
+  source: {
+    /**
+     * Sources can be used to specify a dedicated list of user and/or
+     * calendar ids.
+     *
+     * @generated from field: tkd.calendar.v1.EventSource sources = 1;
+     */
+    value: EventSource;
+    case: "sources";
+  } | {
+    /**
+     * AllCalendars might be set to true to query all available calendars.
+     * To get a list of available calendars, user the SearchCalendars RPC.
+     *
+     * @generated from field: bool all_calendars = 2;
+     */
+    value: boolean;
+    case: "allCalendars";
+  } | {
+    /**
+     * AllUsers might be set to true to query events from all user
+     * calendars.
+     *
+     * @generated from field: bool all_users = 3;
+     */
+    value: boolean;
+    case: "allUsers";
+  } | { case: undefined; value?: undefined };
+
+  /**
+   * SearchTime allows to specify a search time for calendar events. At least
+   * one of the oneof member fields must be set.
+   *
+   * @generated from oneof tkd.calendar.v1.SearchEventsRequest.search_time
+   */
+  searchTime: {
+    /**
+     * TimeRange might be set to a start and end time. Only events that
+     * start/end within the specified time range (inclusive) will be
+     * returned.
+     *
+     * @generated from field: tkd.common.v1.TimeRange time_range = 4;
+     */
+    value: TimeRange;
+    case: "timeRange";
+  } | {
+    /**
+     * Date might be set to a date in the format of YYYY-MM-DD  or
+     * YYYY/MM/DD. Only events that start OR end at the specified date will
+     * be returned.
+     *
+     * @generated from field: string date = 5;
+     */
+    value: string;
+    case: "date";
+  } | { case: undefined; value?: undefined };
+
+  /**
+   * @generated from field: string search_text = 6;
+   */
+  searchText: string;
+
+  /**
+   * ReadMask can be used to limit the number of fields returned in the
+   * response.
+   *
+   * @generated from field: google.protobuf.FieldMask read_mask = 10;
+   */
+  readMask?: FieldMask;
+
+  constructor(data?: PartialMessage<SearchEventsRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.SearchEventsRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SearchEventsRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SearchEventsRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SearchEventsRequest;
+
+  static equals(a: SearchEventsRequest | PlainMessage<SearchEventsRequest> | undefined, b: SearchEventsRequest | PlainMessage<SearchEventsRequest> | undefined): boolean;
+}
+
+/**
  * CalendarEventList holds a list of events along the calendar definition. Use
  * ReadMask from ListEventsRequest if not all fields are required in the
  * response.
@@ -415,6 +513,37 @@ export declare class ListEventsResponse extends Message<ListEventsResponse> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListEventsResponse;
 
   static equals(a: ListEventsResponse | PlainMessage<ListEventsResponse> | undefined, b: ListEventsResponse | PlainMessage<ListEventsResponse> | undefined): boolean;
+}
+
+/**
+ * SearchEventsResponse is the response of the SearchEvents RPC and contains a list
+ * of CalendarEventList messages that contains the calendar definition as well
+ * as the list of events that matched the search query.
+ *
+ * @generated from message tkd.calendar.v1.SearchEventsResponse
+ */
+export declare class SearchEventsResponse extends Message<SearchEventsResponse> {
+  /**
+   * Results is a list of CalendarEventList containing events that matched the
+   * search query.
+   *
+   * @generated from field: repeated tkd.calendar.v1.CalendarEventList results = 1;
+   */
+  results: CalendarEventList[];
+
+  constructor(data?: PartialMessage<SearchEventsResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "tkd.calendar.v1.SearchEventsResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SearchEventsResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SearchEventsResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SearchEventsResponse;
+
+  static equals(a: SearchEventsResponse | PlainMessage<SearchEventsResponse> | undefined, b: SearchEventsResponse | PlainMessage<SearchEventsResponse> | undefined): boolean;
 }
 
 /**

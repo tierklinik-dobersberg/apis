@@ -616,6 +616,188 @@ func (*ListEventsRequest_TimeRange) isListEventsRequest_SearchTime() {}
 
 func (*ListEventsRequest_Date) isListEventsRequest_SearchTime() {}
 
+// SearchEventsRequest is the request message for the SearchEvents RPC and supports
+// querying calendar events over a list of sources.
+type SearchEventsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Source describes where cis-cal should look for calendar events. At least
+	// on of the oneof members must be set.
+	//
+	// Types that are valid to be assigned to Source:
+	//
+	//	*SearchEventsRequest_Sources
+	//	*SearchEventsRequest_AllCalendars
+	//	*SearchEventsRequest_AllUsers
+	Source isSearchEventsRequest_Source `protobuf_oneof:"source"`
+	// SearchTime allows to specify a search time for calendar events. At least
+	// one of the oneof member fields must be set.
+	//
+	// Types that are valid to be assigned to SearchTime:
+	//
+	//	*SearchEventsRequest_TimeRange
+	//	*SearchEventsRequest_Date
+	SearchTime isSearchEventsRequest_SearchTime `protobuf_oneof:"search_time"`
+	SearchText string                           `protobuf:"bytes,6,opt,name=search_text,json=searchText,proto3" json:"search_text,omitempty"`
+	// ReadMask can be used to limit the number of fields returned in the
+	// response.
+	ReadMask      *fieldmaskpb.FieldMask `protobuf:"bytes,10,opt,name=read_mask,json=readMask,proto3" json:"read_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchEventsRequest) Reset() {
+	*x = SearchEventsRequest{}
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchEventsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchEventsRequest) ProtoMessage() {}
+
+func (x *SearchEventsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchEventsRequest.ProtoReflect.Descriptor instead.
+func (*SearchEventsRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *SearchEventsRequest) GetSource() isSearchEventsRequest_Source {
+	if x != nil {
+		return x.Source
+	}
+	return nil
+}
+
+func (x *SearchEventsRequest) GetSources() *EventSource {
+	if x != nil {
+		if x, ok := x.Source.(*SearchEventsRequest_Sources); ok {
+			return x.Sources
+		}
+	}
+	return nil
+}
+
+func (x *SearchEventsRequest) GetAllCalendars() bool {
+	if x != nil {
+		if x, ok := x.Source.(*SearchEventsRequest_AllCalendars); ok {
+			return x.AllCalendars
+		}
+	}
+	return false
+}
+
+func (x *SearchEventsRequest) GetAllUsers() bool {
+	if x != nil {
+		if x, ok := x.Source.(*SearchEventsRequest_AllUsers); ok {
+			return x.AllUsers
+		}
+	}
+	return false
+}
+
+func (x *SearchEventsRequest) GetSearchTime() isSearchEventsRequest_SearchTime {
+	if x != nil {
+		return x.SearchTime
+	}
+	return nil
+}
+
+func (x *SearchEventsRequest) GetTimeRange() *v1.TimeRange {
+	if x != nil {
+		if x, ok := x.SearchTime.(*SearchEventsRequest_TimeRange); ok {
+			return x.TimeRange
+		}
+	}
+	return nil
+}
+
+func (x *SearchEventsRequest) GetDate() string {
+	if x != nil {
+		if x, ok := x.SearchTime.(*SearchEventsRequest_Date); ok {
+			return x.Date
+		}
+	}
+	return ""
+}
+
+func (x *SearchEventsRequest) GetSearchText() string {
+	if x != nil {
+		return x.SearchText
+	}
+	return ""
+}
+
+func (x *SearchEventsRequest) GetReadMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.ReadMask
+	}
+	return nil
+}
+
+type isSearchEventsRequest_Source interface {
+	isSearchEventsRequest_Source()
+}
+
+type SearchEventsRequest_Sources struct {
+	// Sources can be used to specify a dedicated list of user and/or
+	// calendar ids.
+	Sources *EventSource `protobuf:"bytes,1,opt,name=sources,proto3,oneof"`
+}
+
+type SearchEventsRequest_AllCalendars struct {
+	// AllCalendars might be set to true to query all available calendars.
+	// To get a list of available calendars, user the SearchCalendars RPC.
+	AllCalendars bool `protobuf:"varint,2,opt,name=all_calendars,json=allCalendars,proto3,oneof"`
+}
+
+type SearchEventsRequest_AllUsers struct {
+	// AllUsers might be set to true to query events from all user
+	// calendars.
+	AllUsers bool `protobuf:"varint,3,opt,name=all_users,json=allUsers,proto3,oneof"`
+}
+
+func (*SearchEventsRequest_Sources) isSearchEventsRequest_Source() {}
+
+func (*SearchEventsRequest_AllCalendars) isSearchEventsRequest_Source() {}
+
+func (*SearchEventsRequest_AllUsers) isSearchEventsRequest_Source() {}
+
+type isSearchEventsRequest_SearchTime interface {
+	isSearchEventsRequest_SearchTime()
+}
+
+type SearchEventsRequest_TimeRange struct {
+	// TimeRange might be set to a start and end time. Only events that
+	// start/end within the specified time range (inclusive) will be
+	// returned.
+	TimeRange *v1.TimeRange `protobuf:"bytes,4,opt,name=time_range,json=timeRange,proto3,oneof"`
+}
+
+type SearchEventsRequest_Date struct {
+	// Date might be set to a date in the format of YYYY-MM-DD  or
+	// YYYY/MM/DD. Only events that start OR end at the specified date will
+	// be returned.
+	Date string `protobuf:"bytes,5,opt,name=date,proto3,oneof"`
+}
+
+func (*SearchEventsRequest_TimeRange) isSearchEventsRequest_SearchTime() {}
+
+func (*SearchEventsRequest_Date) isSearchEventsRequest_SearchTime() {}
+
 // CalendarEventList holds a list of events along the calendar definition. Use
 // ReadMask from ListEventsRequest if not all fields are required in the
 // response.
@@ -632,7 +814,7 @@ type CalendarEventList struct {
 
 func (x *CalendarEventList) Reset() {
 	*x = CalendarEventList{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[8]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -644,7 +826,7 @@ func (x *CalendarEventList) String() string {
 func (*CalendarEventList) ProtoMessage() {}
 
 func (x *CalendarEventList) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[8]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -657,7 +839,7 @@ func (x *CalendarEventList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CalendarEventList.ProtoReflect.Descriptor instead.
 func (*CalendarEventList) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{8}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CalendarEventList) GetCalendar() *Calendar {
@@ -688,7 +870,7 @@ type ListEventsResponse struct {
 
 func (x *ListEventsResponse) Reset() {
 	*x = ListEventsResponse{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[9]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -700,7 +882,7 @@ func (x *ListEventsResponse) String() string {
 func (*ListEventsResponse) ProtoMessage() {}
 
 func (x *ListEventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[9]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -713,10 +895,59 @@ func (x *ListEventsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEventsResponse.ProtoReflect.Descriptor instead.
 func (*ListEventsResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{9}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ListEventsResponse) GetResults() []*CalendarEventList {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
+// SearchEventsResponse is the response of the SearchEvents RPC and contains a list
+// of CalendarEventList messages that contains the calendar definition as well
+// as the list of events that matched the search query.
+type SearchEventsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Results is a list of CalendarEventList containing events that matched the
+	// search query.
+	Results       []*CalendarEventList `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchEventsResponse) Reset() {
+	*x = SearchEventsResponse{}
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchEventsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchEventsResponse) ProtoMessage() {}
+
+func (x *SearchEventsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchEventsResponse.ProtoReflect.Descriptor instead.
+func (*SearchEventsResponse) Descriptor() ([]byte, []int) {
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *SearchEventsResponse) GetResults() []*CalendarEventList {
 	if x != nil {
 		return x.Results
 	}
@@ -751,7 +982,7 @@ type CreateEventRequest struct {
 
 func (x *CreateEventRequest) Reset() {
 	*x = CreateEventRequest{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[10]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -763,7 +994,7 @@ func (x *CreateEventRequest) String() string {
 func (*CreateEventRequest) ProtoMessage() {}
 
 func (x *CreateEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[10]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -776,7 +1007,7 @@ func (x *CreateEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateEventRequest.ProtoReflect.Descriptor instead.
 func (*CreateEventRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{10}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateEventRequest) GetCalendarId() string {
@@ -840,7 +1071,7 @@ type CreateEventResponse struct {
 
 func (x *CreateEventResponse) Reset() {
 	*x = CreateEventResponse{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[11]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -852,7 +1083,7 @@ func (x *CreateEventResponse) String() string {
 func (*CreateEventResponse) ProtoMessage() {}
 
 func (x *CreateEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[11]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -865,7 +1096,7 @@ func (x *CreateEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateEventResponse.ProtoReflect.Descriptor instead.
 func (*CreateEventResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{11}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CreateEventResponse) GetEvent() *CalendarEvent {
@@ -906,7 +1137,7 @@ type UpdateEventRequest struct {
 
 func (x *UpdateEventRequest) Reset() {
 	*x = UpdateEventRequest{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[12]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -918,7 +1149,7 @@ func (x *UpdateEventRequest) String() string {
 func (*UpdateEventRequest) ProtoMessage() {}
 
 func (x *UpdateEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[12]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -931,7 +1162,7 @@ func (x *UpdateEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateEventRequest.ProtoReflect.Descriptor instead.
 func (*UpdateEventRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{12}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *UpdateEventRequest) GetCalendarId() string {
@@ -1009,7 +1240,7 @@ type UpdateEventResponse struct {
 
 func (x *UpdateEventResponse) Reset() {
 	*x = UpdateEventResponse{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[13]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1021,7 +1252,7 @@ func (x *UpdateEventResponse) String() string {
 func (*UpdateEventResponse) ProtoMessage() {}
 
 func (x *UpdateEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[13]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1034,7 +1265,7 @@ func (x *UpdateEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateEventResponse.ProtoReflect.Descriptor instead.
 func (*UpdateEventResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{13}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *UpdateEventResponse) GetEvent() *CalendarEvent {
@@ -1072,7 +1303,7 @@ type MoveEventRequest struct {
 
 func (x *MoveEventRequest) Reset() {
 	*x = MoveEventRequest{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[14]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1084,7 +1315,7 @@ func (x *MoveEventRequest) String() string {
 func (*MoveEventRequest) ProtoMessage() {}
 
 func (x *MoveEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[14]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1097,7 +1328,7 @@ func (x *MoveEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveEventRequest.ProtoReflect.Descriptor instead.
 func (*MoveEventRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{14}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *MoveEventRequest) GetSource() isMoveEventRequest_Source {
@@ -1212,7 +1443,7 @@ type MoveEventResponse struct {
 
 func (x *MoveEventResponse) Reset() {
 	*x = MoveEventResponse{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[15]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1224,7 +1455,7 @@ func (x *MoveEventResponse) String() string {
 func (*MoveEventResponse) ProtoMessage() {}
 
 func (x *MoveEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[15]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1237,7 +1468,7 @@ func (x *MoveEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveEventResponse.ProtoReflect.Descriptor instead.
 func (*MoveEventResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{15}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *MoveEventResponse) GetEvent() *CalendarEvent {
@@ -1262,7 +1493,7 @@ type DeleteEventRequest struct {
 
 func (x *DeleteEventRequest) Reset() {
 	*x = DeleteEventRequest{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[16]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1274,7 +1505,7 @@ func (x *DeleteEventRequest) String() string {
 func (*DeleteEventRequest) ProtoMessage() {}
 
 func (x *DeleteEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[16]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1287,7 +1518,7 @@ func (x *DeleteEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteEventRequest.ProtoReflect.Descriptor instead.
 func (*DeleteEventRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{16}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *DeleteEventRequest) GetCalendarId() string {
@@ -1314,7 +1545,7 @@ type DeleteEventResponse struct {
 
 func (x *DeleteEventResponse) Reset() {
 	*x = DeleteEventResponse{}
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[17]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1326,7 +1557,7 @@ func (x *DeleteEventResponse) String() string {
 func (*DeleteEventResponse) ProtoMessage() {}
 
 func (x *DeleteEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[17]
+	mi := &file_tkd_calendar_v1_event_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1339,7 +1570,7 @@ func (x *DeleteEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteEventResponse.ProtoReflect.Descriptor instead.
 func (*DeleteEventResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{17}
+	return file_tkd_calendar_v1_event_service_proto_rawDescGZIP(), []int{19}
 }
 
 var File_tkd_calendar_v1_event_service_proto protoreflect.FileDescriptor
@@ -1374,11 +1605,26 @@ const file_tkd_calendar_v1_event_service_proto_rawDesc = "" +
 	"\tread_mask\x18\x06 \x01(\v2\x1a.google.protobuf.FieldMaskR\breadMask\x12M\n" +
 	"\rrequest_kinds\x18\a \x03(\x0e2(.tkd.calendar.v1.CalenarEventRequestKindR\frequestKindsB\x10\n" +
 	"\x06source\x12\x06\xfa\xf7\x18\x02\b\x01B\x15\n" +
-	"\vsearch_time\x12\x06\xfa\xf7\x18\x02\b\x01\"\x82\x01\n" +
+	"\vsearch_time\x12\x06\xfa\xf7\x18\x02\b\x01\"\xe1\x02\n" +
+	"\x13SearchEventsRequest\x128\n" +
+	"\asources\x18\x01 \x01(\v2\x1c.tkd.calendar.v1.EventSourceH\x00R\asources\x12%\n" +
+	"\rall_calendars\x18\x02 \x01(\bH\x00R\fallCalendars\x12\x1d\n" +
+	"\tall_users\x18\x03 \x01(\bH\x00R\ballUsers\x129\n" +
+	"\n" +
+	"time_range\x18\x04 \x01(\v2\x18.tkd.common.v1.TimeRangeH\x01R\ttimeRange\x12\x14\n" +
+	"\x04date\x18\x05 \x01(\tH\x01R\x04date\x12\x1f\n" +
+	"\vsearch_text\x18\x06 \x01(\tR\n" +
+	"searchText\x127\n" +
+	"\tread_mask\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.FieldMaskR\breadMaskB\x10\n" +
+	"\x06source\x12\x06\xfa\xf7\x18\x02\b\x01B\r\n" +
+	"\vsearch_time\"\x82\x01\n" +
 	"\x11CalendarEventList\x125\n" +
 	"\bcalendar\x18\x01 \x01(\v2\x19.tkd.calendar.v1.CalendarR\bcalendar\x126\n" +
 	"\x06events\x18\x02 \x03(\v2\x1e.tkd.calendar.v1.CalendarEventR\x06events\"R\n" +
 	"\x12ListEventsResponse\x12<\n" +
+	"\aresults\x18\x01 \x03(\v2\".tkd.calendar.v1.CalendarEventListR\aresults\"T\n" +
+	"\x14SearchEventsResponse\x12<\n" +
 	"\aresults\x18\x01 \x03(\v2\".tkd.calendar.v1.CalendarEventListR\aresults\"\xc2\x02\n" +
 	"\x12CreateEventRequest\x12(\n" +
 	"\vcalendar_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
@@ -1426,11 +1672,12 @@ const file_tkd_calendar_v1_event_service_proto_rawDesc = "" +
 	"'CALENDAR_EVENT_REQUEST_KIND_UNSPECIFIED\x10\x00\x12&\n" +
 	"\"CALENDAR_EVENT_REQUEST_KIND_EVENTS\x10\x01\x12*\n" +
 	"&CALENDAR_EVENT_REQUEST_KIND_FREE_SLOTS\x10\x02\x121\n" +
-	"-CALENDAR_EVENT_REQUEST_KIND_VIRTUAL_RESOURCES\x10\x032\xb6\a\n" +
+	"-CALENDAR_EVENT_REQUEST_KIND_VIRTUAL_RESOURCES\x10\x032\x9a\b\n" +
 	"\x0fCalendarService\x12e\n" +
 	"\rListCalendars\x12%.tkd.calendar.v1.ListCalendarsRequest\x1a&.tkd.calendar.v1.ListCalendarsResponse\"\x05\xb2~\x02\b\x01\x12\\\n" +
 	"\n" +
-	"ListEvents\x12\".tkd.calendar.v1.ListEventsRequest\x1a#.tkd.calendar.v1.ListEventsResponse\"\x05\xb2~\x02\b\x01\x12_\n" +
+	"ListEvents\x12\".tkd.calendar.v1.ListEventsRequest\x1a#.tkd.calendar.v1.ListEventsResponse\"\x05\xb2~\x02\b\x01\x12b\n" +
+	"\fSearchEvents\x12$.tkd.calendar.v1.SearchEventsRequest\x1a%.tkd.calendar.v1.SearchEventsResponse\"\x05\xb2~\x02\b\x01\x12_\n" +
 	"\vCreateEvent\x12#.tkd.calendar.v1.CreateEventRequest\x1a$.tkd.calendar.v1.CreateEventResponse\"\x05\xb2~\x02\b\x01\x12_\n" +
 	"\vUpdateEvent\x12#.tkd.calendar.v1.UpdateEventRequest\x1a$.tkd.calendar.v1.UpdateEventResponse\"\x05\xb2~\x02\b\x01\x12Y\n" +
 	"\tMoveEvent\x12!.tkd.calendar.v1.MoveEventRequest\x1a\".tkd.calendar.v1.MoveEventResponse\"\x05\xb2~\x02\b\x01\x12_\n" +
@@ -1454,7 +1701,7 @@ func file_tkd_calendar_v1_event_service_proto_rawDescGZIP() []byte {
 }
 
 var file_tkd_calendar_v1_event_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tkd_calendar_v1_event_service_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_tkd_calendar_v1_event_service_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_tkd_calendar_v1_event_service_proto_goTypes = []any{
 	(CalenarEventRequestKind)(0),          // 0: tkd.calendar.v1.CalenarEventRequestKind
 	(*ResourceCalendar)(nil),              // 1: tkd.calendar.v1.ResourceCalendar
@@ -1465,67 +1712,75 @@ var file_tkd_calendar_v1_event_service_proto_goTypes = []any{
 	(*ListCalendarsResponse)(nil),         // 6: tkd.calendar.v1.ListCalendarsResponse
 	(*EventSource)(nil),                   // 7: tkd.calendar.v1.EventSource
 	(*ListEventsRequest)(nil),             // 8: tkd.calendar.v1.ListEventsRequest
-	(*CalendarEventList)(nil),             // 9: tkd.calendar.v1.CalendarEventList
-	(*ListEventsResponse)(nil),            // 10: tkd.calendar.v1.ListEventsResponse
-	(*CreateEventRequest)(nil),            // 11: tkd.calendar.v1.CreateEventRequest
-	(*CreateEventResponse)(nil),           // 12: tkd.calendar.v1.CreateEventResponse
-	(*UpdateEventRequest)(nil),            // 13: tkd.calendar.v1.UpdateEventRequest
-	(*UpdateEventResponse)(nil),           // 14: tkd.calendar.v1.UpdateEventResponse
-	(*MoveEventRequest)(nil),              // 15: tkd.calendar.v1.MoveEventRequest
-	(*MoveEventResponse)(nil),             // 16: tkd.calendar.v1.MoveEventResponse
-	(*DeleteEventRequest)(nil),            // 17: tkd.calendar.v1.DeleteEventRequest
-	(*DeleteEventResponse)(nil),           // 18: tkd.calendar.v1.DeleteEventResponse
-	(*Calendar)(nil),                      // 19: tkd.calendar.v1.Calendar
-	(*v1.TimeRange)(nil),                  // 20: tkd.common.v1.TimeRange
-	(*fieldmaskpb.FieldMask)(nil),         // 21: google.protobuf.FieldMask
-	(*CalendarEvent)(nil),                 // 22: tkd.calendar.v1.CalendarEvent
-	(*timestamppb.Timestamp)(nil),         // 23: google.protobuf.Timestamp
-	(*anypb.Any)(nil),                     // 24: google.protobuf.Any
-	(*emptypb.Empty)(nil),                 // 25: google.protobuf.Empty
+	(*SearchEventsRequest)(nil),           // 9: tkd.calendar.v1.SearchEventsRequest
+	(*CalendarEventList)(nil),             // 10: tkd.calendar.v1.CalendarEventList
+	(*ListEventsResponse)(nil),            // 11: tkd.calendar.v1.ListEventsResponse
+	(*SearchEventsResponse)(nil),          // 12: tkd.calendar.v1.SearchEventsResponse
+	(*CreateEventRequest)(nil),            // 13: tkd.calendar.v1.CreateEventRequest
+	(*CreateEventResponse)(nil),           // 14: tkd.calendar.v1.CreateEventResponse
+	(*UpdateEventRequest)(nil),            // 15: tkd.calendar.v1.UpdateEventRequest
+	(*UpdateEventResponse)(nil),           // 16: tkd.calendar.v1.UpdateEventResponse
+	(*MoveEventRequest)(nil),              // 17: tkd.calendar.v1.MoveEventRequest
+	(*MoveEventResponse)(nil),             // 18: tkd.calendar.v1.MoveEventResponse
+	(*DeleteEventRequest)(nil),            // 19: tkd.calendar.v1.DeleteEventRequest
+	(*DeleteEventResponse)(nil),           // 20: tkd.calendar.v1.DeleteEventResponse
+	(*Calendar)(nil),                      // 21: tkd.calendar.v1.Calendar
+	(*v1.TimeRange)(nil),                  // 22: tkd.common.v1.TimeRange
+	(*fieldmaskpb.FieldMask)(nil),         // 23: google.protobuf.FieldMask
+	(*CalendarEvent)(nil),                 // 24: tkd.calendar.v1.CalendarEvent
+	(*timestamppb.Timestamp)(nil),         // 25: google.protobuf.Timestamp
+	(*anypb.Any)(nil),                     // 26: google.protobuf.Any
+	(*emptypb.Empty)(nil),                 // 27: google.protobuf.Empty
 }
 var file_tkd_calendar_v1_event_service_proto_depIdxs = []int32{
 	1,  // 0: tkd.calendar.v1.ListResourceCalendarsResponse.resource_calendars:type_name -> tkd.calendar.v1.ResourceCalendar
-	19, // 1: tkd.calendar.v1.ListCalendarsResponse.calendars:type_name -> tkd.calendar.v1.Calendar
+	21, // 1: tkd.calendar.v1.ListCalendarsResponse.calendars:type_name -> tkd.calendar.v1.Calendar
 	7,  // 2: tkd.calendar.v1.ListEventsRequest.sources:type_name -> tkd.calendar.v1.EventSource
-	20, // 3: tkd.calendar.v1.ListEventsRequest.time_range:type_name -> tkd.common.v1.TimeRange
-	21, // 4: tkd.calendar.v1.ListEventsRequest.read_mask:type_name -> google.protobuf.FieldMask
+	22, // 3: tkd.calendar.v1.ListEventsRequest.time_range:type_name -> tkd.common.v1.TimeRange
+	23, // 4: tkd.calendar.v1.ListEventsRequest.read_mask:type_name -> google.protobuf.FieldMask
 	0,  // 5: tkd.calendar.v1.ListEventsRequest.request_kinds:type_name -> tkd.calendar.v1.CalenarEventRequestKind
-	19, // 6: tkd.calendar.v1.CalendarEventList.calendar:type_name -> tkd.calendar.v1.Calendar
-	22, // 7: tkd.calendar.v1.CalendarEventList.events:type_name -> tkd.calendar.v1.CalendarEvent
-	9,  // 8: tkd.calendar.v1.ListEventsResponse.results:type_name -> tkd.calendar.v1.CalendarEventList
-	23, // 9: tkd.calendar.v1.CreateEventRequest.start:type_name -> google.protobuf.Timestamp
-	23, // 10: tkd.calendar.v1.CreateEventRequest.end:type_name -> google.protobuf.Timestamp
-	24, // 11: tkd.calendar.v1.CreateEventRequest.extra_data:type_name -> google.protobuf.Any
-	22, // 12: tkd.calendar.v1.CreateEventResponse.event:type_name -> tkd.calendar.v1.CalendarEvent
-	23, // 13: tkd.calendar.v1.UpdateEventRequest.start:type_name -> google.protobuf.Timestamp
-	23, // 14: tkd.calendar.v1.UpdateEventRequest.end:type_name -> google.protobuf.Timestamp
-	24, // 15: tkd.calendar.v1.UpdateEventRequest.extra_data:type_name -> google.protobuf.Any
-	21, // 16: tkd.calendar.v1.UpdateEventRequest.update_mask:type_name -> google.protobuf.FieldMask
-	22, // 17: tkd.calendar.v1.UpdateEventResponse.event:type_name -> tkd.calendar.v1.CalendarEvent
-	22, // 18: tkd.calendar.v1.MoveEventResponse.event:type_name -> tkd.calendar.v1.CalendarEvent
-	5,  // 19: tkd.calendar.v1.CalendarService.ListCalendars:input_type -> tkd.calendar.v1.ListCalendarsRequest
-	8,  // 20: tkd.calendar.v1.CalendarService.ListEvents:input_type -> tkd.calendar.v1.ListEventsRequest
-	11, // 21: tkd.calendar.v1.CalendarService.CreateEvent:input_type -> tkd.calendar.v1.CreateEventRequest
-	13, // 22: tkd.calendar.v1.CalendarService.UpdateEvent:input_type -> tkd.calendar.v1.UpdateEventRequest
-	15, // 23: tkd.calendar.v1.CalendarService.MoveEvent:input_type -> tkd.calendar.v1.MoveEventRequest
-	17, // 24: tkd.calendar.v1.CalendarService.DeleteEvent:input_type -> tkd.calendar.v1.DeleteEventRequest
-	1,  // 25: tkd.calendar.v1.CalendarService.StoreResourceCalendar:input_type -> tkd.calendar.v1.ResourceCalendar
-	3,  // 26: tkd.calendar.v1.CalendarService.ListResourceCalendars:input_type -> tkd.calendar.v1.ListResourceCalendarsRequest
-	4,  // 27: tkd.calendar.v1.CalendarService.DeleteResourceCalendar:input_type -> tkd.calendar.v1.DeleteResourceCalendarRequest
-	6,  // 28: tkd.calendar.v1.CalendarService.ListCalendars:output_type -> tkd.calendar.v1.ListCalendarsResponse
-	10, // 29: tkd.calendar.v1.CalendarService.ListEvents:output_type -> tkd.calendar.v1.ListEventsResponse
-	12, // 30: tkd.calendar.v1.CalendarService.CreateEvent:output_type -> tkd.calendar.v1.CreateEventResponse
-	14, // 31: tkd.calendar.v1.CalendarService.UpdateEvent:output_type -> tkd.calendar.v1.UpdateEventResponse
-	16, // 32: tkd.calendar.v1.CalendarService.MoveEvent:output_type -> tkd.calendar.v1.MoveEventResponse
-	18, // 33: tkd.calendar.v1.CalendarService.DeleteEvent:output_type -> tkd.calendar.v1.DeleteEventResponse
-	1,  // 34: tkd.calendar.v1.CalendarService.StoreResourceCalendar:output_type -> tkd.calendar.v1.ResourceCalendar
-	2,  // 35: tkd.calendar.v1.CalendarService.ListResourceCalendars:output_type -> tkd.calendar.v1.ListResourceCalendarsResponse
-	25, // 36: tkd.calendar.v1.CalendarService.DeleteResourceCalendar:output_type -> google.protobuf.Empty
-	28, // [28:37] is the sub-list for method output_type
-	19, // [19:28] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	7,  // 6: tkd.calendar.v1.SearchEventsRequest.sources:type_name -> tkd.calendar.v1.EventSource
+	22, // 7: tkd.calendar.v1.SearchEventsRequest.time_range:type_name -> tkd.common.v1.TimeRange
+	23, // 8: tkd.calendar.v1.SearchEventsRequest.read_mask:type_name -> google.protobuf.FieldMask
+	21, // 9: tkd.calendar.v1.CalendarEventList.calendar:type_name -> tkd.calendar.v1.Calendar
+	24, // 10: tkd.calendar.v1.CalendarEventList.events:type_name -> tkd.calendar.v1.CalendarEvent
+	10, // 11: tkd.calendar.v1.ListEventsResponse.results:type_name -> tkd.calendar.v1.CalendarEventList
+	10, // 12: tkd.calendar.v1.SearchEventsResponse.results:type_name -> tkd.calendar.v1.CalendarEventList
+	25, // 13: tkd.calendar.v1.CreateEventRequest.start:type_name -> google.protobuf.Timestamp
+	25, // 14: tkd.calendar.v1.CreateEventRequest.end:type_name -> google.protobuf.Timestamp
+	26, // 15: tkd.calendar.v1.CreateEventRequest.extra_data:type_name -> google.protobuf.Any
+	24, // 16: tkd.calendar.v1.CreateEventResponse.event:type_name -> tkd.calendar.v1.CalendarEvent
+	25, // 17: tkd.calendar.v1.UpdateEventRequest.start:type_name -> google.protobuf.Timestamp
+	25, // 18: tkd.calendar.v1.UpdateEventRequest.end:type_name -> google.protobuf.Timestamp
+	26, // 19: tkd.calendar.v1.UpdateEventRequest.extra_data:type_name -> google.protobuf.Any
+	23, // 20: tkd.calendar.v1.UpdateEventRequest.update_mask:type_name -> google.protobuf.FieldMask
+	24, // 21: tkd.calendar.v1.UpdateEventResponse.event:type_name -> tkd.calendar.v1.CalendarEvent
+	24, // 22: tkd.calendar.v1.MoveEventResponse.event:type_name -> tkd.calendar.v1.CalendarEvent
+	5,  // 23: tkd.calendar.v1.CalendarService.ListCalendars:input_type -> tkd.calendar.v1.ListCalendarsRequest
+	8,  // 24: tkd.calendar.v1.CalendarService.ListEvents:input_type -> tkd.calendar.v1.ListEventsRequest
+	9,  // 25: tkd.calendar.v1.CalendarService.SearchEvents:input_type -> tkd.calendar.v1.SearchEventsRequest
+	13, // 26: tkd.calendar.v1.CalendarService.CreateEvent:input_type -> tkd.calendar.v1.CreateEventRequest
+	15, // 27: tkd.calendar.v1.CalendarService.UpdateEvent:input_type -> tkd.calendar.v1.UpdateEventRequest
+	17, // 28: tkd.calendar.v1.CalendarService.MoveEvent:input_type -> tkd.calendar.v1.MoveEventRequest
+	19, // 29: tkd.calendar.v1.CalendarService.DeleteEvent:input_type -> tkd.calendar.v1.DeleteEventRequest
+	1,  // 30: tkd.calendar.v1.CalendarService.StoreResourceCalendar:input_type -> tkd.calendar.v1.ResourceCalendar
+	3,  // 31: tkd.calendar.v1.CalendarService.ListResourceCalendars:input_type -> tkd.calendar.v1.ListResourceCalendarsRequest
+	4,  // 32: tkd.calendar.v1.CalendarService.DeleteResourceCalendar:input_type -> tkd.calendar.v1.DeleteResourceCalendarRequest
+	6,  // 33: tkd.calendar.v1.CalendarService.ListCalendars:output_type -> tkd.calendar.v1.ListCalendarsResponse
+	11, // 34: tkd.calendar.v1.CalendarService.ListEvents:output_type -> tkd.calendar.v1.ListEventsResponse
+	12, // 35: tkd.calendar.v1.CalendarService.SearchEvents:output_type -> tkd.calendar.v1.SearchEventsResponse
+	14, // 36: tkd.calendar.v1.CalendarService.CreateEvent:output_type -> tkd.calendar.v1.CreateEventResponse
+	16, // 37: tkd.calendar.v1.CalendarService.UpdateEvent:output_type -> tkd.calendar.v1.UpdateEventResponse
+	18, // 38: tkd.calendar.v1.CalendarService.MoveEvent:output_type -> tkd.calendar.v1.MoveEventResponse
+	20, // 39: tkd.calendar.v1.CalendarService.DeleteEvent:output_type -> tkd.calendar.v1.DeleteEventResponse
+	1,  // 40: tkd.calendar.v1.CalendarService.StoreResourceCalendar:output_type -> tkd.calendar.v1.ResourceCalendar
+	2,  // 41: tkd.calendar.v1.CalendarService.ListResourceCalendars:output_type -> tkd.calendar.v1.ListResourceCalendarsResponse
+	27, // 42: tkd.calendar.v1.CalendarService.DeleteResourceCalendar:output_type -> google.protobuf.Empty
+	33, // [33:43] is the sub-list for method output_type
+	23, // [23:33] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_tkd_calendar_v1_event_service_proto_init() }
@@ -1541,7 +1796,14 @@ func file_tkd_calendar_v1_event_service_proto_init() {
 		(*ListEventsRequest_TimeRange)(nil),
 		(*ListEventsRequest_Date)(nil),
 	}
-	file_tkd_calendar_v1_event_service_proto_msgTypes[14].OneofWrappers = []any{
+	file_tkd_calendar_v1_event_service_proto_msgTypes[8].OneofWrappers = []any{
+		(*SearchEventsRequest_Sources)(nil),
+		(*SearchEventsRequest_AllCalendars)(nil),
+		(*SearchEventsRequest_AllUsers)(nil),
+		(*SearchEventsRequest_TimeRange)(nil),
+		(*SearchEventsRequest_Date)(nil),
+	}
+	file_tkd_calendar_v1_event_service_proto_msgTypes[16].OneofWrappers = []any{
 		(*MoveEventRequest_SourceCalendarId)(nil),
 		(*MoveEventRequest_SourceUserId)(nil),
 		(*MoveEventRequest_TargetCalendarId)(nil),
@@ -1553,7 +1815,7 @@ func file_tkd_calendar_v1_event_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_calendar_v1_event_service_proto_rawDesc), len(file_tkd_calendar_v1_event_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   18,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

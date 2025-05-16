@@ -121,6 +121,25 @@ export const ListEventsRequest = /*@__PURE__*/ proto3.makeMessageType(
 );
 
 /**
+ * SearchEventsRequest is the request message for the SearchEvents RPC and supports
+ * querying calendar events over a list of sources.
+ *
+ * @generated from message tkd.calendar.v1.SearchEventsRequest
+ */
+export const SearchEventsRequest = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.SearchEventsRequest",
+  () => [
+    { no: 1, name: "sources", kind: "message", T: EventSource, oneof: "source" },
+    { no: 2, name: "all_calendars", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "source" },
+    { no: 3, name: "all_users", kind: "scalar", T: 8 /* ScalarType.BOOL */, oneof: "source" },
+    { no: 4, name: "time_range", kind: "message", T: TimeRange, oneof: "search_time" },
+    { no: 5, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "search_time" },
+    { no: 6, name: "search_text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 10, name: "read_mask", kind: "message", T: FieldMask },
+  ],
+);
+
+/**
  * CalendarEventList holds a list of events along the calendar definition. Use
  * ReadMask from ListEventsRequest if not all fields are required in the
  * response.
@@ -144,6 +163,20 @@ export const CalendarEventList = /*@__PURE__*/ proto3.makeMessageType(
  */
 export const ListEventsResponse = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.calendar.v1.ListEventsResponse",
+  () => [
+    { no: 1, name: "results", kind: "message", T: CalendarEventList, repeated: true },
+  ],
+);
+
+/**
+ * SearchEventsResponse is the response of the SearchEvents RPC and contains a list
+ * of CalendarEventList messages that contains the calendar definition as well
+ * as the list of events that matched the search query.
+ *
+ * @generated from message tkd.calendar.v1.SearchEventsResponse
+ */
+export const SearchEventsResponse = /*@__PURE__*/ proto3.makeMessageType(
+  "tkd.calendar.v1.SearchEventsResponse",
   () => [
     { no: 1, name: "results", kind: "message", T: CalendarEventList, repeated: true },
   ],

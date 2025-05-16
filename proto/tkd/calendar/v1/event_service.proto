@@ -57,6 +57,14 @@ service CalendarService {
         };
     }
 
+    // SearchEvents can search and return a list of calendar events for one or
+    // more calendar ids.
+    rpc SearchEvents(SearchEventsRequest) returns (SearchEventsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
     // CreateEvent creates a new calendar event at a specified calendar id.
     rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse) {
         option (tkd.common.v1.auth) = {
@@ -204,6 +212,48 @@ message ListEventsRequest {
     repeated CalenarEventRequestKind request_kinds = 7;
 }
 
+// SearchEventsRequest is the request message for the SearchEvents RPC and supports
+// querying calendar events over a list of sources.
+message SearchEventsRequest {
+    // Source describes where cis-cal should look for calendar events. At least
+    // on of the oneof members must be set.
+    oneof source {
+        // Sources can be used to specify a dedicated list of user and/or
+        // calendar ids.
+        EventSource sources = 1;
+
+        // AllCalendars might be set to true to query all available calendars.
+        // To get a list of available calendars, user the SearchCalendars RPC.
+        bool all_calendars = 2;
+
+        // AllUsers might be set to true to query events from all user
+        // calendars.
+        bool all_users = 3;
+
+        option (buf.validate.oneof).required = true;
+    }
+
+    // SearchTime allows to specify a search time for calendar events. At least
+    // one of the oneof member fields must be set.
+    oneof search_time {
+        // TimeRange might be set to a start and end time. Only events that
+        // start/end within the specified time range (inclusive) will be
+        // returned.
+        tkd.common.v1.TimeRange time_range = 4;
+
+        // Date might be set to a date in the format of YYYY-MM-DD  or
+        // YYYY/MM/DD. Only events that start OR end at the specified date will
+        // be returned.
+        string date = 5; 
+    }
+
+    string search_text = 6;
+
+    // ReadMask can be used to limit the number of fields returned in the
+    // response.
+    google.protobuf.FieldMask read_mask = 10;
+}
+
 
 // CalendarEventList holds a list of events along the calendar definition. Use
 // ReadMask from ListEventsRequest if not all fields are required in the
@@ -221,6 +271,15 @@ message CalendarEventList {
 // of CalendarEventList messages that contains the calendar definition as well
 // as the list of events that matched the search query.
 message ListEventsResponse {
+    // Results is a list of CalendarEventList containing events that matched the
+    // search query.
+    repeated CalendarEventList results = 1;
+}
+
+// SearchEventsResponse is the response of the SearchEvents RPC and contains a list
+// of CalendarEventList messages that contains the calendar definition as well
+// as the list of events that matched the search query.
+message SearchEventsResponse {
     // Results is a list of CalendarEventList containing events that matched the
     // search query.
     repeated CalendarEventList results = 1;
