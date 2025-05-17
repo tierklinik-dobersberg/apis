@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CreateEventRequest, CreateEventResponse, DeleteEventRequest, DeleteEventResponse, DeleteResourceCalendarRequest, ListCalendarsRequest, ListCalendarsResponse, ListEventsRequest, ListEventsResponse, ListResourceCalendarsRequest, ListResourceCalendarsResponse, MoveEventRequest, MoveEventResponse, ResourceCalendar, SearchEventsRequest, SearchEventsResponse, UpdateEventRequest, UpdateEventResponse } from "./event_service_pb.js";
+import { CreateEventRequest, CreateEventResponse, DeleteEventRequest, DeleteEventResponse, DeleteResourceCalendarRequest, ListCalendarsRequest, ListCalendarsResponse, ListEventsRequest, ListEventsResponse, ListResourceCalendarsRequest, ListResourceCalendarsResponse, MoveEventRequest, MoveEventResponse, ResourceCalendar, UpdateEventRequest, UpdateEventResponse } from "./event_service_pb.js";
 import { Empty, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -41,18 +41,6 @@ export declare const CalendarService: {
       readonly name: "ListEvents",
       readonly I: typeof ListEventsRequest,
       readonly O: typeof ListEventsResponse,
-      readonly kind: MethodKind.Unary,
-    },
-    /**
-     * SearchEvents can search and return a list of calendar events for one or
-     * more calendar ids.
-     *
-     * @generated from rpc tkd.calendar.v1.CalendarService.SearchEvents
-     */
-    readonly searchEvents: {
-      readonly name: "SearchEvents",
-      readonly I: typeof SearchEventsRequest,
-      readonly O: typeof SearchEventsResponse,
       readonly kind: MethodKind.Unary,
     },
     /**
