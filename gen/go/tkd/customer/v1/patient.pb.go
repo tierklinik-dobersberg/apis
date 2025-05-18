@@ -548,15 +548,18 @@ func (*GetPatientRequest_AdditionalUniqueId) isGetPatientRequest_Kind() {}
 
 type Anamnesis struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// AnamnesisId holds the internal id of this anamnesis entry.
+	// This field is only an output field.
+	AnamnesisId string `protobuf:"bytes,1,opt,name=anamnesis_id,json=anamnesisId,proto3" json:"anamnesis_id,omitempty"`
 	// Time holds the timestamp at which this anamnesis has been created.
 	// If left empty, the server will use the current timestamp.
-	Time *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=time,proto3" json:"time,omitempty"`
+	Time *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"`
 	// Text holds the text of the anamnesis.
 	// Optionally formated in Markdown.
-	Text string `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	Text string `protobuf:"bytes,3,opt,name=text,proto3" json:"text,omitempty"`
 	// Diagnosis holds an optional diagnosis. It might also be used
 	// for a short summary of the text field.
-	Diagnosis     string `protobuf:"bytes,3,opt,name=diagnosis,proto3" json:"diagnosis,omitempty"`
+	Diagnosis     string `protobuf:"bytes,4,opt,name=diagnosis,proto3" json:"diagnosis,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -591,6 +594,13 @@ func (*Anamnesis) Descriptor() ([]byte, []int) {
 	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{6}
 }
 
+func (x *Anamnesis) GetAnamnesisId() string {
+	if x != nil {
+		return x.AnamnesisId
+	}
+	return ""
+}
+
 func (x *Anamnesis) GetTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.Time
@@ -613,11 +623,16 @@ func (x *Anamnesis) GetDiagnosis() string {
 }
 
 type AddAnamnesisRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PatientId     string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
-	Anamnesis     *Anamnesis             `protobuf:"bytes,2,opt,name=anamnesis,proto3" json:"anamnesis,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	PatientId string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
+	Anamnesis *Anamnesis             `protobuf:"bytes,2,opt,name=anamnesis,proto3" json:"anamnesis,omitempty"`
+	// ImportReference might be set if this anamnesis is imported from
+	// a different system.
+	// If set, the service will atempt to replace any existing anamnesis entry
+	// with the same import_reference.
+	ImportReference string `protobuf:"bytes,3,opt,name=import_reference,json=importReference,proto3" json:"import_reference,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AddAnamnesisRequest) Reset() {
@@ -662,6 +677,13 @@ func (x *AddAnamnesisRequest) GetAnamnesis() *Anamnesis {
 		return x.Anamnesis
 	}
 	return nil
+}
+
+func (x *AddAnamnesisRequest) GetImportReference() string {
+	if x != nil {
+		return x.ImportReference
+	}
+	return ""
 }
 
 type GetAnamnesisRequest struct {
@@ -823,15 +845,17 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\x11GetPatientRequest\x12\x1d\n" +
 	"\tanimal_id\x18\x01 \x01(\tH\x00R\banimalId\x122\n" +
 	"\x14additional_unique_id\x18\x02 \x01(\tH\x00R\x12additionalUniqueIdB\x0e\n" +
-	"\x04kind\x12\x06\xfa\xf7\x18\x02\b\x01\"m\n" +
-	"\tAnamnesis\x12.\n" +
-	"\x04time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04text\x12\x1c\n" +
-	"\tdiagnosis\x18\x03 \x01(\tR\tdiagnosis\"\x80\x01\n" +
+	"\x04kind\x12\x06\xfa\xf7\x18\x02\b\x01\"\x90\x01\n" +
+	"\tAnamnesis\x12!\n" +
+	"\fanamnesis_id\x18\x01 \x01(\tR\vanamnesisId\x12.\n" +
+	"\x04time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x12\n" +
+	"\x04text\x18\x03 \x01(\tR\x04text\x12\x1c\n" +
+	"\tdiagnosis\x18\x04 \x01(\tR\tdiagnosis\"\xab\x01\n" +
 	"\x13AddAnamnesisRequest\x12&\n" +
 	"\n" +
 	"patient_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tpatientId\x12A\n" +
-	"\tanamnesis\x18\x02 \x01(\v2\x1a.tkd.customer.v1.AnamnesisB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tanamnesis\"\xaf\x01\n" +
+	"\tanamnesis\x18\x02 \x01(\v2\x1a.tkd.customer.v1.AnamnesisB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tanamnesis\x12)\n" +
+	"\x10import_reference\x18\x03 \x01(\tR\x0fimportReference\"\xaf\x01\n" +
 	"\x13GetAnamnesisRequest\x12&\n" +
 	"\n" +
 	"patient_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tpatientId\x127\n" +

@@ -143,17 +143,21 @@ message GetPatientRequest {
 }
 
 message Anamnesis {
+    // AnamnesisId holds the internal id of this anamnesis entry.
+    // This field is only an output field.
+    string anamnesis_id = 1;
+
     // Time holds the timestamp at which this anamnesis has been created.
     // If left empty, the server will use the current timestamp.
-    google.protobuf.Timestamp time = 1;
+    google.protobuf.Timestamp time = 2;
 
     // Text holds the text of the anamnesis.
     // Optionally formated in Markdown.
-    string text = 2;
+    string text = 3;
 
     // Diagnosis holds an optional diagnosis. It might also be used
     // for a short summary of the text field.
-    string diagnosis = 3;
+    string diagnosis = 4;
 }
 
 message AddAnamnesisRequest {
@@ -164,6 +168,12 @@ message AddAnamnesisRequest {
     Anamnesis anamnesis = 2 [
         (buf.validate.field).required = true
     ];
+
+    // ImportReference might be set if this anamnesis is imported from
+    // a different system.
+    // If set, the service will atempt to replace any existing anamnesis entry
+    // with the same import_reference.
+    string import_reference = 3;
 }
 
 message GetAnamnesisRequest {
