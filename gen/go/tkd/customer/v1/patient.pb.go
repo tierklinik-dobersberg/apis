@@ -623,14 +623,18 @@ func (x *Anamnesis) GetDiagnosis() string {
 }
 
 type AddAnamnesisRequest struct {
-	state     protoimpl.MessageState `protogen:"open.v1"`
-	PatientId string                 `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
-	Anamnesis *Anamnesis             `protobuf:"bytes,2,opt,name=anamnesis,proto3" json:"anamnesis,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Reference:
+	//
+	//	*AddAnamnesisRequest_PatientId
+	//	*AddAnamnesisRequest_AdditionUniqueId
+	Reference isAddAnamnesisRequest_Reference `protobuf_oneof:"reference"`
+	Anamnesis *Anamnesis                      `protobuf:"bytes,3,opt,name=anamnesis,proto3" json:"anamnesis,omitempty"`
 	// ImportReference might be set if this anamnesis is imported from
 	// a different system.
 	// If set, the service will atempt to replace any existing anamnesis entry
 	// with the same import_reference.
-	ImportReference string `protobuf:"bytes,3,opt,name=import_reference,json=importReference,proto3" json:"import_reference,omitempty"`
+	ImportReference string `protobuf:"bytes,4,opt,name=import_reference,json=importReference,proto3" json:"import_reference,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -665,9 +669,27 @@ func (*AddAnamnesisRequest) Descriptor() ([]byte, []int) {
 	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{7}
 }
 
+func (x *AddAnamnesisRequest) GetReference() isAddAnamnesisRequest_Reference {
+	if x != nil {
+		return x.Reference
+	}
+	return nil
+}
+
 func (x *AddAnamnesisRequest) GetPatientId() string {
 	if x != nil {
-		return x.PatientId
+		if x, ok := x.Reference.(*AddAnamnesisRequest_PatientId); ok {
+			return x.PatientId
+		}
+	}
+	return ""
+}
+
+func (x *AddAnamnesisRequest) GetAdditionUniqueId() string {
+	if x != nil {
+		if x, ok := x.Reference.(*AddAnamnesisRequest_AdditionUniqueId); ok {
+			return x.AdditionUniqueId
+		}
 	}
 	return ""
 }
@@ -685,6 +707,22 @@ func (x *AddAnamnesisRequest) GetImportReference() string {
 	}
 	return ""
 }
+
+type isAddAnamnesisRequest_Reference interface {
+	isAddAnamnesisRequest_Reference()
+}
+
+type AddAnamnesisRequest_PatientId struct {
+	PatientId string `protobuf:"bytes,1,opt,name=patient_id,json=patientId,proto3,oneof"`
+}
+
+type AddAnamnesisRequest_AdditionUniqueId struct {
+	AdditionUniqueId string `protobuf:"bytes,2,opt,name=addition_unique_id,json=additionUniqueId,proto3,oneof"`
+}
+
+func (*AddAnamnesisRequest_PatientId) isAddAnamnesisRequest_Reference() {}
+
+func (*AddAnamnesisRequest_AdditionUniqueId) isAddAnamnesisRequest_Reference() {}
 
 type GetAnamnesisRequest struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
@@ -850,12 +888,14 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\fanamnesis_id\x18\x01 \x01(\tR\vanamnesisId\x12.\n" +
 	"\x04time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x12\n" +
 	"\x04text\x18\x03 \x01(\tR\x04text\x12\x1c\n" +
-	"\tdiagnosis\x18\x04 \x01(\tR\tdiagnosis\"\xab\x01\n" +
-	"\x13AddAnamnesisRequest\x12&\n" +
+	"\tdiagnosis\x18\x04 \x01(\tR\tdiagnosis\"\xe9\x01\n" +
+	"\x13AddAnamnesisRequest\x12\x1f\n" +
 	"\n" +
-	"patient_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tpatientId\x12A\n" +
-	"\tanamnesis\x18\x02 \x01(\v2\x1a.tkd.customer.v1.AnamnesisB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tanamnesis\x12)\n" +
-	"\x10import_reference\x18\x03 \x01(\tR\x0fimportReference\"\xaf\x01\n" +
+	"patient_id\x18\x01 \x01(\tH\x00R\tpatientId\x12.\n" +
+	"\x12addition_unique_id\x18\x02 \x01(\tH\x00R\x10additionUniqueId\x12A\n" +
+	"\tanamnesis\x18\x03 \x01(\v2\x1a.tkd.customer.v1.AnamnesisB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tanamnesis\x12)\n" +
+	"\x10import_reference\x18\x04 \x01(\tR\x0fimportReferenceB\x13\n" +
+	"\treference\x12\x06\xfa\xf7\x18\x02\b\x01\"\xaf\x01\n" +
 	"\x13GetAnamnesisRequest\x12&\n" +
 	"\n" +
 	"patient_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tpatientId\x127\n" +
@@ -952,6 +992,10 @@ func file_tkd_customer_v1_patient_proto_init() {
 	file_tkd_customer_v1_patient_proto_msgTypes[5].OneofWrappers = []any{
 		(*GetPatientRequest_AnimalId)(nil),
 		(*GetPatientRequest_AdditionalUniqueId)(nil),
+	}
+	file_tkd_customer_v1_patient_proto_msgTypes[7].OneofWrappers = []any{
+		(*AddAnamnesisRequest_PatientId)(nil),
+		(*AddAnamnesisRequest_AdditionUniqueId)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

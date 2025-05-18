@@ -161,11 +161,14 @@ message Anamnesis {
 }
 
 message AddAnamnesisRequest {
-    string patient_id = 1 [
-        (buf.validate.field).required = true
-    ];
+    oneof reference {
+        string patient_id = 1;
+        string addition_unique_id = 2;
 
-    Anamnesis anamnesis = 2 [
+        option (buf.validate.oneof).required = true;
+    }
+
+    Anamnesis anamnesis = 3 [
         (buf.validate.field).required = true
     ];
 
@@ -173,7 +176,7 @@ message AddAnamnesisRequest {
     // a different system.
     // If set, the service will atempt to replace any existing anamnesis entry
     // with the same import_reference.
-    string import_reference = 3;
+    string import_reference = 4;
 }
 
 message GetAnamnesisRequest {
