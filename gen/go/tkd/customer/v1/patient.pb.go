@@ -560,6 +560,7 @@ type Anamnesis struct {
 	// Diagnosis holds an optional diagnosis. It might also be used
 	// for a short summary of the text field.
 	Diagnosis     string `protobuf:"bytes,4,opt,name=diagnosis,proto3" json:"diagnosis,omitempty"`
+	Order         int64  `protobuf:"varint,5,opt,name=order,proto3" json:"order,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -622,6 +623,13 @@ func (x *Anamnesis) GetDiagnosis() string {
 	return ""
 }
 
+func (x *Anamnesis) GetOrder() int64 {
+	if x != nil {
+		return x.Order
+	}
+	return 0
+}
+
 type PatientImportReference struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Importer          string                 `protobuf:"bytes,1,opt,name=importer,proto3" json:"importer,omitempty"`
@@ -681,15 +689,10 @@ type AddAnamnesisRequest struct {
 	//	*AddAnamnesisRequest_PatientId
 	//	*AddAnamnesisRequest_AdditionUniqueId
 	//	*AddAnamnesisRequest_PatientImportReference
-	Reference isAddAnamnesisRequest_Reference `protobuf_oneof:"reference"`
-	Anamnesis *Anamnesis                      `protobuf:"bytes,4,opt,name=anamnesis,proto3" json:"anamnesis,omitempty"`
-	// ImportReference might be set if this anamnesis is imported from
-	// a different system.
-	// If set, the service will atempt to replace any existing anamnesis entry
-	// with the same import_reference.
-	ImportReference string `protobuf:"bytes,5,opt,name=import_reference,json=importReference,proto3" json:"import_reference,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	Reference     isAddAnamnesisRequest_Reference `protobuf_oneof:"reference"`
+	Anamnesis     *Anamnesis                      `protobuf:"bytes,4,opt,name=anamnesis,proto3" json:"anamnesis,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AddAnamnesisRequest) Reset() {
@@ -761,13 +764,6 @@ func (x *AddAnamnesisRequest) GetAnamnesis() *Anamnesis {
 		return x.Anamnesis
 	}
 	return nil
-}
-
-func (x *AddAnamnesisRequest) GetImportReference() string {
-	if x != nil {
-		return x.ImportReference
-	}
-	return ""
 }
 
 type isAddAnamnesisRequest_Reference interface {
@@ -951,22 +947,22 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\x11GetPatientRequest\x12\x1d\n" +
 	"\tanimal_id\x18\x01 \x01(\tH\x00R\banimalId\x122\n" +
 	"\x14additional_unique_id\x18\x02 \x01(\tH\x00R\x12additionalUniqueIdB\x0e\n" +
-	"\x04kind\x12\x06\xfa\xf7\x18\x02\b\x01\"\x90\x01\n" +
+	"\x04kind\x12\x06\xfa\xf7\x18\x02\b\x01\"\xa6\x01\n" +
 	"\tAnamnesis\x12!\n" +
 	"\fanamnesis_id\x18\x01 \x01(\tR\vanamnesisId\x12.\n" +
 	"\x04time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x12\n" +
 	"\x04text\x18\x03 \x01(\tR\x04text\x12\x1c\n" +
-	"\tdiagnosis\x18\x04 \x01(\tR\tdiagnosis\"c\n" +
+	"\tdiagnosis\x18\x04 \x01(\tR\tdiagnosis\x12\x14\n" +
+	"\x05order\x18\x05 \x01(\x03R\x05order\"c\n" +
 	"\x16PatientImportReference\x12\x1a\n" +
 	"\bimporter\x18\x01 \x01(\tR\bimporter\x12-\n" +
-	"\x12internal_reference\x18\x02 \x01(\tR\x11internalReference\"\xce\x02\n" +
+	"\x12internal_reference\x18\x02 \x01(\tR\x11internalReference\"\xa3\x02\n" +
 	"\x13AddAnamnesisRequest\x12\x1f\n" +
 	"\n" +
 	"patient_id\x18\x01 \x01(\tH\x00R\tpatientId\x12.\n" +
 	"\x12addition_unique_id\x18\x02 \x01(\tH\x00R\x10additionUniqueId\x12c\n" +
 	"\x18patient_import_reference\x18\x03 \x01(\v2'.tkd.customer.v1.PatientImportReferenceH\x00R\x16patientImportReference\x12A\n" +
-	"\tanamnesis\x18\x04 \x01(\v2\x1a.tkd.customer.v1.AnamnesisB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tanamnesis\x12)\n" +
-	"\x10import_reference\x18\x05 \x01(\tR\x0fimportReferenceB\x13\n" +
+	"\tanamnesis\x18\x04 \x01(\v2\x1a.tkd.customer.v1.AnamnesisB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tanamnesisB\x13\n" +
 	"\treference\x12\x06\xfa\xf7\x18\x02\b\x01\"\xaf\x01\n" +
 	"\x13GetAnamnesisRequest\x12&\n" +
 	"\n" +

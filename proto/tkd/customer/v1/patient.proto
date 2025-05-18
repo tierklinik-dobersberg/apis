@@ -158,6 +158,8 @@ message Anamnesis {
     // Diagnosis holds an optional diagnosis. It might also be used
     // for a short summary of the text field.
     string diagnosis = 4;
+
+    int64 order = 5;
 }
 
 message PatientImportReference {
@@ -177,12 +179,6 @@ message AddAnamnesisRequest {
     Anamnesis anamnesis = 4 [
         (buf.validate.field).required = true
     ];
-
-    // ImportReference might be set if this anamnesis is imported from
-    // a different system.
-    // If set, the service will atempt to replace any existing anamnesis entry
-    // with the same import_reference.
-    string import_reference = 5;
 }
 
 message GetAnamnesisRequest {
