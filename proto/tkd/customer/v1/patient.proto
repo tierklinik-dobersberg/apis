@@ -160,11 +160,16 @@ message Anamnesis {
     string diagnosis = 4;
 }
 
+message PatientImportReference {
+    string importer = 1;
+    string internal_reference = 2;
+}
+
 message AddAnamnesisRequest {
     oneof reference {
         string patient_id = 1;
         string addition_unique_id = 2;
-        string patient_internal_reference = 3;
+        PatientImportReference patient_import_reference = 3;
 
         option (buf.validate.oneof).required = true;
     }
