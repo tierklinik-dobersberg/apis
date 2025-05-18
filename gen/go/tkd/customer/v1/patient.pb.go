@@ -622,65 +622,13 @@ func (x *Anamnesis) GetDiagnosis() string {
 	return ""
 }
 
-type PatientImportReference struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	Importer          string                 `protobuf:"bytes,1,opt,name=importer,proto3" json:"importer,omitempty"`
-	InternalReference string                 `protobuf:"bytes,2,opt,name=internal_reference,json=internalReference,proto3" json:"internal_reference,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *PatientImportReference) Reset() {
-	*x = PatientImportReference{}
-	mi := &file_tkd_customer_v1_patient_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PatientImportReference) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PatientImportReference) ProtoMessage() {}
-
-func (x *PatientImportReference) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_customer_v1_patient_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PatientImportReference.ProtoReflect.Descriptor instead.
-func (*PatientImportReference) Descriptor() ([]byte, []int) {
-	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *PatientImportReference) GetImporter() string {
-	if x != nil {
-		return x.Importer
-	}
-	return ""
-}
-
-func (x *PatientImportReference) GetInternalReference() string {
-	if x != nil {
-		return x.InternalReference
-	}
-	return ""
-}
-
 type AddAnamnesisRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Reference:
 	//
 	//	*AddAnamnesisRequest_PatientId
 	//	*AddAnamnesisRequest_AdditionUniqueId
-	//	*AddAnamnesisRequest_PatientImportReference
+	//	*AddAnamnesisRequest_PatientInternalReference
 	Reference isAddAnamnesisRequest_Reference `protobuf_oneof:"reference"`
 	Anamnesis *Anamnesis                      `protobuf:"bytes,4,opt,name=anamnesis,proto3" json:"anamnesis,omitempty"`
 	// ImportReference might be set if this anamnesis is imported from
@@ -694,7 +642,7 @@ type AddAnamnesisRequest struct {
 
 func (x *AddAnamnesisRequest) Reset() {
 	*x = AddAnamnesisRequest{}
-	mi := &file_tkd_customer_v1_patient_proto_msgTypes[8]
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -706,7 +654,7 @@ func (x *AddAnamnesisRequest) String() string {
 func (*AddAnamnesisRequest) ProtoMessage() {}
 
 func (x *AddAnamnesisRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_customer_v1_patient_proto_msgTypes[8]
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -719,7 +667,7 @@ func (x *AddAnamnesisRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddAnamnesisRequest.ProtoReflect.Descriptor instead.
 func (*AddAnamnesisRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{8}
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *AddAnamnesisRequest) GetReference() isAddAnamnesisRequest_Reference {
@@ -747,13 +695,13 @@ func (x *AddAnamnesisRequest) GetAdditionUniqueId() string {
 	return ""
 }
 
-func (x *AddAnamnesisRequest) GetPatientImportReference() *PatientImportReference {
+func (x *AddAnamnesisRequest) GetPatientInternalReference() string {
 	if x != nil {
-		if x, ok := x.Reference.(*AddAnamnesisRequest_PatientImportReference); ok {
-			return x.PatientImportReference
+		if x, ok := x.Reference.(*AddAnamnesisRequest_PatientInternalReference); ok {
+			return x.PatientInternalReference
 		}
 	}
-	return nil
+	return ""
 }
 
 func (x *AddAnamnesisRequest) GetAnamnesis() *Anamnesis {
@@ -782,15 +730,15 @@ type AddAnamnesisRequest_AdditionUniqueId struct {
 	AdditionUniqueId string `protobuf:"bytes,2,opt,name=addition_unique_id,json=additionUniqueId,proto3,oneof"`
 }
 
-type AddAnamnesisRequest_PatientImportReference struct {
-	PatientImportReference *PatientImportReference `protobuf:"bytes,3,opt,name=patient_import_reference,json=patientImportReference,proto3,oneof"`
+type AddAnamnesisRequest_PatientInternalReference struct {
+	PatientInternalReference string `protobuf:"bytes,3,opt,name=patient_internal_reference,json=patientInternalReference,proto3,oneof"`
 }
 
 func (*AddAnamnesisRequest_PatientId) isAddAnamnesisRequest_Reference() {}
 
 func (*AddAnamnesisRequest_AdditionUniqueId) isAddAnamnesisRequest_Reference() {}
 
-func (*AddAnamnesisRequest_PatientImportReference) isAddAnamnesisRequest_Reference() {}
+func (*AddAnamnesisRequest_PatientInternalReference) isAddAnamnesisRequest_Reference() {}
 
 type GetAnamnesisRequest struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
@@ -808,7 +756,7 @@ type GetAnamnesisRequest struct {
 
 func (x *GetAnamnesisRequest) Reset() {
 	*x = GetAnamnesisRequest{}
-	mi := &file_tkd_customer_v1_patient_proto_msgTypes[9]
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -820,7 +768,7 @@ func (x *GetAnamnesisRequest) String() string {
 func (*GetAnamnesisRequest) ProtoMessage() {}
 
 func (x *GetAnamnesisRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_customer_v1_patient_proto_msgTypes[9]
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -833,7 +781,7 @@ func (x *GetAnamnesisRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAnamnesisRequest.ProtoReflect.Descriptor instead.
 func (*GetAnamnesisRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{9}
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetAnamnesisRequest) GetPatientId() string {
@@ -867,7 +815,7 @@ type GetAnamnesisResponse struct {
 
 func (x *GetAnamnesisResponse) Reset() {
 	*x = GetAnamnesisResponse{}
-	mi := &file_tkd_customer_v1_patient_proto_msgTypes[10]
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -879,7 +827,7 @@ func (x *GetAnamnesisResponse) String() string {
 func (*GetAnamnesisResponse) ProtoMessage() {}
 
 func (x *GetAnamnesisResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_customer_v1_patient_proto_msgTypes[10]
+	mi := &file_tkd_customer_v1_patient_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -892,7 +840,7 @@ func (x *GetAnamnesisResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAnamnesisResponse.ProtoReflect.Descriptor instead.
 func (*GetAnamnesisResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{10}
+	return file_tkd_customer_v1_patient_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetAnamnesisResponse) GetPatient() *Patient {
@@ -956,15 +904,12 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\fanamnesis_id\x18\x01 \x01(\tR\vanamnesisId\x12.\n" +
 	"\x04time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x12\n" +
 	"\x04text\x18\x03 \x01(\tR\x04text\x12\x1c\n" +
-	"\tdiagnosis\x18\x04 \x01(\tR\tdiagnosis\"c\n" +
-	"\x16PatientImportReference\x12\x1a\n" +
-	"\bimporter\x18\x01 \x01(\tR\bimporter\x12-\n" +
-	"\x12internal_reference\x18\x02 \x01(\tR\x11internalReference\"\xce\x02\n" +
+	"\tdiagnosis\x18\x04 \x01(\tR\tdiagnosis\"\xa9\x02\n" +
 	"\x13AddAnamnesisRequest\x12\x1f\n" +
 	"\n" +
 	"patient_id\x18\x01 \x01(\tH\x00R\tpatientId\x12.\n" +
-	"\x12addition_unique_id\x18\x02 \x01(\tH\x00R\x10additionUniqueId\x12c\n" +
-	"\x18patient_import_reference\x18\x03 \x01(\v2'.tkd.customer.v1.PatientImportReferenceH\x00R\x16patientImportReference\x12A\n" +
+	"\x12addition_unique_id\x18\x02 \x01(\tH\x00R\x10additionUniqueId\x12>\n" +
+	"\x1apatient_internal_reference\x18\x03 \x01(\tH\x00R\x18patientInternalReference\x12A\n" +
 	"\tanamnesis\x18\x04 \x01(\v2\x1a.tkd.customer.v1.AnamnesisB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tanamnesis\x12)\n" +
 	"\x10import_reference\x18\x05 \x01(\tR\x0fimportReferenceB\x13\n" +
 	"\treference\x12\x06\xfa\xf7\x18\x02\b\x01\"\xaf\x01\n" +
@@ -1005,7 +950,7 @@ func file_tkd_customer_v1_patient_proto_rawDescGZIP() []byte {
 }
 
 var file_tkd_customer_v1_patient_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tkd_customer_v1_patient_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_tkd_customer_v1_patient_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_tkd_customer_v1_patient_proto_goTypes = []any{
 	(PatientGender)(0),                    // 0: tkd.customer.v1.PatientGender
 	(*Patient)(nil),                       // 1: tkd.customer.v1.Patient
@@ -1015,47 +960,45 @@ var file_tkd_customer_v1_patient_proto_goTypes = []any{
 	(*GetPatientsByCustomerResponse)(nil), // 5: tkd.customer.v1.GetPatientsByCustomerResponse
 	(*GetPatientRequest)(nil),             // 6: tkd.customer.v1.GetPatientRequest
 	(*Anamnesis)(nil),                     // 7: tkd.customer.v1.Anamnesis
-	(*PatientImportReference)(nil),        // 8: tkd.customer.v1.PatientImportReference
-	(*AddAnamnesisRequest)(nil),           // 9: tkd.customer.v1.AddAnamnesisRequest
-	(*GetAnamnesisRequest)(nil),           // 10: tkd.customer.v1.GetAnamnesisRequest
-	(*GetAnamnesisResponse)(nil),          // 11: tkd.customer.v1.GetAnamnesisResponse
-	(*v1.Date)(nil),                       // 12: tkd.common.v1.Date
-	(*structpb.Struct)(nil),               // 13: google.protobuf.Struct
-	(*timestamppb.Timestamp)(nil),         // 14: google.protobuf.Timestamp
-	(*v1.TimeRange)(nil),                  // 15: tkd.common.v1.TimeRange
-	(*fieldmaskpb.FieldMask)(nil),         // 16: google.protobuf.FieldMask
-	(*emptypb.Empty)(nil),                 // 17: google.protobuf.Empty
+	(*AddAnamnesisRequest)(nil),           // 8: tkd.customer.v1.AddAnamnesisRequest
+	(*GetAnamnesisRequest)(nil),           // 9: tkd.customer.v1.GetAnamnesisRequest
+	(*GetAnamnesisResponse)(nil),          // 10: tkd.customer.v1.GetAnamnesisResponse
+	(*v1.Date)(nil),                       // 11: tkd.common.v1.Date
+	(*structpb.Struct)(nil),               // 12: google.protobuf.Struct
+	(*timestamppb.Timestamp)(nil),         // 13: google.protobuf.Timestamp
+	(*v1.TimeRange)(nil),                  // 14: tkd.common.v1.TimeRange
+	(*fieldmaskpb.FieldMask)(nil),         // 15: google.protobuf.FieldMask
+	(*emptypb.Empty)(nil),                 // 16: google.protobuf.Empty
 }
 var file_tkd_customer_v1_patient_proto_depIdxs = []int32{
-	12, // 0: tkd.customer.v1.Patient.birthday:type_name -> tkd.common.v1.Date
+	11, // 0: tkd.customer.v1.Patient.birthday:type_name -> tkd.common.v1.Date
 	0,  // 1: tkd.customer.v1.Patient.gender:type_name -> tkd.customer.v1.PatientGender
-	13, // 2: tkd.customer.v1.Patient.extra_data:type_name -> google.protobuf.Struct
-	14, // 3: tkd.customer.v1.Patient.first_seen:type_name -> google.protobuf.Timestamp
-	14, // 4: tkd.customer.v1.Patient.last_updated:type_name -> google.protobuf.Timestamp
+	12, // 2: tkd.customer.v1.Patient.extra_data:type_name -> google.protobuf.Struct
+	13, // 3: tkd.customer.v1.Patient.first_seen:type_name -> google.protobuf.Timestamp
+	13, // 4: tkd.customer.v1.Patient.last_updated:type_name -> google.protobuf.Timestamp
 	1,  // 5: tkd.customer.v1.QueryPatientsResponse.patients:type_name -> tkd.customer.v1.Patient
 	1,  // 6: tkd.customer.v1.GetPatientsByCustomerResponse.patients:type_name -> tkd.customer.v1.Patient
-	14, // 7: tkd.customer.v1.Anamnesis.time:type_name -> google.protobuf.Timestamp
-	8,  // 8: tkd.customer.v1.AddAnamnesisRequest.patient_import_reference:type_name -> tkd.customer.v1.PatientImportReference
-	7,  // 9: tkd.customer.v1.AddAnamnesisRequest.anamnesis:type_name -> tkd.customer.v1.Anamnesis
-	15, // 10: tkd.customer.v1.GetAnamnesisRequest.time_range:type_name -> tkd.common.v1.TimeRange
-	16, // 11: tkd.customer.v1.GetAnamnesisRequest.read_mask:type_name -> google.protobuf.FieldMask
-	1,  // 12: tkd.customer.v1.GetAnamnesisResponse.patient:type_name -> tkd.customer.v1.Patient
-	7,  // 13: tkd.customer.v1.GetAnamnesisResponse.anamnesis:type_name -> tkd.customer.v1.Anamnesis
-	2,  // 14: tkd.customer.v1.PatientService.QueryPatients:input_type -> tkd.customer.v1.QueryPatientsRequests
-	4,  // 15: tkd.customer.v1.PatientService.GetPatientsByCustomer:input_type -> tkd.customer.v1.GetPatientsByCustomerRequest
-	6,  // 16: tkd.customer.v1.PatientService.GetPatient:input_type -> tkd.customer.v1.GetPatientRequest
-	9,  // 17: tkd.customer.v1.PatientService.AddAnamnesis:input_type -> tkd.customer.v1.AddAnamnesisRequest
-	10, // 18: tkd.customer.v1.PatientService.GetAnamnesis:input_type -> tkd.customer.v1.GetAnamnesisRequest
-	3,  // 19: tkd.customer.v1.PatientService.QueryPatients:output_type -> tkd.customer.v1.QueryPatientsResponse
-	5,  // 20: tkd.customer.v1.PatientService.GetPatientsByCustomer:output_type -> tkd.customer.v1.GetPatientsByCustomerResponse
-	1,  // 21: tkd.customer.v1.PatientService.GetPatient:output_type -> tkd.customer.v1.Patient
-	17, // 22: tkd.customer.v1.PatientService.AddAnamnesis:output_type -> google.protobuf.Empty
-	11, // 23: tkd.customer.v1.PatientService.GetAnamnesis:output_type -> tkd.customer.v1.GetAnamnesisResponse
-	19, // [19:24] is the sub-list for method output_type
-	14, // [14:19] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	13, // 7: tkd.customer.v1.Anamnesis.time:type_name -> google.protobuf.Timestamp
+	7,  // 8: tkd.customer.v1.AddAnamnesisRequest.anamnesis:type_name -> tkd.customer.v1.Anamnesis
+	14, // 9: tkd.customer.v1.GetAnamnesisRequest.time_range:type_name -> tkd.common.v1.TimeRange
+	15, // 10: tkd.customer.v1.GetAnamnesisRequest.read_mask:type_name -> google.protobuf.FieldMask
+	1,  // 11: tkd.customer.v1.GetAnamnesisResponse.patient:type_name -> tkd.customer.v1.Patient
+	7,  // 12: tkd.customer.v1.GetAnamnesisResponse.anamnesis:type_name -> tkd.customer.v1.Anamnesis
+	2,  // 13: tkd.customer.v1.PatientService.QueryPatients:input_type -> tkd.customer.v1.QueryPatientsRequests
+	4,  // 14: tkd.customer.v1.PatientService.GetPatientsByCustomer:input_type -> tkd.customer.v1.GetPatientsByCustomerRequest
+	6,  // 15: tkd.customer.v1.PatientService.GetPatient:input_type -> tkd.customer.v1.GetPatientRequest
+	8,  // 16: tkd.customer.v1.PatientService.AddAnamnesis:input_type -> tkd.customer.v1.AddAnamnesisRequest
+	9,  // 17: tkd.customer.v1.PatientService.GetAnamnesis:input_type -> tkd.customer.v1.GetAnamnesisRequest
+	3,  // 18: tkd.customer.v1.PatientService.QueryPatients:output_type -> tkd.customer.v1.QueryPatientsResponse
+	5,  // 19: tkd.customer.v1.PatientService.GetPatientsByCustomer:output_type -> tkd.customer.v1.GetPatientsByCustomerResponse
+	1,  // 20: tkd.customer.v1.PatientService.GetPatient:output_type -> tkd.customer.v1.Patient
+	16, // 21: tkd.customer.v1.PatientService.AddAnamnesis:output_type -> google.protobuf.Empty
+	10, // 22: tkd.customer.v1.PatientService.GetAnamnesis:output_type -> tkd.customer.v1.GetAnamnesisResponse
+	18, // [18:23] is the sub-list for method output_type
+	13, // [13:18] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_tkd_customer_v1_patient_proto_init() }
@@ -1067,10 +1010,10 @@ func file_tkd_customer_v1_patient_proto_init() {
 		(*GetPatientRequest_AnimalId)(nil),
 		(*GetPatientRequest_AdditionalUniqueId)(nil),
 	}
-	file_tkd_customer_v1_patient_proto_msgTypes[8].OneofWrappers = []any{
+	file_tkd_customer_v1_patient_proto_msgTypes[7].OneofWrappers = []any{
 		(*AddAnamnesisRequest_PatientId)(nil),
 		(*AddAnamnesisRequest_AdditionUniqueId)(nil),
-		(*AddAnamnesisRequest_PatientImportReference)(nil),
+		(*AddAnamnesisRequest_PatientInternalReference)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1078,7 +1021,7 @@ func file_tkd_customer_v1_patient_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_customer_v1_patient_proto_rawDesc), len(file_tkd_customer_v1_patient_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   11,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
