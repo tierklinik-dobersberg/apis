@@ -68,6 +68,10 @@ func (root *Root) Customer() customerv1connect.CustomerServiceClient {
 	return customerv1connect.NewCustomerServiceClient(root.HttpClient, root.Config().BaseURLS.CustomerService)
 }
 
+func (root *Root) Patient() customerv1connect.PatientServiceClient {
+	return customerv1connect.NewPatientServiceClient(root.HttpClient, root.Config().BaseURLS.CustomerService)
+}
+
 func (root *Root) CustomerImport() customerv1connect.CustomerImportServiceClient {
 	return customerv1connect.NewCustomerImportServiceClient(root.HttpClient, root.Config().BaseURLS.CustomerService)
 }

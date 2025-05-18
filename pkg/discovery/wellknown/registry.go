@@ -63,6 +63,7 @@ var (
 
 	// tkd/customer/v1
 	CustomerService       = Create(CustomerV1ServiceScope, customerv1connect.NewCustomerServiceClient)
+	PatientService        = Create(CustomerV1ServiceScope, customerv1connect.NewPatientServiceClient)
 	CustomerImportService = Create(CustomerV1ServiceScope, customerv1connect.NewCustomerImportServiceClient)
 
 	// tkd/events/v1
