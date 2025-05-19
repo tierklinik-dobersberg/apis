@@ -228,6 +228,7 @@ type ListStudiesRequest struct {
 	// PatientName might be set to only return studies for the
 	// given patient name
 	PatientName string `protobuf:"bytes,3,opt,name=patient_name,json=patientName,proto3" json:"patient_name,omitempty"`
+	PatientId   string `protobuf:"bytes,7,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
 	// Modality might be set to only return studies for the given
 	// DICOM modality.
 	Modality string `protobuf:"bytes,4,opt,name=modality,proto3" json:"modality,omitempty"`
@@ -293,6 +294,13 @@ func (x *ListStudiesRequest) GetOwnerName() string {
 func (x *ListStudiesRequest) GetPatientName() string {
 	if x != nil {
 		return x.PatientName
+	}
+	return ""
+}
+
+func (x *ListStudiesRequest) GetPatientId() string {
+	if x != nil {
+		return x.PatientId
 	}
 	return ""
 }
@@ -540,6 +548,7 @@ type Study struct {
 	PatientName string `protobuf:"bytes,4,opt,name=patient_name,json=patientName,proto3" json:"patient_name,omitempty"`
 	// OwnerName is the name of the patient owner.
 	OwnerName string `protobuf:"bytes,5,opt,name=owner_name,json=ownerName,proto3" json:"owner_name,omitempty"`
+	PatientId string `protobuf:"bytes,8,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
 	// Modalities holds all modalities available within the study.
 	Modalities    []string    `protobuf:"bytes,6,rep,name=modalities,proto3" json:"modalities,omitempty"`
 	Tags          []*DICOMTag `protobuf:"bytes,7,rep,name=tags,proto3" json:"tags,omitempty"`
@@ -608,6 +617,13 @@ func (x *Study) GetPatientName() string {
 func (x *Study) GetOwnerName() string {
 	if x != nil {
 		return x.OwnerName
+	}
+	return ""
+}
+
+func (x *Study) GetPatientId() string {
+	if x != nil {
+		return x.PatientId
 	}
 	return ""
 }
@@ -942,13 +958,15 @@ const file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc = "" +
 	"\x04name\x18\x04 \x01(\tR\x04name\"3\n" +
 	"\tFilterTag\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\tR\x03tag\x12\x14\n" +
-	"\x05value\x18\x02 \x03(\tR\x05value\"\x80\x03\n" +
+	"\x05value\x18\x02 \x03(\tR\x05value\"\x9f\x03\n" +
 	"\x12ListStudiesRequest\x127\n" +
 	"\n" +
 	"date_range\x18\x01 \x01(\v2\x18.tkd.common.v1.DateRangeR\tdateRange\x12\x1d\n" +
 	"\n" +
 	"owner_name\x18\x02 \x01(\tR\townerName\x12!\n" +
-	"\fpatient_name\x18\x03 \x01(\tR\vpatientName\x12\x1a\n" +
+	"\fpatient_name\x18\x03 \x01(\tR\vpatientName\x12\x1d\n" +
+	"\n" +
+	"patient_id\x18\a \x01(\tR\tpatientId\x12\x1a\n" +
 	"\bmodality\x18\x04 \x01(\tR\bmodality\x12A\n" +
 	"\vfilter_tags\x18\x05 \x03(\v2 .tkd.orthanc_bridge.v1.FilterTagR\n" +
 	"filterTags\x12!\n" +
@@ -971,14 +989,16 @@ const file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc = "" +
 	"series_uid\x18\x01 \x01(\tR\tseriesUid\x12=\n" +
 	"\tinstances\x18\x02 \x03(\v2\x1f.tkd.orthanc_bridge.v1.InstanceR\tinstances\x12.\n" +
 	"\x04time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x123\n" +
-	"\x04tags\x18\x04 \x03(\v2\x1f.tkd.orthanc_bridge.v1.DICOMTagR\x04tags\"\xa2\x02\n" +
+	"\x04tags\x18\x04 \x03(\v2\x1f.tkd.orthanc_bridge.v1.DICOMTagR\x04tags\"\xc1\x02\n" +
 	"\x05Study\x12\x1b\n" +
 	"\tstudy_uid\x18\x01 \x01(\tR\bstudyUid\x125\n" +
 	"\x06series\x18\x02 \x03(\v2\x1d.tkd.orthanc_bridge.v1.SeriesR\x06series\x12.\n" +
 	"\x04time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12!\n" +
 	"\fpatient_name\x18\x04 \x01(\tR\vpatientName\x12\x1d\n" +
 	"\n" +
-	"owner_name\x18\x05 \x01(\tR\townerName\x12\x1e\n" +
+	"owner_name\x18\x05 \x01(\tR\townerName\x12\x1d\n" +
+	"\n" +
+	"patient_id\x18\b \x01(\tR\tpatientId\x12\x1e\n" +
 	"\n" +
 	"modalities\x18\x06 \x03(\tR\n" +
 	"modalities\x123\n" +

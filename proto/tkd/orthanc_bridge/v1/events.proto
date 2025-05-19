@@ -9,4 +9,5 @@ message InstanceReceivedEvent {
     string patient_name = 4;
     string owner_name = 5;
     string modality = 6;
+    string patient_id = 7;
 }

@@ -78,6 +78,8 @@ message ListStudiesRequest {
     // given patient name
     string patient_name = 3;
 
+    string patient_id = 7;
+
     // Modality might be set to only return studies for the given
     // DICOM modality.
     string modality = 4;
@@ -149,6 +151,8 @@ message Study {
 
     // OwnerName is the name of the patient owner.
     string owner_name = 5;
+
+    string patient_id = 8;
 
     // Modalities holds all modalities available within the study.
     repeated string modalities = 6;

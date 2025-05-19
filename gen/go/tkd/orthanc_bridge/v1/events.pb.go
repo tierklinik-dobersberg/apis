@@ -29,6 +29,7 @@ type InstanceReceivedEvent struct {
 	PatientName   string                 `protobuf:"bytes,4,opt,name=patient_name,json=patientName,proto3" json:"patient_name,omitempty"`
 	OwnerName     string                 `protobuf:"bytes,5,opt,name=owner_name,json=ownerName,proto3" json:"owner_name,omitempty"`
 	Modality      string                 `protobuf:"bytes,6,opt,name=modality,proto3" json:"modality,omitempty"`
+	PatientId     string                 `protobuf:"bytes,7,opt,name=patient_id,json=patientId,proto3" json:"patient_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -105,11 +106,18 @@ func (x *InstanceReceivedEvent) GetModality() string {
 	return ""
 }
 
+func (x *InstanceReceivedEvent) GetPatientId() string {
+	if x != nil {
+		return x.PatientId
+	}
+	return ""
+}
+
 var File_tkd_orthanc_bridge_v1_events_proto protoreflect.FileDescriptor
 
 const file_tkd_orthanc_bridge_v1_events_proto_rawDesc = "" +
 	"\n" +
-	"\"tkd/orthanc_bridge/v1/events.proto\x12\x15tkd.orthanc_bridge.v1\"\xd4\x01\n" +
+	"\"tkd/orthanc_bridge/v1/events.proto\x12\x15tkd.orthanc_bridge.v1\"\xf3\x01\n" +
 	"\x15InstanceReceivedEvent\x12\x1b\n" +
 	"\tstudy_uid\x18\x01 \x01(\tR\bstudyUid\x12\x1d\n" +
 	"\n" +
@@ -118,7 +126,9 @@ const file_tkd_orthanc_bridge_v1_events_proto_rawDesc = "" +
 	"\fpatient_name\x18\x04 \x01(\tR\vpatientName\x12\x1d\n" +
 	"\n" +
 	"owner_name\x18\x05 \x01(\tR\townerName\x12\x1a\n" +
-	"\bmodality\x18\x06 \x01(\tR\bmodalityB\xef\x01\n" +
+	"\bmodality\x18\x06 \x01(\tR\bmodality\x12\x1d\n" +
+	"\n" +
+	"patient_id\x18\a \x01(\tR\tpatientIdB\xef\x01\n" +
 	"\x19com.tkd.orthanc_bridge.v1B\vEventsProtoP\x01ZSgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/orthanc_bridge/v1;orthanc_bridgev1\xa2\x02\x03TOX\xaa\x02\x14Tkd.OrthancBridge.V1\xca\x02\x14Tkd\\OrthancBridge\\V1\xe2\x02 Tkd\\OrthancBridge\\V1\\GPBMetadata\xea\x02\x16Tkd::OrthancBridge::V1b\x06proto3"
 
 var (
