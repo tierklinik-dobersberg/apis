@@ -96,8 +96,8 @@ func (root *Root) OrthancBridge() orthanc_bridgev1connect.OrthancBridgeClient {
 	return orthanc_bridgev1connect.NewOrthancBridgeClient(root.HttpClient, root.Config().OrthancBridge)
 }
 
-func (root *Root) EventStreamClient() (*events.Client, error) {
-	cli := events.NewClient(root.Config().OrthancBridge, root.HttpClient)
+func (root *Root) EventStreamClient(factory events.ClientFactory) (*events.Client, error) {
+	cli := events.NewClient(factory)
 
 	if err := cli.Start(root.Context()); err != nil {
 		return nil, err
