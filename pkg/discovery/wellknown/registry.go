@@ -120,3 +120,18 @@ func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T
 
 	return wks.Factory(h2utils.NewInsecureHttp2Client(), addr, opts...), nil
 }
+
+func Discover(ctx context.Context, d discovery.Discoverer, wks Service[T], opts ...connect.ClientOption) (string, error) {
+	svc, err := d.Discover(ctx, wks.Name)
+	if err != nil {
+		return "", err
+	}
+
+	if len(svc) == 0 {
+		return "", fmt.Errorf("no service instances found")
+	}
+
+	i := svc[rand.IntN(len(svc))]
+
+	return fmt.Sprintf("http://%s", i.Address), nil
+}

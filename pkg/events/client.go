@@ -12,6 +12,9 @@ import (
 	"github.com/bufbuild/connect-go"
 	eventsv1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1/eventsv1connect"
+	"github.com/tierklinik-dobersberg/apis/pkg/discovery"
+	"github.com/tierklinik-dobersberg/apis/pkg/discovery/consuldiscover"
+	"github.com/tierklinik-dobersberg/apis/pkg/discovery/wellknown"
 	"golang.org/x/exp/maps"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -31,18 +34,33 @@ type Client struct {
 
 	newSubscription chan protoreflect.FullName
 	incoming        chan *eventsv1.Event
-	httpClient      connect.HTTPClient
 	startupComplete chan struct{}
 
-	wg       sync.WaitGroup
-	endpoint string
+	wg            sync.WaitGroup
+	clientFactory ClientFactory
 }
 
-func NewClient(ep string, httpClient connect.HTTPClient) *Client {
+type ClientFactory func(context.Context) (eventsv1connect.EventServiceClient, error)
+
+func DiscoveredInsecureClient(disc discovery.Discoverer) ClientFactory {
+	var discErr error
+
+	if disc == nil {
+		disc, discErr = consuldiscover.NewFromEnv()
+	}
+	return func(ctx context.Context) (eventsv1connect.EventServiceClient, error) {
+		if discErr != nil {
+			return nil, discErr
+		}
+
+		return wellknown.EventService.Create(ctx, disc)
+	}
+}
+
+func NewClient(ep ClientFactory) *Client {
 	cli := &Client{
 		events:          make(map[protoreflect.FullName][]chan<- *eventsv1.Event),
-		endpoint:        ep,
-		httpClient:      httpClient,
+		clientFactory:   ep,
 		newSubscription: make(chan protoreflect.FullName, 10),
 		incoming:        make(chan *eventsv1.Event, 10),
 		startupComplete: make(chan struct{}),
@@ -86,7 +104,11 @@ func (cli *Client) Subscribe(ctx context.Context, typeUrl protoreflect.FullName)
 }
 
 func (cli *Client) Publish(ctx context.Context, msg proto.Message) error {
-	eventsClient := eventsv1connect.NewEventServiceClient(cli.httpClient, cli.endpoint)
+	eventsClient, err := cli.clientFactory(ctx)
+	if err != nil {
+		return err
+	}
+
 	pb, err := anypb.New(msg)
 	if err != nil {
 		return err
@@ -109,8 +131,13 @@ func (cli *Client) receiveLoop(ctx context.Context) {
 			return
 		}
 
-		slog.Info("connecting to events service", slog.Any("endpoint", cli.endpoint))
-		eventsClient := eventsv1connect.NewEventServiceClient(cli.httpClient, cli.endpoint)
+		eventsClient, err := cli.clientFactory(ctx)
+		if err != nil {
+			slog.Error("failed to get event serivice client", slog.Any("error", err.Error()))
+			time.Sleep(time.Second)
+
+			continue
+		}
 
 		stream := eventsClient.Subscribe(ctx)
 
