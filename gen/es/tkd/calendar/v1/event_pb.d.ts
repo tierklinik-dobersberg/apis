@@ -218,6 +218,27 @@ export declare class CustomerAnnotation extends Message<CustomerAnnotation> {
    */
   createdByUserId: string;
 
+  /**
+   * A map of animal-id to treatment/problem description
+   *
+   * @generated from field: map<string, string> animal_descriptions = 5;
+   */
+  animalDescriptions: { [key: string]: string };
+
+  /**
+   * Additional animal text for unknown animals
+   *
+   * @generated from field: string additional_animal_text = 6;
+   */
+  additionalAnimalText: string;
+
+  /**
+   * Additional event description
+   *
+   * @generated from field: string event_description = 7;
+   */
+  eventDescription: string;
+
   constructor(data?: PartialMessage<CustomerAnnotation>);
 
   static readonly runtime: typeof proto3;

@@ -92,4 +92,13 @@ message CustomerAnnotation {
 
     // CreatedByUserId holds the ID of the user that created the event.
     string created_by_user_id = 4;
+
+    // A map of animal-id to treatment/problem description
+    map<string, string> animal_descriptions = 5;
+    
+    // Additional animal text for unknown animals
+    string additional_animal_text = 6;
+
+    // Additional event description
+    string event_description = 7;
 }

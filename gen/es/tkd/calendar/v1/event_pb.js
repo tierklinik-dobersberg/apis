@@ -55,6 +55,9 @@ export const CustomerAnnotation = /*@__PURE__*/ proto3.makeMessageType(
     { no: 2, name: "customer_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "animal_ids", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 4, name: "created_by_user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "animal_descriptions", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "scalar", T: 9 /* ScalarType.STRING */} },
+    { no: 6, name: "additional_animal_text", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "event_description", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

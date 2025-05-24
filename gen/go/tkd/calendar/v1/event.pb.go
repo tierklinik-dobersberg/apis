@@ -288,8 +288,14 @@ type CustomerAnnotation struct {
 	AnimalIds []string `protobuf:"bytes,3,rep,name=animal_ids,json=animalIds,proto3" json:"animal_ids,omitempty"`
 	// CreatedByUserId holds the ID of the user that created the event.
 	CreatedByUserId string `protobuf:"bytes,4,opt,name=created_by_user_id,json=createdByUserId,proto3" json:"created_by_user_id,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// A map of animal-id to treatment/problem description
+	AnimalDescriptions map[string]string `protobuf:"bytes,5,rep,name=animal_descriptions,json=animalDescriptions,proto3" json:"animal_descriptions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Additional animal text for unknown animals
+	AdditionalAnimalText string `protobuf:"bytes,6,opt,name=additional_animal_text,json=additionalAnimalText,proto3" json:"additional_animal_text,omitempty"`
+	// Additional event description
+	EventDescription string `protobuf:"bytes,7,opt,name=event_description,json=eventDescription,proto3" json:"event_description,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *CustomerAnnotation) Reset() {
@@ -343,6 +349,27 @@ func (x *CustomerAnnotation) GetCreatedByUserId() string {
 	return ""
 }
 
+func (x *CustomerAnnotation) GetAnimalDescriptions() map[string]string {
+	if x != nil {
+		return x.AnimalDescriptions
+	}
+	return nil
+}
+
+func (x *CustomerAnnotation) GetAdditionalAnimalText() string {
+	if x != nil {
+		return x.AdditionalAnimalText
+	}
+	return ""
+}
+
+func (x *CustomerAnnotation) GetEventDescription() string {
+	if x != nil {
+		return x.EventDescription
+	}
+	return ""
+}
+
 var File_tkd_calendar_v1_event_proto protoreflect.FileDescriptor
 
 const file_tkd_calendar_v1_event_proto_rawDesc = "" +
@@ -373,13 +400,19 @@ const file_tkd_calendar_v1_event_proto_rawDesc = "" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"createTime\x12\x1c\n" +
 	"\tresources\x18\v \x03(\tR\tresources\x12!\n" +
-	"\fvirtual_copy\x18\f \x01(\bR\vvirtualCopy\"\x98\x01\n" +
+	"\fvirtual_copy\x18\f \x01(\bR\vvirtualCopy\"\xb0\x03\n" +
 	"\x12CustomerAnnotation\x12\x1f\n" +
 	"\vcustomer_id\x18\x02 \x01(\tR\n" +
 	"customerId\x12\x1d\n" +
 	"\n" +
 	"animal_ids\x18\x03 \x03(\tR\tanimalIds\x12+\n" +
-	"\x12created_by_user_id\x18\x04 \x01(\tR\x0fcreatedByUserIdJ\x04\b\x01\x10\x02R\x0fcustomer_sourceB\xc8\x01\n" +
+	"\x12created_by_user_id\x18\x04 \x01(\tR\x0fcreatedByUserId\x12l\n" +
+	"\x13animal_descriptions\x18\x05 \x03(\v2;.tkd.calendar.v1.CustomerAnnotation.AnimalDescriptionsEntryR\x12animalDescriptions\x124\n" +
+	"\x16additional_animal_text\x18\x06 \x01(\tR\x14additionalAnimalText\x12+\n" +
+	"\x11event_description\x18\a \x01(\tR\x10eventDescription\x1aE\n" +
+	"\x17AnimalDescriptionsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01J\x04\b\x01\x10\x02R\x0fcustomer_sourceB\xc8\x01\n" +
 	"\x13com.tkd.calendar.v1B\n" +
 	"EventProtoP\x01ZGgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1;calendarv1\xa2\x02\x03TCX\xaa\x02\x0fTkd.Calendar.V1\xca\x02\x0fTkd\\Calendar\\V1\xe2\x02\x1bTkd\\Calendar\\V1\\GPBMetadata\xea\x02\x11Tkd::Calendar::V1b\x06proto3"
 
@@ -395,24 +428,26 @@ func file_tkd_calendar_v1_event_proto_rawDescGZIP() []byte {
 	return file_tkd_calendar_v1_event_proto_rawDescData
 }
 
-var file_tkd_calendar_v1_event_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_tkd_calendar_v1_event_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_tkd_calendar_v1_event_proto_goTypes = []any{
 	(*Calendar)(nil),              // 0: tkd.calendar.v1.Calendar
 	(*CalendarEvent)(nil),         // 1: tkd.calendar.v1.CalendarEvent
 	(*CustomerAnnotation)(nil),    // 2: tkd.calendar.v1.CustomerAnnotation
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
-	(*anypb.Any)(nil),             // 4: google.protobuf.Any
+	nil,                           // 3: tkd.calendar.v1.CustomerAnnotation.AnimalDescriptionsEntry
+	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
+	(*anypb.Any)(nil),             // 5: google.protobuf.Any
 }
 var file_tkd_calendar_v1_event_proto_depIdxs = []int32{
-	3, // 0: tkd.calendar.v1.CalendarEvent.start_time:type_name -> google.protobuf.Timestamp
-	3, // 1: tkd.calendar.v1.CalendarEvent.end_time:type_name -> google.protobuf.Timestamp
-	4, // 2: tkd.calendar.v1.CalendarEvent.extra_data:type_name -> google.protobuf.Any
-	3, // 3: tkd.calendar.v1.CalendarEvent.create_time:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	4, // 0: tkd.calendar.v1.CalendarEvent.start_time:type_name -> google.protobuf.Timestamp
+	4, // 1: tkd.calendar.v1.CalendarEvent.end_time:type_name -> google.protobuf.Timestamp
+	5, // 2: tkd.calendar.v1.CalendarEvent.extra_data:type_name -> google.protobuf.Any
+	4, // 3: tkd.calendar.v1.CalendarEvent.create_time:type_name -> google.protobuf.Timestamp
+	3, // 4: tkd.calendar.v1.CustomerAnnotation.animal_descriptions:type_name -> tkd.calendar.v1.CustomerAnnotation.AnimalDescriptionsEntry
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_tkd_calendar_v1_event_proto_init() }
@@ -426,7 +461,7 @@ func file_tkd_calendar_v1_event_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_calendar_v1_event_proto_rawDesc), len(file_tkd_calendar_v1_event_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
