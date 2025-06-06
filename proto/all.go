@@ -1,6 +1,5 @@
 package proto
 
-import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/booking/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/calendar/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/comment/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
@@ -15,4 +14,5 @@ import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/printing/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1"
+import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/treatment/v1"
 import _ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/typeserver/v1"

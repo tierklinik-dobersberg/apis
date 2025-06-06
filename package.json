@@ -1,6 +1,6 @@
 {
   "name": "@tierklinik-dobersberg/apis",
-  "version": "0.49.0",
+  "version": "0.50.0",
   "description": "Connect-ES API definitions for Tierklinik Dobersberg services",
   "type": "module",
   "files": [
@@ -35,12 +35,6 @@
   "exports": {
     "./package.json": {
       "default": "./package.json"
-    },
-    "./booking/v1": {
-      "types": "./gen/es/tkd/booking/v1/index.d.ts",
-      "esm2022": "./gen/es/tkd/booking/v1/index.js",
-      "esm": "./gen/es/tkd/booking/v1/index.js",
-      "default": "./gen/es/tkd/booking/v1/index.js"
     },
     "./calendar/v1": {
       "types": "./gen/es/tkd/calendar/v1/index.d.ts",
@@ -125,6 +119,12 @@
       "esm2022": "./gen/es/tkd/tasks/v1/index.js",
       "esm": "./gen/es/tkd/tasks/v1/index.js",
       "default": "./gen/es/tkd/tasks/v1/index.js"
+    },
+    "./treatment/v1": {
+      "types": "./gen/es/tkd/treatment/v1/index.d.ts",
+      "esm2022": "./gen/es/tkd/treatment/v1/index.js",
+      "esm": "./gen/es/tkd/treatment/v1/index.js",
+      "default": "./gen/es/tkd/treatment/v1/index.js"
     },
     "./typeserver/v1": {
       "types": "./gen/es/tkd/typeserver/v1/index.d.ts",

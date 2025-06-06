@@ -1,10 +1,27 @@
 syntax = "proto3";
 
-package tkd.booking.v1;
+package tkd.treatment.v1;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "buf/validate/validate.proto";
+
+enum IconType {
+    ICON_TYPE_UNSPECIFIED = 0;
+    ICON_TYPE_UNICODE = 1;
+    ICON_TYPE_URL = 2;
+    ICON_TYPE_IMAGE_WEBP = 3;
+}
+
+message Icon {
+    // Data holds the actual icon data. It's interpretation depends
+    // on the value of IconType type field. 
+    bytes data = 1;
+
+    // Type defines the type of the icon and how the data field needs to
+    // be parsed/interpreted.
+    IconType type = 2;
+}
 
 // Species is a well-known species for which treatments are available.
 message Species {
@@ -18,6 +35,15 @@ message Species {
     // RequestCastrationStatus can be set to true if the self-booking user interface
     // should request the castration status of the patient.
     bool request_castration_status = 3;
+
+    // Since species are not always entered correctly, the following field
+    // is used to match multiple values to a given species.
+    // When used together with the tkd.customer.v1.Patient message,
+    // it's species and breed values will be compared.
+    repeated string match_words = 4;
+
+    // Icon holds a small icon for the species.
+    Icon icon = 5;
 }
 
 service SpeciesService {
@@ -25,6 +51,11 @@ service SpeciesService {
     rpc ListSpecies(ListSpeciesRequest) returns (ListSpeciesResponse) {}
     rpc UpdateSpecies(UpdateSpeciesRequest) returns (Species) {}
     rpc DeleteSpecies(DeleteSpeciesRequest) returns (google.protobuf.Empty) {}
+    rpc DetectSpecies(DetectSpeciesRequest) returns (ListSpeciesResponse) {}
+}
+
+message DetectSpeciesRequest {
+    repeated string values = 1;
 }
 
 message ListSpeciesRequest {

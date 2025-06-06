@@ -17,6 +17,7 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/printing/v1/printingv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/roster/v1/rosterv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/tasks/v1/tasksv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/treatment/v1/treatmentv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/typeserver/v1/typeserverv1connect"
 	"github.com/tierklinik-dobersberg/apis/pkg/discovery"
 	"github.com/tierklinik-dobersberg/apis/pkg/h2utils"
@@ -51,6 +52,7 @@ var (
 	TypeV1ServiceScope        = "tkd.typeserver.v1"
 	LongrunningV1ServiceScope = "tkd.longrunning.v1"
 	PrintV1ServiceScope       = "tkd.printing.v1"
+	TreatmentV1ServiceScope   = "tkd.treatment.v1"
 )
 
 var (
@@ -100,6 +102,10 @@ var (
 
 	// tkd/printing/v1
 	PrintService = Create(PrintV1ServiceScope, printingv1connect.NewPrintServiceClient)
+
+	// tkd/treatment/v1
+	TreatmentService = Create(TreatmentV1ServiceScope, treatmentv1connect.NewTreatmentServiceClient)
+	SpeciesService   = Create(TreatmentV1ServiceScope, treatmentv1connect.NewTreatmentServiceClient)
 )
 
 func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T], opts ...connect.ClientOption) (T, error) {

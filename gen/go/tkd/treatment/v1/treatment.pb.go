@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: tkd/booking/v1/treatment.proto
+// source: tkd/treatment/v1/treatment.proto
 
-package bookingv1
+package treatmentv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
@@ -32,7 +32,7 @@ const (
 // should last.
 // The final duration for the appointment is calculated by using the
 // highest initial_time_requirement of all treatments and adding the
-// additional_time_requirement for each treatment.
+// additional_time_requirement for each other treatment.
 type Treatment struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Name is the unique name of the treatment.
@@ -44,6 +44,7 @@ type Treatment struct {
 	// self-booking user interface.
 	HelpText string `protobuf:"bytes,3,opt,name=help_text,json=helpText,proto3" json:"help_text,omitempty"`
 	// Species is a list of animal species this treatment applies to.
+	// If empty, the treatment applies to all species.
 	Species []string `protobuf:"bytes,4,rep,name=species,proto3" json:"species,omitempty"`
 	// InitialTimeRequirement is the minumum duration that a self-booked
 	// appointment with this treatment should last. If multiple treatments
@@ -61,14 +62,18 @@ type Treatment struct {
 	AllowedEmployees []string `protobuf:"bytes,7,rep,name=allowed_employees,json=allowedEmployees,proto3" json:"allowed_employees,omitempty"`
 	// PreferredEmployees is a list of user IDs that should - preffered - be booked
 	// for handling an self-booked appointment with this treatment.
-	PreferredEmployees map[string]int32 `protobuf:"bytes,8,rep,name=preferred_employees,json=preferredEmployees,proto3" json:"preferred_employees,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	PreferredEmployees []string `protobuf:"bytes,8,rep,name=preferred_employees,json=preferredEmployees,proto3" json:"preferred_employees,omitempty"`
+	MatchEventText     []string `protobuf:"bytes,9,rep,name=match_event_text,json=matchEventText,proto3" json:"match_event_text,omitempty"`
+	// AllowSelfBooking should be set to true if this treatment is available for public
+	// (self-service) booking.
+	AllowSelfBooking bool `protobuf:"varint,10,opt,name=allow_self_booking,json=allowSelfBooking,proto3" json:"allow_self_booking,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Treatment) Reset() {
 	*x = Treatment{}
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[0]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -80,7 +85,7 @@ func (x *Treatment) String() string {
 func (*Treatment) ProtoMessage() {}
 
 func (x *Treatment) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[0]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -93,7 +98,7 @@ func (x *Treatment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Treatment.ProtoReflect.Descriptor instead.
 func (*Treatment) Descriptor() ([]byte, []int) {
-	return file_tkd_booking_v1_treatment_proto_rawDescGZIP(), []int{0}
+	return file_tkd_treatment_v1_treatment_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Treatment) GetName() string {
@@ -145,11 +150,69 @@ func (x *Treatment) GetAllowedEmployees() []string {
 	return nil
 }
 
-func (x *Treatment) GetPreferredEmployees() map[string]int32 {
+func (x *Treatment) GetPreferredEmployees() []string {
 	if x != nil {
 		return x.PreferredEmployees
 	}
 	return nil
+}
+
+func (x *Treatment) GetMatchEventText() []string {
+	if x != nil {
+		return x.MatchEventText
+	}
+	return nil
+}
+
+func (x *Treatment) GetAllowSelfBooking() bool {
+	if x != nil {
+		return x.AllowSelfBooking
+	}
+	return false
+}
+
+type GetTreatmentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTreatmentRequest) Reset() {
+	*x = GetTreatmentRequest{}
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTreatmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTreatmentRequest) ProtoMessage() {}
+
+func (x *GetTreatmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTreatmentRequest.ProtoReflect.Descriptor instead.
+func (*GetTreatmentRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_treatment_v1_treatment_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *GetTreatmentRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
 }
 
 // ListTreatmentsRequest is the request message type for the ListTreatments RPC
@@ -162,7 +225,7 @@ type ListTreatmentsRequest struct {
 	// Species values are case insensitive.
 	Species string `protobuf:"bytes,1,opt,name=species,proto3" json:"species,omitempty"`
 	// DisplayNameSearch can be set to a string to only return treatments
-	// where the display name matches the given search text.
+	// where the display name or the match_event_text fields match.
 	DisplayNameSearch string `protobuf:"bytes,2,opt,name=display_name_search,json=displayNameSearch,proto3" json:"display_name_search,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
@@ -170,7 +233,7 @@ type ListTreatmentsRequest struct {
 
 func (x *ListTreatmentsRequest) Reset() {
 	*x = ListTreatmentsRequest{}
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[1]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -182,7 +245,7 @@ func (x *ListTreatmentsRequest) String() string {
 func (*ListTreatmentsRequest) ProtoMessage() {}
 
 func (x *ListTreatmentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[1]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -195,7 +258,7 @@ func (x *ListTreatmentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTreatmentsRequest.ProtoReflect.Descriptor instead.
 func (*ListTreatmentsRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_booking_v1_treatment_proto_rawDescGZIP(), []int{1}
+	return file_tkd_treatment_v1_treatment_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListTreatmentsRequest) GetSpecies() string {
@@ -226,7 +289,7 @@ type ListTreatmentsResponse struct {
 
 func (x *ListTreatmentsResponse) Reset() {
 	*x = ListTreatmentsResponse{}
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[2]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -238,7 +301,7 @@ func (x *ListTreatmentsResponse) String() string {
 func (*ListTreatmentsResponse) ProtoMessage() {}
 
 func (x *ListTreatmentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[2]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -251,7 +314,7 @@ func (x *ListTreatmentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTreatmentsResponse.ProtoReflect.Descriptor instead.
 func (*ListTreatmentsResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_booking_v1_treatment_proto_rawDescGZIP(), []int{2}
+	return file_tkd_treatment_v1_treatment_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListTreatmentsResponse) GetTreatments() []*Treatment {
@@ -282,9 +345,8 @@ type UpdateTreatmentRequest struct {
 	// self-booking user interface.
 	HelpText string `protobuf:"bytes,4,opt,name=help_text,json=helpText,proto3" json:"help_text,omitempty"`
 	// AddSpecies is a list of species name that should be added to the treatment.
-	AddSpecies []string `protobuf:"bytes,5,rep,name=add_species,json=addSpecies,proto3" json:"add_species,omitempty"`
-	// RemoveSpecies is a list of species names that should be removed from the treatment.
-	RemoveSpecies []string `protobuf:"bytes,6,rep,name=remove_species,json=removeSpecies,proto3" json:"remove_species,omitempty"`
+	Species          []string `protobuf:"bytes,5,rep,name=species,proto3" json:"species,omitempty"`
+	AllowSelfBooking bool     `protobuf:"varint,6,opt,name=allow_self_booking,json=allowSelfBooking,proto3" json:"allow_self_booking,omitempty"`
 	// InitialTimeRequirement is the minumum duration that a self-booked
 	// appointment with this treatment should last. If multiple treatments
 	// are part of an appointment, the highest initial_time_requirement is
@@ -293,9 +355,9 @@ type UpdateTreatmentRequest struct {
 	// AdditionalTimeRequirement is the duration that should be added to a self-booked
 	// appointment when more than one treatment is booked.
 	AdditionalTimeRequirement *durationpb.Duration `protobuf:"bytes,8,opt,name=additional_time_requirement,json=additionalTimeRequirement,proto3" json:"additional_time_requirement,omitempty"`
-	AddAllowedEmployees       []string             `protobuf:"bytes,9,rep,name=add_allowed_employees,json=addAllowedEmployees,proto3" json:"add_allowed_employees,omitempty"`
-	RemoveAllowedEmployees    []string             `protobuf:"bytes,10,rep,name=remove_allowed_employees,json=removeAllowedEmployees,proto3" json:"remove_allowed_employees,omitempty"`
-	UpdatePreferredEmployees  map[string]int32     `protobuf:"bytes,11,rep,name=update_preferred_employees,json=updatePreferredEmployees,proto3" json:"update_preferred_employees,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
+	AllowedEmployees          []string             `protobuf:"bytes,9,rep,name=allowed_employees,json=allowedEmployees,proto3" json:"allowed_employees,omitempty"`
+	MatchEventText            []string             `protobuf:"bytes,10,rep,name=match_event_text,json=matchEventText,proto3" json:"match_event_text,omitempty"`
+	PreferredEmployees        []string             `protobuf:"bytes,11,rep,name=preferred_employees,json=preferredEmployees,proto3" json:"preferred_employees,omitempty"`
 	// UpdateMask specifies which field names of the UpdateTreatmentRequest message
 	// should be considered.
 	// If unspecified or empty, no fields will be updated.
@@ -307,7 +369,7 @@ type UpdateTreatmentRequest struct {
 
 func (x *UpdateTreatmentRequest) Reset() {
 	*x = UpdateTreatmentRequest{}
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[3]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -319,7 +381,7 @@ func (x *UpdateTreatmentRequest) String() string {
 func (*UpdateTreatmentRequest) ProtoMessage() {}
 
 func (x *UpdateTreatmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[3]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -332,7 +394,7 @@ func (x *UpdateTreatmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTreatmentRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTreatmentRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_booking_v1_treatment_proto_rawDescGZIP(), []int{3}
+	return file_tkd_treatment_v1_treatment_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UpdateTreatmentRequest) GetName() string {
@@ -363,18 +425,18 @@ func (x *UpdateTreatmentRequest) GetHelpText() string {
 	return ""
 }
 
-func (x *UpdateTreatmentRequest) GetAddSpecies() []string {
+func (x *UpdateTreatmentRequest) GetSpecies() []string {
 	if x != nil {
-		return x.AddSpecies
+		return x.Species
 	}
 	return nil
 }
 
-func (x *UpdateTreatmentRequest) GetRemoveSpecies() []string {
+func (x *UpdateTreatmentRequest) GetAllowSelfBooking() bool {
 	if x != nil {
-		return x.RemoveSpecies
+		return x.AllowSelfBooking
 	}
-	return nil
+	return false
 }
 
 func (x *UpdateTreatmentRequest) GetInitialTimeRequirement() *durationpb.Duration {
@@ -391,23 +453,23 @@ func (x *UpdateTreatmentRequest) GetAdditionalTimeRequirement() *durationpb.Dura
 	return nil
 }
 
-func (x *UpdateTreatmentRequest) GetAddAllowedEmployees() []string {
+func (x *UpdateTreatmentRequest) GetAllowedEmployees() []string {
 	if x != nil {
-		return x.AddAllowedEmployees
+		return x.AllowedEmployees
 	}
 	return nil
 }
 
-func (x *UpdateTreatmentRequest) GetRemoveAllowedEmployees() []string {
+func (x *UpdateTreatmentRequest) GetMatchEventText() []string {
 	if x != nil {
-		return x.RemoveAllowedEmployees
+		return x.MatchEventText
 	}
 	return nil
 }
 
-func (x *UpdateTreatmentRequest) GetUpdatePreferredEmployees() map[string]int32 {
+func (x *UpdateTreatmentRequest) GetPreferredEmployees() []string {
 	if x != nil {
-		return x.UpdatePreferredEmployees
+		return x.PreferredEmployees
 	}
 	return nil
 }
@@ -431,7 +493,7 @@ type DeleteTreatmentRequest struct {
 
 func (x *DeleteTreatmentRequest) Reset() {
 	*x = DeleteTreatmentRequest{}
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[4]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -443,7 +505,7 @@ func (x *DeleteTreatmentRequest) String() string {
 func (*DeleteTreatmentRequest) ProtoMessage() {}
 
 func (x *DeleteTreatmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_booking_v1_treatment_proto_msgTypes[4]
+	mi := &file_tkd_treatment_v1_treatment_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -456,7 +518,7 @@ func (x *DeleteTreatmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteTreatmentRequest.ProtoReflect.Descriptor instead.
 func (*DeleteTreatmentRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_booking_v1_treatment_proto_rawDescGZIP(), []int{4}
+	return file_tkd_treatment_v1_treatment_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteTreatmentRequest) GetName() string {
@@ -466,11 +528,11 @@ func (x *DeleteTreatmentRequest) GetName() string {
 	return ""
 }
 
-var File_tkd_booking_v1_treatment_proto protoreflect.FileDescriptor
+var File_tkd_treatment_v1_treatment_proto protoreflect.FileDescriptor
 
-const file_tkd_booking_v1_treatment_proto_rawDesc = "" +
+const file_tkd_treatment_v1_treatment_proto_rawDesc = "" +
 	"\n" +
-	"\x1etkd/booking/v1/treatment.proto\x12\x0etkd.booking.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1ctkd/booking/v1/species.proto\"\x81\x04\n" +
+	" tkd/treatment/v1/treatment.proto\x12\x10tkd.treatment.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/treatment/v1/species.proto\"\xdf\x03\n" +
 	"\tTreatment\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12!\n" +
 	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x1b\n" +
@@ -478,124 +540,122 @@ const file_tkd_booking_v1_treatment_proto_rawDesc = "" +
 	"\aspecies\x18\x04 \x03(\tR\aspecies\x12S\n" +
 	"\x18initial_time_requirement\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\x16initialTimeRequirement\x12Y\n" +
 	"\x1badditional_time_requirement\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\x19additionalTimeRequirement\x12+\n" +
-	"\x11allowed_employees\x18\a \x03(\tR\x10allowedEmployees\x12b\n" +
-	"\x13preferred_employees\x18\b \x03(\v21.tkd.booking.v1.Treatment.PreferredEmployeesEntryR\x12preferredEmployees\x1aE\n" +
-	"\x17PreferredEmployeesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\"a\n" +
+	"\x11allowed_employees\x18\a \x03(\tR\x10allowedEmployees\x12/\n" +
+	"\x13preferred_employees\x18\b \x03(\tR\x12preferredEmployees\x12(\n" +
+	"\x10match_event_text\x18\t \x03(\tR\x0ematchEventText\x12,\n" +
+	"\x12allow_self_booking\x18\n" +
+	" \x01(\bR\x10allowSelfBooking\")\n" +
+	"\x13GetTreatmentRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"a\n" +
 	"\x15ListTreatmentsRequest\x12\x18\n" +
 	"\aspecies\x18\x01 \x01(\tR\aspecies\x12.\n" +
-	"\x13display_name_search\x18\x02 \x01(\tR\x11displayNameSearch\"\xf7\x01\n" +
-	"\x16ListTreatmentsResponse\x129\n" +
+	"\x13display_name_search\x18\x02 \x01(\tR\x11displayNameSearch\"\xfd\x01\n" +
+	"\x16ListTreatmentsResponse\x12;\n" +
 	"\n" +
-	"treatments\x18\x01 \x03(\v2\x19.tkd.booking.v1.TreatmentR\n" +
-	"treatments\x12M\n" +
-	"\aspecies\x18\x02 \x03(\v23.tkd.booking.v1.ListTreatmentsResponse.SpeciesEntryR\aspecies\x1aS\n" +
+	"treatments\x18\x01 \x03(\v2\x1b.tkd.treatment.v1.TreatmentR\n" +
+	"treatments\x12O\n" +
+	"\aspecies\x18\x02 \x03(\v25.tkd.treatment.v1.ListTreatmentsResponse.SpeciesEntryR\aspecies\x1aU\n" +
 	"\fSpeciesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12-\n" +
-	"\x05value\x18\x02 \x01(\v2\x17.tkd.booking.v1.SpeciesR\x05value:\x028\x01\"\x8e\x06\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12/\n" +
+	"\x05value\x18\x02 \x01(\v2\x19.tkd.treatment.v1.SpeciesR\x05value:\x028\x01\"\xd6\x04\n" +
 	"\x16UpdateTreatmentRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name\x12\x19\n" +
 	"\bnew_name\x18\x02 \x01(\tR\anewName\x12!\n" +
 	"\fdisplay_name\x18\x03 \x01(\tR\vdisplayName\x12\x1b\n" +
-	"\thelp_text\x18\x04 \x01(\tR\bhelpText\x12\x1f\n" +
-	"\vadd_species\x18\x05 \x03(\tR\n" +
-	"addSpecies\x12%\n" +
-	"\x0eremove_species\x18\x06 \x03(\tR\rremoveSpecies\x12S\n" +
+	"\thelp_text\x18\x04 \x01(\tR\bhelpText\x12\x18\n" +
+	"\aspecies\x18\x05 \x03(\tR\aspecies\x12,\n" +
+	"\x12allow_self_booking\x18\x06 \x01(\bR\x10allowSelfBooking\x12S\n" +
 	"\x18initial_time_requirement\x18\a \x01(\v2\x19.google.protobuf.DurationR\x16initialTimeRequirement\x12Y\n" +
-	"\x1badditional_time_requirement\x18\b \x01(\v2\x19.google.protobuf.DurationR\x19additionalTimeRequirement\x122\n" +
-	"\x15add_allowed_employees\x18\t \x03(\tR\x13addAllowedEmployees\x128\n" +
-	"\x18remove_allowed_employees\x18\n" +
-	" \x03(\tR\x16removeAllowedEmployees\x12\x82\x01\n" +
-	"\x1aupdate_preferred_employees\x18\v \x03(\v2D.tkd.booking.v1.UpdateTreatmentRequest.UpdatePreferredEmployeesEntryR\x18updatePreferredEmployees\x12D\n" +
+	"\x1badditional_time_requirement\x18\b \x01(\v2\x19.google.protobuf.DurationR\x19additionalTimeRequirement\x12+\n" +
+	"\x11allowed_employees\x18\t \x03(\tR\x10allowedEmployees\x12(\n" +
+	"\x10match_event_text\x18\n" +
+	" \x03(\tR\x0ematchEventText\x12/\n" +
+	"\x13preferred_employees\x18\v \x03(\tR\x12preferredEmployees\x12D\n" +
 	"\vupdate_mask\x18\x14 \x01(\v2\x1a.google.protobuf.FieldMaskB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
-	"updateMask\x1aK\n" +
-	"\x1dUpdatePreferredEmployeesEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\"5\n" +
+	"updateMask\"5\n" +
 	"\x16DeleteTreatmentRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name2\xed\x02\n" +
-	"\x10TreatmentService\x12a\n" +
-	"\x0eListTreatments\x12%.tkd.booking.v1.ListTreatmentsRequest\x1a&.tkd.booking.v1.ListTreatmentsResponse\"\x00\x12I\n" +
-	"\x0fCreateTreatment\x12\x19.tkd.booking.v1.Treatment\x1a\x19.tkd.booking.v1.Treatment\"\x00\x12V\n" +
-	"\x0fUpdateTreatment\x12&.tkd.booking.v1.UpdateTreatmentRequest\x1a\x19.tkd.booking.v1.Treatment\"\x00\x12S\n" +
-	"\x0fDeleteTreatment\x12&.tkd.booking.v1.DeleteTreatmentRequest\x1a\x16.google.protobuf.Empty\"\x00B\xc5\x01\n" +
-	"\x12com.tkd.booking.v1B\x0eTreatmentProtoP\x01ZEgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/booking/v1;bookingv1\xa2\x02\x03TBX\xaa\x02\x0eTkd.Booking.V1\xca\x02\x0eTkd\\Booking\\V1\xe2\x02\x1aTkd\\Booking\\V1\\GPBMetadata\xea\x02\x10Tkd::Booking::V1b\x06proto3"
+	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name2\xd1\x03\n" +
+	"\x10TreatmentService\x12T\n" +
+	"\fGetTreatment\x12%.tkd.treatment.v1.GetTreatmentRequest\x1a\x1b.tkd.treatment.v1.Treatment\"\x00\x12e\n" +
+	"\x0eListTreatments\x12'.tkd.treatment.v1.ListTreatmentsRequest\x1a(.tkd.treatment.v1.ListTreatmentsResponse\"\x00\x12M\n" +
+	"\x0fCreateTreatment\x12\x1b.tkd.treatment.v1.Treatment\x1a\x1b.tkd.treatment.v1.Treatment\"\x00\x12Z\n" +
+	"\x0fUpdateTreatment\x12(.tkd.treatment.v1.UpdateTreatmentRequest\x1a\x1b.tkd.treatment.v1.Treatment\"\x00\x12U\n" +
+	"\x0fDeleteTreatment\x12(.tkd.treatment.v1.DeleteTreatmentRequest\x1a\x16.google.protobuf.Empty\"\x00B\xd3\x01\n" +
+	"\x14com.tkd.treatment.v1B\x0eTreatmentProtoP\x01ZIgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/treatment/v1;treatmentv1\xa2\x02\x03TTX\xaa\x02\x10Tkd.Treatment.V1\xca\x02\x10Tkd\\Treatment\\V1\xe2\x02\x1cTkd\\Treatment\\V1\\GPBMetadata\xea\x02\x12Tkd::Treatment::V1b\x06proto3"
 
 var (
-	file_tkd_booking_v1_treatment_proto_rawDescOnce sync.Once
-	file_tkd_booking_v1_treatment_proto_rawDescData []byte
+	file_tkd_treatment_v1_treatment_proto_rawDescOnce sync.Once
+	file_tkd_treatment_v1_treatment_proto_rawDescData []byte
 )
 
-func file_tkd_booking_v1_treatment_proto_rawDescGZIP() []byte {
-	file_tkd_booking_v1_treatment_proto_rawDescOnce.Do(func() {
-		file_tkd_booking_v1_treatment_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_tkd_booking_v1_treatment_proto_rawDesc), len(file_tkd_booking_v1_treatment_proto_rawDesc)))
+func file_tkd_treatment_v1_treatment_proto_rawDescGZIP() []byte {
+	file_tkd_treatment_v1_treatment_proto_rawDescOnce.Do(func() {
+		file_tkd_treatment_v1_treatment_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_tkd_treatment_v1_treatment_proto_rawDesc), len(file_tkd_treatment_v1_treatment_proto_rawDesc)))
 	})
-	return file_tkd_booking_v1_treatment_proto_rawDescData
+	return file_tkd_treatment_v1_treatment_proto_rawDescData
 }
 
-var file_tkd_booking_v1_treatment_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
-var file_tkd_booking_v1_treatment_proto_goTypes = []any{
-	(*Treatment)(nil),              // 0: tkd.booking.v1.Treatment
-	(*ListTreatmentsRequest)(nil),  // 1: tkd.booking.v1.ListTreatmentsRequest
-	(*ListTreatmentsResponse)(nil), // 2: tkd.booking.v1.ListTreatmentsResponse
-	(*UpdateTreatmentRequest)(nil), // 3: tkd.booking.v1.UpdateTreatmentRequest
-	(*DeleteTreatmentRequest)(nil), // 4: tkd.booking.v1.DeleteTreatmentRequest
-	nil,                            // 5: tkd.booking.v1.Treatment.PreferredEmployeesEntry
-	nil,                            // 6: tkd.booking.v1.ListTreatmentsResponse.SpeciesEntry
-	nil,                            // 7: tkd.booking.v1.UpdateTreatmentRequest.UpdatePreferredEmployeesEntry
-	(*durationpb.Duration)(nil),    // 8: google.protobuf.Duration
-	(*fieldmaskpb.FieldMask)(nil),  // 9: google.protobuf.FieldMask
-	(*Species)(nil),                // 10: tkd.booking.v1.Species
-	(*emptypb.Empty)(nil),          // 11: google.protobuf.Empty
+var file_tkd_treatment_v1_treatment_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_tkd_treatment_v1_treatment_proto_goTypes = []any{
+	(*Treatment)(nil),              // 0: tkd.treatment.v1.Treatment
+	(*GetTreatmentRequest)(nil),    // 1: tkd.treatment.v1.GetTreatmentRequest
+	(*ListTreatmentsRequest)(nil),  // 2: tkd.treatment.v1.ListTreatmentsRequest
+	(*ListTreatmentsResponse)(nil), // 3: tkd.treatment.v1.ListTreatmentsResponse
+	(*UpdateTreatmentRequest)(nil), // 4: tkd.treatment.v1.UpdateTreatmentRequest
+	(*DeleteTreatmentRequest)(nil), // 5: tkd.treatment.v1.DeleteTreatmentRequest
+	nil,                            // 6: tkd.treatment.v1.ListTreatmentsResponse.SpeciesEntry
+	(*durationpb.Duration)(nil),    // 7: google.protobuf.Duration
+	(*fieldmaskpb.FieldMask)(nil),  // 8: google.protobuf.FieldMask
+	(*Species)(nil),                // 9: tkd.treatment.v1.Species
+	(*emptypb.Empty)(nil),          // 10: google.protobuf.Empty
 }
-var file_tkd_booking_v1_treatment_proto_depIdxs = []int32{
-	8,  // 0: tkd.booking.v1.Treatment.initial_time_requirement:type_name -> google.protobuf.Duration
-	8,  // 1: tkd.booking.v1.Treatment.additional_time_requirement:type_name -> google.protobuf.Duration
-	5,  // 2: tkd.booking.v1.Treatment.preferred_employees:type_name -> tkd.booking.v1.Treatment.PreferredEmployeesEntry
-	0,  // 3: tkd.booking.v1.ListTreatmentsResponse.treatments:type_name -> tkd.booking.v1.Treatment
-	6,  // 4: tkd.booking.v1.ListTreatmentsResponse.species:type_name -> tkd.booking.v1.ListTreatmentsResponse.SpeciesEntry
-	8,  // 5: tkd.booking.v1.UpdateTreatmentRequest.initial_time_requirement:type_name -> google.protobuf.Duration
-	8,  // 6: tkd.booking.v1.UpdateTreatmentRequest.additional_time_requirement:type_name -> google.protobuf.Duration
-	7,  // 7: tkd.booking.v1.UpdateTreatmentRequest.update_preferred_employees:type_name -> tkd.booking.v1.UpdateTreatmentRequest.UpdatePreferredEmployeesEntry
-	9,  // 8: tkd.booking.v1.UpdateTreatmentRequest.update_mask:type_name -> google.protobuf.FieldMask
-	10, // 9: tkd.booking.v1.ListTreatmentsResponse.SpeciesEntry.value:type_name -> tkd.booking.v1.Species
-	1,  // 10: tkd.booking.v1.TreatmentService.ListTreatments:input_type -> tkd.booking.v1.ListTreatmentsRequest
-	0,  // 11: tkd.booking.v1.TreatmentService.CreateTreatment:input_type -> tkd.booking.v1.Treatment
-	3,  // 12: tkd.booking.v1.TreatmentService.UpdateTreatment:input_type -> tkd.booking.v1.UpdateTreatmentRequest
-	4,  // 13: tkd.booking.v1.TreatmentService.DeleteTreatment:input_type -> tkd.booking.v1.DeleteTreatmentRequest
-	2,  // 14: tkd.booking.v1.TreatmentService.ListTreatments:output_type -> tkd.booking.v1.ListTreatmentsResponse
-	0,  // 15: tkd.booking.v1.TreatmentService.CreateTreatment:output_type -> tkd.booking.v1.Treatment
-	0,  // 16: tkd.booking.v1.TreatmentService.UpdateTreatment:output_type -> tkd.booking.v1.Treatment
-	11, // 17: tkd.booking.v1.TreatmentService.DeleteTreatment:output_type -> google.protobuf.Empty
-	14, // [14:18] is the sub-list for method output_type
-	10, // [10:14] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+var file_tkd_treatment_v1_treatment_proto_depIdxs = []int32{
+	7,  // 0: tkd.treatment.v1.Treatment.initial_time_requirement:type_name -> google.protobuf.Duration
+	7,  // 1: tkd.treatment.v1.Treatment.additional_time_requirement:type_name -> google.protobuf.Duration
+	0,  // 2: tkd.treatment.v1.ListTreatmentsResponse.treatments:type_name -> tkd.treatment.v1.Treatment
+	6,  // 3: tkd.treatment.v1.ListTreatmentsResponse.species:type_name -> tkd.treatment.v1.ListTreatmentsResponse.SpeciesEntry
+	7,  // 4: tkd.treatment.v1.UpdateTreatmentRequest.initial_time_requirement:type_name -> google.protobuf.Duration
+	7,  // 5: tkd.treatment.v1.UpdateTreatmentRequest.additional_time_requirement:type_name -> google.protobuf.Duration
+	8,  // 6: tkd.treatment.v1.UpdateTreatmentRequest.update_mask:type_name -> google.protobuf.FieldMask
+	9,  // 7: tkd.treatment.v1.ListTreatmentsResponse.SpeciesEntry.value:type_name -> tkd.treatment.v1.Species
+	1,  // 8: tkd.treatment.v1.TreatmentService.GetTreatment:input_type -> tkd.treatment.v1.GetTreatmentRequest
+	2,  // 9: tkd.treatment.v1.TreatmentService.ListTreatments:input_type -> tkd.treatment.v1.ListTreatmentsRequest
+	0,  // 10: tkd.treatment.v1.TreatmentService.CreateTreatment:input_type -> tkd.treatment.v1.Treatment
+	4,  // 11: tkd.treatment.v1.TreatmentService.UpdateTreatment:input_type -> tkd.treatment.v1.UpdateTreatmentRequest
+	5,  // 12: tkd.treatment.v1.TreatmentService.DeleteTreatment:input_type -> tkd.treatment.v1.DeleteTreatmentRequest
+	0,  // 13: tkd.treatment.v1.TreatmentService.GetTreatment:output_type -> tkd.treatment.v1.Treatment
+	3,  // 14: tkd.treatment.v1.TreatmentService.ListTreatments:output_type -> tkd.treatment.v1.ListTreatmentsResponse
+	0,  // 15: tkd.treatment.v1.TreatmentService.CreateTreatment:output_type -> tkd.treatment.v1.Treatment
+	0,  // 16: tkd.treatment.v1.TreatmentService.UpdateTreatment:output_type -> tkd.treatment.v1.Treatment
+	10, // 17: tkd.treatment.v1.TreatmentService.DeleteTreatment:output_type -> google.protobuf.Empty
+	13, // [13:18] is the sub-list for method output_type
+	8,  // [8:13] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
-func init() { file_tkd_booking_v1_treatment_proto_init() }
-func file_tkd_booking_v1_treatment_proto_init() {
-	if File_tkd_booking_v1_treatment_proto != nil {
+func init() { file_tkd_treatment_v1_treatment_proto_init() }
+func file_tkd_treatment_v1_treatment_proto_init() {
+	if File_tkd_treatment_v1_treatment_proto != nil {
 		return
 	}
-	file_tkd_booking_v1_species_proto_init()
+	file_tkd_treatment_v1_species_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_booking_v1_treatment_proto_rawDesc), len(file_tkd_booking_v1_treatment_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_treatment_v1_treatment_proto_rawDesc), len(file_tkd_treatment_v1_treatment_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_tkd_booking_v1_treatment_proto_goTypes,
-		DependencyIndexes: file_tkd_booking_v1_treatment_proto_depIdxs,
-		MessageInfos:      file_tkd_booking_v1_treatment_proto_msgTypes,
+		GoTypes:           file_tkd_treatment_v1_treatment_proto_goTypes,
+		DependencyIndexes: file_tkd_treatment_v1_treatment_proto_depIdxs,
+		MessageInfos:      file_tkd_treatment_v1_treatment_proto_msgTypes,
 	}.Build()
-	File_tkd_booking_v1_treatment_proto = out.File
-	file_tkd_booking_v1_treatment_proto_goTypes = nil
-	file_tkd_booking_v1_treatment_proto_depIdxs = nil
+	File_tkd_treatment_v1_treatment_proto = out.File
+	file_tkd_treatment_v1_treatment_proto_goTypes = nil
+	file_tkd_treatment_v1_treatment_proto_depIdxs = nil
 }

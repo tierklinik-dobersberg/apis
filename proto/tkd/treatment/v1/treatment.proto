@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package tkd.booking.v1;
+package tkd.treatment.v1;
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "buf/validate/validate.proto";
-import "tkd/booking/v1/species.proto";
+import "tkd/treatment/v1/species.proto";
 
 // Treatment describes an available treatment that can be booked using 
 // the self-booking service.
@@ -15,7 +15,7 @@ import "tkd/booking/v1/species.proto";
 // should last.
 // The final duration for the appointment is calculated by using the
 // highest initial_time_requirement of all treatments and adding the
-// additional_time_requirement for each treatment.
+// additional_time_requirement for each other treatment.
 message Treatment {
     // Name is the unique name of the treatment.
     string name = 1;
@@ -29,6 +29,7 @@ message Treatment {
     string help_text = 3;
 
     // Species is a list of animal species this treatment applies to.
+    // If empty, the treatment applies to all species.
     repeated string species = 4;
 
     // InitialTimeRequirement is the minumum duration that a self-booked
@@ -50,11 +51,19 @@ message Treatment {
 
     // PreferredEmployees is a list of user IDs that should - preffered - be booked
     // for handling an self-booked appointment with this treatment.
-    map<string, int32> preferred_employees = 8;
+    repeated string preferred_employees = 8;
+
+    repeated string match_event_text = 9;
+
+    // AllowSelfBooking should be set to true if this treatment is available for public
+    // (self-service) booking.
+    bool allow_self_booking = 10;
 }
 
 // TreatmentService allows to list, create, update and delete bookable treatments.
 service TreatmentService {
+    rpc GetTreatment(GetTreatmentRequest) returns (Treatment) {}
+
     // ListTreatments returns a list of available treatments, optionally filtered by
     // species.
     rpc ListTreatments(ListTreatmentsRequest) returns (ListTreatmentsResponse) {}
@@ -69,6 +78,10 @@ service TreatmentService {
     rpc DeleteTreatment(DeleteTreatmentRequest) returns (google.protobuf.Empty) {}
 }
 
+message GetTreatmentRequest {
+    string name = 1;
+}
+
 // ListTreatmentsRequest is the request message type for the ListTreatments RPC
 // and allowed to optionally filter by species and display_name.
 message ListTreatmentsRequest {
@@ -79,7 +92,7 @@ message ListTreatmentsRequest {
     string species = 1;
 
     // DisplayNameSearch can be set to a string to only return treatments
-    // where the display name matches the given search text.
+    // where the display name or the match_event_text fields match.
     string display_name_search = 2;
 }
 
@@ -90,7 +103,7 @@ message ListTreatmentsResponse {
 
     // Species is a lookup map for all species that are part of the treatments
     // result.
-    map<string, tkd.booking.v1.Species> species = 2;
+    map<string, tkd.treatment.v1.Species> species = 2;
 }
 
 // UpdateTreatmentRequest is the request message type for the UpdateTreatment RPC
@@ -112,10 +125,9 @@ message UpdateTreatmentRequest {
     string help_text = 4;
 
     // AddSpecies is a list of species name that should be added to the treatment.
-    repeated string add_species = 5;
+    repeated string species = 5;
 
-    // RemoveSpecies is a list of species names that should be removed from the treatment.
-    repeated string remove_species = 6;
+    bool allow_self_booking = 6;
 
     // InitialTimeRequirement is the minumum duration that a self-booked
     // appointment with this treatment should last. If multiple treatments
@@ -127,10 +139,11 @@ message UpdateTreatmentRequest {
     // appointment when more than one treatment is booked.
     google.protobuf.Duration additional_time_requirement = 8;
 
-    repeated string add_allowed_employees = 9;
-    repeated string remove_allowed_employees = 10;
+    repeated string allowed_employees = 9;
 
-    map<string, int32> update_preferred_employees = 11;
+    repeated string match_event_text = 10;
+
+    repeated string preferred_employees = 11;
 
     // UpdateMask specifies which field names of the UpdateTreatmentRequest message
     // should be considered.

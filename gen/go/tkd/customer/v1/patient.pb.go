@@ -9,6 +9,7 @@ package customerv1
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
+	v11 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/treatment/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -128,8 +129,11 @@ type Patient struct {
 	LastUpdated *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=last_updated,json=lastUpdated,proto3" json:"last_updated,omitempty"`
 	// LastUpdatedBy holds the ID of the user that modified the patient record last.
 	LastUpdatedBy string `protobuf:"bytes,13,opt,name=last_updated_by,json=lastUpdatedBy,proto3" json:"last_updated_by,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// AssignedSpeciesName is the name of the species as stored
+	// in tkd.treatment.v1.SpeciesService
+	AssignedSpeciesName string `protobuf:"bytes,19,opt,name=assigned_species_name,json=assignedSpeciesName,proto3" json:"assigned_species_name,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Patient) Reset() {
@@ -288,6 +292,13 @@ func (x *Patient) GetLastUpdatedBy() string {
 	return ""
 }
 
+func (x *Patient) GetAssignedSpeciesName() string {
+	if x != nil {
+		return x.AssignedSpeciesName
+	}
+	return ""
+}
+
 type QueryPatientsRequests struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
@@ -335,6 +346,7 @@ func (x *QueryPatientsRequests) GetQuery() string {
 type QueryPatientsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Patients      []*Patient             `protobuf:"bytes,1,rep,name=patients,proto3" json:"patients,omitempty"`
+	Species       []*v11.Species         `protobuf:"bytes,2,rep,name=species,proto3" json:"species,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -372,6 +384,13 @@ func (*QueryPatientsResponse) Descriptor() ([]byte, []int) {
 func (x *QueryPatientsResponse) GetPatients() []*Patient {
 	if x != nil {
 		return x.Patients
+	}
+	return nil
+}
+
+func (x *QueryPatientsResponse) GetSpecies() []*v11.Species {
+	if x != nil {
+		return x.Species
 	}
 	return nil
 }
@@ -423,6 +442,7 @@ func (x *GetPatientsByCustomerRequest) GetCustomerId() string {
 type GetPatientsByCustomerResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Patients      []*Patient             `protobuf:"bytes,1,rep,name=patients,proto3" json:"patients,omitempty"`
+	Species       []*v11.Species         `protobuf:"bytes,2,rep,name=species,proto3" json:"species,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -460,6 +480,13 @@ func (*GetPatientsByCustomerResponse) Descriptor() ([]byte, []int) {
 func (x *GetPatientsByCustomerResponse) GetPatients() []*Patient {
 	if x != nil {
 		return x.Patients
+	}
+	return nil
+}
+
+func (x *GetPatientsByCustomerResponse) GetSpecies() []*v11.Species {
+	if x != nil {
+		return x.Species
 	}
 	return nil
 }
@@ -856,6 +883,7 @@ func (x *GetAnamnesisRequest) GetReadMask() *fieldmaskpb.FieldMask {
 type GetAnamnesisResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Patient       *Patient               `protobuf:"bytes,1,opt,name=patient,proto3" json:"patient,omitempty"`
+	Species       *v11.Species           `protobuf:"bytes,3,opt,name=species,proto3" json:"species,omitempty"`
 	Anamnesis     []*Anamnesis           `protobuf:"bytes,2,rep,name=anamnesis,proto3" json:"anamnesis,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -898,6 +926,13 @@ func (x *GetAnamnesisResponse) GetPatient() *Patient {
 	return nil
 }
 
+func (x *GetAnamnesisResponse) GetSpecies() *v11.Species {
+	if x != nil {
+		return x.Species
+	}
+	return nil
+}
+
 func (x *GetAnamnesisResponse) GetAnamnesis() []*Anamnesis {
 	if x != nil {
 		return x.Anamnesis
@@ -909,7 +944,7 @@ var File_tkd_customer_v1_patient_proto protoreflect.FileDescriptor
 
 const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\n" +
-	"\x1dtkd/customer/v1/patient.proto\x12\x0ftkd.customer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1etkd/common/v1/time_range.proto\x1a\x1etkd/common/v1/descriptor.proto\x1a\x1bbuf/validate/validate.proto\"\xc4\x05\n" +
+	"\x1dtkd/customer/v1/patient.proto\x12\x0ftkd.customer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1etkd/common/v1/time_range.proto\x1a\x1etkd/common/v1/descriptor.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/treatment/v1/species.proto\"\xf8\x05\n" +
 	"\aPatient\x12\x1f\n" +
 	"\vcustomer_id\x18\x01 \x01(\tR\n" +
 	"customerId\x12!\n" +
@@ -934,16 +969,19 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"\n" +
 	"first_seen\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tfirstSeen\x12=\n" +
 	"\flast_updated\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\vlastUpdated\x12&\n" +
-	"\x0flast_updated_by\x18\r \x01(\tR\rlastUpdatedBy\"-\n" +
+	"\x0flast_updated_by\x18\r \x01(\tR\rlastUpdatedBy\x122\n" +
+	"\x15assigned_species_name\x18\x13 \x01(\tR\x13assignedSpeciesName\"-\n" +
 	"\x15QueryPatientsRequests\x12\x14\n" +
-	"\x05query\x18\x01 \x01(\tR\x05query\"M\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\"\x82\x01\n" +
 	"\x15QueryPatientsResponse\x124\n" +
-	"\bpatients\x18\x01 \x03(\v2\x18.tkd.customer.v1.PatientR\bpatients\"H\n" +
+	"\bpatients\x18\x01 \x03(\v2\x18.tkd.customer.v1.PatientR\bpatients\x123\n" +
+	"\aspecies\x18\x02 \x03(\v2\x19.tkd.treatment.v1.SpeciesR\aspecies\"H\n" +
 	"\x1cGetPatientsByCustomerRequest\x12(\n" +
 	"\vcustomer_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
-	"customerId\"U\n" +
+	"customerId\"\x8a\x01\n" +
 	"\x1dGetPatientsByCustomerResponse\x124\n" +
-	"\bpatients\x18\x01 \x03(\v2\x18.tkd.customer.v1.PatientR\bpatients\"v\n" +
+	"\bpatients\x18\x01 \x03(\v2\x18.tkd.customer.v1.PatientR\bpatients\x123\n" +
+	"\aspecies\x18\x02 \x03(\v2\x19.tkd.treatment.v1.SpeciesR\aspecies\"v\n" +
 	"\x11GetPatientRequest\x12\x1d\n" +
 	"\tanimal_id\x18\x01 \x01(\tH\x00R\banimalId\x122\n" +
 	"\x14additional_unique_id\x18\x02 \x01(\tH\x00R\x12additionalUniqueIdB\x0e\n" +
@@ -969,9 +1007,10 @@ const file_tkd_customer_v1_patient_proto_rawDesc = "" +
 	"patient_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\tpatientId\x127\n" +
 	"\n" +
 	"time_range\x18\x02 \x01(\v2\x18.tkd.common.v1.TimeRangeR\ttimeRange\x127\n" +
-	"\tread_mask\x18\x03 \x01(\v2\x1a.google.protobuf.FieldMaskR\breadMask\"\x84\x01\n" +
+	"\tread_mask\x18\x03 \x01(\v2\x1a.google.protobuf.FieldMaskR\breadMask\"\xb9\x01\n" +
 	"\x14GetAnamnesisResponse\x122\n" +
-	"\apatient\x18\x01 \x01(\v2\x18.tkd.customer.v1.PatientR\apatient\x128\n" +
+	"\apatient\x18\x01 \x01(\v2\x18.tkd.customer.v1.PatientR\apatient\x123\n" +
+	"\aspecies\x18\x03 \x01(\v2\x19.tkd.treatment.v1.SpeciesR\aspecies\x128\n" +
 	"\tanamnesis\x18\x02 \x03(\v2\x1a.tkd.customer.v1.AnamnesisR\tanamnesis*\xab\x01\n" +
 	"\rPatientGender\x12\x1e\n" +
 	"\x1aPATIENT_GENDER_UNSPECIFIED\x10\x00\x12\x17\n" +
@@ -1018,9 +1057,10 @@ var file_tkd_customer_v1_patient_proto_goTypes = []any{
 	(*v1.Date)(nil),                       // 12: tkd.common.v1.Date
 	(*structpb.Struct)(nil),               // 13: google.protobuf.Struct
 	(*timestamppb.Timestamp)(nil),         // 14: google.protobuf.Timestamp
-	(*v1.TimeRange)(nil),                  // 15: tkd.common.v1.TimeRange
-	(*fieldmaskpb.FieldMask)(nil),         // 16: google.protobuf.FieldMask
-	(*emptypb.Empty)(nil),                 // 17: google.protobuf.Empty
+	(*v11.Species)(nil),                   // 15: tkd.treatment.v1.Species
+	(*v1.TimeRange)(nil),                  // 16: tkd.common.v1.TimeRange
+	(*fieldmaskpb.FieldMask)(nil),         // 17: google.protobuf.FieldMask
+	(*emptypb.Empty)(nil),                 // 18: google.protobuf.Empty
 }
 var file_tkd_customer_v1_patient_proto_depIdxs = []int32{
 	12, // 0: tkd.customer.v1.Patient.birthday:type_name -> tkd.common.v1.Date
@@ -1029,29 +1069,32 @@ var file_tkd_customer_v1_patient_proto_depIdxs = []int32{
 	14, // 3: tkd.customer.v1.Patient.first_seen:type_name -> google.protobuf.Timestamp
 	14, // 4: tkd.customer.v1.Patient.last_updated:type_name -> google.protobuf.Timestamp
 	1,  // 5: tkd.customer.v1.QueryPatientsResponse.patients:type_name -> tkd.customer.v1.Patient
-	1,  // 6: tkd.customer.v1.GetPatientsByCustomerResponse.patients:type_name -> tkd.customer.v1.Patient
-	14, // 7: tkd.customer.v1.Anamnesis.time:type_name -> google.protobuf.Timestamp
-	8,  // 8: tkd.customer.v1.AddAnamnesisRequest.patient_import_reference:type_name -> tkd.customer.v1.PatientImportReference
-	7,  // 9: tkd.customer.v1.AddAnamnesisRequest.anamnesis:type_name -> tkd.customer.v1.Anamnesis
-	15, // 10: tkd.customer.v1.GetAnamnesisRequest.time_range:type_name -> tkd.common.v1.TimeRange
-	16, // 11: tkd.customer.v1.GetAnamnesisRequest.read_mask:type_name -> google.protobuf.FieldMask
-	1,  // 12: tkd.customer.v1.GetAnamnesisResponse.patient:type_name -> tkd.customer.v1.Patient
-	7,  // 13: tkd.customer.v1.GetAnamnesisResponse.anamnesis:type_name -> tkd.customer.v1.Anamnesis
-	2,  // 14: tkd.customer.v1.PatientService.QueryPatients:input_type -> tkd.customer.v1.QueryPatientsRequests
-	4,  // 15: tkd.customer.v1.PatientService.GetPatientsByCustomer:input_type -> tkd.customer.v1.GetPatientsByCustomerRequest
-	6,  // 16: tkd.customer.v1.PatientService.GetPatient:input_type -> tkd.customer.v1.GetPatientRequest
-	9,  // 17: tkd.customer.v1.PatientService.AddAnamnesis:input_type -> tkd.customer.v1.AddAnamnesisRequest
-	10, // 18: tkd.customer.v1.PatientService.GetAnamnesis:input_type -> tkd.customer.v1.GetAnamnesisRequest
-	3,  // 19: tkd.customer.v1.PatientService.QueryPatients:output_type -> tkd.customer.v1.QueryPatientsResponse
-	5,  // 20: tkd.customer.v1.PatientService.GetPatientsByCustomer:output_type -> tkd.customer.v1.GetPatientsByCustomerResponse
-	1,  // 21: tkd.customer.v1.PatientService.GetPatient:output_type -> tkd.customer.v1.Patient
-	17, // 22: tkd.customer.v1.PatientService.AddAnamnesis:output_type -> google.protobuf.Empty
-	11, // 23: tkd.customer.v1.PatientService.GetAnamnesis:output_type -> tkd.customer.v1.GetAnamnesisResponse
-	19, // [19:24] is the sub-list for method output_type
-	14, // [14:19] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	15, // 6: tkd.customer.v1.QueryPatientsResponse.species:type_name -> tkd.treatment.v1.Species
+	1,  // 7: tkd.customer.v1.GetPatientsByCustomerResponse.patients:type_name -> tkd.customer.v1.Patient
+	15, // 8: tkd.customer.v1.GetPatientsByCustomerResponse.species:type_name -> tkd.treatment.v1.Species
+	14, // 9: tkd.customer.v1.Anamnesis.time:type_name -> google.protobuf.Timestamp
+	8,  // 10: tkd.customer.v1.AddAnamnesisRequest.patient_import_reference:type_name -> tkd.customer.v1.PatientImportReference
+	7,  // 11: tkd.customer.v1.AddAnamnesisRequest.anamnesis:type_name -> tkd.customer.v1.Anamnesis
+	16, // 12: tkd.customer.v1.GetAnamnesisRequest.time_range:type_name -> tkd.common.v1.TimeRange
+	17, // 13: tkd.customer.v1.GetAnamnesisRequest.read_mask:type_name -> google.protobuf.FieldMask
+	1,  // 14: tkd.customer.v1.GetAnamnesisResponse.patient:type_name -> tkd.customer.v1.Patient
+	15, // 15: tkd.customer.v1.GetAnamnesisResponse.species:type_name -> tkd.treatment.v1.Species
+	7,  // 16: tkd.customer.v1.GetAnamnesisResponse.anamnesis:type_name -> tkd.customer.v1.Anamnesis
+	2,  // 17: tkd.customer.v1.PatientService.QueryPatients:input_type -> tkd.customer.v1.QueryPatientsRequests
+	4,  // 18: tkd.customer.v1.PatientService.GetPatientsByCustomer:input_type -> tkd.customer.v1.GetPatientsByCustomerRequest
+	6,  // 19: tkd.customer.v1.PatientService.GetPatient:input_type -> tkd.customer.v1.GetPatientRequest
+	9,  // 20: tkd.customer.v1.PatientService.AddAnamnesis:input_type -> tkd.customer.v1.AddAnamnesisRequest
+	10, // 21: tkd.customer.v1.PatientService.GetAnamnesis:input_type -> tkd.customer.v1.GetAnamnesisRequest
+	3,  // 22: tkd.customer.v1.PatientService.QueryPatients:output_type -> tkd.customer.v1.QueryPatientsResponse
+	5,  // 23: tkd.customer.v1.PatientService.GetPatientsByCustomer:output_type -> tkd.customer.v1.GetPatientsByCustomerResponse
+	1,  // 24: tkd.customer.v1.PatientService.GetPatient:output_type -> tkd.customer.v1.Patient
+	18, // 25: tkd.customer.v1.PatientService.AddAnamnesis:output_type -> google.protobuf.Empty
+	11, // 26: tkd.customer.v1.PatientService.GetAnamnesis:output_type -> tkd.customer.v1.GetAnamnesisResponse
+	22, // [22:27] is the sub-list for method output_type
+	17, // [17:22] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_tkd_customer_v1_patient_proto_init() }

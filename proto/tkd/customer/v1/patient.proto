@@ -10,6 +10,7 @@ import "tkd/common/v1/date.proto";
 import "tkd/common/v1/time_range.proto";
 import "tkd/common/v1/descriptor.proto";
 import "buf/validate/validate.proto";
+import "tkd/treatment/v1/species.proto";
 
 enum PatientGender {
     PATIENT_GENDER_UNSPECIFIED = 0;
@@ -81,6 +82,10 @@ message Patient {
 
     // LastUpdatedBy holds the ID of the user that modified the patient record last.
     string last_updated_by = 13;
+
+    // AssignedSpeciesName is the name of the species as stored
+    // in tkd.treatment.v1.SpeciesService
+    string assigned_species_name = 19;
 }
 
 service PatientService {
@@ -121,6 +126,7 @@ message QueryPatientsRequests {
 
 message QueryPatientsResponse {
     repeated Patient patients = 1;
+    repeated tkd.treatment.v1.Species species = 2;
 }
 
 message GetPatientsByCustomerRequest {
@@ -131,6 +137,7 @@ message GetPatientsByCustomerRequest {
 
 message GetPatientsByCustomerResponse {
     repeated Patient patients = 1;
+    repeated tkd.treatment.v1.Species species = 2;
 }
 
 message GetPatientRequest {
@@ -198,6 +205,7 @@ message GetAnamnesisRequest {
 
 message GetAnamnesisResponse {
     Patient patient = 1;
+    tkd.treatment.v1.Species species = 3;
 
     repeated Anamnesis anamnesis = 2;
 }
