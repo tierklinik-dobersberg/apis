@@ -77,7 +77,7 @@ func (dt *discoveryTransport) RoundTrip(req *http.Request) (*http.Response, erro
 			r := req.Clone(req.Context())
 			r.URL.Host = res[0].Address
 
-			slog.Info("switching request host to discovered address", "original", req.Host, "discovered", r.Host)
+			slog.Info("switching request host to discovered address", "original", req.URL.Host, "discovered", r.URL.Host)
 
 			req = r
 		} else {
