@@ -8,6 +8,7 @@ package treatmentv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -459,7 +460,7 @@ var File_tkd_treatment_v1_species_proto protoreflect.FileDescriptor
 
 const file_tkd_treatment_v1_species_proto_rawDesc = "" +
 	"\n" +
-	"\x1etkd/treatment/v1/species.proto\x12\x10tkd.treatment.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\"J\n" +
+	"\x1etkd/treatment/v1/species.proto\x12\x10tkd.treatment.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/common/v1/descriptor.proto\"J\n" +
 	"\x04Icon\x12\x12\n" +
 	"\x04data\x18\x01 \x01(\fR\x04data\x12.\n" +
 	"\x04type\x18\x02 \x01(\x0e2\x1a.tkd.treatment.v1.IconTypeR\x04type\"\xc9\x01\n" +
@@ -487,13 +488,13 @@ const file_tkd_treatment_v1_species_proto_rawDesc = "" +
 	"\x15ICON_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11ICON_TYPE_UNICODE\x10\x01\x12\x11\n" +
 	"\rICON_TYPE_URL\x10\x02\x12\x18\n" +
-	"\x14ICON_TYPE_IMAGE_WEBP\x10\x032\xc2\x03\n" +
-	"\x0eSpeciesService\x12G\n" +
-	"\rCreateSpecies\x12\x19.tkd.treatment.v1.Species\x1a\x19.tkd.treatment.v1.Species\"\x00\x12\\\n" +
-	"\vListSpecies\x12$.tkd.treatment.v1.ListSpeciesRequest\x1a%.tkd.treatment.v1.ListSpeciesResponse\"\x00\x12T\n" +
-	"\rUpdateSpecies\x12&.tkd.treatment.v1.UpdateSpeciesRequest\x1a\x19.tkd.treatment.v1.Species\"\x00\x12Q\n" +
-	"\rDeleteSpecies\x12&.tkd.treatment.v1.DeleteSpeciesRequest\x1a\x16.google.protobuf.Empty\"\x00\x12`\n" +
-	"\rDetectSpecies\x12&.tkd.treatment.v1.DetectSpeciesRequest\x1a%.tkd.treatment.v1.ListSpeciesResponse\"\x00B\xd1\x01\n" +
+	"\x14ICON_TYPE_IMAGE_WEBP\x10\x032\xdb\x03\n" +
+	"\x0eSpeciesService\x12L\n" +
+	"\rCreateSpecies\x12\x19.tkd.treatment.v1.Species\x1a\x19.tkd.treatment.v1.Species\"\x05\xb2~\x02\b\x01\x12a\n" +
+	"\vListSpecies\x12$.tkd.treatment.v1.ListSpeciesRequest\x1a%.tkd.treatment.v1.ListSpeciesResponse\"\x05\xb2~\x02\b\x01\x12Y\n" +
+	"\rUpdateSpecies\x12&.tkd.treatment.v1.UpdateSpeciesRequest\x1a\x19.tkd.treatment.v1.Species\"\x05\xb2~\x02\b\x01\x12V\n" +
+	"\rDeleteSpecies\x12&.tkd.treatment.v1.DeleteSpeciesRequest\x1a\x16.google.protobuf.Empty\"\x05\xb2~\x02\b\x01\x12e\n" +
+	"\rDetectSpecies\x12&.tkd.treatment.v1.DetectSpeciesRequest\x1a%.tkd.treatment.v1.ListSpeciesResponse\"\x05\xb2~\x02\b\x01B\xd1\x01\n" +
 	"\x14com.tkd.treatment.v1B\fSpeciesProtoP\x01ZIgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/treatment/v1;treatmentv1\xa2\x02\x03TTX\xaa\x02\x10Tkd.Treatment.V1\xca\x02\x10Tkd\\Treatment\\V1\xe2\x02\x1cTkd\\Treatment\\V1\\GPBMetadata\xea\x02\x12Tkd::Treatment::V1b\x06proto3"
 
 var (

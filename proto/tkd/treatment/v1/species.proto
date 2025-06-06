@@ -5,6 +5,7 @@ package tkd.treatment.v1;
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "buf/validate/validate.proto";
+import "tkd/common/v1/descriptor.proto";
 
 enum IconType {
     ICON_TYPE_UNSPECIFIED = 0;
@@ -47,11 +48,31 @@ message Species {
 }
 
 service SpeciesService {
-    rpc CreateSpecies(Species) returns (Species) {}
-    rpc ListSpecies(ListSpeciesRequest) returns (ListSpeciesResponse) {}
-    rpc UpdateSpecies(UpdateSpeciesRequest) returns (Species) {}
-    rpc DeleteSpecies(DeleteSpeciesRequest) returns (google.protobuf.Empty) {}
-    rpc DetectSpecies(DetectSpeciesRequest) returns (ListSpeciesResponse) {}
+    rpc CreateSpecies(Species) returns (Species) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+    rpc ListSpecies(ListSpeciesRequest) returns (ListSpeciesResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+    rpc UpdateSpecies(UpdateSpeciesRequest) returns (Species) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+    rpc DeleteSpecies(DeleteSpeciesRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+    rpc DetectSpecies(DetectSpeciesRequest) returns (ListSpeciesResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message DetectSpeciesRequest {

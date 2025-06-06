@@ -8,6 +8,7 @@ package treatmentv1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	_ "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -532,10 +533,10 @@ var File_tkd_treatment_v1_treatment_proto protoreflect.FileDescriptor
 
 const file_tkd_treatment_v1_treatment_proto_rawDesc = "" +
 	"\n" +
-	" tkd/treatment/v1/treatment.proto\x12\x10tkd.treatment.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/treatment/v1/species.proto\"\xdf\x03\n" +
-	"\tTreatment\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x1b\n" +
+	" tkd/treatment/v1/treatment.proto\x12\x10tkd.treatment.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/treatment/v1/species.proto\x1a\x1etkd/common/v1/descriptor.proto\"\xf1\x03\n" +
+	"\tTreatment\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name\x12*\n" +
+	"\fdisplay_name\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\vdisplayName\x12\x1b\n" +
 	"\thelp_text\x18\x03 \x01(\tR\bhelpText\x12\x18\n" +
 	"\aspecies\x18\x04 \x03(\tR\aspecies\x12S\n" +
 	"\x18initial_time_requirement\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\x16initialTimeRequirement\x12Y\n" +
@@ -574,13 +575,13 @@ const file_tkd_treatment_v1_treatment_proto_rawDesc = "" +
 	"\vupdate_mask\x18\x14 \x01(\v2\x1a.google.protobuf.FieldMaskB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
 	"updateMask\"5\n" +
 	"\x16DeleteTreatmentRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name2\xd1\x03\n" +
-	"\x10TreatmentService\x12T\n" +
-	"\fGetTreatment\x12%.tkd.treatment.v1.GetTreatmentRequest\x1a\x1b.tkd.treatment.v1.Treatment\"\x00\x12e\n" +
-	"\x0eListTreatments\x12'.tkd.treatment.v1.ListTreatmentsRequest\x1a(.tkd.treatment.v1.ListTreatmentsResponse\"\x00\x12M\n" +
-	"\x0fCreateTreatment\x12\x1b.tkd.treatment.v1.Treatment\x1a\x1b.tkd.treatment.v1.Treatment\"\x00\x12Z\n" +
-	"\x0fUpdateTreatment\x12(.tkd.treatment.v1.UpdateTreatmentRequest\x1a\x1b.tkd.treatment.v1.Treatment\"\x00\x12U\n" +
-	"\x0fDeleteTreatment\x12(.tkd.treatment.v1.DeleteTreatmentRequest\x1a\x16.google.protobuf.Empty\"\x00B\xd3\x01\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name2\xea\x03\n" +
+	"\x10TreatmentService\x12Y\n" +
+	"\fGetTreatment\x12%.tkd.treatment.v1.GetTreatmentRequest\x1a\x1b.tkd.treatment.v1.Treatment\"\x05\xb2~\x02\b\x01\x12j\n" +
+	"\x0eListTreatments\x12'.tkd.treatment.v1.ListTreatmentsRequest\x1a(.tkd.treatment.v1.ListTreatmentsResponse\"\x05\xb2~\x02\b\x01\x12R\n" +
+	"\x0fCreateTreatment\x12\x1b.tkd.treatment.v1.Treatment\x1a\x1b.tkd.treatment.v1.Treatment\"\x05\xb2~\x02\b\x01\x12_\n" +
+	"\x0fUpdateTreatment\x12(.tkd.treatment.v1.UpdateTreatmentRequest\x1a\x1b.tkd.treatment.v1.Treatment\"\x05\xb2~\x02\b\x01\x12Z\n" +
+	"\x0fDeleteTreatment\x12(.tkd.treatment.v1.DeleteTreatmentRequest\x1a\x16.google.protobuf.Empty\"\x05\xb2~\x02\b\x01B\xd3\x01\n" +
 	"\x14com.tkd.treatment.v1B\x0eTreatmentProtoP\x01ZIgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/treatment/v1;treatmentv1\xa2\x02\x03TTX\xaa\x02\x10Tkd.Treatment.V1\xca\x02\x10Tkd\\Treatment\\V1\xe2\x02\x1cTkd\\Treatment\\V1\\GPBMetadata\xea\x02\x12Tkd::Treatment::V1b\x06proto3"
 
 var (

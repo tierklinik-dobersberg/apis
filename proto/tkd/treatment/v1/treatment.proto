@@ -7,6 +7,7 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "buf/validate/validate.proto";
 import "tkd/treatment/v1/species.proto";
+import "tkd/common/v1/descriptor.proto";
 
 // Treatment describes an available treatment that can be booked using 
 // the self-booking service.
@@ -18,11 +19,15 @@ import "tkd/treatment/v1/species.proto";
 // additional_time_requirement for each other treatment.
 message Treatment {
     // Name is the unique name of the treatment.
-    string name = 1;
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
 
     // DisplayName is human-readable name of the treatment to be displayed
     // in a the self-booking user interface.
-    string display_name = 2;
+    string display_name = 2 [
+        (buf.validate.field).required = true
+    ];
 
     // HelpText holds an additional help-text to be displayed in the
     // self-booking user interface.
@@ -62,20 +67,40 @@ message Treatment {
 
 // TreatmentService allows to list, create, update and delete bookable treatments.
 service TreatmentService {
-    rpc GetTreatment(GetTreatmentRequest) returns (Treatment) {}
+    rpc GetTreatment(GetTreatmentRequest) returns (Treatment) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 
     // ListTreatments returns a list of available treatments, optionally filtered by
     // species.
-    rpc ListTreatments(ListTreatmentsRequest) returns (ListTreatmentsResponse) {}
+    rpc ListTreatments(ListTreatmentsRequest) returns (ListTreatmentsResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 
     // CreateTreatment creates a new treatment.
-    rpc CreateTreatment(Treatment) returns (Treatment) {}
+    rpc CreateTreatment(Treatment) returns (Treatment) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 
     // UpdateTreatment updates an existing treatment.
-    rpc UpdateTreatment(UpdateTreatmentRequest) returns (Treatment) {}
+    rpc UpdateTreatment(UpdateTreatmentRequest) returns (Treatment) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 
     // DeleteTreatment deletes an existing treatment.
-    rpc DeleteTreatment(DeleteTreatmentRequest) returns (google.protobuf.Empty) {}
+    rpc DeleteTreatment(DeleteTreatmentRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message GetTreatmentRequest {
