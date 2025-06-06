@@ -105,7 +105,7 @@ var (
 
 	// tkd/treatment/v1
 	TreatmentService = Create(TreatmentV1ServiceScope, treatmentv1connect.NewTreatmentServiceClient)
-	SpeciesService   = Create(TreatmentV1ServiceScope, treatmentv1connect.NewTreatmentServiceClient)
+	SpeciesService   = Create(TreatmentV1ServiceScope, treatmentv1connect.NewSpeciesServiceClient)
 )
 
 func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T], opts ...connect.ClientOption) (T, error) {
