@@ -18,7 +18,7 @@ func (NoDatabase) ConfigureDatabase(context.Context) (any, error) {
 }
 
 type MongoConfig struct {
-	URL      string `env:"URL, required"`
+	URL      string `env:"MONGO_URL, required"`
 	Database string `env:"DATABASE, required"`
 }
 
