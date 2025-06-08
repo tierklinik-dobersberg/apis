@@ -18,12 +18,12 @@ func (NoDatabase) ConfigureDatabase(context.Context) (any, error) {
 }
 
 type MongoConfig struct {
-	URL      string `env:"MONGO_URL, required"`
+	MongoURL string `env:"MONGO_URL, required"`
 	Database string `env:"DATABASE, required"`
 }
 
 func (mc MongoConfig) ConfigureDatabase(ctx context.Context) (*mongo.Database, error) {
-	cli, err := mongo.Connect(ctx, options.Client().ApplyURI(mc.URL))
+	cli, err := mongo.Connect(ctx, options.Client().ApplyURI(mc.MongoURL))
 	if err != nil {
 		return nil, err
 	}
