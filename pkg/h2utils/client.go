@@ -62,8 +62,10 @@ func WithTransportDiscovery(disc discovery.Discoverer, t http.RoundTripper) http
 	}
 
 	return &discoveryTransport{
-		disc: disc,
-		t:    t,
+		disc:          disc,
+		t:             t,
+		cachedLookups: make(map[string]string),
+		cacheTime:     make(map[string]time.Time),
 	}
 }
 
