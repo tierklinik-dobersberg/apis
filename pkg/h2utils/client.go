@@ -105,7 +105,7 @@ func (dt *discoveryTransport) lookup(host string) (string, error) {
 		dt.cachedLookups[host] = i.Address
 		dt.cacheTime[host] = time.Now()
 
-		return i, nil
+		return i.Address, nil
 	})
 
 	if err != nil {
