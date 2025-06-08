@@ -9,6 +9,18 @@ import (
 	"time"
 )
 
+const (
+	MetaKeyTransport = "transport"
+	MetaKeyHTTPPath  = "http:path"
+)
+
+const (
+	TransportHTTP              = "http" // default if unset
+	TransportH2C               = "h2c"
+	TransportHTTPS             = "https"
+	TransportHTTPSWithInsecure = "https+insecure"
+)
+
 type ServiceInstance struct {
 	// Name is the name of the service
 	Name string

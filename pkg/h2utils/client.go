@@ -1,14 +1,20 @@
 package h2utils
 
 import (
+	"context"
 	"crypto/tls"
+	"fmt"
 	"log/slog"
+	"math/rand/v2"
 	"net"
 	"net/http"
+	"sync"
+	"time"
 
 	"github.com/tierklinik-dobersberg/apis/pkg/discovery"
 	"github.com/tierklinik-dobersberg/apis/pkg/discovery/consuldiscover"
 	"golang.org/x/net/http2"
+	"golang.org/x/sync/singleflight"
 )
 
 func NewInsecureHttp2Client() *http.Client {
@@ -65,6 +71,63 @@ type discoveryTransport struct {
 	disc discovery.Discoverer
 
 	t http.RoundTripper
+
+	inFlight singleflight.Group
+
+	l             sync.Mutex
+	cachedLookups map[string]string
+	cacheTime     map[string]time.Time
+}
+
+func (dt *discoveryTransport) lookup(host string) (string, error) {
+	res, ok := dt.getCachedLookup(host)
+	if ok {
+		return res, nil
+	}
+
+	addr, err, _ := dt.inFlight.Do(host, func() (interface{}, error) {
+		svcs, err := dt.disc.Discover(context.Background(), host)
+		if err != nil {
+			return "", err
+		}
+
+		if len(svcs) == 0 {
+			return "", fmt.Errorf("no service instances found")
+		}
+
+		i := svcs[rand.IntN(len(svcs))]
+
+		dt.l.Lock()
+		defer dt.l.Unlock()
+
+		dt.cachedLookups[host] = i.Address
+		dt.cacheTime[host] = time.Now()
+
+		return i, nil
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	return addr.(string), nil
+}
+
+func (dt *discoveryTransport) getCachedLookup(host string) (string, bool) {
+	dt.l.Lock()
+	defer dt.l.Unlock()
+
+	val, ok := dt.cachedLookups[host]
+	if !ok {
+		return "", false
+	}
+
+	t := dt.cacheTime[host]
+	if time.Since(t) > 30*time.Second {
+		return "", false
+	}
+
+	return val, true
 }
 
 func (dt *discoveryTransport) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -72,12 +135,13 @@ func (dt *discoveryTransport) RoundTrip(req *http.Request) (*http.Response, erro
 
 	if dt.disc != nil {
 		// try to discover the service by name
-		res, err := dt.disc.Discover(req.Context(), host)
-		if err == nil && len(res) > 0 {
-			r := req.Clone(req.Context())
-			r.URL.Host = res[0].Address
+		res, err := dt.lookup(host)
 
-			slog.Info("switching request host to discovered address", "original", req.URL.Host, "discovered", r.URL.Host)
+		if err == nil {
+			r := req.Clone(req.Context())
+			r.URL.Host = res
+
+			slog.Debug("switching request host to discovered address", "original", req.URL.Host, "discovered", r.URL.Host)
 
 			req = r
 		} else {
@@ -85,5 +149,14 @@ func (dt *discoveryTransport) RoundTrip(req *http.Request) (*http.Response, erro
 		}
 	}
 
-	return dt.t.RoundTrip(req)
+	response, err := dt.t.RoundTrip(req)
+	if err != nil || response.StatusCode >= 500 {
+		dt.l.Lock()
+		defer dt.l.Unlock()
+
+		delete(dt.cacheTime, host)
+		delete(dt.cachedLookups, host)
+	}
+
+	return response, err
 }
