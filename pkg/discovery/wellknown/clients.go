@@ -87,7 +87,7 @@ func ConfigureClients(opts ConfigureClientOptions) Clients {
 		CustomerService:       customerv1connect.NewCustomerServiceClient(httpClient, opts.url(CustomerV1ServiceScope), opts.GlobalOptions...),
 		CustomerImportService: customerv1connect.NewCustomerImportServiceClient(httpClient, opts.url(CustomerV1ServiceScope), opts.GlobalOptions...),
 		PatientService:        customerv1connect.NewPatientServiceClient(httpClient, opts.url(CustomerV1ServiceScope), opts.GlobalOptions...),
-		EventService:          eventsv1connect.NewEventServiceClient(httpClient, opts.url(EventV1ServiceScropt), opts.GlobalOptions...),
+		EventService:          eventsv1connect.NewEventServiceClient(httpClient, opts.url(EventV1ServiceScope), opts.GlobalOptions...),
 		UserService:           idmv1connect.NewUserServiceClient(httpClient, opts.url(IdmV1ServiceScope), opts.GlobalOptions...),
 		RoleService:           idmv1connect.NewRoleServiceClient(httpClient, opts.url(IdmV1ServiceScope), opts.GlobalOptions...),
 		NotifyService:         idmv1connect.NewNotifyServiceClient(httpClient, opts.url(IdmV1ServiceScope), opts.GlobalOptions...),

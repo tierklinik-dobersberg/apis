@@ -45,7 +45,7 @@ var (
 	CalendarV1ServiceScope    ServiceScope = "tkd.calendar.v1"
 	CommentV1ServiceScope     ServiceScope = "tkd.comment.v1"
 	CustomerV1ServiceScope    ServiceScope = "tkd.customer.v1"
-	EventV1ServiceScropt      ServiceScope = "tkd.events.v1"
+	EventV1ServiceScope       ServiceScope = "tkd.events.v1"
 	IdmV1ServiceScope         ServiceScope = "tkd.idm.v1"
 	OfficeHourV1ServiceScope  ServiceScope = "tkd.office_hours.v1"
 	Pbx3cxV1ServiceScope      ServiceScope = "tkd.pbx3cx.v1"
@@ -61,7 +61,7 @@ var EnvServiceMap = map[string]ServiceScope{
 	"CALENDAR_SERVICE":    CalendarV1ServiceScope,
 	"COMMENT_SERVICE":     CommentV1ServiceScope,
 	"CUSTOMER_SERVICE":    CustomerV1ServiceScope,
-	"EVENT_SERVICE":       EventV1ServiceScropt,
+	"EVENT_SERVICE":       EventV1ServiceScope,
 	"IDM_SERVICE":         IdmV1ServiceScope,
 	"OFFICE_HOUR_SERVICE": OfficeHourV1ServiceScope,
 	"PBX_SERVICE":         Pbx3cxV1ServiceScope,
@@ -97,7 +97,7 @@ var (
 	CustomerImportService = Create(CustomerV1ServiceScope, customerv1connect.NewCustomerImportServiceClient)
 
 	// tkd.events.v1
-	EventService = Create(EventV1ServiceScropt, eventsv1connect.NewEventServiceClient)
+	EventService = Create(EventV1ServiceScope, eventsv1connect.NewEventServiceClient)
 
 	// tkd.idm.v1
 	UserService   = Create(IdmV1ServiceScope, idmv1connect.NewUserServiceClient)
