@@ -111,7 +111,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 		if r, ok := roles[roleId]; ok {
 			roleLock.RUnlock()
 
-			l.Debugf("resolved role id %q from cache: name=%q", roleId, r.Name)
+			l.Debug("resolved role id from cache", "id", roleId, "name", r.Name)
 
 			return r, nil
 		}
@@ -127,12 +127,12 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 			})
 
 			if err != nil {
-				l.Errorf("failed to resolve role id %q: %s", roleId, err)
+				l.Error("failed to resolve role id", "id", roleId, "error", err)
 
 				return nil, fmt.Errorf("failed to resolve role: %w", err)
 			}
 
-			l.Debugf("resolved role id %q: name=%q", roleId, role.Name)
+			l.Debug("resolved role", "id", roleId, "name", role.Name)
 
 			roleLock.Lock()
 			defer roleLock.Unlock()
@@ -196,7 +196,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 			// if we have a user ID add some more information to the logger and
 			// append the user information to the request context
 			if usr.ID != "" {
-				l = l.WithField("user.id", usr.ID).WithField("user.displayName", usr.DisplayName)
+				l = l.With("user.id", usr.ID, "user.displayName", usr.DisplayName)
 				ctx = context.WithValue(ctx, remoteUserContextKey, &usr)
 			}
 
@@ -205,7 +205,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 				switch methodOptions.Require {
 				case commonv1.AuthRequirement_AUTH_REQ_ADMIN:
 					if usr.ID == "" {
-                        return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("no access token provided: missing ID"))
+						return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("no access token provided: missing ID"))
 					}
 
 					if !usr.Admin {
@@ -214,7 +214,7 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 
 				case commonv1.AuthRequirement_AUTH_REQ_REQUIRED:
 					if usr.ID == "" {
-                        return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("no access token provided: missing ID"))
+						return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("no access token provided: missing ID"))
 					}
 
 					// make sure the user has at least one of the required roles assigned
@@ -235,10 +235,8 @@ func NewAuthAnnotationInterceptor(registry *protoregistry.Files, roleResolver Ro
 				case commonv1.AuthRequirement_AUTH_REQ_UNSPECIFIED:
 					// nothing to do
 				default:
-					l.WithField("requirement", methodOptions.String()).Infof("unhandeled authentication requirement")
+					l.With("requirement", methodOptions.String()).Info("unhandeled authentication requirement")
 				}
-			} else {
-				l.Infof("not authentication requirement specified for service method")
 			}
 
 			ctx = log.WithLogger(ctx, l)

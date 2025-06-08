@@ -2,35 +2,36 @@ package log
 
 import (
 	"context"
+	"log/slog"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/bufbuild/connect-go"
-	"github.com/sirupsen/logrus"
 	"github.com/tierklinik-dobersberg/apis/pkg/internal/timing"
 )
 
 var loggerContextKey = struct{ s string }{s: "logger"}
 
-func WithLogger(ctx context.Context, logger *logrus.Entry) context.Context {
+func WithLogger(ctx context.Context, logger *slog.Logger) context.Context {
 	return context.WithValue(ctx, loggerContextKey, logger)
 }
 
-func L(ctx context.Context) *logrus.Entry {
-	l, _ := ctx.Value(loggerContextKey).(*logrus.Entry)
+func L(ctx context.Context) *slog.Logger {
+	l, _ := ctx.Value(loggerContextKey).(*slog.Logger)
 	if l == nil {
-		return logrus.NewEntry(logrus.StandardLogger())
+		return slog.New(slog.NewTextHandler(os.Stderr, nil))
 	}
 
 	return l
 }
 
-func NewLoggingInterceptor() connect.UnaryInterceptorFunc {
+func NewLoggingInterceptor(logger *slog.Logger) connect.UnaryInterceptorFunc {
 	return func(uf connect.UnaryFunc) connect.UnaryFunc {
 		return func(ctx context.Context, ar connect.AnyRequest) (connect.AnyResponse, error) {
 			start := time.Now()
 
-			l := L(ctx).WithField("method", ar.Spec().Procedure)
+			l := L(ctx).With("method", ar.Spec().Procedure)
 
 			ctx = WithLogger(ctx, l)
 
@@ -43,15 +44,13 @@ func NewLoggingInterceptor() connect.UnaryInterceptorFunc {
 				return err
 			})
 
-			l = l.WithFields(logrus.Fields{
-				"duration": time.Since(start),
-			})
+			l = l.With("duration", time.Since(start))
 
 			if err != nil {
-				l = l.WithError(err)
+				l = l.With("error", err)
 			}
 
-			l.Infof("connect request handled")
+			l.Info("connect request handled")
 
 			return resp, err
 		}

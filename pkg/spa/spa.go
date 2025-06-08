@@ -37,7 +37,7 @@ func intercept404(handler, on404 http.Handler) http.Handler {
 		handler.ServeHTTP(hookedWriter, r)
 
 		if hookedWriter.got404 {
-			log.L(r.Context()).Infof("got 404 for %s", r.URL.String())
+			log.L(r.Context()).Info("got 404", "url", r.URL.String())
 			on404.ServeHTTP(w, r)
 		}
 	})

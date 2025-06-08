@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"strings"
@@ -42,7 +43,7 @@ func getLocalAddresses() (map[string][]string, error) {
 	for _, iface := range ifaces {
 		addrs, err := iface.Addrs()
 		if err != nil {
-			log.L(context.TODO()).Errorf("failed to get IP addresses for interface %s", iface.Name)
+			slog.Error("failed to get IP addresses for interface", "error", iface.Name)
 
 			continue
 		}
@@ -51,14 +52,10 @@ func getLocalAddresses() (map[string][]string, error) {
 			switch v := a.(type) {
 			case *net.IPAddr:
 				if v.IP.To4() == nil {
-					log.L(context.TODO()).Infof("skipping IPv6 address %s", v.IP)
-
 					continue
 				}
 
 				if xff.IsPublicIP(v.IP) {
-					log.L(context.TODO()).Infof("skipping public IP address %s", v.IP)
-
 					continue
 				}
 
@@ -67,14 +64,10 @@ func getLocalAddresses() (map[string][]string, error) {
 
 			case *net.IPNet:
 				if v.IP.To4() == nil {
-					log.L(context.TODO()).Infof("skipping IPv6 address %s", v.IP)
-
 					continue
 				}
 
 				if xff.IsPublicIP(v.IP) {
-					log.L(context.TODO()).Infof("skipping public IP address %s", v.IP)
-
 					continue
 				}
 
@@ -82,7 +75,7 @@ func getLocalAddresses() (map[string][]string, error) {
 				result[iface.Name] = append(result[iface.Name], fmt.Sprintf("%s/%d", v.IP, ones))
 
 			default:
-				log.L(context.TODO()).Warnf("unsupported interface address type %T", a)
+				slog.Warn("unsupported interface address type", "type", fmt.Sprintf("%T", a))
 			}
 		}
 	}
@@ -103,8 +96,6 @@ func WithTrustedProxies(networks []string) CreateOption {
 		var ipNets []*net.IPNet
 		var lock sync.RWMutex
 
-		l := log.L(context.TODO()).WithField("server", srv.Addr)
-
 		parseNetworks := func() error {
 			lock.Lock()
 			defer lock.Unlock()
@@ -122,9 +113,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 				if n == "local" {
 					// all iface addresses
-					for iface, addrs := range allIfaces {
-						l.Infof("adding addresses from interface %s as trusted networks: %v", iface, addrs)
-
+					for _, addrs := range allIfaces {
 						nets = append(nets, addrs...)
 					}
 
@@ -141,8 +130,6 @@ func WithTrustedProxies(networks []string) CreateOption {
 				if ips, err := net.LookupIP(n); err == nil {
 					for _, ip := range ips {
 						netStr := fmt.Sprintf("%s/32", ip)
-
-						l.Infof("adding resolved ip %s for hostname %s as trusted network", netStr, n)
 
 						nets = append(nets, netStr)
 					}
@@ -168,8 +155,6 @@ func WithTrustedProxies(networks []string) CreateOption {
 				ipNets[idx] = parsed
 			}
 
-			l.Infof("updated trusted networks for X-Forwarded-For headers: %v", nets)
-
 			return nil
 		}
 
@@ -182,7 +167,7 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 			for range ticker.C {
 				if err := parseNetworks(); err != nil {
-					l.Errorf("failed to refresh trusted networks: %s", err)
+					slog.Error("failed to refresh trusted networks", "error", err)
 				}
 			}
 		}()
@@ -204,7 +189,6 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 		srv.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
-			l := log.L(ctx)
 
 			var realIP net.IP
 
@@ -227,18 +211,12 @@ func WithTrustedProxies(networks []string) CreateOption {
 
 								parsedIP := net.ParseIP(ip)
 								if parsedIP == nil {
-									l.Debugf("failed to parse entry in XFF header: %s", ip)
-
 									continue
 								}
 
 								if isAllowed(parsedIP) {
-									l.Debugf("found trusted proxy IP in XFF header %s, continuing ...", parsedIP)
-
 									continue
 								}
-
-								l.Debugf("found real client ip: %s", parsedIP)
 
 								realIP = parsedIP
 
@@ -252,8 +230,10 @@ func WithTrustedProxies(networks []string) CreateOption {
 			}
 
 			if realIP != nil {
+				l := log.L(ctx)
+
 				ctx = WithRealIP(ctx, realIP)
-				ctx = log.WithLogger(ctx, l.WithField("remoteIP", realIP.String()))
+				ctx = log.WithLogger(ctx, l.With("remoteIP", realIP.String()))
 
 				r = r.WithContext(ctx)
 			}
