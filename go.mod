@@ -17,6 +17,7 @@ require (
 	github.com/mxk/go-imap v0.0.0-20150429134902-531c36c3f12d
 	github.com/rs/cors v1.11.1
 	github.com/sebest/xff v0.0.0-20210106013422-671bd2870b3a
+	github.com/sethvargo/go-envconfig v1.3.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
