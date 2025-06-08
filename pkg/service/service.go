@@ -204,9 +204,9 @@ func (i *Instance[Config, Database]) setupOptions() {
 	)
 
 	interceptors := []connect.Interceptor{
-		log.NewLoggingInterceptor(i.Logger),
-		validator.NewInterceptor(protoValidator),
 		authInterceptor,
+		log.NewLoggingInterceptor(),
+		validator.NewInterceptor(protoValidator),
 	}
 
 	i.options = []connect.Option{connect.WithInterceptors(interceptors...)}

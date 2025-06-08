@@ -26,7 +26,7 @@ func L(ctx context.Context) *slog.Logger {
 	return l
 }
 
-func NewLoggingInterceptor(logger *slog.Logger) connect.UnaryInterceptorFunc {
+func NewLoggingInterceptor() connect.UnaryInterceptorFunc {
 	return func(uf connect.UnaryFunc) connect.UnaryFunc {
 		return func(ctx context.Context, ar connect.AnyRequest) (connect.AnyResponse, error) {
 			start := time.Now()
