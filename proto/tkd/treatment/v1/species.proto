@@ -80,7 +80,7 @@ message DetectSpeciesRequest {
 }
 
 message ListSpeciesRequest {
-    string search = 1;
+    repeated string names = 1;
 }
 
 message ListSpeciesResponse {

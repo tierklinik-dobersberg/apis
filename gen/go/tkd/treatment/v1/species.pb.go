@@ -266,7 +266,7 @@ func (x *DetectSpeciesRequest) GetValues() []string {
 
 type ListSpeciesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Search        string                 `protobuf:"bytes,1,opt,name=search,proto3" json:"search,omitempty"`
+	Names         []string               `protobuf:"bytes,1,rep,name=names,proto3" json:"names,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -301,11 +301,11 @@ func (*ListSpeciesRequest) Descriptor() ([]byte, []int) {
 	return file_tkd_treatment_v1_species_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListSpeciesRequest) GetSearch() string {
+func (x *ListSpeciesRequest) GetNames() []string {
 	if x != nil {
-		return x.Search
+		return x.Names
 	}
-	return ""
+	return nil
 }
 
 type ListSpeciesResponse struct {
@@ -472,9 +472,9 @@ const file_tkd_treatment_v1_species_proto_rawDesc = "" +
 	"matchWords\x12*\n" +
 	"\x04icon\x18\x05 \x01(\v2\x16.tkd.treatment.v1.IconR\x04icon\".\n" +
 	"\x14DetectSpeciesRequest\x12\x16\n" +
-	"\x06values\x18\x01 \x03(\tR\x06values\",\n" +
-	"\x12ListSpeciesRequest\x12\x16\n" +
-	"\x06search\x18\x01 \x01(\tR\x06search\"J\n" +
+	"\x06values\x18\x01 \x03(\tR\x06values\"*\n" +
+	"\x12ListSpeciesRequest\x12\x14\n" +
+	"\x05names\x18\x01 \x03(\tR\x05names\"J\n" +
 	"\x13ListSpeciesResponse\x123\n" +
 	"\aspecies\x18\x01 \x03(\v2\x19.tkd.treatment.v1.SpeciesR\aspecies\"\xae\x01\n" +
 	"\x14UpdateSpeciesRequest\x12\x1b\n" +
