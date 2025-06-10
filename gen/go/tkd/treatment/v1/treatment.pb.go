@@ -68,8 +68,11 @@ type Treatment struct {
 	// AllowSelfBooking should be set to true if this treatment is available for public
 	// (self-service) booking.
 	AllowSelfBooking bool `protobuf:"varint,10,opt,name=allow_self_booking,json=allowSelfBooking,proto3" json:"allow_self_booking,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Resources defines all resources that are required for this treatment.
+	// See tkd.calendar.v1 ResourceCalendar
+	Resources     []string `protobuf:"bytes,11,rep,name=resources,proto3" json:"resources,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Treatment) Reset() {
@@ -170,6 +173,13 @@ func (x *Treatment) GetAllowSelfBooking() bool {
 		return x.AllowSelfBooking
 	}
 	return false
+}
+
+func (x *Treatment) GetResources() []string {
+	if x != nil {
+		return x.Resources
+	}
+	return nil
 }
 
 type GetTreatmentRequest struct {
@@ -337,8 +347,6 @@ func (x *ListTreatmentsResponse) GetSpecies() map[string]*Species {
 type UpdateTreatmentRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Name  string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// NewName is the new name of the treatment.
-	NewName string `protobuf:"bytes,2,opt,name=new_name,json=newName,proto3" json:"new_name,omitempty"`
 	// DisplayName is human-readable name of the treatment to be displayed
 	// in a the self-booking user interface.
 	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
@@ -359,6 +367,7 @@ type UpdateTreatmentRequest struct {
 	AllowedEmployees          []string             `protobuf:"bytes,9,rep,name=allowed_employees,json=allowedEmployees,proto3" json:"allowed_employees,omitempty"`
 	MatchEventText            []string             `protobuf:"bytes,10,rep,name=match_event_text,json=matchEventText,proto3" json:"match_event_text,omitempty"`
 	PreferredEmployees        []string             `protobuf:"bytes,11,rep,name=preferred_employees,json=preferredEmployees,proto3" json:"preferred_employees,omitempty"`
+	Resources                 []string             `protobuf:"bytes,12,rep,name=resources,proto3" json:"resources,omitempty"`
 	// UpdateMask specifies which field names of the UpdateTreatmentRequest message
 	// should be considered.
 	// If unspecified or empty, no fields will be updated.
@@ -401,13 +410,6 @@ func (*UpdateTreatmentRequest) Descriptor() ([]byte, []int) {
 func (x *UpdateTreatmentRequest) GetName() string {
 	if x != nil {
 		return x.Name
-	}
-	return ""
-}
-
-func (x *UpdateTreatmentRequest) GetNewName() string {
-	if x != nil {
-		return x.NewName
 	}
 	return ""
 }
@@ -475,6 +477,13 @@ func (x *UpdateTreatmentRequest) GetPreferredEmployees() []string {
 	return nil
 }
 
+func (x *UpdateTreatmentRequest) GetResources() []string {
+	if x != nil {
+		return x.Resources
+	}
+	return nil
+}
+
 func (x *UpdateTreatmentRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
 	if x != nil {
 		return x.UpdateMask
@@ -533,7 +542,7 @@ var File_tkd_treatment_v1_treatment_proto protoreflect.FileDescriptor
 
 const file_tkd_treatment_v1_treatment_proto_rawDesc = "" +
 	"\n" +
-	" tkd/treatment/v1/treatment.proto\x12\x10tkd.treatment.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/treatment/v1/species.proto\x1a\x1etkd/common/v1/descriptor.proto\"\xf1\x03\n" +
+	" tkd/treatment/v1/treatment.proto\x12\x10tkd.treatment.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a google/protobuf/field_mask.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/treatment/v1/species.proto\x1a\x1etkd/common/v1/descriptor.proto\"\x8f\x04\n" +
 	"\tTreatment\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name\x12*\n" +
 	"\fdisplay_name\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\vdisplayName\x12\x1b\n" +
@@ -545,7 +554,8 @@ const file_tkd_treatment_v1_treatment_proto_rawDesc = "" +
 	"\x13preferred_employees\x18\b \x03(\tR\x12preferredEmployees\x12(\n" +
 	"\x10match_event_text\x18\t \x03(\tR\x0ematchEventText\x12,\n" +
 	"\x12allow_self_booking\x18\n" +
-	" \x01(\bR\x10allowSelfBooking\")\n" +
+	" \x01(\bR\x10allowSelfBooking\x12\x1c\n" +
+	"\tresources\x18\v \x03(\tR\tresources\")\n" +
 	"\x13GetTreatmentRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"a\n" +
 	"\x15ListTreatmentsRequest\x12\x18\n" +
@@ -558,10 +568,9 @@ const file_tkd_treatment_v1_treatment_proto_rawDesc = "" +
 	"\aspecies\x18\x02 \x03(\v25.tkd.treatment.v1.ListTreatmentsResponse.SpeciesEntryR\aspecies\x1aU\n" +
 	"\fSpeciesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12/\n" +
-	"\x05value\x18\x02 \x01(\v2\x19.tkd.treatment.v1.SpeciesR\x05value:\x028\x01\"\xd6\x04\n" +
+	"\x05value\x18\x02 \x01(\v2\x19.tkd.treatment.v1.SpeciesR\x05value:\x028\x01\"\xd0\x04\n" +
 	"\x16UpdateTreatmentRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name\x12\x19\n" +
-	"\bnew_name\x18\x02 \x01(\tR\anewName\x12!\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name\x12!\n" +
 	"\fdisplay_name\x18\x03 \x01(\tR\vdisplayName\x12\x1b\n" +
 	"\thelp_text\x18\x04 \x01(\tR\bhelpText\x12\x18\n" +
 	"\aspecies\x18\x05 \x03(\tR\aspecies\x12,\n" +
@@ -571,8 +580,9 @@ const file_tkd_treatment_v1_treatment_proto_rawDesc = "" +
 	"\x11allowed_employees\x18\t \x03(\tR\x10allowedEmployees\x12(\n" +
 	"\x10match_event_text\x18\n" +
 	" \x03(\tR\x0ematchEventText\x12/\n" +
-	"\x13preferred_employees\x18\v \x03(\tR\x12preferredEmployees\x12D\n" +
-	"\vupdate_mask\x18\x14 \x01(\v2\x1a.google.protobuf.FieldMaskB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
+	"\x13preferred_employees\x18\v \x03(\tR\x12preferredEmployees\x12\x1c\n" +
+	"\tresources\x18\f \x03(\tR\tresources\x12;\n" +
+	"\vupdate_mask\x18\x14 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
 	"updateMask\"5\n" +
 	"\x16DeleteTreatmentRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04name2\xea\x03\n" +

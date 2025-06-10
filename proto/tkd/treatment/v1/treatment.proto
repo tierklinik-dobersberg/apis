@@ -63,6 +63,10 @@ message Treatment {
     // AllowSelfBooking should be set to true if this treatment is available for public
     // (self-service) booking.
     bool allow_self_booking = 10;
+
+    // Resources defines all resources that are required for this treatment.
+    // See tkd.calendar.v1 ResourceCalendar
+    repeated string resources = 11;
 }
 
 // TreatmentService allows to list, create, update and delete bookable treatments.
@@ -138,9 +142,6 @@ message UpdateTreatmentRequest {
         (buf.validate.field).required = true
     ];
 
-    // NewName is the new name of the treatment.
-    string new_name = 2;
-
     // DisplayName is human-readable name of the treatment to be displayed
     // in a the self-booking user interface.
     string display_name = 3;
@@ -170,13 +171,13 @@ message UpdateTreatmentRequest {
 
     repeated string preferred_employees = 11;
 
+    repeated string resources = 12;
+
     // UpdateMask specifies which field names of the UpdateTreatmentRequest message
     // should be considered.
     // If unspecified or empty, no fields will be updated.
     // To completely replace all fields, specify a single path '*'.
-    google.protobuf.FieldMask update_mask = 20 [
-        (buf.validate.field).required = true
-    ];
+    google.protobuf.FieldMask update_mask = 20;
 }
 
 // DeleteTreatmentRequest is the request message type for the DeleteTreatment RPC
