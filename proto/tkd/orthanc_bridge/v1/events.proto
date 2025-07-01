@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "tkd/orthanc_bridge/v1/orthanc-bridge.proto";
+
 package tkd.orthanc_bridge.v1;
 
 message InstanceReceivedEvent {
@@ -10,4 +12,12 @@ message InstanceReceivedEvent {
     string owner_name = 5;
     string modality = 6;
     string patient_id = 7;
+}
+
+message WorklistEntryCreatedEvent {
+    WorklistEntry entry = 1;
+}
+
+message WorklistEntryRemovedEvent {
+    string name = 1;
 }

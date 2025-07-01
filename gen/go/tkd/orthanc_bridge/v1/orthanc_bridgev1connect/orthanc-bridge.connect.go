@@ -46,6 +46,9 @@ const (
 	// OrthancBridgeShareStudyProcedure is the fully-qualified name of the OrthancBridge's ShareStudy
 	// RPC.
 	OrthancBridgeShareStudyProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/ShareStudy"
+	// OrthancBridgeGetWorklistEntriesProcedure is the fully-qualified name of the OrthancBridge's
+	// GetWorklistEntries RPC.
+	OrthancBridgeGetWorklistEntriesProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/GetWorklistEntries"
 )
 
 // OrthancBridgeClient is a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
@@ -59,6 +62,7 @@ type OrthancBridgeClient interface {
 	// For multi-file downloads, the files are packed into a ZIP archive.
 	DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error)
 	ShareStudy(context.Context, *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error)
+	GetWorklistEntries(context.Context, *connect_go.Request[v1.GetWorklistEntriesRequest]) (*connect_go.Response[v1.GetWorklistEntriesResponse], error)
 }
 
 // NewOrthancBridgeClient constructs a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
@@ -91,15 +95,21 @@ func NewOrthancBridgeClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+OrthancBridgeShareStudyProcedure,
 			opts...,
 		),
+		getWorklistEntries: connect_go.NewClient[v1.GetWorklistEntriesRequest, v1.GetWorklistEntriesResponse](
+			httpClient,
+			baseURL+OrthancBridgeGetWorklistEntriesProcedure,
+			opts...,
+		),
 	}
 }
 
 // orthancBridgeClient implements OrthancBridgeClient.
 type orthancBridgeClient struct {
-	listStudies       *connect_go.Client[v1.ListStudiesRequest, v1.ListStudiesResponse]
-	listRecentStudies *connect_go.Client[emptypb.Empty, v1.ListStudiesResponse]
-	downloadStudy     *connect_go.Client[v1.DownloadStudyRequest, v1.DownloadStudyResponse]
-	shareStudy        *connect_go.Client[v1.ShareStudyRequest, v1.ShareStudyResponse]
+	listStudies        *connect_go.Client[v1.ListStudiesRequest, v1.ListStudiesResponse]
+	listRecentStudies  *connect_go.Client[emptypb.Empty, v1.ListStudiesResponse]
+	downloadStudy      *connect_go.Client[v1.DownloadStudyRequest, v1.DownloadStudyResponse]
+	shareStudy         *connect_go.Client[v1.ShareStudyRequest, v1.ShareStudyResponse]
+	getWorklistEntries *connect_go.Client[v1.GetWorklistEntriesRequest, v1.GetWorklistEntriesResponse]
 }
 
 // ListStudies calls tkd.orthanc_bridge.v1.OrthancBridge.ListStudies.
@@ -122,6 +132,11 @@ func (c *orthancBridgeClient) ShareStudy(ctx context.Context, req *connect_go.Re
 	return c.shareStudy.CallUnary(ctx, req)
 }
 
+// GetWorklistEntries calls tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries.
+func (c *orthancBridgeClient) GetWorklistEntries(ctx context.Context, req *connect_go.Request[v1.GetWorklistEntriesRequest]) (*connect_go.Response[v1.GetWorklistEntriesResponse], error) {
+	return c.getWorklistEntries.CallUnary(ctx, req)
+}
+
 // OrthancBridgeHandler is an implementation of the tkd.orthanc_bridge.v1.OrthancBridge service.
 type OrthancBridgeHandler interface {
 	// ListStudies returns a list of studies matching a given criteria.
@@ -133,6 +148,7 @@ type OrthancBridgeHandler interface {
 	// For multi-file downloads, the files are packed into a ZIP archive.
 	DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error)
 	ShareStudy(context.Context, *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error)
+	GetWorklistEntries(context.Context, *connect_go.Request[v1.GetWorklistEntriesRequest]) (*connect_go.Response[v1.GetWorklistEntriesResponse], error)
 }
 
 // NewOrthancBridgeHandler builds an HTTP handler from the service implementation. It returns the
@@ -161,6 +177,11 @@ func NewOrthancBridgeHandler(svc OrthancBridgeHandler, opts ...connect_go.Handle
 		svc.ShareStudy,
 		opts...,
 	)
+	orthancBridgeGetWorklistEntriesHandler := connect_go.NewUnaryHandler(
+		OrthancBridgeGetWorklistEntriesProcedure,
+		svc.GetWorklistEntries,
+		opts...,
+	)
 	return "/tkd.orthanc_bridge.v1.OrthancBridge/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case OrthancBridgeListStudiesProcedure:
@@ -171,6 +192,8 @@ func NewOrthancBridgeHandler(svc OrthancBridgeHandler, opts ...connect_go.Handle
 			orthancBridgeDownloadStudyHandler.ServeHTTP(w, r)
 		case OrthancBridgeShareStudyProcedure:
 			orthancBridgeShareStudyHandler.ServeHTTP(w, r)
+		case OrthancBridgeGetWorklistEntriesProcedure:
+			orthancBridgeGetWorklistEntriesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -194,4 +217,8 @@ func (UnimplementedOrthancBridgeHandler) DownloadStudy(context.Context, *connect
 
 func (UnimplementedOrthancBridgeHandler) ShareStudy(context.Context, *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy is not implemented"))
+}
+
+func (UnimplementedOrthancBridgeHandler) GetWorklistEntries(context.Context, *connect_go.Request[v1.GetWorklistEntriesRequest]) (*connect_go.Response[v1.GetWorklistEntriesResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries is not implemented"))
 }

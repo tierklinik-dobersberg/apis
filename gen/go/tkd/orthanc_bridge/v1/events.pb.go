@@ -113,11 +113,99 @@ func (x *InstanceReceivedEvent) GetPatientId() string {
 	return ""
 }
 
+type WorklistEntryCreatedEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Entry         *WorklistEntry         `protobuf:"bytes,1,opt,name=entry,proto3" json:"entry,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WorklistEntryCreatedEvent) Reset() {
+	*x = WorklistEntryCreatedEvent{}
+	mi := &file_tkd_orthanc_bridge_v1_events_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WorklistEntryCreatedEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WorklistEntryCreatedEvent) ProtoMessage() {}
+
+func (x *WorklistEntryCreatedEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_orthanc_bridge_v1_events_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WorklistEntryCreatedEvent.ProtoReflect.Descriptor instead.
+func (*WorklistEntryCreatedEvent) Descriptor() ([]byte, []int) {
+	return file_tkd_orthanc_bridge_v1_events_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *WorklistEntryCreatedEvent) GetEntry() *WorklistEntry {
+	if x != nil {
+		return x.Entry
+	}
+	return nil
+}
+
+type WorklistEntryRemovedEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WorklistEntryRemovedEvent) Reset() {
+	*x = WorklistEntryRemovedEvent{}
+	mi := &file_tkd_orthanc_bridge_v1_events_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WorklistEntryRemovedEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WorklistEntryRemovedEvent) ProtoMessage() {}
+
+func (x *WorklistEntryRemovedEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_orthanc_bridge_v1_events_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WorklistEntryRemovedEvent.ProtoReflect.Descriptor instead.
+func (*WorklistEntryRemovedEvent) Descriptor() ([]byte, []int) {
+	return file_tkd_orthanc_bridge_v1_events_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *WorklistEntryRemovedEvent) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_tkd_orthanc_bridge_v1_events_proto protoreflect.FileDescriptor
 
 const file_tkd_orthanc_bridge_v1_events_proto_rawDesc = "" +
 	"\n" +
-	"\"tkd/orthanc_bridge/v1/events.proto\x12\x15tkd.orthanc_bridge.v1\"\xf3\x01\n" +
+	"\"tkd/orthanc_bridge/v1/events.proto\x12\x15tkd.orthanc_bridge.v1\x1a*tkd/orthanc_bridge/v1/orthanc-bridge.proto\"\xf3\x01\n" +
 	"\x15InstanceReceivedEvent\x12\x1b\n" +
 	"\tstudy_uid\x18\x01 \x01(\tR\bstudyUid\x12\x1d\n" +
 	"\n" +
@@ -128,7 +216,11 @@ const file_tkd_orthanc_bridge_v1_events_proto_rawDesc = "" +
 	"owner_name\x18\x05 \x01(\tR\townerName\x12\x1a\n" +
 	"\bmodality\x18\x06 \x01(\tR\bmodality\x12\x1d\n" +
 	"\n" +
-	"patient_id\x18\a \x01(\tR\tpatientIdB\xef\x01\n" +
+	"patient_id\x18\a \x01(\tR\tpatientId\"W\n" +
+	"\x19WorklistEntryCreatedEvent\x12:\n" +
+	"\x05entry\x18\x01 \x01(\v2$.tkd.orthanc_bridge.v1.WorklistEntryR\x05entry\"/\n" +
+	"\x19WorklistEntryRemovedEvent\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04nameB\xef\x01\n" +
 	"\x19com.tkd.orthanc_bridge.v1B\vEventsProtoP\x01ZSgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/orthanc_bridge/v1;orthanc_bridgev1\xa2\x02\x03TOX\xaa\x02\x14Tkd.OrthancBridge.V1\xca\x02\x14Tkd\\OrthancBridge\\V1\xe2\x02 Tkd\\OrthancBridge\\V1\\GPBMetadata\xea\x02\x16Tkd::OrthancBridge::V1b\x06proto3"
 
 var (
@@ -143,16 +235,20 @@ func file_tkd_orthanc_bridge_v1_events_proto_rawDescGZIP() []byte {
 	return file_tkd_orthanc_bridge_v1_events_proto_rawDescData
 }
 
-var file_tkd_orthanc_bridge_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_tkd_orthanc_bridge_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_tkd_orthanc_bridge_v1_events_proto_goTypes = []any{
-	(*InstanceReceivedEvent)(nil), // 0: tkd.orthanc_bridge.v1.InstanceReceivedEvent
+	(*InstanceReceivedEvent)(nil),     // 0: tkd.orthanc_bridge.v1.InstanceReceivedEvent
+	(*WorklistEntryCreatedEvent)(nil), // 1: tkd.orthanc_bridge.v1.WorklistEntryCreatedEvent
+	(*WorklistEntryRemovedEvent)(nil), // 2: tkd.orthanc_bridge.v1.WorklistEntryRemovedEvent
+	(*WorklistEntry)(nil),             // 3: tkd.orthanc_bridge.v1.WorklistEntry
 }
 var file_tkd_orthanc_bridge_v1_events_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	3, // 0: tkd.orthanc_bridge.v1.WorklistEntryCreatedEvent.entry:type_name -> tkd.orthanc_bridge.v1.WorklistEntry
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_tkd_orthanc_bridge_v1_events_proto_init() }
@@ -160,13 +256,14 @@ func file_tkd_orthanc_bridge_v1_events_proto_init() {
 	if File_tkd_orthanc_bridge_v1_events_proto != nil {
 		return
 	}
+	file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_orthanc_bridge_v1_events_proto_rawDesc), len(file_tkd_orthanc_bridge_v1_events_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

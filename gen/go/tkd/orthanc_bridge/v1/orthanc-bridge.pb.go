@@ -163,6 +163,58 @@ func (x *DICOMTag) GetName() string {
 	return ""
 }
 
+type WorklistEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Tags          []*DICOMTag            `protobuf:"bytes,2,rep,name=tags,proto3" json:"tags,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WorklistEntry) Reset() {
+	*x = WorklistEntry{}
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WorklistEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WorklistEntry) ProtoMessage() {}
+
+func (x *WorklistEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WorklistEntry.ProtoReflect.Descriptor instead.
+func (*WorklistEntry) Descriptor() ([]byte, []int) {
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *WorklistEntry) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *WorklistEntry) GetTags() []*DICOMTag {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
 type FilterTag struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Tag is either the well-known name or the numeric DICOM tag.
@@ -175,7 +227,7 @@ type FilterTag struct {
 
 func (x *FilterTag) Reset() {
 	*x = FilterTag{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[1]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -187,7 +239,7 @@ func (x *FilterTag) String() string {
 func (*FilterTag) ProtoMessage() {}
 
 func (x *FilterTag) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[1]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -200,7 +252,7 @@ func (x *FilterTag) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FilterTag.ProtoReflect.Descriptor instead.
 func (*FilterTag) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{1}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *FilterTag) GetTag() string {
@@ -249,7 +301,7 @@ type ListStudiesRequest struct {
 
 func (x *ListStudiesRequest) Reset() {
 	*x = ListStudiesRequest{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[2]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -261,7 +313,7 @@ func (x *ListStudiesRequest) String() string {
 func (*ListStudiesRequest) ProtoMessage() {}
 
 func (x *ListStudiesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[2]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -274,7 +326,7 @@ func (x *ListStudiesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListStudiesRequest.ProtoReflect.Descriptor instead.
 func (*ListStudiesRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{2}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListStudiesRequest) GetDateRange() *v1.DateRange {
@@ -352,7 +404,7 @@ type Thumbnail struct {
 
 func (x *Thumbnail) Reset() {
 	*x = Thumbnail{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[3]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -364,7 +416,7 @@ func (x *Thumbnail) String() string {
 func (*Thumbnail) ProtoMessage() {}
 
 func (x *Thumbnail) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[3]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -377,7 +429,7 @@ func (x *Thumbnail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Thumbnail.ProtoReflect.Descriptor instead.
 func (*Thumbnail) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{3}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Thumbnail) GetMime() string {
@@ -409,7 +461,7 @@ type Instance struct {
 
 func (x *Instance) Reset() {
 	*x = Instance{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[4]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -421,7 +473,7 @@ func (x *Instance) String() string {
 func (*Instance) ProtoMessage() {}
 
 func (x *Instance) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[4]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -434,7 +486,7 @@ func (x *Instance) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Instance.ProtoReflect.Descriptor instead.
 func (*Instance) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{4}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Instance) GetInstanceUid() string {
@@ -480,7 +532,7 @@ type Series struct {
 
 func (x *Series) Reset() {
 	*x = Series{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[5]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -492,7 +544,7 @@ func (x *Series) String() string {
 func (*Series) ProtoMessage() {}
 
 func (x *Series) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[5]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -505,7 +557,7 @@ func (x *Series) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Series.ProtoReflect.Descriptor instead.
 func (*Series) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{5}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Series) GetSeriesUid() string {
@@ -558,7 +610,7 @@ type Study struct {
 
 func (x *Study) Reset() {
 	*x = Study{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[6]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -570,7 +622,7 @@ func (x *Study) String() string {
 func (*Study) ProtoMessage() {}
 
 func (x *Study) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[6]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -583,7 +635,7 @@ func (x *Study) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Study.ProtoReflect.Descriptor instead.
 func (*Study) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{6}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Study) GetStudyUid() string {
@@ -656,7 +708,7 @@ type ListStudiesResponse struct {
 
 func (x *ListStudiesResponse) Reset() {
 	*x = ListStudiesResponse{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[7]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -668,7 +720,7 @@ func (x *ListStudiesResponse) String() string {
 func (*ListStudiesResponse) ProtoMessage() {}
 
 func (x *ListStudiesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[7]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -681,7 +733,7 @@ func (x *ListStudiesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListStudiesResponse.ProtoReflect.Descriptor instead.
 func (*ListStudiesResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{7}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ListStudiesResponse) GetStudies() []*Study {
@@ -720,7 +772,7 @@ type DownloadStudyRequest struct {
 
 func (x *DownloadStudyRequest) Reset() {
 	*x = DownloadStudyRequest{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[8]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -732,7 +784,7 @@ func (x *DownloadStudyRequest) String() string {
 func (*DownloadStudyRequest) ProtoMessage() {}
 
 func (x *DownloadStudyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[8]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -745,7 +797,7 @@ func (x *DownloadStudyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DownloadStudyRequest.ProtoReflect.Descriptor instead.
 func (*DownloadStudyRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{8}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *DownloadStudyRequest) GetStudyUid() string {
@@ -789,7 +841,7 @@ type DownloadStudyResponse struct {
 
 func (x *DownloadStudyResponse) Reset() {
 	*x = DownloadStudyResponse{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[9]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -801,7 +853,7 @@ func (x *DownloadStudyResponse) String() string {
 func (*DownloadStudyResponse) ProtoMessage() {}
 
 func (x *DownloadStudyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[9]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -814,7 +866,7 @@ func (x *DownloadStudyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DownloadStudyResponse.ProtoReflect.Descriptor instead.
 func (*DownloadStudyResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{9}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DownloadStudyResponse) GetDownloadLink() string {
@@ -842,7 +894,7 @@ type ShareStudyRequest struct {
 
 func (x *ShareStudyRequest) Reset() {
 	*x = ShareStudyRequest{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[10]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -854,7 +906,7 @@ func (x *ShareStudyRequest) String() string {
 func (*ShareStudyRequest) ProtoMessage() {}
 
 func (x *ShareStudyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[10]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -867,7 +919,7 @@ func (x *ShareStudyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShareStudyRequest.ProtoReflect.Descriptor instead.
 func (*ShareStudyRequest) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{10}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ShareStudyRequest) GetStudyUid() string {
@@ -904,7 +956,7 @@ type ShareStudyResponse struct {
 
 func (x *ShareStudyResponse) Reset() {
 	*x = ShareStudyResponse{}
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[11]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -916,7 +968,7 @@ func (x *ShareStudyResponse) String() string {
 func (*ShareStudyResponse) ProtoMessage() {}
 
 func (x *ShareStudyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[11]
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -929,7 +981,7 @@ func (x *ShareStudyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShareStudyResponse.ProtoReflect.Descriptor instead.
 func (*ShareStudyResponse) Descriptor() ([]byte, []int) {
-	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{11}
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ShareStudyResponse) GetToken() string {
@@ -946,6 +998,86 @@ func (x *ShareStudyResponse) GetViewerUrl() string {
 	return ""
 }
 
+type GetWorklistEntriesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWorklistEntriesRequest) Reset() {
+	*x = GetWorklistEntriesRequest{}
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWorklistEntriesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWorklistEntriesRequest) ProtoMessage() {}
+
+func (x *GetWorklistEntriesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWorklistEntriesRequest.ProtoReflect.Descriptor instead.
+func (*GetWorklistEntriesRequest) Descriptor() ([]byte, []int) {
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{13}
+}
+
+type GetWorklistEntriesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Entries       []*WorklistEntry       `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWorklistEntriesResponse) Reset() {
+	*x = GetWorklistEntriesResponse{}
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWorklistEntriesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWorklistEntriesResponse) ProtoMessage() {}
+
+func (x *GetWorklistEntriesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWorklistEntriesResponse.ProtoReflect.Descriptor instead.
+func (*GetWorklistEntriesResponse) Descriptor() ([]byte, []int) {
+	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *GetWorklistEntriesResponse) GetEntries() []*WorklistEntry {
+	if x != nil {
+		return x.Entries
+	}
+	return nil
+}
+
 var File_tkd_orthanc_bridge_v1_orthanc_bridge_proto protoreflect.FileDescriptor
 
 const file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc = "" +
@@ -955,7 +1087,10 @@ const file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc = "" +
 	"\x03tag\x18\x01 \x01(\tR\x03tag\x121\n" +
 	"\x14value_representation\x18\x02 \x01(\tR\x13valueRepresentation\x12,\n" +
 	"\x05value\x18\x03 \x03(\v2\x16.google.protobuf.ValueR\x05value\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\"3\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\"X\n" +
+	"\rWorklistEntry\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x123\n" +
+	"\x04tags\x18\x02 \x03(\v2\x1f.tkd.orthanc_bridge.v1.DICOMTagR\x04tags\"3\n" +
 	"\tFilterTag\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\tR\x03tag\x12\x14\n" +
 	"\x05value\x18\x02 \x03(\tR\x05value\"\x9f\x03\n" +
@@ -1025,19 +1160,23 @@ const file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc = "" +
 	"\x12ShareStudyResponse\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x1d\n" +
 	"\n" +
-	"viewer_url\x18\x02 \x01(\tR\tviewerUrl*T\n" +
+	"viewer_url\x18\x02 \x01(\tR\tviewerUrl\"\x1b\n" +
+	"\x19GetWorklistEntriesRequest\"\\\n" +
+	"\x1aGetWorklistEntriesResponse\x12>\n" +
+	"\aentries\x18\x01 \x03(\v2$.tkd.orthanc_bridge.v1.WorklistEntryR\aentries*T\n" +
 	"\fDownloadType\x12\x1d\n" +
 	"\x19DOWNLOAD_TYPE_UNSPECIFIED\x10\x00\x12\t\n" +
 	"\x05DICOM\x10\x01\x12\a\n" +
 	"\x03PNG\x10\x02\x12\b\n" +
 	"\x04JPEG\x10\x03\x12\a\n" +
-	"\x03AVI\x10\x042\xb9\x03\n" +
+	"\x03AVI\x10\x042\xbc\x04\n" +
 	"\rOrthancBridge\x12k\n" +
 	"\vListStudies\x12).tkd.orthanc_bridge.v1.ListStudiesRequest\x1a*.tkd.orthanc_bridge.v1.ListStudiesResponse\"\x05\xb2~\x02\b\x01\x12^\n" +
 	"\x11ListRecentStudies\x12\x16.google.protobuf.Empty\x1a*.tkd.orthanc_bridge.v1.ListStudiesResponse\"\x05\xb2~\x02\b\x01\x12q\n" +
 	"\rDownloadStudy\x12+.tkd.orthanc_bridge.v1.DownloadStudyRequest\x1a,.tkd.orthanc_bridge.v1.DownloadStudyResponse\"\x05\xb2~\x02\b\x01\x12h\n" +
 	"\n" +
-	"ShareStudy\x12(.tkd.orthanc_bridge.v1.ShareStudyRequest\x1a).tkd.orthanc_bridge.v1.ShareStudyResponse\"\x05\xb2~\x02\b\x01B\xf6\x01\n" +
+	"ShareStudy\x12(.tkd.orthanc_bridge.v1.ShareStudyRequest\x1a).tkd.orthanc_bridge.v1.ShareStudyResponse\"\x05\xb2~\x02\b\x01\x12\x80\x01\n" +
+	"\x12GetWorklistEntries\x120.tkd.orthanc_bridge.v1.GetWorklistEntriesRequest\x1a1.tkd.orthanc_bridge.v1.GetWorklistEntriesResponse\"\x05\xb2~\x02\b\x01B\xf6\x01\n" +
 	"\x19com.tkd.orthanc_bridge.v1B\x12OrthancBridgeProtoP\x01ZSgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/orthanc_bridge/v1;orthanc_bridgev1\xa2\x02\x03TOX\xaa\x02\x14Tkd.OrthancBridge.V1\xca\x02\x14Tkd\\OrthancBridge\\V1\xe2\x02 Tkd\\OrthancBridge\\V1\\GPBMetadata\xea\x02\x16Tkd::OrthancBridge::V1b\x06proto3"
 
 var (
@@ -1053,60 +1192,67 @@ func file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP() []byte {
 }
 
 var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_goTypes = []any{
-	(DownloadType)(0),             // 0: tkd.orthanc_bridge.v1.DownloadType
-	(*DICOMTag)(nil),              // 1: tkd.orthanc_bridge.v1.DICOMTag
-	(*FilterTag)(nil),             // 2: tkd.orthanc_bridge.v1.FilterTag
-	(*ListStudiesRequest)(nil),    // 3: tkd.orthanc_bridge.v1.ListStudiesRequest
-	(*Thumbnail)(nil),             // 4: tkd.orthanc_bridge.v1.Thumbnail
-	(*Instance)(nil),              // 5: tkd.orthanc_bridge.v1.Instance
-	(*Series)(nil),                // 6: tkd.orthanc_bridge.v1.Series
-	(*Study)(nil),                 // 7: tkd.orthanc_bridge.v1.Study
-	(*ListStudiesResponse)(nil),   // 8: tkd.orthanc_bridge.v1.ListStudiesResponse
-	(*DownloadStudyRequest)(nil),  // 9: tkd.orthanc_bridge.v1.DownloadStudyRequest
-	(*DownloadStudyResponse)(nil), // 10: tkd.orthanc_bridge.v1.DownloadStudyResponse
-	(*ShareStudyRequest)(nil),     // 11: tkd.orthanc_bridge.v1.ShareStudyRequest
-	(*ShareStudyResponse)(nil),    // 12: tkd.orthanc_bridge.v1.ShareStudyResponse
-	(*structpb.Value)(nil),        // 13: google.protobuf.Value
-	(*v1.DateRange)(nil),          // 14: tkd.common.v1.DateRange
-	(*v1.Pagination)(nil),         // 15: tkd.common.v1.Pagination
-	(*timestamppb.Timestamp)(nil), // 16: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),   // 17: google.protobuf.Duration
-	(*emptypb.Empty)(nil),         // 18: google.protobuf.Empty
+	(DownloadType)(0),                  // 0: tkd.orthanc_bridge.v1.DownloadType
+	(*DICOMTag)(nil),                   // 1: tkd.orthanc_bridge.v1.DICOMTag
+	(*WorklistEntry)(nil),              // 2: tkd.orthanc_bridge.v1.WorklistEntry
+	(*FilterTag)(nil),                  // 3: tkd.orthanc_bridge.v1.FilterTag
+	(*ListStudiesRequest)(nil),         // 4: tkd.orthanc_bridge.v1.ListStudiesRequest
+	(*Thumbnail)(nil),                  // 5: tkd.orthanc_bridge.v1.Thumbnail
+	(*Instance)(nil),                   // 6: tkd.orthanc_bridge.v1.Instance
+	(*Series)(nil),                     // 7: tkd.orthanc_bridge.v1.Series
+	(*Study)(nil),                      // 8: tkd.orthanc_bridge.v1.Study
+	(*ListStudiesResponse)(nil),        // 9: tkd.orthanc_bridge.v1.ListStudiesResponse
+	(*DownloadStudyRequest)(nil),       // 10: tkd.orthanc_bridge.v1.DownloadStudyRequest
+	(*DownloadStudyResponse)(nil),      // 11: tkd.orthanc_bridge.v1.DownloadStudyResponse
+	(*ShareStudyRequest)(nil),          // 12: tkd.orthanc_bridge.v1.ShareStudyRequest
+	(*ShareStudyResponse)(nil),         // 13: tkd.orthanc_bridge.v1.ShareStudyResponse
+	(*GetWorklistEntriesRequest)(nil),  // 14: tkd.orthanc_bridge.v1.GetWorklistEntriesRequest
+	(*GetWorklistEntriesResponse)(nil), // 15: tkd.orthanc_bridge.v1.GetWorklistEntriesResponse
+	(*structpb.Value)(nil),             // 16: google.protobuf.Value
+	(*v1.DateRange)(nil),               // 17: tkd.common.v1.DateRange
+	(*v1.Pagination)(nil),              // 18: tkd.common.v1.Pagination
+	(*timestamppb.Timestamp)(nil),      // 19: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),        // 20: google.protobuf.Duration
+	(*emptypb.Empty)(nil),              // 21: google.protobuf.Empty
 }
 var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_depIdxs = []int32{
-	13, // 0: tkd.orthanc_bridge.v1.DICOMTag.value:type_name -> google.protobuf.Value
-	14, // 1: tkd.orthanc_bridge.v1.ListStudiesRequest.date_range:type_name -> tkd.common.v1.DateRange
-	2,  // 2: tkd.orthanc_bridge.v1.ListStudiesRequest.filter_tags:type_name -> tkd.orthanc_bridge.v1.FilterTag
-	15, // 3: tkd.orthanc_bridge.v1.ListStudiesRequest.pagination:type_name -> tkd.common.v1.Pagination
-	16, // 4: tkd.orthanc_bridge.v1.Instance.time:type_name -> google.protobuf.Timestamp
-	1,  // 5: tkd.orthanc_bridge.v1.Instance.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	4,  // 6: tkd.orthanc_bridge.v1.Instance.thumbnail:type_name -> tkd.orthanc_bridge.v1.Thumbnail
-	5,  // 7: tkd.orthanc_bridge.v1.Series.instances:type_name -> tkd.orthanc_bridge.v1.Instance
-	16, // 8: tkd.orthanc_bridge.v1.Series.time:type_name -> google.protobuf.Timestamp
-	1,  // 9: tkd.orthanc_bridge.v1.Series.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	6,  // 10: tkd.orthanc_bridge.v1.Study.series:type_name -> tkd.orthanc_bridge.v1.Series
-	16, // 11: tkd.orthanc_bridge.v1.Study.time:type_name -> google.protobuf.Timestamp
-	1,  // 12: tkd.orthanc_bridge.v1.Study.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	7,  // 13: tkd.orthanc_bridge.v1.ListStudiesResponse.studies:type_name -> tkd.orthanc_bridge.v1.Study
-	0,  // 14: tkd.orthanc_bridge.v1.DownloadStudyRequest.types:type_name -> tkd.orthanc_bridge.v1.DownloadType
-	17, // 15: tkd.orthanc_bridge.v1.DownloadStudyRequest.time_to_live:type_name -> google.protobuf.Duration
-	16, // 16: tkd.orthanc_bridge.v1.DownloadStudyResponse.expire_time:type_name -> google.protobuf.Timestamp
-	17, // 17: tkd.orthanc_bridge.v1.ShareStudyRequest.valid_duration:type_name -> google.protobuf.Duration
-	3,  // 18: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:input_type -> tkd.orthanc_bridge.v1.ListStudiesRequest
-	18, // 19: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:input_type -> google.protobuf.Empty
-	9,  // 20: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:input_type -> tkd.orthanc_bridge.v1.DownloadStudyRequest
-	11, // 21: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:input_type -> tkd.orthanc_bridge.v1.ShareStudyRequest
-	8,  // 22: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:output_type -> tkd.orthanc_bridge.v1.ListStudiesResponse
-	8,  // 23: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:output_type -> tkd.orthanc_bridge.v1.ListStudiesResponse
-	10, // 24: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:output_type -> tkd.orthanc_bridge.v1.DownloadStudyResponse
-	12, // 25: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:output_type -> tkd.orthanc_bridge.v1.ShareStudyResponse
-	22, // [22:26] is the sub-list for method output_type
-	18, // [18:22] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	16, // 0: tkd.orthanc_bridge.v1.DICOMTag.value:type_name -> google.protobuf.Value
+	1,  // 1: tkd.orthanc_bridge.v1.WorklistEntry.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
+	17, // 2: tkd.orthanc_bridge.v1.ListStudiesRequest.date_range:type_name -> tkd.common.v1.DateRange
+	3,  // 3: tkd.orthanc_bridge.v1.ListStudiesRequest.filter_tags:type_name -> tkd.orthanc_bridge.v1.FilterTag
+	18, // 4: tkd.orthanc_bridge.v1.ListStudiesRequest.pagination:type_name -> tkd.common.v1.Pagination
+	19, // 5: tkd.orthanc_bridge.v1.Instance.time:type_name -> google.protobuf.Timestamp
+	1,  // 6: tkd.orthanc_bridge.v1.Instance.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
+	5,  // 7: tkd.orthanc_bridge.v1.Instance.thumbnail:type_name -> tkd.orthanc_bridge.v1.Thumbnail
+	6,  // 8: tkd.orthanc_bridge.v1.Series.instances:type_name -> tkd.orthanc_bridge.v1.Instance
+	19, // 9: tkd.orthanc_bridge.v1.Series.time:type_name -> google.protobuf.Timestamp
+	1,  // 10: tkd.orthanc_bridge.v1.Series.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
+	7,  // 11: tkd.orthanc_bridge.v1.Study.series:type_name -> tkd.orthanc_bridge.v1.Series
+	19, // 12: tkd.orthanc_bridge.v1.Study.time:type_name -> google.protobuf.Timestamp
+	1,  // 13: tkd.orthanc_bridge.v1.Study.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
+	8,  // 14: tkd.orthanc_bridge.v1.ListStudiesResponse.studies:type_name -> tkd.orthanc_bridge.v1.Study
+	0,  // 15: tkd.orthanc_bridge.v1.DownloadStudyRequest.types:type_name -> tkd.orthanc_bridge.v1.DownloadType
+	20, // 16: tkd.orthanc_bridge.v1.DownloadStudyRequest.time_to_live:type_name -> google.protobuf.Duration
+	19, // 17: tkd.orthanc_bridge.v1.DownloadStudyResponse.expire_time:type_name -> google.protobuf.Timestamp
+	20, // 18: tkd.orthanc_bridge.v1.ShareStudyRequest.valid_duration:type_name -> google.protobuf.Duration
+	2,  // 19: tkd.orthanc_bridge.v1.GetWorklistEntriesResponse.entries:type_name -> tkd.orthanc_bridge.v1.WorklistEntry
+	4,  // 20: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:input_type -> tkd.orthanc_bridge.v1.ListStudiesRequest
+	21, // 21: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:input_type -> google.protobuf.Empty
+	10, // 22: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:input_type -> tkd.orthanc_bridge.v1.DownloadStudyRequest
+	12, // 23: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:input_type -> tkd.orthanc_bridge.v1.ShareStudyRequest
+	14, // 24: tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries:input_type -> tkd.orthanc_bridge.v1.GetWorklistEntriesRequest
+	9,  // 25: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:output_type -> tkd.orthanc_bridge.v1.ListStudiesResponse
+	9,  // 26: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:output_type -> tkd.orthanc_bridge.v1.ListStudiesResponse
+	11, // 27: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:output_type -> tkd.orthanc_bridge.v1.DownloadStudyResponse
+	13, // 28: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:output_type -> tkd.orthanc_bridge.v1.ShareStudyResponse
+	15, // 29: tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries:output_type -> tkd.orthanc_bridge.v1.GetWorklistEntriesResponse
+	25, // [25:30] is the sub-list for method output_type
+	20, // [20:25] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_init() }
@@ -1120,7 +1266,7 @@ func file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc), len(file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   12,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

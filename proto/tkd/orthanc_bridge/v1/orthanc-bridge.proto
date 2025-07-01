@@ -26,6 +26,12 @@ message DICOMTag {
     string name = 4;
 }
 
+message WorklistEntry {
+    string name = 1;
+
+    repeated DICOMTag tags = 2;
+}
+
 service OrthancBridge {
     // ListStudies returns a list of studies matching a given criteria.
     rpc ListStudies(ListStudiesRequest) returns (ListStudiesResponse) {
@@ -51,6 +57,12 @@ service OrthancBridge {
     }
 
     rpc ShareStudy(ShareStudyRequest) returns (ShareStudyResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc GetWorklistEntries(GetWorklistEntriesRequest) returns (GetWorklistEntriesResponse) {
         option (tkd.common.v1.auth) = {
             require: AUTH_REQ_REQUIRED,
         };
@@ -240,4 +252,10 @@ message ShareStudyResponse {
     // ViewerUrl is the access url to the shared study
     // on the built-in viewer
     string viewer_url = 2;
+}
+
+message GetWorklistEntriesRequest {}
+
+message GetWorklistEntriesResponse {
+    repeated WorklistEntry entries = 1;
 }
