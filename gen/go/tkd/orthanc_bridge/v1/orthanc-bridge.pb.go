@@ -8,7 +8,8 @@ package orthanc_bridgev1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
+	v11 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/common/v1"
+	v1 "github.com/tierklinik-dobersberg/apis/gen/go/tkd/dicom/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
@@ -97,8 +98,7 @@ type DICOMTag struct {
 	// ValueRepresentation is the VR of the DICOM tag.
 	ValueRepresentation string `protobuf:"bytes,2,opt,name=value_representation,json=valueRepresentation,proto3" json:"value_representation,omitempty"`
 	// Value holds the DICOM tag value(s) encoded as google.protobuf.Value
-	Value    []*structpb.Value `protobuf:"bytes,3,rep,name=value,proto3" json:"value,omitempty"`
-	Sequence []*DICOMTag       `protobuf:"bytes,5,rep,name=sequence,proto3" json:"sequence,omitempty"`
+	Value []*structpb.Value `protobuf:"bytes,3,rep,name=value,proto3" json:"value,omitempty"`
 	// Name holds the pretty-name of the DICOM tag.
 	// For private tags, this field is unset.
 	Name          string `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
@@ -157,13 +157,6 @@ func (x *DICOMTag) GetValue() []*structpb.Value {
 	return nil
 }
 
-func (x *DICOMTag) GetSequence() []*DICOMTag {
-	if x != nil {
-		return x.Sequence
-	}
-	return nil
-}
-
 func (x *DICOMTag) GetName() string {
 	if x != nil {
 		return x.Name
@@ -175,6 +168,7 @@ type WorklistEntry struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Tags          []*DICOMTag            `protobuf:"bytes,2,rep,name=tags,proto3" json:"tags,omitempty"`
+	Elements      []*v1.Element          `protobuf:"bytes,3,rep,name=elements,proto3" json:"elements,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -219,6 +213,13 @@ func (x *WorklistEntry) GetName() string {
 func (x *WorklistEntry) GetTags() []*DICOMTag {
 	if x != nil {
 		return x.Tags
+	}
+	return nil
+}
+
+func (x *WorklistEntry) GetElements() []*v1.Element {
+	if x != nil {
+		return x.Elements
 	}
 	return nil
 }
@@ -281,7 +282,7 @@ type ListStudiesRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// DateRange might be set to only return studies created
 	// withing the specified date-range.
-	DateRange *v1.DateRange `protobuf:"bytes,1,opt,name=date_range,json=dateRange,proto3" json:"date_range,omitempty"`
+	DateRange *v11.DateRange `protobuf:"bytes,1,opt,name=date_range,json=dateRange,proto3" json:"date_range,omitempty"`
 	// OwnerName might be set to only return studies where the
 	// ResponsiblePersonName matches owner_name.
 	OwnerName string `protobuf:"bytes,2,opt,name=owner_name,json=ownerName,proto3" json:"owner_name,omitempty"`
@@ -302,7 +303,7 @@ type ListStudiesRequest struct {
 	// using the wildcard character '*'
 	EnableFuzzyMatching bool `protobuf:"varint,10,opt,name=enable_fuzzy_matching,json=enableFuzzyMatching,proto3" json:"enable_fuzzy_matching,omitempty"`
 	// Pagintion can be set to enable paginated responses.
-	Pagination    *v1.Pagination `protobuf:"bytes,11,opt,name=pagination,proto3" json:"pagination,omitempty"`
+	Pagination    *v11.Pagination `protobuf:"bytes,11,opt,name=pagination,proto3" json:"pagination,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -337,7 +338,7 @@ func (*ListStudiesRequest) Descriptor() ([]byte, []int) {
 	return file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListStudiesRequest) GetDateRange() *v1.DateRange {
+func (x *ListStudiesRequest) GetDateRange() *v11.DateRange {
 	if x != nil {
 		return x.DateRange
 	}
@@ -393,7 +394,7 @@ func (x *ListStudiesRequest) GetEnableFuzzyMatching() bool {
 	return false
 }
 
-func (x *ListStudiesRequest) GetPagination() *v1.Pagination {
+func (x *ListStudiesRequest) GetPagination() *v11.Pagination {
 	if x != nil {
 		return x.Pagination
 	}
@@ -1090,16 +1091,16 @@ var File_tkd_orthanc_bridge_v1_orthanc_bridge_proto protoreflect.FileDescriptor
 
 const file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc = "" +
 	"\n" +
-	"*tkd/orthanc_bridge/v1/orthanc-bridge.proto\x12\x15tkd.orthanc_bridge.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/common/v1/pagination.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1etkd/common/v1/descriptor.proto\"\xce\x01\n" +
+	"*tkd/orthanc_bridge/v1/orthanc-bridge.proto\x12\x15tkd.orthanc_bridge.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1bbuf/validate/validate.proto\x1a\x1etkd/common/v1/pagination.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1etkd/common/v1/descriptor.proto\x1a\x18tkd/dicom/v1/dicom.proto\"\x91\x01\n" +
 	"\bDICOMTag\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\tR\x03tag\x121\n" +
 	"\x14value_representation\x18\x02 \x01(\tR\x13valueRepresentation\x12,\n" +
-	"\x05value\x18\x03 \x03(\v2\x16.google.protobuf.ValueR\x05value\x12;\n" +
-	"\bsequence\x18\x05 \x03(\v2\x1f.tkd.orthanc_bridge.v1.DICOMTagR\bsequence\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\"X\n" +
+	"\x05value\x18\x03 \x03(\v2\x16.google.protobuf.ValueR\x05value\x12\x12\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\"\x8b\x01\n" +
 	"\rWorklistEntry\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x123\n" +
-	"\x04tags\x18\x02 \x03(\v2\x1f.tkd.orthanc_bridge.v1.DICOMTagR\x04tags\"3\n" +
+	"\x04tags\x18\x02 \x03(\v2\x1f.tkd.orthanc_bridge.v1.DICOMTagR\x04tags\x121\n" +
+	"\belements\x18\x03 \x03(\v2\x15.tkd.dicom.v1.ElementR\belements\"3\n" +
 	"\tFilterTag\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\tR\x03tag\x12\x14\n" +
 	"\x05value\x18\x02 \x03(\tR\x05value\"\x9f\x03\n" +
@@ -1220,36 +1221,37 @@ var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_goTypes = []any{
 	(*GetWorklistEntriesRequest)(nil),  // 14: tkd.orthanc_bridge.v1.GetWorklistEntriesRequest
 	(*GetWorklistEntriesResponse)(nil), // 15: tkd.orthanc_bridge.v1.GetWorklistEntriesResponse
 	(*structpb.Value)(nil),             // 16: google.protobuf.Value
-	(*v1.DateRange)(nil),               // 17: tkd.common.v1.DateRange
-	(*v1.Pagination)(nil),              // 18: tkd.common.v1.Pagination
-	(*timestamppb.Timestamp)(nil),      // 19: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),        // 20: google.protobuf.Duration
-	(*emptypb.Empty)(nil),              // 21: google.protobuf.Empty
+	(*v1.Element)(nil),                 // 17: tkd.dicom.v1.Element
+	(*v11.DateRange)(nil),              // 18: tkd.common.v1.DateRange
+	(*v11.Pagination)(nil),             // 19: tkd.common.v1.Pagination
+	(*timestamppb.Timestamp)(nil),      // 20: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),        // 21: google.protobuf.Duration
+	(*emptypb.Empty)(nil),              // 22: google.protobuf.Empty
 }
 var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_depIdxs = []int32{
 	16, // 0: tkd.orthanc_bridge.v1.DICOMTag.value:type_name -> google.protobuf.Value
-	1,  // 1: tkd.orthanc_bridge.v1.DICOMTag.sequence:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	1,  // 2: tkd.orthanc_bridge.v1.WorklistEntry.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	17, // 3: tkd.orthanc_bridge.v1.ListStudiesRequest.date_range:type_name -> tkd.common.v1.DateRange
+	1,  // 1: tkd.orthanc_bridge.v1.WorklistEntry.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
+	17, // 2: tkd.orthanc_bridge.v1.WorklistEntry.elements:type_name -> tkd.dicom.v1.Element
+	18, // 3: tkd.orthanc_bridge.v1.ListStudiesRequest.date_range:type_name -> tkd.common.v1.DateRange
 	3,  // 4: tkd.orthanc_bridge.v1.ListStudiesRequest.filter_tags:type_name -> tkd.orthanc_bridge.v1.FilterTag
-	18, // 5: tkd.orthanc_bridge.v1.ListStudiesRequest.pagination:type_name -> tkd.common.v1.Pagination
-	19, // 6: tkd.orthanc_bridge.v1.Instance.time:type_name -> google.protobuf.Timestamp
+	19, // 5: tkd.orthanc_bridge.v1.ListStudiesRequest.pagination:type_name -> tkd.common.v1.Pagination
+	20, // 6: tkd.orthanc_bridge.v1.Instance.time:type_name -> google.protobuf.Timestamp
 	1,  // 7: tkd.orthanc_bridge.v1.Instance.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
 	5,  // 8: tkd.orthanc_bridge.v1.Instance.thumbnail:type_name -> tkd.orthanc_bridge.v1.Thumbnail
 	6,  // 9: tkd.orthanc_bridge.v1.Series.instances:type_name -> tkd.orthanc_bridge.v1.Instance
-	19, // 10: tkd.orthanc_bridge.v1.Series.time:type_name -> google.protobuf.Timestamp
+	20, // 10: tkd.orthanc_bridge.v1.Series.time:type_name -> google.protobuf.Timestamp
 	1,  // 11: tkd.orthanc_bridge.v1.Series.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
 	7,  // 12: tkd.orthanc_bridge.v1.Study.series:type_name -> tkd.orthanc_bridge.v1.Series
-	19, // 13: tkd.orthanc_bridge.v1.Study.time:type_name -> google.protobuf.Timestamp
+	20, // 13: tkd.orthanc_bridge.v1.Study.time:type_name -> google.protobuf.Timestamp
 	1,  // 14: tkd.orthanc_bridge.v1.Study.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
 	8,  // 15: tkd.orthanc_bridge.v1.ListStudiesResponse.studies:type_name -> tkd.orthanc_bridge.v1.Study
 	0,  // 16: tkd.orthanc_bridge.v1.DownloadStudyRequest.types:type_name -> tkd.orthanc_bridge.v1.DownloadType
-	20, // 17: tkd.orthanc_bridge.v1.DownloadStudyRequest.time_to_live:type_name -> google.protobuf.Duration
-	19, // 18: tkd.orthanc_bridge.v1.DownloadStudyResponse.expire_time:type_name -> google.protobuf.Timestamp
-	20, // 19: tkd.orthanc_bridge.v1.ShareStudyRequest.valid_duration:type_name -> google.protobuf.Duration
+	21, // 17: tkd.orthanc_bridge.v1.DownloadStudyRequest.time_to_live:type_name -> google.protobuf.Duration
+	20, // 18: tkd.orthanc_bridge.v1.DownloadStudyResponse.expire_time:type_name -> google.protobuf.Timestamp
+	21, // 19: tkd.orthanc_bridge.v1.ShareStudyRequest.valid_duration:type_name -> google.protobuf.Duration
 	2,  // 20: tkd.orthanc_bridge.v1.GetWorklistEntriesResponse.entries:type_name -> tkd.orthanc_bridge.v1.WorklistEntry
 	4,  // 21: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:input_type -> tkd.orthanc_bridge.v1.ListStudiesRequest
-	21, // 22: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:input_type -> google.protobuf.Empty
+	22, // 22: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:input_type -> google.protobuf.Empty
 	10, // 23: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:input_type -> tkd.orthanc_bridge.v1.DownloadStudyRequest
 	12, // 24: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:input_type -> tkd.orthanc_bridge.v1.ShareStudyRequest
 	14, // 25: tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries:input_type -> tkd.orthanc_bridge.v1.GetWorklistEntriesRequest

@@ -10,6 +10,7 @@ import "buf/validate/validate.proto";
 import "tkd/common/v1/pagination.proto";
 import "tkd/common/v1/date.proto";
 import "tkd/common/v1/descriptor.proto";
+import "tkd/dicom/v1/dicom.proto";
 
 message DICOMTag {
     // Tag is the DICOM tag value in it's hex format
@@ -21,8 +22,6 @@ message DICOMTag {
     // Value holds the DICOM tag value(s) encoded as google.protobuf.Value
     repeated google.protobuf.Value value = 3;
 
-    repeated DICOMTag sequence = 5;
-
     // Name holds the pretty-name of the DICOM tag.
     // For private tags, this field is unset.
     string name = 4;
@@ -32,6 +31,8 @@ message WorklistEntry {
     string name = 1;
 
     repeated DICOMTag tags = 2;
+
+    repeated tkd.dicom.v1.Element elements = 3;
 }
 
 service OrthancBridge {

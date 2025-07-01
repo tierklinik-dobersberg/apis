@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package tkd.dicom.v1;
+
+enum ValueRepresentation {
+    VR_UNSPECIFIED = 0;
+    VR_STRING_LIST = 1;
+    VR_BYTES = 2;
+    VR_STRING = 3;
+    VR_UINT16_LIST = 4;
+    VR_UINT32_LIST = 5;
+    VR_INT16_LIST = 6;
+    VR_INT32_LIST = 7;
+    VR_FLOAT32_LIST = 8;
+    VR_FLOAT64_LIST = 9;
+    VR_SEQUENCE = 10;
+    VR_ITEM = 11;
+    VR_TAG_LIST = 12;
+    VR_DATE = 13;
+    VR_PIXEL_DATA = 14;
+}
+
+message StringList {
+    repeated string values = 1;
+}
+
+message IntList {
+    repeated int32 values = 2;
+}
+
+message PixelData {
+    // Unsupported for now
+}
+
+message SequenceItem {
+    repeated Element values = 1;
+}
+
+message Sequences {
+    repeated SequenceItem values = 1;
+}
+
+message FloatList {
+    repeated double values = 1;
+}
+
+message Value {
+    oneof value {
+        StringList strings = 1;
+        bytes bytes = 2;
+        IntList ints = 3;
+        PixelData pixel_data = 4;
+        SequenceItem sequence_item = 5;
+        Sequences sequences = 6;
+        FloatList floats = 7;
+    }
+}
+
+message Element {
+    uint32 tag = 1;
+    string tag_name = 2;
+    string tag_display_name = 3;
+    ValueRepresentation vr = 4;
+    string raw_vr = 5;
+    Value value = 6;
+}

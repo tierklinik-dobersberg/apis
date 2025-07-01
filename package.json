@@ -60,6 +60,12 @@
       "esm": "./gen/es/tkd/customer/v1/index.js",
       "default": "./gen/es/tkd/customer/v1/index.js"
     },
+    "./dicom/v1": {
+      "types": "./gen/es/tkd/dicom/v1/index.d.ts",
+      "esm2022": "./gen/es/tkd/dicom/v1/index.js",
+      "esm": "./gen/es/tkd/dicom/v1/index.js",
+      "default": "./gen/es/tkd/dicom/v1/index.js"
+    },
     "./events/v1": {
       "types": "./gen/es/tkd/events/v1/index.d.ts",
       "esm2022": "./gen/es/tkd/events/v1/index.js",
