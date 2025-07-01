@@ -21,6 +21,8 @@ message DICOMTag {
     // Value holds the DICOM tag value(s) encoded as google.protobuf.Value
     repeated google.protobuf.Value value = 3;
 
+    repeated DICOMTag sequence = 5;
+
     // Name holds the pretty-name of the DICOM tag.
     // For private tags, this field is unset.
     string name = 4;
