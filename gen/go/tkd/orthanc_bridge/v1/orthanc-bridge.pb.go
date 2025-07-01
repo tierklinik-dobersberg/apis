@@ -167,8 +167,7 @@ func (x *DICOMTag) GetName() string {
 type WorklistEntry struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Tags          []*DICOMTag            `protobuf:"bytes,2,rep,name=tags,proto3" json:"tags,omitempty"`
-	Elements      []*v1.Element          `protobuf:"bytes,3,rep,name=elements,proto3" json:"elements,omitempty"`
+	Elements      []*v1.Element          `protobuf:"bytes,2,rep,name=elements,proto3" json:"elements,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -208,13 +207,6 @@ func (x *WorklistEntry) GetName() string {
 		return x.Name
 	}
 	return ""
-}
-
-func (x *WorklistEntry) GetTags() []*DICOMTag {
-	if x != nil {
-		return x.Tags
-	}
-	return nil
 }
 
 func (x *WorklistEntry) GetElements() []*v1.Element {
@@ -1096,11 +1088,10 @@ const file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_rawDesc = "" +
 	"\x03tag\x18\x01 \x01(\tR\x03tag\x121\n" +
 	"\x14value_representation\x18\x02 \x01(\tR\x13valueRepresentation\x12,\n" +
 	"\x05value\x18\x03 \x03(\v2\x16.google.protobuf.ValueR\x05value\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\"\x8b\x01\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\"V\n" +
 	"\rWorklistEntry\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x123\n" +
-	"\x04tags\x18\x02 \x03(\v2\x1f.tkd.orthanc_bridge.v1.DICOMTagR\x04tags\x121\n" +
-	"\belements\x18\x03 \x03(\v2\x15.tkd.dicom.v1.ElementR\belements\"3\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x121\n" +
+	"\belements\x18\x02 \x03(\v2\x15.tkd.dicom.v1.ElementR\belements\"3\n" +
 	"\tFilterTag\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\tR\x03tag\x12\x14\n" +
 	"\x05value\x18\x02 \x03(\tR\x05value\"\x9f\x03\n" +
@@ -1230,41 +1221,40 @@ var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_goTypes = []any{
 }
 var file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_depIdxs = []int32{
 	16, // 0: tkd.orthanc_bridge.v1.DICOMTag.value:type_name -> google.protobuf.Value
-	1,  // 1: tkd.orthanc_bridge.v1.WorklistEntry.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	17, // 2: tkd.orthanc_bridge.v1.WorklistEntry.elements:type_name -> tkd.dicom.v1.Element
-	18, // 3: tkd.orthanc_bridge.v1.ListStudiesRequest.date_range:type_name -> tkd.common.v1.DateRange
-	3,  // 4: tkd.orthanc_bridge.v1.ListStudiesRequest.filter_tags:type_name -> tkd.orthanc_bridge.v1.FilterTag
-	19, // 5: tkd.orthanc_bridge.v1.ListStudiesRequest.pagination:type_name -> tkd.common.v1.Pagination
-	20, // 6: tkd.orthanc_bridge.v1.Instance.time:type_name -> google.protobuf.Timestamp
-	1,  // 7: tkd.orthanc_bridge.v1.Instance.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	5,  // 8: tkd.orthanc_bridge.v1.Instance.thumbnail:type_name -> tkd.orthanc_bridge.v1.Thumbnail
-	6,  // 9: tkd.orthanc_bridge.v1.Series.instances:type_name -> tkd.orthanc_bridge.v1.Instance
-	20, // 10: tkd.orthanc_bridge.v1.Series.time:type_name -> google.protobuf.Timestamp
-	1,  // 11: tkd.orthanc_bridge.v1.Series.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	7,  // 12: tkd.orthanc_bridge.v1.Study.series:type_name -> tkd.orthanc_bridge.v1.Series
-	20, // 13: tkd.orthanc_bridge.v1.Study.time:type_name -> google.protobuf.Timestamp
-	1,  // 14: tkd.orthanc_bridge.v1.Study.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
-	8,  // 15: tkd.orthanc_bridge.v1.ListStudiesResponse.studies:type_name -> tkd.orthanc_bridge.v1.Study
-	0,  // 16: tkd.orthanc_bridge.v1.DownloadStudyRequest.types:type_name -> tkd.orthanc_bridge.v1.DownloadType
-	21, // 17: tkd.orthanc_bridge.v1.DownloadStudyRequest.time_to_live:type_name -> google.protobuf.Duration
-	20, // 18: tkd.orthanc_bridge.v1.DownloadStudyResponse.expire_time:type_name -> google.protobuf.Timestamp
-	21, // 19: tkd.orthanc_bridge.v1.ShareStudyRequest.valid_duration:type_name -> google.protobuf.Duration
-	2,  // 20: tkd.orthanc_bridge.v1.GetWorklistEntriesResponse.entries:type_name -> tkd.orthanc_bridge.v1.WorklistEntry
-	4,  // 21: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:input_type -> tkd.orthanc_bridge.v1.ListStudiesRequest
-	22, // 22: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:input_type -> google.protobuf.Empty
-	10, // 23: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:input_type -> tkd.orthanc_bridge.v1.DownloadStudyRequest
-	12, // 24: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:input_type -> tkd.orthanc_bridge.v1.ShareStudyRequest
-	14, // 25: tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries:input_type -> tkd.orthanc_bridge.v1.GetWorklistEntriesRequest
-	9,  // 26: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:output_type -> tkd.orthanc_bridge.v1.ListStudiesResponse
-	9,  // 27: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:output_type -> tkd.orthanc_bridge.v1.ListStudiesResponse
-	11, // 28: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:output_type -> tkd.orthanc_bridge.v1.DownloadStudyResponse
-	13, // 29: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:output_type -> tkd.orthanc_bridge.v1.ShareStudyResponse
-	15, // 30: tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries:output_type -> tkd.orthanc_bridge.v1.GetWorklistEntriesResponse
-	26, // [26:31] is the sub-list for method output_type
-	21, // [21:26] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	17, // 1: tkd.orthanc_bridge.v1.WorklistEntry.elements:type_name -> tkd.dicom.v1.Element
+	18, // 2: tkd.orthanc_bridge.v1.ListStudiesRequest.date_range:type_name -> tkd.common.v1.DateRange
+	3,  // 3: tkd.orthanc_bridge.v1.ListStudiesRequest.filter_tags:type_name -> tkd.orthanc_bridge.v1.FilterTag
+	19, // 4: tkd.orthanc_bridge.v1.ListStudiesRequest.pagination:type_name -> tkd.common.v1.Pagination
+	20, // 5: tkd.orthanc_bridge.v1.Instance.time:type_name -> google.protobuf.Timestamp
+	1,  // 6: tkd.orthanc_bridge.v1.Instance.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
+	5,  // 7: tkd.orthanc_bridge.v1.Instance.thumbnail:type_name -> tkd.orthanc_bridge.v1.Thumbnail
+	6,  // 8: tkd.orthanc_bridge.v1.Series.instances:type_name -> tkd.orthanc_bridge.v1.Instance
+	20, // 9: tkd.orthanc_bridge.v1.Series.time:type_name -> google.protobuf.Timestamp
+	1,  // 10: tkd.orthanc_bridge.v1.Series.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
+	7,  // 11: tkd.orthanc_bridge.v1.Study.series:type_name -> tkd.orthanc_bridge.v1.Series
+	20, // 12: tkd.orthanc_bridge.v1.Study.time:type_name -> google.protobuf.Timestamp
+	1,  // 13: tkd.orthanc_bridge.v1.Study.tags:type_name -> tkd.orthanc_bridge.v1.DICOMTag
+	8,  // 14: tkd.orthanc_bridge.v1.ListStudiesResponse.studies:type_name -> tkd.orthanc_bridge.v1.Study
+	0,  // 15: tkd.orthanc_bridge.v1.DownloadStudyRequest.types:type_name -> tkd.orthanc_bridge.v1.DownloadType
+	21, // 16: tkd.orthanc_bridge.v1.DownloadStudyRequest.time_to_live:type_name -> google.protobuf.Duration
+	20, // 17: tkd.orthanc_bridge.v1.DownloadStudyResponse.expire_time:type_name -> google.protobuf.Timestamp
+	21, // 18: tkd.orthanc_bridge.v1.ShareStudyRequest.valid_duration:type_name -> google.protobuf.Duration
+	2,  // 19: tkd.orthanc_bridge.v1.GetWorklistEntriesResponse.entries:type_name -> tkd.orthanc_bridge.v1.WorklistEntry
+	4,  // 20: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:input_type -> tkd.orthanc_bridge.v1.ListStudiesRequest
+	22, // 21: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:input_type -> google.protobuf.Empty
+	10, // 22: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:input_type -> tkd.orthanc_bridge.v1.DownloadStudyRequest
+	12, // 23: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:input_type -> tkd.orthanc_bridge.v1.ShareStudyRequest
+	14, // 24: tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries:input_type -> tkd.orthanc_bridge.v1.GetWorklistEntriesRequest
+	9,  // 25: tkd.orthanc_bridge.v1.OrthancBridge.ListStudies:output_type -> tkd.orthanc_bridge.v1.ListStudiesResponse
+	9,  // 26: tkd.orthanc_bridge.v1.OrthancBridge.ListRecentStudies:output_type -> tkd.orthanc_bridge.v1.ListStudiesResponse
+	11, // 27: tkd.orthanc_bridge.v1.OrthancBridge.DownloadStudy:output_type -> tkd.orthanc_bridge.v1.DownloadStudyResponse
+	13, // 28: tkd.orthanc_bridge.v1.OrthancBridge.ShareStudy:output_type -> tkd.orthanc_bridge.v1.ShareStudyResponse
+	15, // 29: tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries:output_type -> tkd.orthanc_bridge.v1.GetWorklistEntriesResponse
+	25, // [25:30] is the sub-list for method output_type
+	20, // [20:25] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_tkd_orthanc_bridge_v1_orthanc_bridge_proto_init() }

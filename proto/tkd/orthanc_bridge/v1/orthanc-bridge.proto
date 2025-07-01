@@ -30,9 +30,7 @@ message DICOMTag {
 message WorklistEntry {
     string name = 1;
 
-    repeated DICOMTag tags = 2;
-
-    repeated tkd.dicom.v1.Element elements = 3;
+    repeated tkd.dicom.v1.Element elements = 2;
 }
 
 service OrthancBridge {
