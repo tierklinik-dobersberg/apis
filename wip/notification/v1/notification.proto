@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+// NotificationService implements different ways of sending notifications and messages.
+service NotificationService {
+    // SendSMS schedules sending SMS messages to one or more reciepients.
+    rpc SendSMS(SendSMSRequest) returns (SendSMSResponse);
+
+    // SendEmail scheduls sending an E-Mail to one or more reciepients.
+    rpc SendEMail(SendEMailRequest) returns (SendEMailResponse);
+}
+
+message SendSMSRequest {
+    string to = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string message = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    google.protobuf.Timestamp scheduled_time = 3;
+}
+
+message SendSMSResponse {}
+
+
+message SendEMailResponse {}
+
+message SendEMailRequest {
+    string to = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string subject = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    string html_message = 3;
+    string text_message = 4;
+
+    repeated string cc = 5;
+    repeated string bcc = 6;
+
+    map<string, string> additional_headers = 7;
+
+    repeated EMailAttachment attachments = 8;
+
+    google.protobuf.Timestamp scheduled_time = 9;
+}
+
+message EMailAttachment {
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string content_type = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    oneof content {
+        string url = 3;
+        bytes data = 4;
+    }
+}

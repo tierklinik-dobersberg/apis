@@ -92,6 +92,11 @@ export declare enum ParticipantType {
    * @generated from enum value: PARTICIPANT_TYPE_OUTBOUND_RULE = 5;
    */
   OUTBOUND_RULE = 5,
+
+  /**
+   * @generated from enum value: PARTICIPANT_TYPE_IVR = 6;
+   */
+  IVR = 6,
 }
 
 /**

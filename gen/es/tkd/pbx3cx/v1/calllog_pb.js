@@ -46,6 +46,7 @@ export const ParticipantType = /*@__PURE__*/ proto3.makeEnum(
     {no: 3, name: "PARTICIPANT_TYPE_QUEUE", localName: "QUEUE"},
     {no: 4, name: "PARTICIPANT_TYPE_SCRIPT", localName: "SCRIPT"},
     {no: 5, name: "PARTICIPANT_TYPE_OUTBOUND_RULE", localName: "OUTBOUND_RULE"},
+    {no: 6, name: "PARTICIPANT_TYPE_IVR", localName: "IVR"},
   ],
 );
 

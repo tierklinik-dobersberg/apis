@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package tkd.customer.v1;
+
+service CustomerAppService {
+    //
+    // Session Management
+    //
+
+    // Login provides a mechanism to log into the customer app. Login is performed
+    // by entering the customers last name and phone number, receiving a one-time-password
+    // if the phone number is registered for the customer and verified and finally sending
+    // the OTP using a second Login RPC.
+    rpc Login(LoginRequest) returns (LoginResponse);
+
+    // Logout invalidates the current customer session and forces a new login.
+    rpc Logout(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+    //
+    // Profile and Settings
+    //
+
+    // GetProfile returns the current customer profile.
+    rpc GetProfile(GetProfileRequest) returns (GetProfileResponse);
+
+    // AddReminder adds a new vaccination or appointment reminder to the customer profile.
+    rpc AddReminder(AddReminderRequest) returns (AddReminderResponse);
+
+    // DeleteReminder deletes an existing vaccination or appointment reminder from the customer
+    // profile.
+    rpc DeleteReminder(DeleteReminderRequest) returns (google.protobuf.Empty);
+
+    //
+    // Appointments
+    //
+
+    // RequestAppointment requests a new appointment at the clinic.
+    rpc RequestAppointment(RequestAppointmentRequest) returns (RequestAppointmentResponse);
+
+    // ListAppointments returns a list of all appointment for the customer matching the
+    // given query.
+    rpc ListAppointments(ListAppointmentsRequest) returns (ListAppointmentsResponse);
+
+    // CancelAppointment cancels an existing appointment.
+    // The server might return PreconditionFailed if the appointment cannot be canceled
+    // via the CustomerApp and requires a phone-call with one of the employees.
+    rpc CancelAppointment(CancelAppointmentRequest) returns (google.protobuf.Empty);
+
+    //
+    // Species and Treatment data (read-only)
+    //
+
+    // ListTreatments returns a list of all requestable treatments (that is, treatments registered
+    // at the treatment service with the allow_self_booking field set to true).
+    rpc ListTreatments(ListTreatmentsRequest) returns (ListTreatmentsResponse);
+
+    // ListSpecies returns a list of all known and registered species.
+    rpc ListSpecies(ListSpeciesRequest) returns (ListSpeciesResponse);
+
+    //
+    // File Sharing
+    //
+
+    // ShareFile might be used to share a document with either the clinic or the customer.
+    rpc ShareFile(ShareFileRequest) returns (ShareFileResponse);
+
+    // ListSharedFiles can be used to query all documents shared with the clinic.
+    rpc ListSharedFiles(ListSharedFilesRequest) returns (ListSharedFilesResponse);
+
+    // DeleteSharedFile can be used to delete a shared document. Only documents shared by the customer
+    // can be deleted.
+    rpc DeleteSharedFile(DeleteSharedFileRequest) returns (google.protobuf.Empty);
+
+    //
+    // Messaging
+    //
+
+    // SendMessage sends a message to either an existing conversation or to a new one
+    // depending on the conversation_id field in the request message.
+    rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
+
+    // ListConversations returns a overview of all conversatios, the first message for each
+    // conversation and the total number of messages per conversation.
+    rpc ListConversations(ListConversationsRequest) returns (ListConversationsResponse);
+
+    // GetConversation retrieves a full conversation.
+    rpc GetConversation(GetConversationRequest) returns (GetConversationResponse);
+
+    //
+    // Patients
+    //
+
+    // GetPatient returns all data for a single patient.
+    rpc GetPatient(GetPatientRequest) returns (GetPatientResponse);
+
+    // ListPatients returns an overview of all patients for the logged-in customer.
+    rpc ListPatients(ListPatientsRequest) returns (ListPatientsResponse);
+
+    // SetPatientPicture updates or deletes the picture of a patient.
+    rpc SetPatientPicture(SetPatientPictureRequest) returns (SetPatientPictureResponse);
+
+    // UpdatePatientData updates the base data of a patient. Base-data includes fields like
+    // birthday, species and breed or the current weight. Some fields are stored as a timeline (like the current weight)
+    // in order to track changes to those metrics. Not all fields of a patient can be modified as some are considered read-only
+    // and can only be changed by veterinarians or other employees.
+    rpc UpdatePatientData(UpdatePatientDataRequest) returns (UpdatePatientDataResponse);
+}
+
+message LoginRequest {
+    string last_name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string phone_number = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    string token = 3;
+}
+
+message Reminder {
+    oneof kind {
+        string phone_number = 1;
+        string email_address = 2;
+
+        option (buf.validate.oneof).required = true;
+    }
+
+    bool disabled = 3;
+}
+
+message Configuration {
+    repeated Reminder appointment_reminders = 1;
+    repeated Reminder vaccination_reminders = 2; 
+}

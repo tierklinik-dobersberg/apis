@@ -34,6 +34,7 @@ enum ParticipantType {
     PARTICIPANT_TYPE_QUEUE = 3;
     PARTICIPANT_TYPE_SCRIPT = 4;
     PARTICIPANT_TYPE_OUTBOUND_RULE = 5;
+    PARTICIPANT_TYPE_IVR = 6;
 }
 
 message CallEntry {

@@ -143,6 +143,7 @@ const (
 	ParticipantType_PARTICIPANT_TYPE_QUEUE         ParticipantType = 3
 	ParticipantType_PARTICIPANT_TYPE_SCRIPT        ParticipantType = 4
 	ParticipantType_PARTICIPANT_TYPE_OUTBOUND_RULE ParticipantType = 5
+	ParticipantType_PARTICIPANT_TYPE_IVR           ParticipantType = 6
 )
 
 // Enum value maps for ParticipantType.
@@ -154,6 +155,7 @@ var (
 		3: "PARTICIPANT_TYPE_QUEUE",
 		4: "PARTICIPANT_TYPE_SCRIPT",
 		5: "PARTICIPANT_TYPE_OUTBOUND_RULE",
+		6: "PARTICIPANT_TYPE_IVR",
 	}
 	ParticipantType_value = map[string]int32{
 		"PARTICIPANT_TYPE_UNSPECIFIED":   0,
@@ -162,6 +164,7 @@ var (
 		"PARTICIPANT_TYPE_QUEUE":         3,
 		"PARTICIPANT_TYPE_SCRIPT":        4,
 		"PARTICIPANT_TYPE_OUTBOUND_RULE": 5,
+		"PARTICIPANT_TYPE_IVR":           6,
 	}
 )
 
@@ -2600,14 +2603,15 @@ const file_tkd_pbx3cx_v1_calllog_proto_rawDesc = "" +
 	"\x13CALL_STATUS_INBOUND\x10\x01\x12\x18\n" +
 	"\x14CALL_STATUS_OUTBOUND\x10\x02\x12\x16\n" +
 	"\x12CALL_STATUS_MISSED\x10\x03\x12\x1b\n" +
-	"\x17CALL_STATUS_NOTANSWERED\x10\x04*\xd4\x01\n" +
+	"\x17CALL_STATUS_NOTANSWERED\x10\x04*\xee\x01\n" +
 	"\x0fParticipantType\x12 \n" +
 	"\x1cPARTICIPANT_TYPE_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aPARTICIPANT_TYPE_EXTENSION\x10\x01\x12\"\n" +
 	"\x1ePARTICIPANT_TYPE_EXTERNAL_LINE\x10\x02\x12\x1a\n" +
 	"\x16PARTICIPANT_TYPE_QUEUE\x10\x03\x12\x1b\n" +
 	"\x17PARTICIPANT_TYPE_SCRIPT\x10\x04\x12\"\n" +
-	"\x1ePARTICIPANT_TYPE_OUTBOUND_RULE\x10\x052\xcd\r\n" +
+	"\x1ePARTICIPANT_TYPE_OUTBOUND_RULE\x10\x05\x12\x18\n" +
+	"\x14PARTICIPANT_TYPE_IVR\x10\x062\xcd\r\n" +
 	"\vCallService\x12M\n" +
 	"\n" +
 	"RecordCall\x12 .tkd.pbx3cx.v1.RecordCallRequest\x1a\x16.google.protobuf.Empty\"\x05\xb2~\x02\b\x01\x12X\n" +
