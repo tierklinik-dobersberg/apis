@@ -49,6 +49,12 @@ const (
 	// OrthancBridgeGetWorklistEntriesProcedure is the fully-qualified name of the OrthancBridge's
 	// GetWorklistEntries RPC.
 	OrthancBridgeGetWorklistEntriesProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/GetWorklistEntries"
+	// OrthancBridgeDeleteWorklistEntryProcedure is the fully-qualified name of the OrthancBridge's
+	// DeleteWorklistEntry RPC.
+	OrthancBridgeDeleteWorklistEntryProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/DeleteWorklistEntry"
+	// OrthancBridgeCreateWorklistEntryProcedure is the fully-qualified name of the OrthancBridge's
+	// CreateWorklistEntry RPC.
+	OrthancBridgeCreateWorklistEntryProcedure = "/tkd.orthanc_bridge.v1.OrthancBridge/CreateWorklistEntry"
 )
 
 // OrthancBridgeClient is a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
@@ -63,6 +69,8 @@ type OrthancBridgeClient interface {
 	DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error)
 	ShareStudy(context.Context, *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error)
 	GetWorklistEntries(context.Context, *connect_go.Request[v1.GetWorklistEntriesRequest]) (*connect_go.Response[v1.GetWorklistEntriesResponse], error)
+	DeleteWorklistEntry(context.Context, *connect_go.Request[v1.DeleteWorklistEntryRequest]) (*connect_go.Response[emptypb.Empty], error)
+	CreateWorklistEntry(context.Context, *connect_go.Request[v1.CreateWorklistEntryRequest]) (*connect_go.Response[v1.WorklistEntry], error)
 }
 
 // NewOrthancBridgeClient constructs a client for the tkd.orthanc_bridge.v1.OrthancBridge service.
@@ -100,16 +108,28 @@ func NewOrthancBridgeClient(httpClient connect_go.HTTPClient, baseURL string, op
 			baseURL+OrthancBridgeGetWorklistEntriesProcedure,
 			opts...,
 		),
+		deleteWorklistEntry: connect_go.NewClient[v1.DeleteWorklistEntryRequest, emptypb.Empty](
+			httpClient,
+			baseURL+OrthancBridgeDeleteWorklistEntryProcedure,
+			opts...,
+		),
+		createWorklistEntry: connect_go.NewClient[v1.CreateWorklistEntryRequest, v1.WorklistEntry](
+			httpClient,
+			baseURL+OrthancBridgeCreateWorklistEntryProcedure,
+			opts...,
+		),
 	}
 }
 
 // orthancBridgeClient implements OrthancBridgeClient.
 type orthancBridgeClient struct {
-	listStudies        *connect_go.Client[v1.ListStudiesRequest, v1.ListStudiesResponse]
-	listRecentStudies  *connect_go.Client[emptypb.Empty, v1.ListStudiesResponse]
-	downloadStudy      *connect_go.Client[v1.DownloadStudyRequest, v1.DownloadStudyResponse]
-	shareStudy         *connect_go.Client[v1.ShareStudyRequest, v1.ShareStudyResponse]
-	getWorklistEntries *connect_go.Client[v1.GetWorklistEntriesRequest, v1.GetWorklistEntriesResponse]
+	listStudies         *connect_go.Client[v1.ListStudiesRequest, v1.ListStudiesResponse]
+	listRecentStudies   *connect_go.Client[emptypb.Empty, v1.ListStudiesResponse]
+	downloadStudy       *connect_go.Client[v1.DownloadStudyRequest, v1.DownloadStudyResponse]
+	shareStudy          *connect_go.Client[v1.ShareStudyRequest, v1.ShareStudyResponse]
+	getWorklistEntries  *connect_go.Client[v1.GetWorklistEntriesRequest, v1.GetWorklistEntriesResponse]
+	deleteWorklistEntry *connect_go.Client[v1.DeleteWorklistEntryRequest, emptypb.Empty]
+	createWorklistEntry *connect_go.Client[v1.CreateWorklistEntryRequest, v1.WorklistEntry]
 }
 
 // ListStudies calls tkd.orthanc_bridge.v1.OrthancBridge.ListStudies.
@@ -137,6 +157,16 @@ func (c *orthancBridgeClient) GetWorklistEntries(ctx context.Context, req *conne
 	return c.getWorklistEntries.CallUnary(ctx, req)
 }
 
+// DeleteWorklistEntry calls tkd.orthanc_bridge.v1.OrthancBridge.DeleteWorklistEntry.
+func (c *orthancBridgeClient) DeleteWorklistEntry(ctx context.Context, req *connect_go.Request[v1.DeleteWorklistEntryRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.deleteWorklistEntry.CallUnary(ctx, req)
+}
+
+// CreateWorklistEntry calls tkd.orthanc_bridge.v1.OrthancBridge.CreateWorklistEntry.
+func (c *orthancBridgeClient) CreateWorklistEntry(ctx context.Context, req *connect_go.Request[v1.CreateWorklistEntryRequest]) (*connect_go.Response[v1.WorklistEntry], error) {
+	return c.createWorklistEntry.CallUnary(ctx, req)
+}
+
 // OrthancBridgeHandler is an implementation of the tkd.orthanc_bridge.v1.OrthancBridge service.
 type OrthancBridgeHandler interface {
 	// ListStudies returns a list of studies matching a given criteria.
@@ -149,6 +179,8 @@ type OrthancBridgeHandler interface {
 	DownloadStudy(context.Context, *connect_go.Request[v1.DownloadStudyRequest]) (*connect_go.Response[v1.DownloadStudyResponse], error)
 	ShareStudy(context.Context, *connect_go.Request[v1.ShareStudyRequest]) (*connect_go.Response[v1.ShareStudyResponse], error)
 	GetWorklistEntries(context.Context, *connect_go.Request[v1.GetWorklistEntriesRequest]) (*connect_go.Response[v1.GetWorklistEntriesResponse], error)
+	DeleteWorklistEntry(context.Context, *connect_go.Request[v1.DeleteWorklistEntryRequest]) (*connect_go.Response[emptypb.Empty], error)
+	CreateWorklistEntry(context.Context, *connect_go.Request[v1.CreateWorklistEntryRequest]) (*connect_go.Response[v1.WorklistEntry], error)
 }
 
 // NewOrthancBridgeHandler builds an HTTP handler from the service implementation. It returns the
@@ -182,6 +214,16 @@ func NewOrthancBridgeHandler(svc OrthancBridgeHandler, opts ...connect_go.Handle
 		svc.GetWorklistEntries,
 		opts...,
 	)
+	orthancBridgeDeleteWorklistEntryHandler := connect_go.NewUnaryHandler(
+		OrthancBridgeDeleteWorklistEntryProcedure,
+		svc.DeleteWorklistEntry,
+		opts...,
+	)
+	orthancBridgeCreateWorklistEntryHandler := connect_go.NewUnaryHandler(
+		OrthancBridgeCreateWorklistEntryProcedure,
+		svc.CreateWorklistEntry,
+		opts...,
+	)
 	return "/tkd.orthanc_bridge.v1.OrthancBridge/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case OrthancBridgeListStudiesProcedure:
@@ -194,6 +236,10 @@ func NewOrthancBridgeHandler(svc OrthancBridgeHandler, opts ...connect_go.Handle
 			orthancBridgeShareStudyHandler.ServeHTTP(w, r)
 		case OrthancBridgeGetWorklistEntriesProcedure:
 			orthancBridgeGetWorklistEntriesHandler.ServeHTTP(w, r)
+		case OrthancBridgeDeleteWorklistEntryProcedure:
+			orthancBridgeDeleteWorklistEntryHandler.ServeHTTP(w, r)
+		case OrthancBridgeCreateWorklistEntryProcedure:
+			orthancBridgeCreateWorklistEntryHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -221,4 +267,12 @@ func (UnimplementedOrthancBridgeHandler) ShareStudy(context.Context, *connect_go
 
 func (UnimplementedOrthancBridgeHandler) GetWorklistEntries(context.Context, *connect_go.Request[v1.GetWorklistEntriesRequest]) (*connect_go.Response[v1.GetWorklistEntriesResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.GetWorklistEntries is not implemented"))
+}
+
+func (UnimplementedOrthancBridgeHandler) DeleteWorklistEntry(context.Context, *connect_go.Request[v1.DeleteWorklistEntryRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.DeleteWorklistEntry is not implemented"))
+}
+
+func (UnimplementedOrthancBridgeHandler) CreateWorklistEntry(context.Context, *connect_go.Request[v1.CreateWorklistEntryRequest]) (*connect_go.Response[v1.WorklistEntry], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.orthanc_bridge.v1.OrthancBridge.CreateWorklistEntry is not implemented"))
 }

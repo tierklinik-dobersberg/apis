@@ -35,6 +35,21 @@ export const CallStatus = /*@__PURE__*/ proto3.makeEnum(
 );
 
 /**
+ * @generated from enum tkd.pbx3cx.v1.ParticipantType
+ */
+export const ParticipantType = /*@__PURE__*/ proto3.makeEnum(
+  "tkd.pbx3cx.v1.ParticipantType",
+  [
+    {no: 0, name: "PARTICIPANT_TYPE_UNSPECIFIED", localName: "UNSPECIFIED"},
+    {no: 1, name: "PARTICIPANT_TYPE_EXTENSION", localName: "EXTENSION"},
+    {no: 2, name: "PARTICIPANT_TYPE_EXTERNAL_LINE", localName: "EXTERNAL_LINE"},
+    {no: 3, name: "PARTICIPANT_TYPE_QUEUE", localName: "QUEUE"},
+    {no: 4, name: "PARTICIPANT_TYPE_SCRIPT", localName: "SCRIPT"},
+    {no: 5, name: "PARTICIPANT_TYPE_OUTBOUND_RULE", localName: "OUTBOUND_RULE"},
+  ],
+);
+
+/**
  * @generated from message tkd.pbx3cx.v1.CallEntry
  */
 export const CallEntry = /*@__PURE__*/ proto3.makeMessageType(
@@ -55,6 +70,9 @@ export const CallEntry = /*@__PURE__*/ proto3.makeMessageType(
     { no: 13, name: "direction", kind: "enum", T: proto3.getEnumType(CallDirection) },
     { no: 14, name: "queue_extension", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 15, name: "status", kind: "enum", T: proto3.getEnumType(CallStatus) },
+    { no: 16, name: "agent_type", kind: "enum", T: proto3.getEnumType(ParticipantType) },
+    { no: 17, name: "caller_type", kind: "enum", T: proto3.getEnumType(ParticipantType) },
+    { no: 18, name: "call_chain", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ],
 );
 

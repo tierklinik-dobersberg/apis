@@ -68,6 +68,18 @@ service OrthancBridge {
             require: AUTH_REQ_REQUIRED,
         };
     }
+
+    rpc DeleteWorklistEntry(DeleteWorklistEntryRequest) returns (google.protobuf.Empty) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    rpc CreateWorklistEntry(CreateWorklistEntryRequest) returns (WorklistEntry) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
 }
 
 message FilterTag {
@@ -259,4 +271,26 @@ message GetWorklistEntriesRequest {}
 
 message GetWorklistEntriesResponse {
     repeated WorklistEntry entries = 1;
+}
+
+message DeleteWorklistEntryRequest {
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message CreateWorklistEntryRequest {
+    string owner_id = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    string patient_id = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    string scheduled_aet = 3 [
+        (buf.validate.field).required = true
+    ];
+
+    string step_description = 4;
 }

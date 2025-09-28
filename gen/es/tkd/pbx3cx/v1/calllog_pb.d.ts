@@ -60,6 +60,41 @@ export declare enum CallStatus {
 }
 
 /**
+ * @generated from enum tkd.pbx3cx.v1.ParticipantType
+ */
+export declare enum ParticipantType {
+  /**
+   * @generated from enum value: PARTICIPANT_TYPE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: PARTICIPANT_TYPE_EXTENSION = 1;
+   */
+  EXTENSION = 1,
+
+  /**
+   * @generated from enum value: PARTICIPANT_TYPE_EXTERNAL_LINE = 2;
+   */
+  EXTERNAL_LINE = 2,
+
+  /**
+   * @generated from enum value: PARTICIPANT_TYPE_QUEUE = 3;
+   */
+  QUEUE = 3,
+
+  /**
+   * @generated from enum value: PARTICIPANT_TYPE_SCRIPT = 4;
+   */
+  SCRIPT = 4,
+
+  /**
+   * @generated from enum value: PARTICIPANT_TYPE_OUTBOUND_RULE = 5;
+   */
+  OUTBOUND_RULE = 5,
+}
+
+/**
  * @generated from message tkd.pbx3cx.v1.CallEntry
  */
 export declare class CallEntry extends Message<CallEntry> {
@@ -140,6 +175,21 @@ export declare class CallEntry extends Message<CallEntry> {
    * @generated from field: tkd.pbx3cx.v1.CallStatus status = 15;
    */
   status: CallStatus;
+
+  /**
+   * @generated from field: tkd.pbx3cx.v1.ParticipantType agent_type = 16;
+   */
+  agentType: ParticipantType;
+
+  /**
+   * @generated from field: tkd.pbx3cx.v1.ParticipantType caller_type = 17;
+   */
+  callerType: ParticipantType;
+
+  /**
+   * @generated from field: repeated string call_chain = 18;
+   */
+  callChain: string[];
 
   constructor(data?: PartialMessage<CallEntry>);
 

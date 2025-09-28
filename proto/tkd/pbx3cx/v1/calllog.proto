@@ -27,6 +27,15 @@ enum CallStatus {
     CALL_STATUS_NOTANSWERED = 4;
 }
 
+enum ParticipantType {
+    PARTICIPANT_TYPE_UNSPECIFIED = 0;
+    PARTICIPANT_TYPE_EXTENSION = 1;
+    PARTICIPANT_TYPE_EXTERNAL_LINE = 2;
+    PARTICIPANT_TYPE_QUEUE = 3;
+    PARTICIPANT_TYPE_SCRIPT = 4;
+    PARTICIPANT_TYPE_OUTBOUND_RULE = 5;
+}
+
 message CallEntry {
     string id = 1;
     string caller = 2;
@@ -47,6 +56,10 @@ message CallEntry {
     CallDirection direction = 13;
     string queue_extension = 14;
     CallStatus status = 15;
+
+    ParticipantType agent_type = 16;
+    ParticipantType caller_type = 17;
+    repeated string call_chain = 18;
 }
 
 message OnCall {
