@@ -6,4 +6,4 @@ lint:
   use:
     - DEFAULT
 deps:
-  - buf.build/bufbuild/protovalidate:v0.9.0
+  - buf.build/bufbuild/protovalidate:v1.0.0

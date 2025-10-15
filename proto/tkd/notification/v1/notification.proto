@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package tkd.notification.v1;
+
+import "tkd/common/v1/descriptor.proto";
+import "google/protobuf/timestamp.proto";
+import "buf/validate/validate.proto";
+
+// NotificationService implements different ways of sending notifications and messages.
+service NotificationService {
+    // SendSMS schedules sending a SMS message to one or more reciepients.
+    rpc SendSMS(SendSMSRequest) returns (SendSMSResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+
+    // SendEmail scheduls sending an E-Mail to one or more reciepients.
+    rpc SendEMail(SendEMailRequest) returns (SendEMailResponse) {
+        option (tkd.common.v1.auth) = {
+            require: AUTH_REQ_REQUIRED,
+        };
+    }
+}
+
+message SendSMSRequest {
+    // To holds the receipients phone number.
+    string to = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // Message holds the message to send.
+    string message = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // From may be set to use a custom sender name. Not all SMS
+    // providers support using a custom sender name so this field
+    // may be ignored.
+    string from = 3;
+}
+
+message SendSMSResponse {
+    // Empty for now
+}
+
+message SendEMailResponse {
+    // Empty for now
+}
+
+message SendEMailRequest {
+    // To holds the receipients email address.
+    string to = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // Subject holds the email subject.
+    string subject = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // HtmlMessage holds the content of the email as text/html
+    string html_message = 3;
+
+    // TextMessage holds the content of the email as text/plain
+    string text_message = 4;
+
+    // Cc holds additional email addresses that are included as carbon-copy
+    repeated string cc = 5;
+
+    // Bcc holds additional email addresses that are used for blind-carbon-copy.
+    repeated string bcc = 6;
+
+    // AdditionalHeaders might be used to add additional headers to the outgoing email.
+    map<string, string> additional_headers = 7;
+
+    // Attachments might be used to attach one ore more files to the outgoing email.
+    repeated EMailAttachment attachments = 8;
+}
+
+message EMailAttachment {
+    // Name is the name of the attachment.
+    string name = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // ContentType holds the content-type of the email attachment.
+    string content_type = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // Content specifies the content of the attachment.
+    oneof content {
+        // Url can be used to instruct the notification service to download the
+        // attachment content from the specified URL.
+        string url = 3;
+
+        // Data is used to provide the attachment data inline.
+        bytes data = 4;
+    }
+
+    bool embed = 5;
+}

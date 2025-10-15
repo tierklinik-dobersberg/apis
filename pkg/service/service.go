@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
+	"buf.build/go/protovalidate"
 	"github.com/bufbuild/connect-go"
-	"github.com/bufbuild/protovalidate-go"
 	"github.com/sethvargo/go-envconfig"
 	"github.com/tierklinik-dobersberg/apis/pkg/auth"
 	"github.com/tierklinik-dobersberg/apis/pkg/cors"

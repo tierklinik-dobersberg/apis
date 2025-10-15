@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"buf.build/go/protovalidate"
 	"github.com/bufbuild/connect-go"
-	"github.com/bufbuild/protovalidate-go"
 	"github.com/tierklinik-dobersberg/apis/pkg/internal/timing"
 	"google.golang.org/protobuf/proto"
 )
