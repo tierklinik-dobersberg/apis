@@ -12,6 +12,7 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1/eventsv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1/idmv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/longrunning/v1/longrunningv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/notification/v1/notificationv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/office_hours/v1/office_hoursv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1/pbx3cxv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/printing/v1/printingv1connect"
@@ -42,35 +43,37 @@ func Create[T any](name ServiceScope, factory func(connect.HTTPClient, string, .
 }
 
 var (
-	CalendarV1ServiceScope    ServiceScope = "tkd.calendar.v1"
-	CommentV1ServiceScope     ServiceScope = "tkd.comment.v1"
-	CustomerV1ServiceScope    ServiceScope = "tkd.customer.v1"
-	EventV1ServiceScope       ServiceScope = "tkd.events.v1"
-	IdmV1ServiceScope         ServiceScope = "tkd.idm.v1"
-	OfficeHourV1ServiceScope  ServiceScope = "tkd.office_hours.v1"
-	Pbx3cxV1ServiceScope      ServiceScope = "tkd.pbx3cx.v1"
-	RosterV1ServiceScope      ServiceScope = "tkd.roster.v1"
-	TaskV1ServiceScope        ServiceScope = "tkd.tasks.v1"
-	TypeV1ServiceScope        ServiceScope = "tkd.typeserver.v1"
-	LongrunningV1ServiceScope ServiceScope = "tkd.longrunning.v1"
-	PrintV1ServiceScope       ServiceScope = "tkd.printing.v1"
-	TreatmentV1ServiceScope   ServiceScope = "tkd.treatment.v1"
+	CalendarV1ServiceScope     ServiceScope = "tkd.calendar.v1"
+	CommentV1ServiceScope      ServiceScope = "tkd.comment.v1"
+	CustomerV1ServiceScope     ServiceScope = "tkd.customer.v1"
+	EventV1ServiceScope        ServiceScope = "tkd.events.v1"
+	IdmV1ServiceScope          ServiceScope = "tkd.idm.v1"
+	OfficeHourV1ServiceScope   ServiceScope = "tkd.office_hours.v1"
+	Pbx3cxV1ServiceScope       ServiceScope = "tkd.pbx3cx.v1"
+	RosterV1ServiceScope       ServiceScope = "tkd.roster.v1"
+	TaskV1ServiceScope         ServiceScope = "tkd.tasks.v1"
+	TypeV1ServiceScope         ServiceScope = "tkd.typeserver.v1"
+	LongrunningV1ServiceScope  ServiceScope = "tkd.longrunning.v1"
+	PrintV1ServiceScope        ServiceScope = "tkd.printing.v1"
+	TreatmentV1ServiceScope    ServiceScope = "tkd.treatment.v1"
+	NotificationV1ServiceScope ServiceScope = "tkd.notification.v1"
 )
 
 var EnvServiceMap = map[string]ServiceScope{
-	"CALENDAR_SERVICE":    CalendarV1ServiceScope,
-	"COMMENT_SERVICE":     CommentV1ServiceScope,
-	"CUSTOMER_SERVICE":    CustomerV1ServiceScope,
-	"EVENT_SERVICE":       EventV1ServiceScope,
-	"IDM_SERVICE":         IdmV1ServiceScope,
-	"OFFICE_HOUR_SERVICE": OfficeHourV1ServiceScope,
-	"PBX_SERVICE":         Pbx3cxV1ServiceScope,
-	"ROSTER_SERVICE":      RosterV1ServiceScope,
-	"TASK_SERVICE":        TaskV1ServiceScope,
-	"TYPE_SERVICE":        TypeV1ServiceScope,
-	"LONGRUNNING_SERVICE": LongrunningV1ServiceScope,
-	"PRINT_SERVICE":       PrintV1ServiceScope,
-	"TREATMENT_SERVICE":   TreatmentV1ServiceScope,
+	"CALENDAR_SERVICE":     CalendarV1ServiceScope,
+	"COMMENT_SERVICE":      CommentV1ServiceScope,
+	"CUSTOMER_SERVICE":     CustomerV1ServiceScope,
+	"EVENT_SERVICE":        EventV1ServiceScope,
+	"IDM_SERVICE":          IdmV1ServiceScope,
+	"OFFICE_HOUR_SERVICE":  OfficeHourV1ServiceScope,
+	"PBX_SERVICE":          Pbx3cxV1ServiceScope,
+	"ROSTER_SERVICE":       RosterV1ServiceScope,
+	"TASK_SERVICE":         TaskV1ServiceScope,
+	"TYPE_SERVICE":         TypeV1ServiceScope,
+	"LONGRUNNING_SERVICE":  LongrunningV1ServiceScope,
+	"PRINT_SERVICE":        PrintV1ServiceScope,
+	"TREATMENT_SERVICE":    TreatmentV1ServiceScope,
+	"NOTIFICATION_SERVICE": NotificationV1ServiceScope,
 }
 
 var ServiceEnvMap map[ServiceScope]string
@@ -134,6 +137,9 @@ var (
 	// tkd.treatment.v1
 	TreatmentService = Create(TreatmentV1ServiceScope, treatmentv1connect.NewTreatmentServiceClient)
 	SpeciesService   = Create(TreatmentV1ServiceScope, treatmentv1connect.NewSpeciesServiceClient)
+
+	// tkd.notification.v1
+	NotificationService = Create(NotificationV1ServiceScope, notificationv1connect.NewNotificationServiceClient)
 )
 
 func NewClient[T any](ctx context.Context, d discovery.Discoverer, wks Service[T], opts ...connect.ClientOption) (T, error) {

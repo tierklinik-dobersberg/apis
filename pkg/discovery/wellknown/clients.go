@@ -12,6 +12,7 @@ import (
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1/eventsv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/idm/v1/idmv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/longrunning/v1/longrunningv1connect"
+	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/notification/v1/notificationv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/office_hours/v1/office_hoursv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/pbx3cx/v1/pbx3cxv1connect"
 	"github.com/tierklinik-dobersberg/apis/gen/go/tkd/printing/v1/printingv1connect"
@@ -68,6 +69,7 @@ type Clients struct {
 	PrintService          printingv1connect.PrintServiceClient
 	TreatmentService      treatmentv1connect.TreatmentServiceClient
 	SpeciesService        treatmentv1connect.SpeciesServiceClient
+	NotificationService   notificationv1connect.NotificationServiceClient
 }
 
 func ConfigureClients(opts ConfigureClientOptions) Clients {
@@ -106,6 +108,7 @@ func ConfigureClients(opts ConfigureClientOptions) Clients {
 		PrintService:          printingv1connect.NewPrintServiceClient(httpClient, opts.url(PrintV1ServiceScope), opts.GlobalOptions...),
 		TreatmentService:      treatmentv1connect.NewTreatmentServiceClient(httpClient, opts.url(TreatmentV1ServiceScope), opts.GlobalOptions...),
 		SpeciesService:        treatmentv1connect.NewSpeciesServiceClient(httpClient, opts.url(TreatmentV1ServiceScope), opts.GlobalOptions...),
+		NotificationService:   notificationv1connect.NewNotificationServiceClient(httpClient, opts.url(NotificationV1ServiceScope), opts.GlobalOptions...),
 	}
 
 	return clients

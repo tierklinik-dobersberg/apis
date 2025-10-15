@@ -21,18 +21,19 @@ import (
 )
 
 type BaseURLS struct {
-	Idm               string `json:"idm"`
-	Calendar          string `json:"calendar"`
-	Roster            string `json:"roster"`
-	CallService       string `json:"callService"`
-	CommentService    string `json:"commentService"`
-	CustomerService   string `json:"customerService"`
-	TaskService       string `json:"taskService"`
-	OfficeHourService string `json:"officeHourService"`
-	EventsService     string `json:"eventsService"`
-	OrthancBridge     string `json:"orthancBridge"`
-	LongRunning       string `json:"longrunning"`
-	PrintService      string `json:"printService"`
+	Idm                 string `json:"idm"`
+	Calendar            string `json:"calendar"`
+	Roster              string `json:"roster"`
+	CallService         string `json:"callService"`
+	CommentService      string `json:"commentService"`
+	CustomerService     string `json:"customerService"`
+	TaskService         string `json:"taskService"`
+	OfficeHourService   string `json:"officeHourService"`
+	EventsService       string `json:"eventsService"`
+	OrthancBridge       string `json:"orthancBridge"`
+	LongRunning         string `json:"longrunning"`
+	PrintService        string `json:"printService"`
+	NotificationService string `json:"notificationService"`
 }
 
 type Config struct {
