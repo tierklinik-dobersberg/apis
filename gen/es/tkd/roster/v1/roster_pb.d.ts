@@ -11,6 +11,42 @@ import type { WorkShift } from "./workshift_pb.js";
 import type { DeliveryNotification } from "../../idm/v1/notify_service_pb.js";
 
 /**
+ * @generated from enum tkd.roster.v1.OffTimeMode
+ */
+export declare enum OffTimeMode {
+  /**
+   * OFFTIME_MODE_APPROVAL is used to apply off-time costs (or benefits) when the related
+   * roster is approved by a manager.
+   *
+   * @generated from enum value: OFFTIME_MODE_APPROVAL = 0;
+   */
+  OFFTIME_MODE_APPROVAL = 0,
+
+  /**
+   * OFFTIME_MODE_ON_REQUEST is used when the off-time costs (i.e. for vacations or time-off)
+   * should be added as soon as the off-time request is approved.
+   *
+   * @generated from enum value: OFFTIME_MODE_ON_REQUEST = 1;
+   */
+  OFFTIME_MODE_ON_REQUEST = 1,
+}
+
+/**
+ * @generated from enum tkd.roster.v1.Mode
+ */
+export declare enum Mode {
+  /**
+   * @generated from enum value: MODE_CUSTOM = 0;
+   */
+  CUSTOM = 0,
+
+  /**
+   * @generated from enum value: MODE_REPEAT_WEEKLY = 1;
+   */
+  REPEAT_WEEKLY = 1,
+}
+
+/**
  * @generated from enum tkd.roster.v1.DayType
  */
 export declare enum DayType {
@@ -226,6 +262,28 @@ export declare class RosterType extends Message<RosterType> {
    * @generated from field: repeated string on_call_tags = 3;
    */
   onCallTags: string[];
+
+  /**
+   * A list of user role IDs that are eligible for this roster.
+   *
+   * @generated from field: repeated string eligible_user_roles = 4;
+   */
+  eligibleUserRoles: string[];
+
+  /**
+   * Mode defines the mode of the roster.
+   *
+   * @generated from field: tkd.roster.v1.Mode mode = 5;
+   */
+  mode: Mode;
+
+  /**
+   * OfftimeMode documents how off-time requests are handled and when/how the related
+   * entry in the offtime-costs subsystem should be created.
+   *
+   * @generated from field: tkd.roster.v1.OffTimeMode offtime_mode = 6;
+   */
+  offtimeMode: OffTimeMode;
 
   constructor(data?: PartialMessage<RosterType>);
 

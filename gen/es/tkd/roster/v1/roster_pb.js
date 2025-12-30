@@ -10,6 +10,28 @@ import { WorkShift } from "./workshift_pb.js";
 import { DeliveryNotification } from "../../idm/v1/notify_service_pb.js";
 
 /**
+ * @generated from enum tkd.roster.v1.OffTimeMode
+ */
+export const OffTimeMode = /*@__PURE__*/ proto3.makeEnum(
+  "tkd.roster.v1.OffTimeMode",
+  [
+    {no: 0, name: "OFFTIME_MODE_APPROVAL"},
+    {no: 1, name: "OFFTIME_MODE_ON_REQUEST"},
+  ],
+);
+
+/**
+ * @generated from enum tkd.roster.v1.Mode
+ */
+export const Mode = /*@__PURE__*/ proto3.makeEnum(
+  "tkd.roster.v1.Mode",
+  [
+    {no: 0, name: "MODE_CUSTOM", localName: "CUSTOM"},
+    {no: 1, name: "MODE_REPEAT_WEEKLY", localName: "REPEAT_WEEKLY"},
+  ],
+);
+
+/**
  * @generated from enum tkd.roster.v1.DayType
  */
 export const DayType = /*@__PURE__*/ proto3.makeEnum(
@@ -78,6 +100,9 @@ export const RosterType = /*@__PURE__*/ proto3.makeMessageType(
     { no: 1, name: "unique_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "shift_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 3, name: "on_call_tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "eligible_user_roles", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 5, name: "mode", kind: "enum", T: proto3.getEnumType(Mode) },
+    { no: 6, name: "offtime_mode", kind: "enum", T: proto3.getEnumType(OffTimeMode) },
   ],
 );
 

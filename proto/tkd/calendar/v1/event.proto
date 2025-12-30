@@ -77,6 +77,9 @@ message CalendarEvent {
     // VirtualCopy is set to true for all events that are "virtually copied"
     // into a ResourceCalendar.
     bool virtual_copy = 12;
+
+    // Completed can be set to true to mark this event as completed.
+    bool completed = 13;
 }
 
 message CustomerAnnotation {

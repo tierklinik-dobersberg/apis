@@ -177,6 +177,13 @@ export declare class CalendarEvent extends Message<CalendarEvent> {
    */
   virtualCopy: boolean;
 
+  /**
+   * Completed can be set to true to mark this event as completed.
+   *
+   * @generated from field: bool completed = 13;
+   */
+  completed: boolean;
+
   constructor(data?: PartialMessage<CalendarEvent>);
 
   static readonly runtime: typeof proto3;

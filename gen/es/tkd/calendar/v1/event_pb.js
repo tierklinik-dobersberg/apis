@@ -43,6 +43,7 @@ export const CalendarEvent = /*@__PURE__*/ proto3.makeMessageType(
     { no: 10, name: "create_time", kind: "message", T: Timestamp },
     { no: 11, name: "resources", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 12, name: "virtual_copy", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 13, name: "completed", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
