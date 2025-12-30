@@ -607,6 +607,13 @@ export declare class UpdateEventRequest extends Message<UpdateEventRequest> {
   resources: string[];
 
   /**
+   * Completed updates the completed field of a CalendarEvent.
+   *
+   * @generated from field: bool completed = 9;
+   */
+  completed: boolean;
+
+  /**
    * UpdateMask specifies which fields of the original event should be
    * updated. If left empty, all fields will be replaced with the values from
    * the UpdateEventRequest message potentially clearing out fields if unset.

@@ -921,6 +921,8 @@ type UpdateEventRequest struct {
 	// Resources is a list of resource names that are required for this
 	// calendar event.
 	Resources []string `protobuf:"bytes,8,rep,name=resources,proto3" json:"resources,omitempty"`
+	// Completed updates the completed field of a CalendarEvent.
+	Completed bool `protobuf:"varint,9,opt,name=completed,proto3" json:"completed,omitempty"`
 	// UpdateMask specifies which fields of the original event should be
 	// updated. If left empty, all fields will be replaced with the values from
 	// the UpdateEventRequest message potentially clearing out fields if unset.
@@ -1013,6 +1015,13 @@ func (x *UpdateEventRequest) GetResources() []string {
 		return x.Resources
 	}
 	return nil
+}
+
+func (x *UpdateEventRequest) GetCompleted() bool {
+	if x != nil {
+		return x.Completed
+	}
+	return false
 }
 
 func (x *UpdateEventRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
@@ -1420,7 +1429,7 @@ const file_tkd_calendar_v1_event_service_proto_rawDesc = "" +
 	"extra_data\x18\x06 \x01(\v2\x14.google.protobuf.AnyR\textraData\x12\x1c\n" +
 	"\tresources\x18\a \x03(\tR\tresources\"K\n" +
 	"\x13CreateEventResponse\x124\n" +
-	"\x05event\x18\x01 \x01(\v2\x1e.tkd.calendar.v1.CalendarEventR\x05event\"\x88\x03\n" +
+	"\x05event\x18\x01 \x01(\v2\x1e.tkd.calendar.v1.CalendarEventR\x05event\"\xa6\x03\n" +
 	"\x12UpdateEventRequest\x12(\n" +
 	"\vcalendar_id\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
 	"calendarId\x12\"\n" +
@@ -1431,7 +1440,8 @@ const file_tkd_calendar_v1_event_service_proto_rawDesc = "" +
 	"\x03end\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x03end\x123\n" +
 	"\n" +
 	"extra_data\x18\a \x01(\v2\x14.google.protobuf.AnyR\textraData\x12\x1c\n" +
-	"\tresources\x18\b \x03(\tR\tresources\x12;\n" +
+	"\tresources\x18\b \x03(\tR\tresources\x12\x1c\n" +
+	"\tcompleted\x18\t \x01(\bR\tcompleted\x12;\n" +
 	"\vupdate_mask\x18\x14 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
 	"updateMask\"K\n" +
 	"\x13UpdateEventResponse\x124\n" +

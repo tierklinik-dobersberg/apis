@@ -306,6 +306,9 @@ message UpdateEventRequest {
     // calendar event.
     repeated string resources = 8;
 
+    // Completed updates the completed field of a CalendarEvent.
+    bool completed = 9;
+
     // UpdateMask specifies which fields of the original event should be
     // updated. If left empty, all fields will be replaced with the values from
     // the UpdateEventRequest message potentially clearing out fields if unset.
