@@ -54,6 +54,7 @@ export const Address = /*@__PURE__*/ proto3.makeMessageType(
     { no: 1, name: "postal_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "city", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "street", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "street_address_2", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "extra", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
@@ -65,11 +66,13 @@ export const Customer = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.customer.v1.Customer",
   () => [
     { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 9, name: "provet_client_uri", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 2, name: "first_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "last_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 4, name: "addresses", kind: "message", T: Address, repeated: true },
     { no: 5, name: "phone_numbers", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 6, name: "email_addresses", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 8, name: "tags", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 7, name: "record_created_at", kind: "message", T: Timestamp },
   ],
 );
@@ -118,6 +121,8 @@ export const CustomerQuery = /*@__PURE__*/ proto3.makeMessageType(
     { no: 3, name: "name", kind: "message", T: NameQuery, oneof: "query" },
     { no: 4, name: "phone_number", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "query" },
     { no: 5, name: "email_address", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "query" },
+    { no: 6, name: "provet_client_uri", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "query" },
+    { no: 7, name: "provet_client_id", kind: "scalar", T: 9 /* ScalarType.STRING */, oneof: "query" },
   ],
 );
 

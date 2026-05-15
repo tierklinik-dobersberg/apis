@@ -104,9 +104,15 @@ type PublicHoliday struct {
 	// Global is set to true if the public holiday is globally accepted.
 	Global bool `protobuf:"varint,6,opt,name=global,proto3" json:"global,omitempty"`
 	// Type holds the type of the public holiday.
-	Type          HolidayType `protobuf:"varint,7,opt,name=type,proto3,enum=tkd.calendar.v1.HolidayType" json:"type,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// If the holiday is a public holiday, this is always set to
+	// HolidayType.PUBLIC.
+	// Inspect the additional_types field for more information about other
+	// holiday types.
+	Type HolidayType `protobuf:"varint,7,opt,name=type,proto3,enum=tkd.calendar.v1.HolidayType" json:"type,omitempty"`
+	// AdditionalTypes holds a list of additional holiday types.
+	AdditionalTypes []HolidayType `protobuf:"varint,8,rep,packed,name=additional_types,json=additionalTypes,proto3,enum=tkd.calendar.v1.HolidayType" json:"additional_types,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *PublicHoliday) Reset() {
@@ -188,6 +194,13 @@ func (x *PublicHoliday) GetType() HolidayType {
 	return HolidayType_HOLIDAY_TYPE_UNSPECIFIED
 }
 
+func (x *PublicHoliday) GetAdditionalTypes() []HolidayType {
+	if x != nil {
+		return x.AdditionalTypes
+	}
+	return nil
+}
+
 // GetHolidayRequest is the request message for the GetHoliday RPC.
 type GetHolidayRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -199,9 +212,12 @@ type GetHolidayRequest struct {
 	// CountryCode might be set to the country code for which holidays should be
 	// queried. If left empty, the default country code from cis-cal
 	// configuration is used.
-	CountryCode   string `protobuf:"bytes,3,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	CountryCode string `protobuf:"bytes,3,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
+	// PublicHolidaysOnly might be set to true to only return public holidays
+	// and ignore school, bank or other holiday types.
+	PublicHolidaysOnly bool `protobuf:"varint,4,opt,name=public_holidays_only,json=publicHolidaysOnly,proto3" json:"public_holidays_only,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *GetHolidayRequest) Reset() {
@@ -253,6 +269,13 @@ func (x *GetHolidayRequest) GetCountryCode() string {
 		return x.CountryCode
 	}
 	return ""
+}
+
+func (x *GetHolidayRequest) GetPublicHolidaysOnly() bool {
+	if x != nil {
+		return x.PublicHolidaysOnly
+	}
+	return false
 }
 
 // GetHolidayResponse is the response message of the GetHoliday RPC and contains
@@ -441,9 +464,12 @@ type IsHolidayRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Date is the date to check.
 	// If unset, the current day in the server's timezone is used.
-	Date          *v1.Date `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Date *v1.Date `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	// PublicHolidaysOnly might be set to true to only count public holidays.
+	// Other holiday types, like school, bank or authority, will be ignored.
+	PublicHolidaysOnly bool `protobuf:"varint,2,opt,name=public_holidays_only,json=publicHolidaysOnly,proto3" json:"public_holidays_only,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *IsHolidayRequest) Reset() {
@@ -481,6 +507,13 @@ func (x *IsHolidayRequest) GetDate() *v1.Date {
 		return x.Date
 	}
 	return nil
+}
+
+func (x *IsHolidayRequest) GetPublicHolidaysOnly() bool {
+	if x != nil {
+		return x.PublicHolidaysOnly
+	}
+	return false
 }
 
 type IsHolidayResponse struct {
@@ -550,7 +583,7 @@ var File_tkd_calendar_v1_holiday_service_proto protoreflect.FileDescriptor
 
 const file_tkd_calendar_v1_holiday_service_proto_rawDesc = "" +
 	"\n" +
-	"%tkd/calendar/v1/holiday_service.proto\x12\x0ftkd.calendar.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1bbuf/validate/validate.proto\"\xd9\x01\n" +
+	"%tkd/calendar/v1/holiday_service.proto\x12\x0ftkd.calendar.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18tkd/common/v1/date.proto\x1a\x1bbuf/validate/validate.proto\"\xa2\x02\n" +
 	"\rPublicHoliday\x12\x12\n" +
 	"\x04date\x18\x01 \x01(\tR\x04date\x12\x1d\n" +
 	"\n" +
@@ -559,11 +592,13 @@ const file_tkd_calendar_v1_holiday_service_proto_rawDesc = "" +
 	"\fcountry_code\x18\x04 \x01(\tR\vcountryCode\x12\x14\n" +
 	"\x05fixed\x18\x05 \x01(\bR\x05fixed\x12\x16\n" +
 	"\x06global\x18\x06 \x01(\bR\x06global\x120\n" +
-	"\x04type\x18\a \x01(\x0e2\x1c.tkd.calendar.v1.HolidayTypeR\x04type\"x\n" +
+	"\x04type\x18\a \x01(\x0e2\x1c.tkd.calendar.v1.HolidayTypeR\x04type\x12G\n" +
+	"\x10additional_types\x18\b \x03(\x0e2\x1c.tkd.calendar.v1.HolidayTypeR\x0fadditionalTypes\"\xaa\x01\n" +
 	"\x11GetHolidayRequest\x12\x1b\n" +
 	"\x04year\x18\x01 \x01(\x04B\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04year\x12#\n" +
 	"\x05month\x18\x02 \x01(\x04B\r\xfa\xf7\x18\t\xd0\x01\x012\x04\x18\f(\x01R\x05month\x12!\n" +
-	"\fcountry_code\x18\x03 \x01(\tR\vcountryCode\"P\n" +
+	"\fcountry_code\x18\x03 \x01(\tR\vcountryCode\x120\n" +
+	"\x14public_holidays_only\x18\x04 \x01(\bR\x12publicHolidaysOnly\"P\n" +
 	"\x12GetHolidayResponse\x12:\n" +
 	"\bholidays\x18\x01 \x03(\v2\x1e.tkd.calendar.v1.PublicHolidayR\bholidays\"\xa1\x01\n" +
 	"\x17NumberOfWorkDaysRequest\x12\x18\n" +
@@ -573,9 +608,10 @@ const file_tkd_calendar_v1_holiday_service_proto_rawDesc = "" +
 	"\x18NumberOfWorkDaysResponse\x12-\n" +
 	"\x13number_of_work_days\x18\x01 \x01(\rR\x10numberOfWorkDays\x123\n" +
 	"\x16number_of_weekend_days\x18\x02 \x01(\rR\x13numberOfWeekendDays\x12,\n" +
-	"\x12number_of_holidays\x18\x03 \x01(\rR\x10numberOfHolidays\";\n" +
+	"\x12number_of_holidays\x18\x03 \x01(\rR\x10numberOfHolidays\"m\n" +
 	"\x10IsHolidayRequest\x12'\n" +
-	"\x04date\x18\x01 \x01(\v2\x13.tkd.common.v1.DateR\x04date\"\xa4\x01\n" +
+	"\x04date\x18\x01 \x01(\v2\x13.tkd.common.v1.DateR\x04date\x120\n" +
+	"\x14public_holidays_only\x18\x02 \x01(\bR\x12publicHolidaysOnly\"\xa4\x01\n" +
 	"\x11IsHolidayResponse\x12\x1d\n" +
 	"\n" +
 	"is_holiday\x18\x01 \x01(\bR\tisHoliday\x128\n" +
@@ -627,23 +663,24 @@ var file_tkd_calendar_v1_holiday_service_proto_goTypes = []any{
 }
 var file_tkd_calendar_v1_holiday_service_proto_depIdxs = []int32{
 	0,  // 0: tkd.calendar.v1.PublicHoliday.type:type_name -> tkd.calendar.v1.HolidayType
-	1,  // 1: tkd.calendar.v1.GetHolidayResponse.holidays:type_name -> tkd.calendar.v1.PublicHoliday
-	8,  // 2: tkd.calendar.v1.NumberOfWorkDaysRequest.from:type_name -> google.protobuf.Timestamp
-	8,  // 3: tkd.calendar.v1.NumberOfWorkDaysRequest.to:type_name -> google.protobuf.Timestamp
-	9,  // 4: tkd.calendar.v1.IsHolidayRequest.date:type_name -> tkd.common.v1.Date
-	1,  // 5: tkd.calendar.v1.IsHolidayResponse.holiday:type_name -> tkd.calendar.v1.PublicHoliday
-	9,  // 6: tkd.calendar.v1.IsHolidayResponse.queried_date:type_name -> tkd.common.v1.Date
-	2,  // 7: tkd.calendar.v1.HolidayService.GetHoliday:input_type -> tkd.calendar.v1.GetHolidayRequest
-	6,  // 8: tkd.calendar.v1.HolidayService.IsHoliday:input_type -> tkd.calendar.v1.IsHolidayRequest
-	4,  // 9: tkd.calendar.v1.HolidayService.NumberOfWorkDays:input_type -> tkd.calendar.v1.NumberOfWorkDaysRequest
-	3,  // 10: tkd.calendar.v1.HolidayService.GetHoliday:output_type -> tkd.calendar.v1.GetHolidayResponse
-	7,  // 11: tkd.calendar.v1.HolidayService.IsHoliday:output_type -> tkd.calendar.v1.IsHolidayResponse
-	5,  // 12: tkd.calendar.v1.HolidayService.NumberOfWorkDays:output_type -> tkd.calendar.v1.NumberOfWorkDaysResponse
-	10, // [10:13] is the sub-list for method output_type
-	7,  // [7:10] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	0,  // 1: tkd.calendar.v1.PublicHoliday.additional_types:type_name -> tkd.calendar.v1.HolidayType
+	1,  // 2: tkd.calendar.v1.GetHolidayResponse.holidays:type_name -> tkd.calendar.v1.PublicHoliday
+	8,  // 3: tkd.calendar.v1.NumberOfWorkDaysRequest.from:type_name -> google.protobuf.Timestamp
+	8,  // 4: tkd.calendar.v1.NumberOfWorkDaysRequest.to:type_name -> google.protobuf.Timestamp
+	9,  // 5: tkd.calendar.v1.IsHolidayRequest.date:type_name -> tkd.common.v1.Date
+	1,  // 6: tkd.calendar.v1.IsHolidayResponse.holiday:type_name -> tkd.calendar.v1.PublicHoliday
+	9,  // 7: tkd.calendar.v1.IsHolidayResponse.queried_date:type_name -> tkd.common.v1.Date
+	2,  // 8: tkd.calendar.v1.HolidayService.GetHoliday:input_type -> tkd.calendar.v1.GetHolidayRequest
+	6,  // 9: tkd.calendar.v1.HolidayService.IsHoliday:input_type -> tkd.calendar.v1.IsHolidayRequest
+	4,  // 10: tkd.calendar.v1.HolidayService.NumberOfWorkDays:input_type -> tkd.calendar.v1.NumberOfWorkDaysRequest
+	3,  // 11: tkd.calendar.v1.HolidayService.GetHoliday:output_type -> tkd.calendar.v1.GetHolidayResponse
+	7,  // 12: tkd.calendar.v1.HolidayService.IsHoliday:output_type -> tkd.calendar.v1.IsHolidayResponse
+	5,  // 13: tkd.calendar.v1.HolidayService.NumberOfWorkDays:output_type -> tkd.calendar.v1.NumberOfWorkDaysResponse
+	11, // [11:14] is the sub-list for method output_type
+	8,  // [8:11] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_tkd_calendar_v1_holiday_service_proto_init() }

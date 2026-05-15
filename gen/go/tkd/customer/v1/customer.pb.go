@@ -291,13 +291,14 @@ func (x *ImportState) GetOwnedAttributes() []*OwnedAttribute {
 }
 
 type Address struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PostalCode    string                 `protobuf:"bytes,1,opt,name=postal_code,json=postalCode,proto3" json:"postal_code,omitempty"`
-	City          string                 `protobuf:"bytes,2,opt,name=city,proto3" json:"city,omitempty"`
-	Street        string                 `protobuf:"bytes,3,opt,name=street,proto3" json:"street,omitempty"`
-	Extra         string                 `protobuf:"bytes,4,opt,name=extra,proto3" json:"extra,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	PostalCode      string                 `protobuf:"bytes,1,opt,name=postal_code,json=postalCode,proto3" json:"postal_code,omitempty"`
+	City            string                 `protobuf:"bytes,2,opt,name=city,proto3" json:"city,omitempty"`
+	Street          string                 `protobuf:"bytes,3,opt,name=street,proto3" json:"street,omitempty"`
+	StreetAddress_2 string                 `protobuf:"bytes,5,opt,name=street_address_2,json=streetAddress2,proto3" json:"street_address_2,omitempty"`
+	Extra           string                 `protobuf:"bytes,4,opt,name=extra,proto3" json:"extra,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Address) Reset() {
@@ -351,6 +352,13 @@ func (x *Address) GetStreet() string {
 	return ""
 }
 
+func (x *Address) GetStreetAddress_2() string {
+	if x != nil {
+		return x.StreetAddress_2
+	}
+	return ""
+}
+
 func (x *Address) GetExtra() string {
 	if x != nil {
 		return x.Extra
@@ -362,6 +370,9 @@ type Customer struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// ID is a unique, randomly generated ID for this customer.
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// The Provet-Cloud client URI once this customer has been syncted/imported from
+	// Provet Cloud.
+	ProvetClientUri []string `protobuf:"bytes,9,rep,name=provet_client_uri,json=provetClientUri,proto3" json:"provet_client_uri,omitempty"`
 	// FirstName is the first name of the customer.
 	FirstName string `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
 	// LastName is the last name of the customer
@@ -372,6 +383,8 @@ type Customer struct {
 	PhoneNumbers []string `protobuf:"bytes,5,rep,name=phone_numbers,json=phoneNumbers,proto3" json:"phone_numbers,omitempty"`
 	// EmailAddresses is a list of email addresses.
 	EmailAddresses []string `protobuf:"bytes,6,rep,name=email_addresses,json=emailAddresses,proto3" json:"email_addresses,omitempty"`
+	// Tags for this customer
+	Tags []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	// RecordCreatedAt is the timestamp at which the customer record has been created.
 	RecordCreatedAt *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=record_created_at,json=recordCreatedAt,proto3" json:"record_created_at,omitempty"`
 	unknownFields   protoimpl.UnknownFields
@@ -415,6 +428,13 @@ func (x *Customer) GetId() string {
 	return ""
 }
 
+func (x *Customer) GetProvetClientUri() []string {
+	if x != nil {
+		return x.ProvetClientUri
+	}
+	return nil
+}
+
 func (x *Customer) GetFirstName() string {
 	if x != nil {
 		return x.FirstName
@@ -446,6 +466,13 @@ func (x *Customer) GetPhoneNumbers() []string {
 func (x *Customer) GetEmailAddresses() []string {
 	if x != nil {
 		return x.EmailAddresses
+	}
+	return nil
+}
+
+func (x *Customer) GetTags() []string {
+	if x != nil {
+		return x.Tags
 	}
 	return nil
 }
@@ -622,6 +649,8 @@ type CustomerQuery struct {
 	//	*CustomerQuery_Name
 	//	*CustomerQuery_PhoneNumber
 	//	*CustomerQuery_EmailAddress
+	//	*CustomerQuery_ProvetClientUri
+	//	*CustomerQuery_ProvetClientId
 	Query         isCustomerQuery_Query `protobuf_oneof:"query"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -709,6 +738,24 @@ func (x *CustomerQuery) GetEmailAddress() string {
 	return ""
 }
 
+func (x *CustomerQuery) GetProvetClientUri() string {
+	if x != nil {
+		if x, ok := x.Query.(*CustomerQuery_ProvetClientUri); ok {
+			return x.ProvetClientUri
+		}
+	}
+	return ""
+}
+
+func (x *CustomerQuery) GetProvetClientId() string {
+	if x != nil {
+		if x, ok := x.Query.(*CustomerQuery_ProvetClientId); ok {
+			return x.ProvetClientId
+		}
+	}
+	return ""
+}
+
 type isCustomerQuery_Query interface {
 	isCustomerQuery_Query()
 }
@@ -733,6 +780,14 @@ type CustomerQuery_EmailAddress struct {
 	EmailAddress string `protobuf:"bytes,5,opt,name=email_address,json=emailAddress,proto3,oneof"`
 }
 
+type CustomerQuery_ProvetClientUri struct {
+	ProvetClientUri string `protobuf:"bytes,6,opt,name=provet_client_uri,json=provetClientUri,proto3,oneof"`
+}
+
+type CustomerQuery_ProvetClientId struct {
+	ProvetClientId string `protobuf:"bytes,7,opt,name=provet_client_id,json=provetClientId,proto3,oneof"`
+}
+
 func (*CustomerQuery_Id) isCustomerQuery_Query() {}
 
 func (*CustomerQuery_InternalReference) isCustomerQuery_Query() {}
@@ -742,6 +797,10 @@ func (*CustomerQuery_Name) isCustomerQuery_Query() {}
 func (*CustomerQuery_PhoneNumber) isCustomerQuery_Query() {}
 
 func (*CustomerQuery_EmailAddress) isCustomerQuery_Query() {}
+
+func (*CustomerQuery_ProvetClientUri) isCustomerQuery_Query() {}
+
+func (*CustomerQuery_ProvetClientId) isCustomerQuery_Query() {}
 
 type SearchCustomerRequest struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
@@ -981,21 +1040,24 @@ const file_tkd_customer_v1_customer_proto_rawDesc = "" +
 	"\n" +
 	"extra_data\x18\x03 \x01(\v2\x17.google.protobuf.StructR\textraData\x12-\n" +
 	"\x12internal_reference\x18\x04 \x01(\tR\x11internalReference\x12J\n" +
-	"\x10owned_attributes\x18\x05 \x03(\v2\x1f.tkd.customer.v1.OwnedAttributeR\x0fownedAttributes\"~\n" +
+	"\x10owned_attributes\x18\x05 \x03(\v2\x1f.tkd.customer.v1.OwnedAttributeR\x0fownedAttributes\"\xa8\x01\n" +
 	"\aAddress\x12(\n" +
 	"\vpostal_code\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\n" +
 	"postalCode\x12\x1b\n" +
 	"\x04city\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\x04city\x12\x16\n" +
-	"\x06street\x18\x03 \x01(\tR\x06street\x12\x14\n" +
-	"\x05extra\x18\x04 \x01(\tR\x05extra\"\xa4\x02\n" +
+	"\x06street\x18\x03 \x01(\tR\x06street\x12(\n" +
+	"\x10street_address_2\x18\x05 \x01(\tR\x0estreetAddress2\x12\x14\n" +
+	"\x05extra\x18\x04 \x01(\tR\x05extra\"\xe4\x02\n" +
 	"\bCustomer\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12*\n" +
+	"\x11provet_client_uri\x18\t \x03(\tR\x0fprovetClientUri\x12\x1d\n" +
 	"\n" +
 	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
 	"\tlast_name\x18\x03 \x01(\tR\blastName\x126\n" +
 	"\taddresses\x18\x04 \x03(\v2\x18.tkd.customer.v1.AddressR\taddresses\x12#\n" +
 	"\rphone_numbers\x18\x05 \x03(\tR\fphoneNumbers\x12'\n" +
-	"\x0femail_addresses\x18\x06 \x03(\tR\x0eemailAddresses\x12F\n" +
+	"\x0femail_addresses\x18\x06 \x03(\tR\x0eemailAddresses\x12\x12\n" +
+	"\x04tags\x18\b \x03(\tR\x04tags\x12F\n" +
 	"\x11record_created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x0frecordCreatedAt\"\x7f\n" +
 	"\x10CustomerResponse\x125\n" +
 	"\bcustomer\x18\x01 \x01(\v2\x19.tkd.customer.v1.CustomerR\bcustomer\x124\n" +
@@ -1006,13 +1068,15 @@ const file_tkd_customer_v1_customer_proto_rawDesc = "" +
 	"\tNameQuery\x12\x1d\n" +
 	"\n" +
 	"first_name\x18\x01 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x02 \x01(\tR\blastName\"\x82\x02\n" +
+	"\tlast_name\x18\x02 \x01(\tR\blastName\"\xdc\x02\n" +
 	"\rCustomerQuery\x12\x10\n" +
 	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x12X\n" +
 	"\x12internal_reference\x18\x02 \x01(\v2'.tkd.customer.v1.InternalReferenceQueryH\x00R\x11internalReference\x120\n" +
 	"\x04name\x18\x03 \x01(\v2\x1a.tkd.customer.v1.NameQueryH\x00R\x04name\x12#\n" +
 	"\fphone_number\x18\x04 \x01(\tH\x00R\vphoneNumber\x12%\n" +
-	"\remail_address\x18\x05 \x01(\tH\x00R\femailAddressB\a\n" +
+	"\remail_address\x18\x05 \x01(\tH\x00R\femailAddress\x12,\n" +
+	"\x11provet_client_uri\x18\x06 \x01(\tH\x00R\x0fprovetClientUri\x12*\n" +
+	"\x10provet_client_id\x18\a \x01(\tH\x00R\x0eprovetClientIdB\a\n" +
 	"\x05query\"\xb3\x01\n" +
 	"\x15SearchCustomerRequest\x128\n" +
 	"\aqueries\x18\x01 \x03(\v2\x1e.tkd.customer.v1.CustomerQueryR\aqueries\x129\n" +
@@ -1114,6 +1178,8 @@ func file_tkd_customer_v1_customer_proto_init() {
 		(*CustomerQuery_Name)(nil),
 		(*CustomerQuery_PhoneNumber)(nil),
 		(*CustomerQuery_EmailAddress)(nil),
+		(*CustomerQuery_ProvetClientUri)(nil),
+		(*CustomerQuery_ProvetClientId)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

@@ -165,6 +165,11 @@ export declare class Address extends Message<Address> {
   street: string;
 
   /**
+   * @generated from field: string street_address_2 = 5;
+   */
+  streetAddress2: string;
+
+  /**
    * @generated from field: string extra = 4;
    */
   extra: string;
@@ -194,6 +199,14 @@ export declare class Customer extends Message<Customer> {
    * @generated from field: string id = 1;
    */
   id: string;
+
+  /**
+   * The Provet-Cloud client URI once this customer has been syncted/imported from
+   * Provet Cloud.
+   *
+   * @generated from field: repeated string provet_client_uri = 9;
+   */
+  provetClientUri: string[];
 
   /**
    * FirstName is the first name of the customer.
@@ -229,6 +242,13 @@ export declare class Customer extends Message<Customer> {
    * @generated from field: repeated string email_addresses = 6;
    */
   emailAddresses: string[];
+
+  /**
+   * Tags for this customer
+   *
+   * @generated from field: repeated string tags = 8;
+   */
+  tags: string[];
 
   /**
    * RecordCreatedAt is the timestamp at which the customer record has been created.
@@ -376,6 +396,18 @@ export declare class CustomerQuery extends Message<CustomerQuery> {
      */
     value: string;
     case: "emailAddress";
+  } | {
+    /**
+     * @generated from field: string provet_client_uri = 6;
+     */
+    value: string;
+    case: "provetClientUri";
+  } | {
+    /**
+     * @generated from field: string provet_client_id = 7;
+     */
+    value: string;
+    case: "provetClientId";
   } | { case: undefined; value?: undefined };
 
   constructor(data?: PartialMessage<CustomerQuery>);

@@ -39,6 +39,7 @@ export const PublicHoliday = /*@__PURE__*/ proto3.makeMessageType(
     { no: 5, name: "fixed", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 6, name: "global", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 7, name: "type", kind: "enum", T: proto3.getEnumType(HolidayType) },
+    { no: 8, name: "additional_types", kind: "enum", T: proto3.getEnumType(HolidayType), repeated: true },
   ],
 );
 
@@ -53,6 +54,7 @@ export const GetHolidayRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 1, name: "year", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 2, name: "month", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
     { no: 3, name: "country_code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "public_holidays_only", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
@@ -104,6 +106,7 @@ export const IsHolidayRequest = /*@__PURE__*/ proto3.makeMessageType(
   "tkd.calendar.v1.IsHolidayRequest",
   () => [
     { no: 1, name: "date", kind: "message", T: Date },
+    { no: 2, name: "public_holidays_only", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 

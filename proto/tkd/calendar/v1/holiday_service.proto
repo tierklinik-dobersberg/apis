@@ -40,7 +40,14 @@ message PublicHoliday {
     bool global = 6;
 
     // Type holds the type of the public holiday.
+    // If the holiday is a public holiday, this is always set to
+    // HolidayType.PUBLIC.
+    // Inspect the additional_types field for more information about other
+    // holiday types.
     HolidayType type = 7;
+
+    // AdditionalTypes holds a list of additional holiday types.
+    repeated HolidayType additional_types = 8;
 }
 
 // HolidayService allows to query a list of public holidays.
@@ -75,6 +82,10 @@ message GetHolidayRequest {
     // queried. If left empty, the default country code from cis-cal
     // configuration is used.
     string country_code = 3;
+
+    // PublicHolidaysOnly might be set to true to only return public holidays
+    // and ignore school, bank or other holiday types.
+    bool public_holidays_only = 4;
 }
 
 // GetHolidayResponse is the response message of the GetHoliday RPC and contains
@@ -123,6 +134,10 @@ message IsHolidayRequest {
     // Date is the date to check.
     // If unset, the current day in the server's timezone is used.
     tkd.common.v1.Date date = 1;
+
+    // PublicHolidaysOnly might be set to true to only count public holidays.
+    // Other holiday types, like school, bank or authority, will be ignored.
+    bool public_holidays_only = 2;
 }
 
 message IsHolidayResponse {

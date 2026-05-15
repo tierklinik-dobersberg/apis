@@ -106,7 +106,8 @@ type Patient struct {
 	IsAlive bool `protobuf:"varint,8,opt,name=is_alive,json=isAlive,proto3" json:"is_alive,omitempty"`
 	// ChipNumber is the chip-number of the patient.
 	ChipNumber string `protobuf:"bytes,15,opt,name=chip_number,json=chipNumber,proto3" json:"chip_number,omitempty"`
-	Color      string `protobuf:"bytes,16,opt,name=color,proto3" json:"color,omitempty"`
+	// Color holds the color of the patient in free-text form
+	Color string `protobuf:"bytes,16,opt,name=color,proto3" json:"color,omitempty"`
 	// ExtraData might hold additional data from the importer.
 	// The keys and values are opaque to the server.
 	// Users will likely need to inspect the importer field to distinguish

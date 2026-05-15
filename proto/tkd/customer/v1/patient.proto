@@ -52,6 +52,7 @@ message Patient {
     // ChipNumber is the chip-number of the patient.
     string chip_number = 15;
 
+    // Color holds the color of the patient in free-text form
     string color = 16;
 
     // ExtraData might hold additional data from the importer.

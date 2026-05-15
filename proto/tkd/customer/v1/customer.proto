@@ -54,12 +54,18 @@ message Address {
     ];
 
     string street = 3;
+    string street_address_2 = 5;
+
     string extra = 4;
 }
 
 message Customer {
     // ID is a unique, randomly generated ID for this customer.
     string id = 1;
+
+    // The Provet-Cloud client URI once this customer has been syncted/imported from
+    // Provet Cloud.
+    repeated string provet_client_uri = 9;
 
     // FirstName is the first name of the customer.
     string first_name = 2;
@@ -75,6 +81,9 @@ message Customer {
 
     // EmailAddresses is a list of email addresses.
     repeated string email_addresses = 6;
+
+    // Tags for this customer
+    repeated string tags = 8;
 
     // RecordCreatedAt is the timestamp at which the customer record has been created.
     google.protobuf.Timestamp record_created_at = 7;
@@ -126,6 +135,8 @@ message CustomerQuery {
         NameQuery name = 3;
         string phone_number = 4;
         string email_address = 5;
+        string provet_client_uri = 6;
+        string provet_client_id = 7;
     }
 }
 

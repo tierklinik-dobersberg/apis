@@ -103,10 +103,21 @@ export declare class PublicHoliday extends Message<PublicHoliday> {
 
   /**
    * Type holds the type of the public holiday.
+   * If the holiday is a public holiday, this is always set to
+   * HolidayType.PUBLIC.
+   * Inspect the additional_types field for more information about other
+   * holiday types.
    *
    * @generated from field: tkd.calendar.v1.HolidayType type = 7;
    */
   type: HolidayType;
+
+  /**
+   * AdditionalTypes holds a list of additional holiday types.
+   *
+   * @generated from field: repeated tkd.calendar.v1.HolidayType additional_types = 8;
+   */
+  additionalTypes: HolidayType[];
 
   constructor(data?: PartialMessage<PublicHoliday>);
 
@@ -152,6 +163,14 @@ export declare class GetHolidayRequest extends Message<GetHolidayRequest> {
    * @generated from field: string country_code = 3;
    */
   countryCode: string;
+
+  /**
+   * PublicHolidaysOnly might be set to true to only return public holidays
+   * and ignore school, bank or other holiday types.
+   *
+   * @generated from field: bool public_holidays_only = 4;
+   */
+  publicHolidaysOnly: boolean;
 
   constructor(data?: PartialMessage<GetHolidayRequest>);
 
@@ -299,6 +318,14 @@ export declare class IsHolidayRequest extends Message<IsHolidayRequest> {
    * @generated from field: tkd.common.v1.Date date = 1;
    */
   date?: Date;
+
+  /**
+   * PublicHolidaysOnly might be set to true to only count public holidays.
+   * Other holiday types, like school, bank or authority, will be ignored.
+   *
+   * @generated from field: bool public_holidays_only = 2;
+   */
+  publicHolidaysOnly: boolean;
 
   constructor(data?: PartialMessage<IsHolidayRequest>);
 
