@@ -51,6 +51,7 @@ type Clients struct {
 	CustomerImportService customerv1connect.CustomerImportServiceClient
 	PatientService        customerv1connect.PatientServiceClient
 	EventService          eventsv1connect.EventServiceClient
+	WebhookService        eventsv1connect.WebhookServiceClient
 	UserService           idmv1connect.UserServiceClient
 	RoleService           idmv1connect.RoleServiceClient
 	NotifyService         idmv1connect.NotifyServiceClient
@@ -90,6 +91,7 @@ func ConfigureClients(opts ConfigureClientOptions) Clients {
 		CustomerImportService: customerv1connect.NewCustomerImportServiceClient(httpClient, opts.url(CustomerV1ServiceScope), opts.GlobalOptions...),
 		PatientService:        customerv1connect.NewPatientServiceClient(httpClient, opts.url(CustomerV1ServiceScope), opts.GlobalOptions...),
 		EventService:          eventsv1connect.NewEventServiceClient(httpClient, opts.url(EventV1ServiceScope), opts.GlobalOptions...),
+		WebhookService:        eventsv1connect.NewWebhookServiceClient(httpClient, opts.url(EventV1ServiceScope), opts.GlobalOptions...),
 		UserService:           idmv1connect.NewUserServiceClient(httpClient, opts.url(IdmV1ServiceScope), opts.GlobalOptions...),
 		RoleService:           idmv1connect.NewRoleServiceClient(httpClient, opts.url(IdmV1ServiceScope), opts.GlobalOptions...),
 		NotifyService:         idmv1connect.NewNotifyServiceClient(httpClient, opts.url(IdmV1ServiceScope), opts.GlobalOptions...),

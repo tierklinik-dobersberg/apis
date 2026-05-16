@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package tkd.events.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+message HeaderValues {
+    repeated string values = 1;
+}
+
+// WebhookEvent is published using tkd.events.v1.EventsService once a
+// registered webhook endpoint is hit.
+message WebhookEvent {
+    // WebhookPath is the path of the webhook as passed
+    // to register webhook.
+    // This is the actual path used to register the webhook containing
+    // path parameter definitions as well.
+    // Use path_parameters to access the parameter values or inspect
+    // request_path which holds the actual request path of the received webhook.
+    string webhook_path = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // RequestPath holds the actual path of the webhook HTTP
+    // request including any query parameters.
+    // Any path prefix used by the WebhookService is stripped.
+    //
+    // Example:
+    // 
+    //  Webhook Request: events.domain.xyz/webhook/provet/{provetID}/imaging/update
+    //      -> webhook_path: provet/{provetID}/imaging/update
+    //      -> request_path: provet/1111/imaging/update&external_id=555
+    string request_path = 2 [
+        (buf.validate.field).required = true
+    ];
+
+    // Headers holds all HTTP headers that have been passed
+    // in the webhook.
+    map<string, HeaderValues> http_headers = 3;
+
+    // Content holds the unparsed webhook content.
+    bytes content = 4;
+
+    // PathParameters contains all path parameters as defined in the
+    // webhook path.
+    map<string, string> path_parameters = 5;
+
+    // SourceIp holds the IP that pushed the webhook
+    string source_ip = 6;
+
+    // ReceivedAt holds the time at which the webhook request has been
+    // received by the WebhookService.
+    google.protobuf.Timestamp received_at = 7;
+}
+
+service WebhookService {
+    rpc RegisterWebhook(RegisterWebhookRequest) returns (google.protobuf.Empty);
+    rpc RemoveWebhook(RemoveWebhookRequest) returns (google.protobuf.Empty);
+    rpc ListWebhooks(ListWebhooksRequest) returns (ListWebhooksResponse);
+}
+
+message RemoveWebhookRequest {
+    string webhook_path = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message RegisterWebhookRequest {
+    repeated Webhook webhooks = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message RegisterWebhookResponse {
+    Webhook webhook = 1 [
+        (buf.validate.field).required = true
+    ];
+}
+
+message Webhook {
+    // WebhookPath holds the path the webhook should listen
+    // on.
+    // WebhookPath might use path parameters in the form of {name}.
+    // Parameters must use a full path segment.
+    // If the last segment is set {#}, it will  match any trailing
+    // path segments.
+    //
+    // Examples:
+    //      provet/{provetID}/imaging/update
+    //
+    string webhook_path = 1 [
+        (buf.validate.field).required = true
+    ];
+
+    // IpWhitelist can be used to limit which IPs are allowed
+    // to send webhook requests.
+    repeated string ip_whitelist = 2;
+
+    // ExpectedContentType can be used to filter out bogus
+    // webhooks based on the expected content type.
+    // The content type is evaluated as a std MIME type so
+    // text/* will match, for example, text/html and text/plain.
+    // MIME parameters are not evaluated and checked.
+    string expected_content_type = 3;
+
+    // ExpectedHttpHeaders can be set to filter out bogus
+    // webhooks based expected HTTP headers present in the request.
+    // The map value is expected to be a regular expression matching
+    // the golang regexp package.
+    // If the map value is empty, the header must be present but the
+    // value of the header is not checked.
+    map<string, string> expected_http_headers = 4;
+
+    // MaxContentLength can be used to filter out bogus
+    // webhooks based on a maximum content length.
+    int64 max_content_length = 5;
+
+    // TimeToLive determines how long the webhook endpoint is available.
+    // Service that need persistent webhooks need to re-register the webhook
+    // before the time_to_live expires.
+    google.protobuf.Duration time_to_live = 6;
+
+    // CreatedAt holds the time at which the webhook has been created.
+    // Output only.
+    google.protobuf.Timestamp created_at = 7;
+
+    // LastUpdate holds the time at which the webhook has been last
+    // recreated (to avoid cleanup after TimeToLive expires)
+    google.protobuf.Timestamp last_update = 8;
+}
+
+message ListWebhooksRequest {
+
+}
+
+message ListWebhooksResponse {
+    repeated Webhook webhooks = 1;
+}

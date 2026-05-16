@@ -100,7 +100,8 @@ var (
 	CustomerImportService = Create(CustomerV1ServiceScope, customerv1connect.NewCustomerImportServiceClient)
 
 	// tkd.events.v1
-	EventService = Create(EventV1ServiceScope, eventsv1connect.NewEventServiceClient)
+	EventService   = Create(EventV1ServiceScope, eventsv1connect.NewEventServiceClient)
+	WebhookService = Create(EventV1ServiceScope, eventsv1connect.NewWebhookServiceClient)
 
 	// tkd.idm.v1
 	UserService   = Create(IdmV1ServiceScope, idmv1connect.NewUserServiceClient)
