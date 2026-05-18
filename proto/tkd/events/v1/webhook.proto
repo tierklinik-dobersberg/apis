@@ -44,9 +44,16 @@ message WebhookEvent {
     // Content holds the unparsed webhook content.
     bytes content = 4;
 
+    // ContentType holds the content type of the request.
+    string content_type = 8;
+
     // PathParameters contains all path parameters as defined in the
     // webhook path.
     map<string, string> path_parameters = 5;
+
+    // Trailing holds the trailing part of the path if the last segment
+    // is a tail-match ("{#}").
+    string trailing = 9;
 
     // SourceIp holds the IP that pushed the webhook
     string source_ip = 6;
@@ -57,7 +64,7 @@ message WebhookEvent {
 }
 
 service WebhookService {
-    rpc RegisterWebhook(RegisterWebhookRequest) returns (google.protobuf.Empty);
+    rpc RegisterWebhook(RegisterWebhookRequest) returns (RegisterWebhookResponse);
     rpc RemoveWebhook(RemoveWebhookRequest) returns (google.protobuf.Empty);
     rpc ListWebhooks(ListWebhooksRequest) returns (ListWebhooksResponse);
 }
@@ -69,7 +76,7 @@ message RemoveWebhookRequest {
 }
 
 message RegisterWebhookRequest {
-    repeated Webhook webhooks = 1 [
+    Webhook webhook = 1 [
         (buf.validate.field).required = true
     ];
 }

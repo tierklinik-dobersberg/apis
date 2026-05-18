@@ -47,7 +47,7 @@ const (
 
 // WebhookServiceClient is a client for the tkd.events.v1.WebhookService service.
 type WebhookServiceClient interface {
-	RegisterWebhook(context.Context, *connect_go.Request[v1.RegisterWebhookRequest]) (*connect_go.Response[emptypb.Empty], error)
+	RegisterWebhook(context.Context, *connect_go.Request[v1.RegisterWebhookRequest]) (*connect_go.Response[v1.RegisterWebhookResponse], error)
 	RemoveWebhook(context.Context, *connect_go.Request[v1.RemoveWebhookRequest]) (*connect_go.Response[emptypb.Empty], error)
 	ListWebhooks(context.Context, *connect_go.Request[v1.ListWebhooksRequest]) (*connect_go.Response[v1.ListWebhooksResponse], error)
 }
@@ -62,7 +62,7 @@ type WebhookServiceClient interface {
 func NewWebhookServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) WebhookServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &webhookServiceClient{
-		registerWebhook: connect_go.NewClient[v1.RegisterWebhookRequest, emptypb.Empty](
+		registerWebhook: connect_go.NewClient[v1.RegisterWebhookRequest, v1.RegisterWebhookResponse](
 			httpClient,
 			baseURL+WebhookServiceRegisterWebhookProcedure,
 			opts...,
@@ -82,13 +82,13 @@ func NewWebhookServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 
 // webhookServiceClient implements WebhookServiceClient.
 type webhookServiceClient struct {
-	registerWebhook *connect_go.Client[v1.RegisterWebhookRequest, emptypb.Empty]
+	registerWebhook *connect_go.Client[v1.RegisterWebhookRequest, v1.RegisterWebhookResponse]
 	removeWebhook   *connect_go.Client[v1.RemoveWebhookRequest, emptypb.Empty]
 	listWebhooks    *connect_go.Client[v1.ListWebhooksRequest, v1.ListWebhooksResponse]
 }
 
 // RegisterWebhook calls tkd.events.v1.WebhookService.RegisterWebhook.
-func (c *webhookServiceClient) RegisterWebhook(ctx context.Context, req *connect_go.Request[v1.RegisterWebhookRequest]) (*connect_go.Response[emptypb.Empty], error) {
+func (c *webhookServiceClient) RegisterWebhook(ctx context.Context, req *connect_go.Request[v1.RegisterWebhookRequest]) (*connect_go.Response[v1.RegisterWebhookResponse], error) {
 	return c.registerWebhook.CallUnary(ctx, req)
 }
 
@@ -104,7 +104,7 @@ func (c *webhookServiceClient) ListWebhooks(ctx context.Context, req *connect_go
 
 // WebhookServiceHandler is an implementation of the tkd.events.v1.WebhookService service.
 type WebhookServiceHandler interface {
-	RegisterWebhook(context.Context, *connect_go.Request[v1.RegisterWebhookRequest]) (*connect_go.Response[emptypb.Empty], error)
+	RegisterWebhook(context.Context, *connect_go.Request[v1.RegisterWebhookRequest]) (*connect_go.Response[v1.RegisterWebhookResponse], error)
 	RemoveWebhook(context.Context, *connect_go.Request[v1.RemoveWebhookRequest]) (*connect_go.Response[emptypb.Empty], error)
 	ListWebhooks(context.Context, *connect_go.Request[v1.ListWebhooksRequest]) (*connect_go.Response[v1.ListWebhooksResponse], error)
 }
@@ -147,7 +147,7 @@ func NewWebhookServiceHandler(svc WebhookServiceHandler, opts ...connect_go.Hand
 // UnimplementedWebhookServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedWebhookServiceHandler struct{}
 
-func (UnimplementedWebhookServiceHandler) RegisterWebhook(context.Context, *connect_go.Request[v1.RegisterWebhookRequest]) (*connect_go.Response[emptypb.Empty], error) {
+func (UnimplementedWebhookServiceHandler) RegisterWebhook(context.Context, *connect_go.Request[v1.RegisterWebhookRequest]) (*connect_go.Response[v1.RegisterWebhookResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("tkd.events.v1.WebhookService.RegisterWebhook is not implemented"))
 }
 

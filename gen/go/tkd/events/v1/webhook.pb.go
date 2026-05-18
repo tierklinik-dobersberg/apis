@@ -95,9 +95,14 @@ type WebhookEvent struct {
 	HttpHeaders map[string]*HeaderValues `protobuf:"bytes,3,rep,name=http_headers,json=httpHeaders,proto3" json:"http_headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Content holds the unparsed webhook content.
 	Content []byte `protobuf:"bytes,4,opt,name=content,proto3" json:"content,omitempty"`
+	// ContentType holds the content type of the request.
+	ContentType string `protobuf:"bytes,8,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
 	// PathParameters contains all path parameters as defined in the
 	// webhook path.
 	PathParameters map[string]string `protobuf:"bytes,5,rep,name=path_parameters,json=pathParameters,proto3" json:"path_parameters,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Trailing holds the trailing part of the path if the last segment
+	// is a tail-match ("{#}").
+	Trailing string `protobuf:"bytes,9,opt,name=trailing,proto3" json:"trailing,omitempty"`
 	// SourceIp holds the IP that pushed the webhook
 	SourceIp string `protobuf:"bytes,6,opt,name=source_ip,json=sourceIp,proto3" json:"source_ip,omitempty"`
 	// ReceivedAt holds the time at which the webhook request has been
@@ -165,11 +170,25 @@ func (x *WebhookEvent) GetContent() []byte {
 	return nil
 }
 
+func (x *WebhookEvent) GetContentType() string {
+	if x != nil {
+		return x.ContentType
+	}
+	return ""
+}
+
 func (x *WebhookEvent) GetPathParameters() map[string]string {
 	if x != nil {
 		return x.PathParameters
 	}
 	return nil
+}
+
+func (x *WebhookEvent) GetTrailing() string {
+	if x != nil {
+		return x.Trailing
+	}
+	return ""
 }
 
 func (x *WebhookEvent) GetSourceIp() string {
@@ -232,7 +251,7 @@ func (x *RemoveWebhookRequest) GetWebhookPath() string {
 
 type RegisterWebhookRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Webhooks      []*Webhook             `protobuf:"bytes,1,rep,name=webhooks,proto3" json:"webhooks,omitempty"`
+	Webhook       *Webhook               `protobuf:"bytes,1,opt,name=webhook,proto3" json:"webhook,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -267,9 +286,9 @@ func (*RegisterWebhookRequest) Descriptor() ([]byte, []int) {
 	return file_tkd_events_v1_webhook_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *RegisterWebhookRequest) GetWebhooks() []*Webhook {
+func (x *RegisterWebhookRequest) GetWebhook() *Webhook {
 	if x != nil {
-		return x.Webhooks
+		return x.Webhook
 	}
 	return nil
 }
@@ -536,13 +555,15 @@ const file_tkd_events_v1_webhook_proto_rawDesc = "" +
 	"\n" +
 	"\x1btkd/events/v1/webhook.proto\x12\rtkd.events.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"&\n" +
 	"\fHeaderValues\x12\x16\n" +
-	"\x06values\x18\x01 \x03(\tR\x06values\"\xa5\x04\n" +
+	"\x06values\x18\x01 \x03(\tR\x06values\"\xe4\x04\n" +
 	"\fWebhookEvent\x12*\n" +
 	"\fwebhook_path\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\vwebhookPath\x12*\n" +
 	"\frequest_path\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\vrequestPath\x12O\n" +
 	"\fhttp_headers\x18\x03 \x03(\v2,.tkd.events.v1.WebhookEvent.HttpHeadersEntryR\vhttpHeaders\x12\x18\n" +
-	"\acontent\x18\x04 \x01(\fR\acontent\x12X\n" +
-	"\x0fpath_parameters\x18\x05 \x03(\v2/.tkd.events.v1.WebhookEvent.PathParametersEntryR\x0epathParameters\x12\x1b\n" +
+	"\acontent\x18\x04 \x01(\fR\acontent\x12!\n" +
+	"\fcontent_type\x18\b \x01(\tR\vcontentType\x12X\n" +
+	"\x0fpath_parameters\x18\x05 \x03(\v2/.tkd.events.v1.WebhookEvent.PathParametersEntryR\x0epathParameters\x12\x1a\n" +
+	"\btrailing\x18\t \x01(\tR\btrailing\x12\x1b\n" +
 	"\tsource_ip\x18\x06 \x01(\tR\bsourceIp\x12;\n" +
 	"\vreceived_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"receivedAt\x1a[\n" +
@@ -553,9 +574,9 @@ const file_tkd_events_v1_webhook_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"B\n" +
 	"\x14RemoveWebhookRequest\x12*\n" +
-	"\fwebhook_path\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\vwebhookPath\"U\n" +
-	"\x16RegisterWebhookRequest\x12;\n" +
-	"\bwebhooks\x18\x01 \x03(\v2\x16.tkd.events.v1.WebhookB\a\xfa\xf7\x18\x03\xc8\x01\x01R\bwebhooks\"T\n" +
+	"\fwebhook_path\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\vwebhookPath\"S\n" +
+	"\x16RegisterWebhookRequest\x129\n" +
+	"\awebhook\x18\x01 \x01(\v2\x16.tkd.events.v1.WebhookB\a\xfa\xf7\x18\x03\xc8\x01\x01R\awebhook\"T\n" +
 	"\x17RegisterWebhookResponse\x129\n" +
 	"\awebhook\x18\x01 \x01(\v2\x16.tkd.events.v1.WebhookB\a\xfa\xf7\x18\x03\xc8\x01\x01R\awebhook\"\x9c\x04\n" +
 	"\aWebhook\x12*\n" +
@@ -575,9 +596,9 @@ const file_tkd_events_v1_webhook_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x15\n" +
 	"\x13ListWebhooksRequest\"J\n" +
 	"\x14ListWebhooksResponse\x122\n" +
-	"\bwebhooks\x18\x01 \x03(\v2\x16.tkd.events.v1.WebhookR\bwebhooks2\x89\x02\n" +
-	"\x0eWebhookService\x12P\n" +
-	"\x0fRegisterWebhook\x12%.tkd.events.v1.RegisterWebhookRequest\x1a\x16.google.protobuf.Empty\x12L\n" +
+	"\bwebhooks\x18\x01 \x03(\v2\x16.tkd.events.v1.WebhookR\bwebhooks2\x99\x02\n" +
+	"\x0eWebhookService\x12`\n" +
+	"\x0fRegisterWebhook\x12%.tkd.events.v1.RegisterWebhookRequest\x1a&.tkd.events.v1.RegisterWebhookResponse\x12L\n" +
 	"\rRemoveWebhook\x12#.tkd.events.v1.RemoveWebhookRequest\x1a\x16.google.protobuf.Empty\x12W\n" +
 	"\fListWebhooks\x12\".tkd.events.v1.ListWebhooksRequest\x1a#.tkd.events.v1.ListWebhooksResponseB\xbc\x01\n" +
 	"\x11com.tkd.events.v1B\fWebhookProtoP\x01ZCgithub.com/tierklinik-dobersberg/apis/gen/go/tkd/events/v1;eventsv1\xa2\x02\x03TEX\xaa\x02\rTkd.Events.V1\xca\x02\rTkd\\Events\\V1\xe2\x02\x19Tkd\\Events\\V1\\GPBMetadata\xea\x02\x0fTkd::Events::V1b\x06proto3"
@@ -615,7 +636,7 @@ var file_tkd_events_v1_webhook_proto_depIdxs = []int32{
 	8,  // 0: tkd.events.v1.WebhookEvent.http_headers:type_name -> tkd.events.v1.WebhookEvent.HttpHeadersEntry
 	9,  // 1: tkd.events.v1.WebhookEvent.path_parameters:type_name -> tkd.events.v1.WebhookEvent.PathParametersEntry
 	11, // 2: tkd.events.v1.WebhookEvent.received_at:type_name -> google.protobuf.Timestamp
-	5,  // 3: tkd.events.v1.RegisterWebhookRequest.webhooks:type_name -> tkd.events.v1.Webhook
+	5,  // 3: tkd.events.v1.RegisterWebhookRequest.webhook:type_name -> tkd.events.v1.Webhook
 	5,  // 4: tkd.events.v1.RegisterWebhookResponse.webhook:type_name -> tkd.events.v1.Webhook
 	10, // 5: tkd.events.v1.Webhook.expected_http_headers:type_name -> tkd.events.v1.Webhook.ExpectedHttpHeadersEntry
 	12, // 6: tkd.events.v1.Webhook.time_to_live:type_name -> google.protobuf.Duration
@@ -626,7 +647,7 @@ var file_tkd_events_v1_webhook_proto_depIdxs = []int32{
 	3,  // 11: tkd.events.v1.WebhookService.RegisterWebhook:input_type -> tkd.events.v1.RegisterWebhookRequest
 	2,  // 12: tkd.events.v1.WebhookService.RemoveWebhook:input_type -> tkd.events.v1.RemoveWebhookRequest
 	6,  // 13: tkd.events.v1.WebhookService.ListWebhooks:input_type -> tkd.events.v1.ListWebhooksRequest
-	13, // 14: tkd.events.v1.WebhookService.RegisterWebhook:output_type -> google.protobuf.Empty
+	4,  // 14: tkd.events.v1.WebhookService.RegisterWebhook:output_type -> tkd.events.v1.RegisterWebhookResponse
 	13, // 15: tkd.events.v1.WebhookService.RemoveWebhook:output_type -> google.protobuf.Empty
 	7,  // 16: tkd.events.v1.WebhookService.ListWebhooks:output_type -> tkd.events.v1.ListWebhooksResponse
 	14, // [14:17] is the sub-list for method output_type
