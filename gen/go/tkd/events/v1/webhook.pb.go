@@ -93,6 +93,8 @@ type WebhookEvent struct {
 	// Headers holds all HTTP headers that have been passed
 	// in the webhook.
 	HttpHeaders map[string]*HeaderValues `protobuf:"bytes,3,rep,name=http_headers,json=httpHeaders,proto3" json:"http_headers,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// QueryParameters holds a list of query parameters.
+	QueryParameters map[string]*HeaderValues `protobuf:"bytes,10,rep,name=query_parameters,json=queryParameters,proto3" json:"query_parameters,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Content holds the unparsed webhook content.
 	Content []byte `protobuf:"bytes,4,opt,name=content,proto3" json:"content,omitempty"`
 	// ContentType holds the content type of the request.
@@ -159,6 +161,13 @@ func (x *WebhookEvent) GetRequestPath() string {
 func (x *WebhookEvent) GetHttpHeaders() map[string]*HeaderValues {
 	if x != nil {
 		return x.HttpHeaders
+	}
+	return nil
+}
+
+func (x *WebhookEvent) GetQueryParameters() map[string]*HeaderValues {
+	if x != nil {
+		return x.QueryParameters
 	}
 	return nil
 }
@@ -555,11 +564,13 @@ const file_tkd_events_v1_webhook_proto_rawDesc = "" +
 	"\n" +
 	"\x1btkd/events/v1/webhook.proto\x12\rtkd.events.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"&\n" +
 	"\fHeaderValues\x12\x16\n" +
-	"\x06values\x18\x01 \x03(\tR\x06values\"\xe4\x04\n" +
+	"\x06values\x18\x01 \x03(\tR\x06values\"\xa2\x06\n" +
 	"\fWebhookEvent\x12*\n" +
 	"\fwebhook_path\x18\x01 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\vwebhookPath\x12*\n" +
 	"\frequest_path\x18\x02 \x01(\tB\a\xfa\xf7\x18\x03\xc8\x01\x01R\vrequestPath\x12O\n" +
-	"\fhttp_headers\x18\x03 \x03(\v2,.tkd.events.v1.WebhookEvent.HttpHeadersEntryR\vhttpHeaders\x12\x18\n" +
+	"\fhttp_headers\x18\x03 \x03(\v2,.tkd.events.v1.WebhookEvent.HttpHeadersEntryR\vhttpHeaders\x12[\n" +
+	"\x10query_parameters\x18\n" +
+	" \x03(\v20.tkd.events.v1.WebhookEvent.QueryParametersEntryR\x0fqueryParameters\x12\x18\n" +
 	"\acontent\x18\x04 \x01(\fR\acontent\x12!\n" +
 	"\fcontent_type\x18\b \x01(\tR\vcontentType\x12X\n" +
 	"\x0fpath_parameters\x18\x05 \x03(\v2/.tkd.events.v1.WebhookEvent.PathParametersEntryR\x0epathParameters\x12\x1a\n" +
@@ -568,6 +579,9 @@ const file_tkd_events_v1_webhook_proto_rawDesc = "" +
 	"\vreceived_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"receivedAt\x1a[\n" +
 	"\x10HttpHeadersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x121\n" +
+	"\x05value\x18\x02 \x01(\v2\x1b.tkd.events.v1.HeaderValuesR\x05value:\x028\x01\x1a_\n" +
+	"\x14QueryParametersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x121\n" +
 	"\x05value\x18\x02 \x01(\v2\x1b.tkd.events.v1.HeaderValuesR\x05value:\x028\x01\x1aA\n" +
 	"\x13PathParametersEntry\x12\x10\n" +
@@ -615,7 +629,7 @@ func file_tkd_events_v1_webhook_proto_rawDescGZIP() []byte {
 	return file_tkd_events_v1_webhook_proto_rawDescData
 }
 
-var file_tkd_events_v1_webhook_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_tkd_events_v1_webhook_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_tkd_events_v1_webhook_proto_goTypes = []any{
 	(*HeaderValues)(nil),            // 0: tkd.events.v1.HeaderValues
 	(*WebhookEvent)(nil),            // 1: tkd.events.v1.WebhookEvent
@@ -626,35 +640,38 @@ var file_tkd_events_v1_webhook_proto_goTypes = []any{
 	(*ListWebhooksRequest)(nil),     // 6: tkd.events.v1.ListWebhooksRequest
 	(*ListWebhooksResponse)(nil),    // 7: tkd.events.v1.ListWebhooksResponse
 	nil,                             // 8: tkd.events.v1.WebhookEvent.HttpHeadersEntry
-	nil,                             // 9: tkd.events.v1.WebhookEvent.PathParametersEntry
-	nil,                             // 10: tkd.events.v1.Webhook.ExpectedHttpHeadersEntry
-	(*timestamppb.Timestamp)(nil),   // 11: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),     // 12: google.protobuf.Duration
-	(*emptypb.Empty)(nil),           // 13: google.protobuf.Empty
+	nil,                             // 9: tkd.events.v1.WebhookEvent.QueryParametersEntry
+	nil,                             // 10: tkd.events.v1.WebhookEvent.PathParametersEntry
+	nil,                             // 11: tkd.events.v1.Webhook.ExpectedHttpHeadersEntry
+	(*timestamppb.Timestamp)(nil),   // 12: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),     // 13: google.protobuf.Duration
+	(*emptypb.Empty)(nil),           // 14: google.protobuf.Empty
 }
 var file_tkd_events_v1_webhook_proto_depIdxs = []int32{
 	8,  // 0: tkd.events.v1.WebhookEvent.http_headers:type_name -> tkd.events.v1.WebhookEvent.HttpHeadersEntry
-	9,  // 1: tkd.events.v1.WebhookEvent.path_parameters:type_name -> tkd.events.v1.WebhookEvent.PathParametersEntry
-	11, // 2: tkd.events.v1.WebhookEvent.received_at:type_name -> google.protobuf.Timestamp
-	5,  // 3: tkd.events.v1.RegisterWebhookRequest.webhook:type_name -> tkd.events.v1.Webhook
-	5,  // 4: tkd.events.v1.RegisterWebhookResponse.webhook:type_name -> tkd.events.v1.Webhook
-	10, // 5: tkd.events.v1.Webhook.expected_http_headers:type_name -> tkd.events.v1.Webhook.ExpectedHttpHeadersEntry
-	12, // 6: tkd.events.v1.Webhook.time_to_live:type_name -> google.protobuf.Duration
-	11, // 7: tkd.events.v1.Webhook.created_at:type_name -> google.protobuf.Timestamp
-	11, // 8: tkd.events.v1.Webhook.last_update:type_name -> google.protobuf.Timestamp
-	5,  // 9: tkd.events.v1.ListWebhooksResponse.webhooks:type_name -> tkd.events.v1.Webhook
-	0,  // 10: tkd.events.v1.WebhookEvent.HttpHeadersEntry.value:type_name -> tkd.events.v1.HeaderValues
-	3,  // 11: tkd.events.v1.WebhookService.RegisterWebhook:input_type -> tkd.events.v1.RegisterWebhookRequest
-	2,  // 12: tkd.events.v1.WebhookService.RemoveWebhook:input_type -> tkd.events.v1.RemoveWebhookRequest
-	6,  // 13: tkd.events.v1.WebhookService.ListWebhooks:input_type -> tkd.events.v1.ListWebhooksRequest
-	4,  // 14: tkd.events.v1.WebhookService.RegisterWebhook:output_type -> tkd.events.v1.RegisterWebhookResponse
-	13, // 15: tkd.events.v1.WebhookService.RemoveWebhook:output_type -> google.protobuf.Empty
-	7,  // 16: tkd.events.v1.WebhookService.ListWebhooks:output_type -> tkd.events.v1.ListWebhooksResponse
-	14, // [14:17] is the sub-list for method output_type
-	11, // [11:14] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	9,  // 1: tkd.events.v1.WebhookEvent.query_parameters:type_name -> tkd.events.v1.WebhookEvent.QueryParametersEntry
+	10, // 2: tkd.events.v1.WebhookEvent.path_parameters:type_name -> tkd.events.v1.WebhookEvent.PathParametersEntry
+	12, // 3: tkd.events.v1.WebhookEvent.received_at:type_name -> google.protobuf.Timestamp
+	5,  // 4: tkd.events.v1.RegisterWebhookRequest.webhook:type_name -> tkd.events.v1.Webhook
+	5,  // 5: tkd.events.v1.RegisterWebhookResponse.webhook:type_name -> tkd.events.v1.Webhook
+	11, // 6: tkd.events.v1.Webhook.expected_http_headers:type_name -> tkd.events.v1.Webhook.ExpectedHttpHeadersEntry
+	13, // 7: tkd.events.v1.Webhook.time_to_live:type_name -> google.protobuf.Duration
+	12, // 8: tkd.events.v1.Webhook.created_at:type_name -> google.protobuf.Timestamp
+	12, // 9: tkd.events.v1.Webhook.last_update:type_name -> google.protobuf.Timestamp
+	5,  // 10: tkd.events.v1.ListWebhooksResponse.webhooks:type_name -> tkd.events.v1.Webhook
+	0,  // 11: tkd.events.v1.WebhookEvent.HttpHeadersEntry.value:type_name -> tkd.events.v1.HeaderValues
+	0,  // 12: tkd.events.v1.WebhookEvent.QueryParametersEntry.value:type_name -> tkd.events.v1.HeaderValues
+	3,  // 13: tkd.events.v1.WebhookService.RegisterWebhook:input_type -> tkd.events.v1.RegisterWebhookRequest
+	2,  // 14: tkd.events.v1.WebhookService.RemoveWebhook:input_type -> tkd.events.v1.RemoveWebhookRequest
+	6,  // 15: tkd.events.v1.WebhookService.ListWebhooks:input_type -> tkd.events.v1.ListWebhooksRequest
+	4,  // 16: tkd.events.v1.WebhookService.RegisterWebhook:output_type -> tkd.events.v1.RegisterWebhookResponse
+	14, // 17: tkd.events.v1.WebhookService.RemoveWebhook:output_type -> google.protobuf.Empty
+	7,  // 18: tkd.events.v1.WebhookService.ListWebhooks:output_type -> tkd.events.v1.ListWebhooksResponse
+	16, // [16:19] is the sub-list for method output_type
+	13, // [13:16] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_tkd_events_v1_webhook_proto_init() }
@@ -668,7 +685,7 @@ func file_tkd_events_v1_webhook_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_tkd_events_v1_webhook_proto_rawDesc), len(file_tkd_events_v1_webhook_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

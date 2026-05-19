@@ -41,6 +41,9 @@ message WebhookEvent {
     // in the webhook.
     map<string, HeaderValues> http_headers = 3;
 
+    // QueryParameters holds a list of query parameters.
+    map<string, HeaderValues> query_parameters = 10;
+
     // Content holds the unparsed webhook content.
     bytes content = 4;
 
